@@ -11,9 +11,16 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
 
   return {
     canSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
-    canCustomer: currentUser && currentUser.role === ROLES.Customer,
-    canOrderClerk: currentUser && currentUser.role === ROLES.OrderClerk,
-    canFinancialStaff: currentUser && currentUser.role === ROLES.FinancialStaff,
-    canAdmin: currentUser && currentUser.role === ROLES.Admin,
+    // Check if the user is either in the specific role or a SuperAdmin for broader access
+    canCustomer:
+      currentUser && (currentUser.role === ROLES.Customer || currentUser.role === ROLES.SuperAdmin),
+    canOrderClerk:
+      currentUser &&
+      (currentUser.role === ROLES.OrderClerk || currentUser.role === ROLES.SuperAdmin),
+    canFinancialStaff:
+      currentUser &&
+      (currentUser.role === ROLES.FinancialStaff || currentUser.role === ROLES.SuperAdmin),
+    canAdmin:
+      currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
   };
 }

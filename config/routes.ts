@@ -53,6 +53,13 @@ export default [
     component: './Users',
   },
   {
+    name: 'list.tasks',
+    icon: 'table',
+    access: 'canAdmin',
+    path: '/tasks',
+    component: './Tasks',
+  },
+  {
     path: '/',
     redirect: '/Welcome',
   },
