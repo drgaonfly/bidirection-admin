@@ -126,18 +126,29 @@ const TableList: React.FC = () => {
         Indonesia: { text: '印尼' },
       },
     },
-    {
-      title: '平台',
-      dataIndex: 'platform',
-      valueEnum: {
-        TikTok: { text: 'TikTok' },
-        Shopify: { text: 'Shopify' },
-      },
-    },
+    // {
+    //   title: '平台',
+    //   dataIndex: 'platform',
+    //   valueEnum: {
+    //     TikTok: { text: 'TikTok' },
+    //     Shopify: { text: 'Shopify' },
+    //   },
+    // },
     {
       title: '文件',
       dataIndex: 'file',
       hideInSearch: true,
+      render: (_, record) => {
+        // 确保文件URL存在
+        if (!record.file) return '无文件';
+
+        // 返回一个下载按钮或链接
+        return (
+          <a href={record.file} download target="_blank" rel="noopener noreferrer">
+            下载
+          </a>
+        );
+      },
     },
     {
       title: '上传用户',
@@ -149,31 +160,31 @@ const TableList: React.FC = () => {
         return record.user && record.user.email ? record.user.email : '未知';
       },
     },
-    {
-      title: '单量',
-      dataIndex: 'quantity',
-      hideInSearch: true,
-    },
-    {
-      title: '店铺',
-      dataIndex: 'store',
-      hideInSearch: true,
-    },
-    {
-      title: '订单号',
-      dataIndex: 'orderNumber',
-      hideInSearch: true,
-    },
-    {
-      title: '金额',
-      dataIndex: 'amount',
-      hideInSearch: true,
-    },
-    {
-      title: '买手账号',
-      dataIndex: 'buyerAccount',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '单量',
+    //   dataIndex: 'quantity',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '店铺',
+    //   dataIndex: 'store',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '订单号',
+    //   dataIndex: 'orderNumber',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '金额',
+    //   dataIndex: 'amount',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '买手账号',
+    //   dataIndex: 'buyerAccount',
+    //   hideInSearch: true,
+    // },
     {
       title: '操作',
       dataIndex: 'option',
@@ -224,15 +235,17 @@ const TableList: React.FC = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
+          access.canCustomer && (
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          ),
         ]}
         request={async (params, sort, filter) => queryList('/tasks', params, sort, filter)}
         columns={columns}

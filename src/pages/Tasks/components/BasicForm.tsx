@@ -1,11 +1,16 @@
-import { ProForm, ProFormText, ProFormSelect, ProFormDigit } from '@ant-design/pro-components';
+import MyUpload from '@/components/MyUpload';
+import { ProForm, ProFormSelect } from '@ant-design/pro-components';
+import { Form } from 'antd';
 import React from 'react';
 
 interface Props {
   newRecord?: boolean;
+  file?: string | undefined;
+  setFile?: (url: string) => void;
 }
 
-const BasicForm: React.FC<Props> = () => {
+const BasicForm: React.FC<Props> = (props) => {
+  const { setFile, newRecord } = props;
   return (
     <>
       <ProForm.Group>
@@ -22,46 +27,19 @@ const BasicForm: React.FC<Props> = () => {
             Indonesia: '印尼',
           }}
         />
-        <ProFormSelect
-          rules={[{ required: true, message: '请选择平台' }]}
-          width="md"
-          label="平台"
-          name="platform"
-          valueEnum={{
-            TikTok: 'TikTok',
-            Shopify: 'Shopify',
-          }}
-        />
-        <ProFormDigit
-          rules={[{ required: true, message: '请输入单量' }]}
-          width="md"
-          label="单量"
-          name="quantity"
-        />
-        <ProFormText
-          rules={[{ required: true, message: '请输入店铺' }]}
-          width="md"
-          label="店铺"
-          name="store"
-        />
-        <ProFormText
-          rules={[{ required: true, message: '请输入订单号' }]}
-          width="md"
-          label="订单号"
-          name="orderNumber"
-        />
-        <ProFormDigit
-          rules={[{ required: true, message: '请输入金额' }]}
-          width="md"
-          label="金额"
-          name="amount"
-        />
-        <ProFormText
-          rules={[{ required: true, message: '请输入买手账号' }]}
-          width="md"
-          label="买手账号"
-          name="buyerAccount"
-        />
+
+        {newRecord && (
+          <Form.Item label="上传文件" rules={[{ required: false }]} name="file">
+            <MyUpload
+              accept=".xls,.xlsx,.csv"
+              onFileUpload={(url: string) => {
+                // 处理上传文件后的逻辑，例如将 URL 设置到表单的某个字段
+                console.log('Uploaded file URL:', url);
+                setFile!(url);
+              }}
+            />
+          </Form.Item>
+        )}
       </ProForm.Group>
     </>
   );

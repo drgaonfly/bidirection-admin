@@ -19,7 +19,7 @@ const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept }) => {
     formData.append('file', file as Blob);
 
     try {
-      const response = await request<{ success: boolean; data: string }>('/upload', {
+      const response = await request<{ success: boolean; data: any }>('/upload', {
         method: 'POST',
         data: formData,
         requestType: 'form',
@@ -32,7 +32,7 @@ const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept }) => {
         if (onSuccess) {
           onSuccess(response);
         }
-        const httpUrl = response.data; // 假设返回的signedURL就在data字段中
+        const httpUrl = response.data.file; // 假设返回的signedURL就在data字段中
         onFileUpload(httpUrl);
       } else {
         message.error('上传失败');

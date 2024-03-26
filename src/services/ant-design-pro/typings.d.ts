@@ -27,6 +27,7 @@ declare namespace API {
   };
 
   type ItemData = {
+    file?: string;
     user?: any;
     resourceUrl?: any;
     category?: any;
