@@ -107,6 +107,20 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile }) => {
         </Form.Item>
       )} */}
 
+      <ProFormSelect
+        name="orderType"
+        label="下单类型"
+        width="md"
+        rules={[{ required: false, message: '请选择下单类型' }]}
+        valueEnum={{
+          Normal: '正常下单',
+          ContactForVolumeWeight: '下单前联系改体积/重量',
+          ContactForInventory: '下单前联系开库存',
+          ContactForPrice: '下单前联系改价格',
+        }}
+        placeholder="可选"
+      />
+
       <ProFormTextArea
         name="orderNote"
         label="下单备注"
