@@ -4,6 +4,7 @@ import {
   ProFormSelect,
   ProFormDateTimePicker,
   ProFormRadio,
+  ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Form } from 'antd';
 import MyUpload from '@/components/MyUpload';
@@ -60,16 +61,24 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile }) => {
       </ProForm.Item>
 
       {orderTimeType === 'SpecificTimeOrder' && (
-        <ProFormDateTimePicker
+        <ProForm.Item
           name="orderTime"
-          width="md"
           label="下单时间"
           rules={[{ required: true, message: '请选择下单时间' }]}
-          fieldProps={{
-            showTime: { format: 'HH' },
-            format: 'YYYY-MM-DD HH',
-          }}
-        />
+          extra={
+            <div style={{ color: '#ff4d4f' }}>
+              有时间要求请提前2小时上传，对接买手需要时间，谢谢理解和配合。
+            </div>
+          }
+        >
+          <ProFormDateTimePicker
+            width="md"
+            fieldProps={{
+              showTime: { format: 'HH' },
+              format: 'YYYY-MM-DD HH',
+            }}
+          />
+        </ProForm.Item>
       )}
 
       <ProForm.Item name="reviewType" label="评价类型">
@@ -98,18 +107,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile }) => {
         </Form.Item>
       )} */}
 
-      <ProFormSelect
+      <ProFormTextArea
         name="orderNote"
         label="下单备注"
         width="md"
-        rules={[{ required: false, message: '请选择下单备注' }]}
-        valueEnum={{
-          Normal: '正常下单',
-          ContactForVolumeWeight: '下单前联系改体积/重量',
-          ContactForInventory: '下单前联系开库存',
-          ContactForPrice: '下单前联系改价格',
-        }}
-        placeholder="可选"
+        rules={[{ required: false, message: '请输入下单备注' }]}
+        placeholder="可选：请输入详细的下单备注信息"
       />
     </ProForm>
   );
