@@ -5,6 +5,7 @@ import {
   ProFormDateTimePicker,
   ProFormRadio,
   ProFormTextArea,
+  ProFormDigit,
 } from '@ant-design/pro-components';
 import { Form } from 'antd';
 import MyUpload from '@/components/MyUpload';
@@ -60,6 +61,14 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initial
             TikTok: 'TikTok',
           }}
           placeholder="请选择平台"
+        />
+        <ProFormDigit
+          name="quantity"
+          label="单量"
+          width="md"
+          min={1}
+          rules={[{ required: true, message: '请输入单量' }]}
+          placeholder="请输入单量"
         />
       </ProForm.Group>
       <ProForm.Group>

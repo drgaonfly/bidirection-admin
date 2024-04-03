@@ -192,6 +192,7 @@ const TableList: React.FC = () => {
     },
     {
       title: '下单时间',
+      hideInSearch: true,
       dataIndex: 'orderTime',
       valueType: 'dateTime',
     },
@@ -218,6 +219,11 @@ const TableList: React.FC = () => {
           </a>
         );
       },
+    },
+    {
+      title: '单量',
+      dataIndex: 'quantity',
+      hideInSearch: true,
     },
     {
       title: '任务状态', // 更新字段描述
