@@ -1,4 +1,10 @@
-import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
+import {
+  addItem,
+  handelItem,
+  queryList,
+  removeItem,
+  updateItem,
+} from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -89,6 +95,21 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+const handleCancel = async (id: string) => {
+  const hide = message.loading('正在取消');
+  try {
+    await handelItem(`/tasks/${id}/cancel`);
+    hide();
+
+    message.success('取消成功');
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(error?.response?.data?.message ?? '取消 失败，请重试!');
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
@@ -108,6 +129,7 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const [rechargeModalVisible, setRechargeModalVisible] = useState(false);
   const access = useAccess();
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
 
   /**
    * @en-US International configuration
@@ -198,6 +220,14 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: '任务状态', // 更新字段描述
+      dataIndex: 'status', // 指定数据索引为status
+      valueEnum: {
+        Active: { text: '正常' }, // 对应Active状态
+        Cancelled: { text: '已取消' }, // 对应Cancelled状态
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
@@ -212,6 +242,27 @@ const TableList: React.FC = () => {
         >
           编辑
         </a>,
+        access.canSuperAdmin && (
+          <a
+            key="cancel"
+            onClick={() => {
+              // Replace `handleRemove`, `setSelectedRows`, and `actionRef.current?.reloadAndRest?` as well
+              return Modal.confirm({
+                title: '确认取消?',
+                onOk: async () => {
+                  await handleCancel(record._id!);
+                  setSelectedRows([]);
+                  actionRef.current?.reloadAndRest?.();
+                },
+                content: '确定取消吗？',
+                okText: '确认',
+                cancelText: '取消',
+              });
+            }}
+          >
+            取消
+          </a>
+        ),
         access.canSuperAdmin && (
           <a
             key="delete"
@@ -259,14 +310,43 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/tasks', params, sort, filter)}
+        request={async (params, sort, filter) =>
+          queryList('/tasks', { ...params, status: activeKey }, sort, filter)
+        }
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
             setSelectedRows(selectedRows);
           },
         }}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <span>所有</span>,
+                key: '', // 不设置key或设置为空字符串，表示不过滤此项
+              },
+              {
+                label: <span>正常</span>,
+                key: 'Active', // 对应Active状态
+              },
+              {
+                label: <span>已取消</span>,
+                key: 'Cancelled', // 对应Cancelled状态
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
       />
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={

@@ -76,13 +76,7 @@ export async function queryDataList(
 
 export async function queryList(
   url: string,
-  params?: {
-    // query
-    /** 当前的页码 */
-    current?: number;
-    /** 页面的容量 */
-    pageSize?: number;
-  },
+  params?: { [key: string]: any },
   sort?: { [key: string]: any },
   filter?: { [key: string]: any },
 ) {
@@ -110,6 +104,15 @@ export async function addItem(url: string, options?: { [key: string]: any }) {
 export async function updateItem(url: string, options?: { [key: string]: any }) {
   return request<API.ListItem>(url, {
     method: 'PUT',
+    data: {
+      ...(options || {}),
+    },
+  });
+}
+
+export async function handelItem(url: string, options?: { [key: string]: any }) {
+  return request<API.ListItem>(url, {
+    method: 'PATCH',
     data: {
       ...(options || {}),
     },
