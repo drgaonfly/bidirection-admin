@@ -13,15 +13,15 @@ const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns } = props;
   return (
     <Drawer width="70%" open={open} onClose={onClose} closable={false}>
-      {currentRow?.email && (
+      {currentRow?._id && (
         <ProDescriptions<API.ItemData>
           column={2}
-          title={currentRow?.email}
+          title={currentRow?._id}
           request={async () => ({
             data: currentRow || {},
           })}
           params={{
-            id: currentRow?.email,
+            id: currentRow?._id,
           }}
           columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
         />

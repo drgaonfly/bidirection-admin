@@ -138,6 +138,23 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: '编号',
+      dataIndex: '_id',
+      copyable: true,
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              setShowDetail(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
+    },
+    {
       title: '国家',
       dataIndex: 'country',
       valueEnum: {
@@ -232,6 +249,7 @@ const TableList: React.FC = () => {
         Active: { text: '正常' }, // 对应Active状态
         Cancelled: { text: '已取消' }, // 对应Cancelled状态
       },
+      hideInSearch: true,
     },
     {
       title: '操作',
@@ -302,6 +320,7 @@ const TableList: React.FC = () => {
         rowKey="_id"
         search={{
           labelWidth: 120,
+          defaultCollapsed: false,
         }}
         toolBarRender={() => [
           access.canCustomer && (
