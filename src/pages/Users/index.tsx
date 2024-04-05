@@ -138,7 +138,7 @@ const TableList: React.FC = () => {
     },
     {
       title: '角色',
-      dataIndex: 'roles',
+      dataIndex: 'role',
       valueEnum: {
         SUPER_ADMIN: '超级管理员',
         CUSTOMER: '客户',
