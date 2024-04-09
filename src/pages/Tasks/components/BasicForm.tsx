@@ -24,8 +24,8 @@ interface Props {
 const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initialValues }) => {
   const [reviewType, setReviewType] = useState(initialValues?.reviewType || '');
   const [orderTimeType, setOrderTimeType] = useState(initialValues?.orderTimeType || '');
-  const { items: users } = useQueryList('/users');
   const access = useAccess();
+  const { items: users } = useQueryList('/users', access.canAdmin);
 
   useEffect(() => {
     if (initialValues?.reviewType) {
