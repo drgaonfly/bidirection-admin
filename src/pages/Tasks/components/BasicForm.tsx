@@ -150,7 +150,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initial
       </ProForm.Item>
 
       {reviewType === 'ReviewAfterModification' && (
-        <Form.Item label="上传评论" name="uploadedFile">
+        <Form.Item required label="上传评论" name="uploadedFile">
           <MyUpload
             onFileUpload={(url: string) => {
               console.log('Uploaded review file URL:', url);
