@@ -90,7 +90,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initial
       </ProForm.Group>
       <ProForm.Group>
         {newRecord && (
-          <Form.Item label="上传文件" name="file">
+          <Form.Item required label="上传文件" name="file">
             <MyUpload
               accept=".xls,.xlsx,.csv"
               onFileUpload={(url: string) => {

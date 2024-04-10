@@ -15,7 +15,7 @@ import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
-import Recharge from './components/Recharge';
+import UploadForm from './components/UploadForm';
 
 /**
  * @en-US Add node
@@ -57,21 +57,6 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 
-const handleRecharge = async (fields: FormValueType) => {
-  const hide = message.loading('正在充值');
-  try {
-    await addItem(`/tasks/${fields._id}/recharge`, fields);
-    hide();
-
-    message.success('更新成功');
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(error?.response?.data?.message ?? '更新充值，请重试!');
-    return false;
-  }
-};
-
 /**
  *  Delete node
  * @zh-CN 删除节点
@@ -91,6 +76,20 @@ const handleRemove = async (ids: string[]) => {
   } catch (error: any) {
     hide();
     message.error(error.response.data.message ?? 'Delete failed, please try again');
+    return false;
+  }
+};
+
+const handleUploadBill = async (fields: API.ItemData) => {
+  const hide = message.loading('正在上传');
+  try {
+    await addItem('/tasks/upload-bills', { ...fields });
+    hide();
+    message.success('上传成功');
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(error?.response?.data?.message ?? 'Adding failed, please try again!');
     return false;
   }
 };
@@ -144,13 +143,13 @@ const TableList: React.FC = () => {
    * @zh-CN 分布更新窗口的弹窗
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [uploadModalVisible, setUploadModalVisible] = useState<boolean>(false);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
-  const [rechargeModalVisible, setRechargeModalVisible] = useState(false);
   const access = useAccess();
   const [activeKey, setActiveKey] = useState<string | undefined>('');
 
@@ -320,16 +319,29 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="edit"
-          onClick={() => {
-            // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          编辑
-        </a>,
+        access.canCustomer && (
+          <a
+            key="edit"
+            onClick={() => {
+              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            编辑
+          </a>
+        ),
+        access.canOrderClerk && (
+          <a
+            key="upload"
+            onClick={() => {
+              setUploadModalVisible(true);
+              setCurrentRow(record);
+            }}
+          >
+            上传
+          </a>
+        ),
         access.canCustomer && (
           <a
             key="cancel"
@@ -498,6 +510,22 @@ const TableList: React.FC = () => {
           }
         }}
       />
+      <UploadForm
+        onSubmit={async (value) => {
+          const success = await handleUploadBill(value); // 假设这是上传逻辑的函数
+          if (success) {
+            setUploadModalVisible(false); // 控制上传模态窗口的可见性
+            setCurrentRow(undefined); // 清空当前选中的行数据
+            if (actionRef.current) {
+              actionRef.current.reload(); // 如果有表格引用，重新加载表格数据
+            }
+          }
+        }}
+        onCancel={setUploadModalVisible} // 关闭模态窗口
+        updateModalOpen={uploadModalVisible} // 控制上传模态窗口的开关
+        values={currentRow || {}} // 当前行数据，用作表单的初始值或为新上传提供参考数据
+      />
+
       <Update
         onSubmit={async (value) => {
           const success = await handleUpdate(value);
@@ -511,22 +539,6 @@ const TableList: React.FC = () => {
         }}
         onCancel={handleUpdateModalOpen}
         updateModalOpen={updateModalOpen}
-        values={currentRow || {}}
-      />
-
-      <Recharge
-        onSubmit={async (value) => {
-          const success = await handleRecharge(value);
-          if (success) {
-            setRechargeModalVisible(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={setRechargeModalVisible}
-        updateModalOpen={rechargeModalVisible}
         values={currentRow || {}}
       />
 
