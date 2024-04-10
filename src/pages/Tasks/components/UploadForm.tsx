@@ -42,6 +42,7 @@ const UploadForm: React.FC<UpdateFormProps> = (props) => {
     >
       <Form.Item required label="账单文件" name="billFile">
         <MyUpload
+          accept=".xls,.xlsx"
           onFileUpload={(data: any) => {
             console.log('Uploaded resource URL:', data);
             setFile(data); // Assuming 'data' is an array of objects with a 'title' property

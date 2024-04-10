@@ -92,7 +92,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initial
         {newRecord && (
           <Form.Item required label="上传文件" name="file">
             <MyUpload
-              accept=".xls,.xlsx,.csv"
+              accept=".xls,.xlsx"
               onFileUpload={(url: string) => {
                 console.log('Uploaded file URL:', url);
                 setFile!(url);
