@@ -74,6 +74,13 @@ export default [
     component: './EmptyPackages',
   },
   {
+    name: 'list.accountLibrary',
+    icon: 'idcard',
+    access: 'canAdmin',
+    path: '/account-library',
+    component: './AccountLibraries',
+  },
+  {
     path: '/',
     redirect: '/Welcome',
   },
