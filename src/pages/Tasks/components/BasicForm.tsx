@@ -11,6 +11,7 @@ import { Form } from 'antd';
 import MyUpload from '@/components/MyUpload';
 import useQueryList from '@/hooks/useQueryList';
 import { useAccess } from '@umijs/max';
+import AliyunOSSUpload from '@/components/AliyunOSSUpload';
 
 interface Props {
   newRecord?: boolean;
@@ -21,7 +22,7 @@ interface Props {
   initialValues?: any;
 }
 
-const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initialValues }) => {
+const BasicForm: React.FC<Props> = ({ newRecord, setReviewFile, setFile, initialValues }) => {
   const [reviewType, setReviewType] = useState(initialValues?.reviewType || '');
   const [orderTimeType, setOrderTimeType] = useState(initialValues?.orderTimeType || '');
   const access = useAccess();
@@ -91,12 +92,19 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initial
       <ProForm.Group>
         {newRecord && (
           <Form.Item required label="上传文件" name="file">
-            <MyUpload
+            {/* <MyUpload
               accept=".xls,.xlsx"
               onFileUpload={(url: string) => {
                 console.log('Uploaded file URL:', url);
                 setFile!(url);
               }}
+            /> */}
+            <AliyunOSSUpload
+              onFileUpload={(url: string) => {
+                console.log('Uploaded file URL:', url);
+                setFile!(url);
+              }}
+              accept=".xls,.xlsx"
             />
           </Form.Item>
         )}
