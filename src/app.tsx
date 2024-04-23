@@ -126,7 +126,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   };
 };
 
-const DOMAIN = isDev ? 'http://localhost:5001' : 'https://ordersystem-new.2024fc.xyz';
+const DOMAIN = isDev ? 'http://localhost:5001' : 'https://backend.maomaozhaocai.com';
 
 /**
  * @name request 配置，可以配置错误处理
