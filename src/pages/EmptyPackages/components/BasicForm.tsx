@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProForm, ProFormSelect, ProFormDigit } from '@ant-design/pro-components';
+import { ProForm, ProFormSelect, ProFormDigit, ProFormSwitch } from '@ant-design/pro-components';
 import { Form } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 import { useAccess } from '@umijs/max';
@@ -14,7 +14,7 @@ interface Props {
   initialValues?: any;
 }
 
-const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile }) => {
+const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile, initialValues }) => {
   const access = useAccess();
   const { items: users } = useQueryList('/users', access.canAdmin);
 
@@ -92,6 +92,14 @@ const BasicForm: React.FC<Props> = ({ newRecord, setFile, setReviewFile }) => {
               accept=".zip,.rar"
             />
           </Form.Item>
+        )}
+        {!newRecord && (
+          <ProFormSwitch
+            name="isProcessed"
+            label="是否已处理"
+            tooltip="标记此记录是否已被处理"
+            initialValue={initialValues?.isProcessed}
+          />
         )}
       </ProForm.Group>
     </>
