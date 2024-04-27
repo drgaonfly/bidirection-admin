@@ -172,7 +172,16 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: '分配时间',
+      title: '是否分配',
+      dataIndex: 'isAssigned',
+      key: 'isAssigned',
+      valueEnum: {
+        true: { text: '已分配', status: 'Success' },
+        false: { text: '未分配', status: 'Error' },
+      },
+    },
+    {
+      title: '最近分配时间',
       dataIndex: 'assignedTime',
       valueType: 'date',
     },

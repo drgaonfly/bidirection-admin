@@ -89,22 +89,22 @@ const Show: React.FC<Props> = (props) => {
       valueType: 'dateTime',
       editable: () => false,
     },
-    {
-      title: '操作',
-      valueType: 'option',
-      render: (text, record, _, action) => [
-        <a
-          key="editable"
-          onClick={() => {
-            action?.startEditable?.(record._id);
-          }}
-        >
-          编辑
-        </a>,
-        // Add your logic for deleting a bill here
-        // You'll need to adapt this to fit your actual data handling
-      ],
-    },
+    // {
+    //   title: '操作',
+    //   valueType: 'option',
+    //   render: (text, record, _, action) => [
+    //     <a
+    //       key="editable"
+    //       onClick={() => {
+    //         action?.startEditable?.(record._id);
+    //       }}
+    //     >
+    //       编辑
+    //     </a>,
+    //     // Add your logic for deleting a bill here
+    //     // You'll need to adapt this to fit your actual data handling
+    //   ],
+    // },
   ];
 
   return (

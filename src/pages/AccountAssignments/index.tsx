@@ -19,7 +19,7 @@ import { convertToTextObject, platformNames } from '@/utils/constants';
  * @param fields
  */
 const handleAdd = async (fields: API.ItemData) => {
-  const hide = message.loading('正在添加');
+  const hide = message.loading('正在搜索');
   try {
     await addItem('/assignments', { ...fields });
     hide();

@@ -37,10 +37,13 @@ const AccountTable = ({ accounts }: { accounts: any[] }) => {
       title: '是否分配',
       dataIndex: 'isAssigned',
       key: 'isAssigned',
-      render: (text: boolean) => (text ? '已分配' : '未分配'),
+      valueEnum: {
+        true: { text: '已分配', status: 'Success' },
+        false: { text: '未分配', status: 'Error' },
+      },
     },
     {
-      title: '上次分配时间',
+      title: '最近分配时间',
       dataIndex: 'assignedTime',
       key: 'assignedTime',
       render: (text: string) => text || '未分配',
@@ -147,7 +150,7 @@ const Create: React.FC<Props> = (props) => {
 
               return onFinish({
                 ...values,
-                accounts,
+                accountLibraries: accounts,
               });
             },
             onCancel() {
@@ -162,7 +165,7 @@ const Create: React.FC<Props> = (props) => {
 
         return onFinish({
           ...values,
-          accounts,
+          accountLibraries: accounts,
         });
       }}
     >

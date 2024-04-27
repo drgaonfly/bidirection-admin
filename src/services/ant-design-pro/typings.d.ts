@@ -27,6 +27,7 @@ declare namespace API {
   };
 
   type ItemData = {
+    accountLibraries?: any;
     data?: any;
     isProcessed?: boolean;
     orderNumber?: string;
