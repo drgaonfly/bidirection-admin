@@ -13,14 +13,21 @@ import { locationMapping, platformNames } from '@/utils/constants';
 
 interface Props {
   newRecord?: boolean;
+  onFinish: (formData: any) => Promise<void>;
 }
 
-const BasicForm: React.FC<Props> = ({ newRecord }) => {
+const BasicForm: React.FC<Props> = ({ newRecord, onFinish }) => {
   const access = useAccess();
   const [form] = useForm();
 
   return (
-    <ProForm form={form} onFinish={async (values) => console.log('1', values)}>
+    <ProForm
+      form={form}
+      onFinish={async (values) => {
+        await onFinish(values);
+        form.resetFields();
+      }}
+    >
       <ProForm.Group>
         <ProFormText
           rules={[{ required: true, message: '请输入姓名' }]}
@@ -93,6 +100,7 @@ const BasicForm: React.FC<Props> = ({ newRecord }) => {
                 { label: '否', value: false },
               ]}
               fieldProps={{
+                defaultValue: false,
                 onChange: () =>
                   form.setFieldsValue({
                     priceList: form
@@ -103,7 +111,7 @@ const BasicForm: React.FC<Props> = ({ newRecord }) => {
                   }),
               }}
             />
-            {form.getFieldValue(['priceList', index, 'isLocalCurrency']) && (
+            {!form.getFieldValue(['priceList', index, 'isLocalCurrency']) && (
               <ProForm.Group>
                 <ProFormDigit
                   name={[field.name, 'exchangeRate']}
