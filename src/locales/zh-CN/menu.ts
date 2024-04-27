@@ -34,7 +34,7 @@ export default {
   'menu.list.emptyPackages': '空包',
   'menu.list.accountLibrary': '账号库',
   'menu.tasks': '任务',
-  'menu.list.users': '用户列表',
+  'menu.list.users': '用户',
   'menu.list.categories': '图片分类',
   'menu.list.accountAssignment': '分配账号',
   'menu.list.accountAssignmentRecords': '分配账号记录',

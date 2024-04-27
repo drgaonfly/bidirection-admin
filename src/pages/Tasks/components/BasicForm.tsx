@@ -114,6 +114,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, setReviewFile, setFile, initial
               { label: '指定时间下单', value: 'SpecificTimeOrder' },
             ]}
             fieldProps={{
+              defaultValue: 'NormalOrder',
               onChange: (e) => setOrderTimeType(e.target.value),
             }}
           />
@@ -148,6 +149,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, setReviewFile, setFile, initial
             { label: '评价后补', value: 'ReviewAfterModification' },
           ]}
           fieldProps={{
+            defaultValue: 'NormalReview',
             onChange: (e) => setReviewType(e.target.value),
           }}
         />
@@ -177,6 +179,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, setReviewFile, setFile, initial
           ]}
           placeholder="请选择"
           rules={[{ required: false, message: '请选择' }]}
+          initialValue={['NormalOrder']}
         />
       </ProForm.Group>
 
