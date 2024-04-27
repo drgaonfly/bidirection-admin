@@ -145,6 +145,7 @@ const TableList: React.FC = () => {
     },
     {
       title: '店铺账号',
+      copyable: true,
       dataIndex: 'storeAccount',
       width: 200,
       render: (dom, entity) => {

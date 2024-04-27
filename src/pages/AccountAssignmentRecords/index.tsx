@@ -165,7 +165,6 @@ const TableList: React.FC = () => {
       dataIndex: 'accountLibrary',
       hideInSearch: true,
       width: 200,
-      copyable: true,
       renderText: (accountLibrary: {
         accountNumber: string;
         loginAccount: string;
