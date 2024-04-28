@@ -1,15 +1,8 @@
-import React from 'react';
-import {
-  ProForm,
-  ProFormText,
-  ProFormSelect,
-  ProFormList,
-  ProFormDigit,
-  ProFormRadio,
-} from '@ant-design/pro-components';
+import React, { useState } from 'react';
+import { ProForm, ProFormText, ProFormSelect, EditableProTable } from '@ant-design/pro-components';
 import { useAccess } from '@umijs/max';
 import useForm from 'antd/lib/form/hooks/useForm';
-import { locationMapping, platformNames } from '@/utils/constants';
+import { convertToTextObject, locationMapping, platformNames } from '@/utils/constants';
 import { Form, Input } from 'antd';
 
 interface Props {
@@ -18,16 +11,98 @@ interface Props {
   values?: any;
 }
 
+type PriceListItem = {
+  isLocalCurrency: boolean;
+  exchangeRate: number;
+  serviceFee: number;
+  country: string;
+  platform: string;
+  _id: string;
+};
+
+const columns = [
+  {
+    title: '国家',
+    dataIndex: 'country',
+    valueType: 'select',
+    valueEnum: convertToTextObject(locationMapping),
+    formItemProps: {
+      rules: [{ required: true, message: '请选择国家' }],
+    },
+    editable: true,
+  },
+  {
+    title: '平台',
+    dataIndex: 'platform',
+    valueType: 'select',
+    valueEnum: convertToTextObject(platformNames), // replace with your actual platform mapping
+    formItemProps: {
+      rules: [{ required: true, message: '请选择平台' }],
+    },
+    editable: true,
+  },
+  {
+    title: '是否本币',
+    dataIndex: 'isLocalCurrency',
+    valueType: 'select',
+    valueEnum: {
+      true: { text: '是', status: 'Success' },
+      false: { text: '否', status: 'Error' },
+    },
+    formItemProps: {
+      rules: [{ required: true, message: '是否本币是必填项' }],
+    },
+    editable: true,
+  },
+  {
+    title: '汇率',
+    dataIndex: 'exchangeRate',
+    formItemProps: {
+      rules: [{ required: false, message: '汇率是必填项' }],
+    },
+    editable: true,
+  },
+  {
+    title: '服务费',
+    dataIndex: 'serviceFee',
+    formItemProps: {
+      rules: [{ required: false, message: '服务费是必填项' }],
+    },
+    editable: true,
+  },
+  {
+    title: '操作',
+    valueType: 'option',
+    render: (text: any, record: any, _: any, action: any) => [
+      <a
+        key="editable"
+        onClick={() => {
+          action?.startEditable?.(`${record._id}`);
+        }}
+      >
+        编辑
+      </a>,
+      // Add your logic for deleting a bill here
+      // You'll need to adapt this to fit your actual data handling
+    ],
+  },
+];
+
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const access = useAccess();
   const [form] = useForm();
+  const [priceList, setPriceList] = useState<PriceListItem[]>(values?.priceList || []);
 
   return (
     <ProForm
       initialValues={{ ...values }}
       form={form}
       onFinish={async (values) => {
-        await onFinish(values);
+        await onFinish({
+          ...values,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          priceList: priceList.map(({ _id, ...rest }) => rest),
+        });
         // form.resetFields();
       }}
     >
@@ -66,79 +141,29 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         )}
       </ProForm.Group>
 
-      <ProFormList
-        name="priceList"
-        label="价格表"
-        creatorButtonProps={{
-          creatorButtonText: '添加价格规则',
+      <EditableProTable<PriceListItem>
+        rowKey="_id"
+        headerTitle="价格表"
+        // @ts-ignore
+        columns={columns}
+        value={priceList}
+        onChange={(value: readonly PriceListItem[]) => setPriceList([...value])}
+        editable={{
+          type: 'multiple',
         }}
-      >
-        {(field, index) => (
-          <ProForm.Group key={field.key}>
-            <ProForm.Group>
-              <ProFormSelect
-                name="country"
-                label="国家"
-                width="md"
-                rules={[{ required: true, message: '请选择国家' }]}
-                valueEnum={locationMapping}
-                placeholder="请选择国家"
-              />
-
-              <ProFormSelect
-                name="platform"
-                label="平台"
-                width="md"
-                rules={[{ required: true, message: '请选择平台' }]}
-                valueEnum={platformNames}
-                placeholder="请选择平台"
-              />
-            </ProForm.Group>
-            <ProFormRadio.Group
-              name="isLocalCurrency"
-              label="是否本币"
-              width="lg"
-              options={[
-                { label: '是', value: true },
-                { label: '否', value: false },
-              ]}
-              fieldProps={{
-                onChange: (e) => {
-                  const updatedPriceList = form
-                    .getFieldValue('priceList')
-                    .map((item: any, idx: number) => {
-                      if (idx === index) {
-                        return { ...item, isLocalCurrency: e.target.value };
-                      }
-                      return item;
-                    });
-                  form.setFieldsValue({ priceList: updatedPriceList });
-                },
-              }}
-            />
-            {!form.getFieldValue(['priceList', index, 'isLocalCurrency']) && (
-              <ProForm.Group>
-                <ProFormDigit
-                  name="exchangeRate"
-                  label="汇率"
-                  width="md"
-                  min={0}
-                  fieldProps={{ step: 0.01 }}
-                  rules={[{ required: true, message: '请输入汇率' }]}
-                />
-                <ProFormDigit
-                  name="serviceFee"
-                  label="服务费"
-                  width="md"
-                  min={0}
-                  fieldProps={{ step: 0.01 }}
-                  rules={[{ required: true, message: '请输入服务费' }]}
-                />
-              </ProForm.Group>
-            )}
-          </ProForm.Group>
-        )}
-      </ProFormList>
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            isLocalCurrency: false,
+            exchangeRate: 0,
+            serviceFee: 0,
+            country: '',
+            platform: '',
+          }),
+        }}
+      />
       {!newRecord && (
         <Form.Item name="_id" label={false}>
           <Input type="hidden" />

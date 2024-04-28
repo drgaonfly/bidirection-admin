@@ -143,7 +143,6 @@ const Show: React.FC<Props> = (props) => {
             columns={columns}
             request={async () => ({
               data: currentRow.bills,
-              total: 3,
               success: true,
             })}
             value={dataSource}
