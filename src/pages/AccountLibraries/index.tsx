@@ -185,6 +185,12 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: '店铺名字',
+      copyable: true,
+      dataIndex: 'storeAccount',
+      width: 150,
+    },
+    {
       title: '最近分配时间',
       width: 150,
       dataIndex: 'assignedTime',
