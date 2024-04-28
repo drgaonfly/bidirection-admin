@@ -22,6 +22,7 @@ const AccountTable = ({ accounts }: { accounts: any[] }) => {
       title: '下单账号序号',
       dataIndex: 'accountNumber',
       key: 'accountNumber',
+      copyable: true,
     },
     {
       title: '登录账号',

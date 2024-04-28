@@ -1,3 +1,4 @@
+import CopyToClipboard from '@/components/CopyToClipboard';
 import { addItem } from '@/services/ant-design-pro/api';
 import { locationMapping, platformNames } from '@/utils/constants';
 import {
@@ -22,6 +23,12 @@ const AccountTable = ({ accounts }: { accounts: any[] }) => {
       title: '下单账号序号',
       dataIndex: 'accountNumber',
       key: 'accountNumber',
+      render: (text: string) => (
+        <>
+          <span>{text}</span>
+          <CopyToClipboard text={text} />
+        </>
+      ),
     },
     {
       title: '登录账号',
