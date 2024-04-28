@@ -181,11 +181,15 @@ const TableList: React.FC = () => {
     {
       title: '国家',
       width: 100,
+      // filters: true,
+      // onFilter: true,
       dataIndex: 'country',
       valueEnum: convertToTextObject(locationMapping),
     },
     {
       title: '平台',
+      // filters: true,
+      // onFilter: true,
       width: 100,
       dataIndex: 'platform',
       valueEnum: convertToTextObject(platformNames),
@@ -221,6 +225,8 @@ const TableList: React.FC = () => {
     {
       title: '状态', // 更新字段描述
       width: 100,
+      // filters: true,
+      // onFilter: true,
       dataIndex: 'status', // 指定数据索引为status
       valueEnum: {
         Active: {
