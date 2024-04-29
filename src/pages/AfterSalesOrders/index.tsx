@@ -9,7 +9,6 @@ import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 import Recharge from './components/Recharge';
-import { convertToTextObject, locationMapping } from '@/utils/constants';
 import AfterSaleForm from './components/AfterSaleForm';
 
 /**
@@ -133,88 +132,62 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: '关联任务',
-      dataIndex: 'task',
+      title: '关联账单',
       copyable: true,
-      renderText: (_, record: any) => (record.task ? record.task._id : '无'), // Assuming task has a 'title' field
+      width: 250,
+      renderText: (_, record: any) => (record.bill ? record.bill._id : '无'), // Assuming task has a 'title' field
+      dataIndex: 'bill',
     },
     {
-      title: '客户',
-      dataIndex: 'customer',
+      title: '申请人',
+      dataIndex: 'user',
       width: 200,
       hideInSearch: true,
       render: (_, record: any) => {
         // Assuming the user field is populated and includes an email field
         // Check if the user object exists and has an email property
-        return record.customer && record.customer.email ? record.customer.email : '未知';
+        return record.user && record.user.email ? record.user.email : '未知';
       },
     },
     {
-      title: '国家',
-      dataIndex: 'country',
-      valueEnum: convertToTextObject(locationMapping),
-    },
-    {
-      title: '订单号',
-      dataIndex: 'orderNumber',
-      tooltip: true, // Show tooltip on hover to display the full order number if truncated
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-    {
-      title: '下单时间',
-      dataIndex: 'uploadTime',
-      valueType: 'date',
-    },
-    {
-      title: '店铺名',
-      dataIndex: 'storeName',
-    },
-    {
-      title: '金额',
-      dataIndex: 'amount',
+      title: '原因',
+      ellipsis: true,
+      dataIndex: 'reason',
       hideInSearch: true,
     },
     {
-      title: '汇率',
-      dataIndex: 'exchangeRate',
+      title: '退款金额',
+      dataIndex: 'refundAmount',
+      hideInSearch: true,
     },
     {
-      title: '服务费',
-      dataIndex: 'serviceFee',
+      title: '图片',
+      dataIndex: 'image',
+      hideInSearch: true,
+      valueType: 'image',
     },
     {
-      title: '支付金额',
-      dataIndex: 'paymentAmount',
+      title: '拒绝原因',
+      ellipsis: true,
+      dataIndex: 'rejectionReason',
+      hideInSearch: true,
     },
     {
-      title: '买手号',
-      dataIndex: 'buyerId',
+      title: '状态',
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: {
+        Pending: { text: '待处理', status: 'Warning' },
+        Processing: { text: '处理中', status: 'Processing' },
+        Approved: { text: '已批准', status: 'Success' },
+        Rejected: { text: '已拒绝', status: 'Error' }, // 新增的状态
+      },
     },
-    // {
-    //   title: '是否售后',
-    //   dataIndex: 'afterSales',
-    //   key: 'afterSales',
-    //   hideInSearch: true,
-    //   valueEnum: {
-    //     true: { text: '有', status: 'Error' },
-    //     false: { text: '无', status: 'Success' },
-    //   },
-    // },
     {
       title: '创建时间',
       dataIndex: 'createdAt',
       valueType: 'dateTime',
+      width: 200,
       hideInSearch: true,
       sorter: true,
     },
@@ -222,6 +195,7 @@ const TableList: React.FC = () => {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, record) => [
         <a
           key="update"
@@ -332,12 +306,20 @@ const TableList: React.FC = () => {
                 key: '', // 不设置key或设置为空字符串，表示不过滤此项
               },
               {
-                label: <span>正常</span>,
-                key: 'false', // 对应Active状态
+                label: <span>待处理</span>,
+                key: 'Pending', // 对应Pending状态
               },
               {
-                label: <span>有售后</span>,
-                key: 'true', // 对应Completed状态
+                label: <span>处理中</span>,
+                key: 'Processing', // 对应Processing状态
+              },
+              {
+                label: <span>已批准</span>,
+                key: 'Approved', // 对应Approved状态
+              },
+              {
+                label: <span>已拒绝</span>,
+                key: 'Rejected', // 对应Rejected状态
               },
             ],
             onChange: (key: any) => {
@@ -349,7 +331,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={async (params, sort, filter) =>
-          queryList('/after-sales-orders', { ...params, afterSales: activeKey }, sort, filter)
+          queryList('/after-sales-orders', { ...params, status: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
