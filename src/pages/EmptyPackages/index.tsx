@@ -230,7 +230,7 @@ const TableList: React.FC = () => {
           unCheckedChildren="否"
           checked={record.isProcessed}
           onChange={() => {
-            handleUpdate({ ...record, isProcessed: !record.isProcessed });
+            handleUpdate({ _id: record._id, isProcessed: !record.isProcessed });
             if (actionRef.current) {
               actionRef.current.reload();
             }

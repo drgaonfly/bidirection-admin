@@ -210,17 +210,9 @@ const TableList: React.FC = () => {
           <a
             key="requestApprove"
             onClick={async () => {
-              const hide = message.loading('正在处理');
-              try {
-                await handleUpdate({ _id: record._id, status: 'Processing' });
-                hide();
-                message.success('处理成功');
-                if (actionRef.current) {
-                  actionRef.current.reload();
-                }
-              } catch (error: any) {
-                hide();
-                message.error('处理失败，请重试！');
+              await handleUpdate({ _id: record._id, status: 'Processing' });
+              if (actionRef.current) {
+                actionRef.current.reload();
               }
             }}
           >
