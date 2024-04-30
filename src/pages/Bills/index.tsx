@@ -188,14 +188,17 @@ const TableList: React.FC = () => {
     {
       title: '汇率',
       dataIndex: 'exchangeRate',
+      hideInSearch: true,
     },
     {
       title: '服务费',
       dataIndex: 'serviceFee',
+      hideInSearch: true,
     },
     {
       title: '支付金额',
       dataIndex: 'paymentAmount',
+      hideInSearch: true,
     },
     {
       title: '买手号',
