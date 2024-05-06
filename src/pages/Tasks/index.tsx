@@ -205,7 +205,7 @@ const TableList: React.FC = () => {
     },
     {
       title: '国家',
-      width: 100,
+      width: 150,
       // filters: true,
       // onFilter: true,
       dataIndex: 'country',

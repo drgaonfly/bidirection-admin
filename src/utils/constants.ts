@@ -1,10 +1,10 @@
 export const locationMapping = {
-  'Vietnam Ho Chi Minh': '越南胡志明',
-  'Vietnam Hanoi': '越南河内',
-  Thailand: '泰国',
-  Malaysia: '马来西亚',
-  Philippines: '菲律宾',
-  Indonesia: '印尼',
+  'Vietnam Ho Chi Minh': '越南胡志明 (VNH)',
+  'Vietnam Hanoi': '越南河内 (VN)',
+  Thailand: '泰国 (TH)',
+  Malaysia: '马来西亚 (MY)',
+  Philippines: '菲律宾 (PH)',
+  Indonesia: '印尼 (ID)',
 };
 
 export const platformNames = {
