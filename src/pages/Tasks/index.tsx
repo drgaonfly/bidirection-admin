@@ -187,10 +187,10 @@ const TableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: '编号',
-      dataIndex: '_id',
+      dataIndex: 'code',
       width: 250,
       copyable: true,
-      render: (dom, entity) => {
+      render: (dom, entity: any) => {
         return (
           <a
             onClick={() => {
