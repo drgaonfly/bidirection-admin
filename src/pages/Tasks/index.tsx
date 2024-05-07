@@ -204,6 +204,23 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: '账单文件',
+      width: 100,
+      dataIndex: 'billFile',
+      hideInSearch: true,
+      render: (_, record: any) => {
+        // 确保文件URL存在
+        if (!record.billFile) return '无文件';
+
+        // 返回一个下载按钮或链接
+        return (
+          <a href={record.billFile} download target="_blank" rel="noopener noreferrer">
+            下载
+          </a>
+        );
+      },
+    },
+    {
       title: '国家',
       width: 150,
       // filters: true,
