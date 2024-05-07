@@ -17,8 +17,8 @@ import ShowTask from '@/pages/Tasks/components/Show';
 const taskColumns: ProColumns<API.ItemData>[] = [
   {
     title: '编号',
-    dataIndex: '_id',
-    width: 250,
+    dataIndex: 'code',
+    width: 150,
     copyable: true,
   },
   {
@@ -32,12 +32,6 @@ const taskColumns: ProColumns<API.ItemData>[] = [
     width: 100,
     dataIndex: 'platform',
     valueEnum: convertToTextObject(platformNames),
-  },
-  {
-    title: '源文件',
-    dataIndex: 'file',
-    width: 80,
-    hideInSearch: true,
   },
   {
     title: '状态',
@@ -115,6 +109,23 @@ const taskColumns: ProColumns<API.ItemData>[] = [
       ContactForVolumeWeight: { text: '下单前联系改体积/重量' },
       ContactForInventory: { text: '下单前联系开库存' },
       ContactForPrice: { text: '下单前联系改价格' },
+    },
+  },
+  {
+    title: '账单文件',
+    width: 100,
+    dataIndex: 'billFile',
+    hideInSearch: true,
+    render: (_, record: any) => {
+      // 确保文件URL存在
+      if (!record.billFile) return '无文件';
+
+      // 返回一个下载按钮或链接
+      return (
+        <a href={record.billFile} download target="_blank" rel="noopener noreferrer">
+          下载
+        </a>
+      );
     },
   },
 ];
@@ -329,6 +340,26 @@ const TableList: React.FC = () => {
       title: '买手号',
       dataIndex: 'buyerId',
     },
+    {
+      title: '是否签收',
+      dataIndex: 'isSigned',
+      key: 'isSigned',
+      valueEnum: {
+        '': { text: '所有', status: 'Default' },
+        true: { text: '已签收', status: 'Success' },
+        false: { text: '未签收', status: 'Error' },
+      },
+    },
+    {
+      title: '是否评价',
+      dataIndex: 'isReviewed',
+      key: 'isReviewed',
+      valueEnum: {
+        '': { text: '所有', status: 'Default' },
+        true: { text: '已评价', status: 'Success' },
+        false: { text: '未评价', status: 'Error' },
+      },
+    },
     // {
     //   title: '是否售后',
     //   dataIndex: 'afterSales',
@@ -402,6 +433,7 @@ const TableList: React.FC = () => {
         headerTitle="列表"
         actionRef={actionRef}
         rowKey="_id"
+        scroll={{ x: 1200 }}
         search={{
           labelWidth: 120,
           collapsed: false,
