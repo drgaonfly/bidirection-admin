@@ -13,6 +13,7 @@ import { convertToTextObject, locationMapping, platformNames } from '@/utils/con
 import AfterSaleForm from './components/AfterSaleForm';
 
 import ShowTask from '@/pages/Tasks/components/Show';
+import { EditOutlined } from '@ant-design/icons';
 
 const taskColumns: ProColumns<API.ItemData>[] = [
   {
@@ -475,15 +476,18 @@ const TableList: React.FC = () => {
           ],
         }}
         toolBarRender={() => [
-          // <Button
-          //   type="primary"
-          //   key="primary"
-          //   onClick={() => {
-          //     handleModalOpen(true);
-          //   }}
-          // >
-          //   <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          // </Button>,
+          selectedRowsState?.length > 0 && (
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                console.log('selectedRowsState', selectedRowsState);
+                handleModalOpen(true);
+              }}
+            >
+              <EditOutlined /> 批量设置
+            </Button>
+          ),
         ]}
         toolbar={{
           menu: {
@@ -557,6 +561,7 @@ const TableList: React.FC = () => {
         </FooterToolbar>
       )}
       <Create
+        selectedRowsState={selectedRowsState}
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {

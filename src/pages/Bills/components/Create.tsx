@@ -5,13 +5,14 @@ interface Props {
   open: boolean;
   onOpenChange: (visible: boolean) => void;
   onFinish: (formData: any) => Promise<void>;
+  selectedRowsState: any;
 }
 
 const Create: React.FC<Props> = (props) => {
   const { open, onOpenChange, onFinish } = props;
   return (
     <ModalForm
-      title="新增新闻"
+      title="批量设置"
       width="50%"
       open={open}
       onOpenChange={onOpenChange}
