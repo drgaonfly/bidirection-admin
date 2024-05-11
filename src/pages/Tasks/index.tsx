@@ -386,7 +386,7 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '操作',
+      title: intl.formatMessage({ id: 'operation' }),
       width: 250,
       fixed: 'right',
       dataIndex: 'option',
@@ -464,7 +464,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle="列表"
+        headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         scroll={{ x: 1200 }}
         rowKey="_id"

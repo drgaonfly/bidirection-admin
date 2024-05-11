@@ -114,4 +114,6 @@ export default {
   confirm_delete_content: 'Are you sure you want to delete?',
   confirm: 'Confirm',
   cancel: 'Cancel',
+  list: 'List',
+  operation: 'Operation',
 };

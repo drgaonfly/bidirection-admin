@@ -54,7 +54,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       editable: true,
     },
     {
-      title: '操作',
+      title: intl.formatMessage({ id: 'operation' }),
       valueType: 'option',
       render: (text: any, record: any, _: any, action: any) => [
         <a
