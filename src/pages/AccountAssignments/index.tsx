@@ -202,7 +202,7 @@ const TableList: React.FC = () => {
               setCurrentRow(record);
             }}
           >
-            编辑
+            {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
         access.canSuperAdmin && (

@@ -116,4 +116,5 @@ export default {
   cancel: 'Cancel',
   list: 'List',
   operation: 'Operation',
+  edit: 'Edit',
 };
