@@ -1,3 +1,4 @@
+import { useIntl } from '@umijs/max';
 import React from 'react';
 import BasicForm from './BasicForm';
 import { Modal } from 'antd';
@@ -14,13 +15,14 @@ export type UpdateFormProps = {
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
+  const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   return (
     <Modal
       maskClosable={false}
       width="50%"
       destroyOnClose
-      title="编辑用户"
+      title={intl.formatMessage({ id: 'modify' })}
       open={updateModalOpen}
       footer={false}
       onCancel={() => onCancel(false)}

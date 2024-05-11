@@ -117,4 +117,5 @@ export default {
   list: 'List',
   operation: 'Operation',
   edit: 'Edit',
+  modify: 'Modify',
 };

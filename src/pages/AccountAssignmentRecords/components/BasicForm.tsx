@@ -3,8 +3,6 @@ import React from 'react';
 import { ProForm, ProFormDigit, ProFormText } from '@ant-design/pro-components';
 import CountrySelect from '@/components/CountrySelect';
 import PlatformSelect from '@/components/PlatformSelect';
-// import useQueryList from '@/hooks/useQueryList';
-// import { useAccess } from '@umijs/max';
 
 interface Props {
   newRecord?: boolean;
@@ -17,8 +15,6 @@ interface Props {
 
 const BasicForm: React.FC<Props> = ({}) => {
   const intl = useIntl();
-  // const access = useAccess();
-  // const { items: users } = useQueryList('/users', access.canAdmin);
 
   return (
     <>

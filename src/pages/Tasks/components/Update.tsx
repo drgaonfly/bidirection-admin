@@ -1,3 +1,4 @@
+import { useIntl } from '@umijs/max';
 import React, { useState } from 'react';
 import BasicForm from './BasicForm';
 import { ModalForm } from '@ant-design/pro-components';
@@ -15,11 +16,12 @@ export type UpdateFormProps = {
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
+  const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   const [reviewFile, setReviewFile] = useState<string | undefined>('');
   return (
     <ModalForm
-      title="修改"
+      title={intl.formatMessage({ id: 'modify' })}
       width="50%"
       modalProps={{
         destroyOnClose: true,
