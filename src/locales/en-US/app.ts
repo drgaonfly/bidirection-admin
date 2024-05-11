@@ -118,4 +118,5 @@ export default {
   operation: 'Operation',
   edit: 'Edit',
   modify: 'Modify',
+  add_new: 'Add New',
 };
