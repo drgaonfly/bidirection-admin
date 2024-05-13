@@ -294,7 +294,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'order_number' }),
-      width: 100,
+      width: 200,
       dataIndex: 'orderNumber',
       tooltip: true,
       render: (dom, entity) => {
@@ -313,39 +313,47 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'upload_time' }),
       dataIndex: 'uploadTime',
+      width: 100,
       valueType: 'date',
     },
     {
       title: intl.formatMessage({ id: 'store_name' }),
       dataIndex: 'storeName',
+      width: 100,
     },
     {
       title: intl.formatMessage({ id: 'amount' }),
       dataIndex: 'amount',
+      width: 100,
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'exchange_rate' }),
       dataIndex: 'exchangeRate',
+      width: 150,
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'service_fee' }),
       dataIndex: 'serviceFee',
+      width: 150,
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'payment_amount' }),
       dataIndex: 'paymentAmount',
+      width: 150,
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'buyer_id' }),
       dataIndex: 'buyerId',
+      width: 150,
     },
     {
       title: intl.formatMessage({ id: 'is_signed' }),
       dataIndex: 'isSigned',
+      width: 150,
       key: 'isSigned',
       valueEnum: {
         '': { text: intl.formatMessage({ id: 'all' }), status: 'Default' },
@@ -356,6 +364,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'is_reviewed' }),
       dataIndex: 'isReviewed',
+      width: 150,
       key: 'isReviewed',
       valueEnum: {
         '': { text: intl.formatMessage({ id: 'all' }), status: 'Default' },
@@ -365,6 +374,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'created_at' }),
+      width: 150,
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
@@ -372,7 +382,9 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      width: 200,
       dataIndex: 'option',
+      fixed: 'right',
       valueType: 'option',
       render: (_, record) => [
         <a

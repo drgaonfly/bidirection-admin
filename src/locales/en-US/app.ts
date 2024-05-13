@@ -121,4 +121,8 @@ export default {
   add_new: 'Add New',
   batch_setting: 'Batch Setting',
   auto_assign_account: 'Auto Assign Account',
+  batch_upload_account: 'Batch Upload Account Library',
+  ensure_upload_file: 'Please ensure the table file has been uploaded',
+  table_file: 'Table File',
+  download_template: 'Download Template',
 };
