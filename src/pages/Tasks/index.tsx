@@ -440,21 +440,20 @@ const TableList: React.FC = () => {
           <a
             key="cancel"
             onClick={() => {
-              // Replace `handleRemove`, `setSelectedRows`, and `actionRef.current?.reloadAndRest?` as well
               return Modal.confirm({
-                title: '确认取消?',
+                title: intl.formatMessage({ id: 'confirm_cancel' }),
                 onOk: async () => {
                   await handleCancel(record._id!);
                   setSelectedRows([]);
                   actionRef.current?.reloadAndRest?.();
                 },
-                content: '确定取消吗？',
-                okText: '确认',
-                cancelText: '取消',
+                content: intl.formatMessage({ id: 'confirm_cancel_content' }),
+                okText: intl.formatMessage({ id: 'confirm' }),
+                cancelText: intl.formatMessage({ id: 'cancel' }),
               });
             }}
           >
-            取消
+            {intl.formatMessage({ id: 'cancel' })}
           </a>
         ),
         access.canSuperAdmin && (
@@ -520,29 +519,29 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: <span>所有</span>,
-                key: '', // 不设置key或设置为空字符串，表示不过滤此项
+                label: <FormattedMessage id="all" defaultMessage="All" />,
+                key: '',
               },
               {
-                label: <span>正常</span>,
-                key: 'Active', // 对应Active状态
+                label: <FormattedMessage id="active" defaultMessage="Active" />,
+                key: 'Active',
               },
               // 下面添加新的状态
               {
-                label: <span>处理中</span>,
-                key: 'Processing', // 对应Processing状态
+                label: <FormattedMessage id="processing" defaultMessage="Processing" />,
+                key: 'Processing',
               },
               {
-                label: <span>已取消</span>,
-                key: 'Cancelled', // 对应Cancelled状态
+                label: <FormattedMessage id="cancelled" defaultMessage="Cancelled" />,
+                key: 'Cancelled',
               },
               {
-                label: <span>已完成</span>,
-                key: 'Completed', // 对应Completed状态
+                label: <FormattedMessage id="completed" defaultMessage="Completed" />,
+                key: 'Completed',
               },
               {
-                label: <span>有问题</span>,
-                key: 'Issue', // 对应Issue状态
+                label: <FormattedMessage id="issue" defaultMessage="Issue" />,
+                key: 'Issue',
               },
             ],
             onChange: (key: any) => {

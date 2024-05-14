@@ -149,4 +149,6 @@ export default {
   add_successful: 'Added successfully',
   add_failed: 'Add failed, please try again!',
   bulk_uploading: 'Bulk uploading...',
+  confirm_cancel: 'Confirm Cancellation?',
+  confirm_cancel_content: 'Are you sure you want to cancel?',
 };
