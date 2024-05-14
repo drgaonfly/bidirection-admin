@@ -134,14 +134,14 @@ const Create: React.FC<Props> = (props) => {
       // @ts-ignore
       onFinish={(values) => {
         if (accounts.length < 1) {
-          message.error('没有账号库无法提交');
+          message.error(intl.formatMessage({ id: 'no_account_library' }));
           return false;
         }
 
         if (accounts.length !== formRef.current?.getFieldsValue().numberOfAccounts) {
           Modal.confirm({
-            title: '确认提交',
-            content: '账号库数量不足，你确定要提交吗？',
+            title: intl.formatMessage({ id: 'confirm_submit' }),
+            content: intl.formatMessage({ id: 'insufficient_account_library' }),
             onOk() {
               setCurrent(0);
               onOpenChange(false);
@@ -167,26 +167,32 @@ const Create: React.FC<Props> = (props) => {
         });
       }}
     >
-      <StepsForm.StepForm formRef={formRef} initialValues={{}} title="填写店铺账号和数量">
+      <StepsForm.StepForm
+        formRef={formRef}
+        initialValues={{}}
+        title={intl.formatMessage({ id: 'fill_store_account_and_quantity' })}
+      >
         <CountrySelect />
 
         <PlatformSelect />
 
         <ProFormText
           name="storeAccount"
-          label="店铺账号"
+          label={intl.formatMessage({ id: 'store_account' })}
           width="md"
-          rules={[{ required: true, message: '请输入店铺账号' }]}
-          placeholder="请输入店铺账号"
+          rules={[{ required: true, message: intl.formatMessage({ id: 'enter_store_account' }) }]}
+          placeholder={intl.formatMessage({ id: 'enter_store_account' })}
         />
 
         <ProFormDigit
           name="numberOfAccounts"
-          label="账号数量"
+          label={intl.formatMessage({ id: 'account_quantity' })}
           width="md"
           min={1} // Minimum number of accounts must be at least 1
-          rules={[{ required: true, message: '请输入账号数量' }]}
-          placeholder="请输入账号数量"
+          rules={[
+            { required: true, message: intl.formatMessage({ id: 'enter_account_quantity' }) },
+          ]}
+          placeholder={intl.formatMessage({ id: 'enter_account_quantity' })}
         />
       </StepsForm.StepForm>
       <StepsForm.StepForm
@@ -194,7 +200,7 @@ const Create: React.FC<Props> = (props) => {
           target: '0',
           template: '0',
         }}
-        title="自动选择账号库并提交"
+        title={intl.formatMessage({ id: 'auto_select_account_and_submit' })}
       >
         {accountFeedback && (
           <div

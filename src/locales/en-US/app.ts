@@ -126,4 +126,9 @@ export default {
   table_file: 'Table File',
   download_template: 'Download Template',
   delete: 'Delete',
+  no_account_library: 'Unable to submit without account library',
+  confirm_submit: 'Confirm Submit',
+  insufficient_account_library: 'Insufficient account library, are you sure you want to submit?',
+  fill_store_account_and_quantity: 'Fill in store account and quantity',
+  auto_select_account_and_submit: 'Auto Select Account Library and Submit',
 };
