@@ -89,7 +89,11 @@ const handleAdd = async (fields: API.ItemData) => {
     return true;
   } catch (error: any) {
     hide();
-    message.error(error?.response?.data?.message ?? 'Adding failed, please try again!');
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="upload_failed" defaultMessage="Upload failed, please try again!" />
+      ),
+    );
     return false;
   }
 };
@@ -101,16 +105,20 @@ const handleAdd = async (fields: API.ItemData) => {
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在更新');
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
     await updateItem(`/after-sales-orders/${fields._id}`, fields);
     hide();
 
-    message.success('更新成功');
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
     return true;
   } catch (error: any) {
     hide();
-    message.error(error?.response?.data?.message ?? '更新失败，请重试!');
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
     return false;
   }
 };
@@ -121,7 +129,7 @@ const handleRecharge = async (fields: FormValueType) => {
     await addItem(`/after-sales-orders/${fields._id}/recharge`, fields);
     hide();
 
-    message.success('更新成功');
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
     return true;
   } catch (error: any) {
     hide();
@@ -137,18 +145,27 @@ const handleRecharge = async (fields: FormValueType) => {
  * @param selectedRows
  */
 const handleRemove = async (ids: string[]) => {
-  const hide = message.loading('正在删除');
+  const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
     await removeItem('/after-sales-orders', {
       ids,
     });
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success(
+      <FormattedMessage
+        id="delete_successful"
+        defaultMessage="Deleted successfully and will refresh soon"
+      />,
+    );
     return true;
   } catch (error: any) {
     hide();
-    message.error(error.response.data.message ?? 'Delete failed, please try again');
+    message.error(
+      error.response.data.message ?? (
+        <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
+      ),
+    );
     return false;
   }
 };

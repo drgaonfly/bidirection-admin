@@ -136,4 +136,13 @@ export default {
   requested_accounts_not_found:
     'Requested {requestedAccounts} accounts, but only found {accountsLength}.',
   requested_accounts_found: 'Requested {requestedAccounts} accounts have been successfully found.',
+  updating: 'Updating...',
+  update_successful: 'Update successful',
+  update_failed: 'Update failed, please try again!',
+  deleting: 'Deleting...',
+  delete_successful: 'Deleted successfully and will refresh soon',
+  delete_failed: 'Delete failed, please try again',
+  uploading: 'Uploading...',
+  upload_successful: 'Upload successful',
+  upload_failed: 'Upload failed, please try again!',
 };
