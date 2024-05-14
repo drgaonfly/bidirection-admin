@@ -397,16 +397,16 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: <span>所有</span>,
-                key: '', // 不设置key或设置为空字符串，表示不过滤此项
+                label: <FormattedMessage id="all" defaultMessage="All" />,
+                key: '',
               },
               {
-                label: <span>未处理</span>,
-                key: 'false', // 对应Active状态
+                label: <FormattedMessage id="unprocessed" defaultMessage="Unprocessed" />,
+                key: 'false',
               },
               {
-                label: <span>已处理</span>,
-                key: 'true', // 对应Completed状态
+                label: <FormattedMessage id="processed" defaultMessage="Processed" />,
+                key: 'true',
               },
             ],
             onChange: (key: any) => {

@@ -402,24 +402,24 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: <span>所有</span>,
-                key: '', // 不设置key或设置为空字符串，表示不过滤此项
+                label: <FormattedMessage id="all" defaultMessage="All" />,
+                key: '',
               },
               {
-                label: <span>待处理</span>,
-                key: 'Pending', // 对应Pending状态
+                label: <FormattedMessage id="pending" defaultMessage="Pending" />,
+                key: 'Pending',
               },
               {
-                label: <span>处理中</span>,
-                key: 'Processing', // 对应Processing状态
+                label: <FormattedMessage id="processing" defaultMessage="Processing" />,
+                key: 'Processing',
               },
               {
-                label: <span>已批准</span>,
-                key: 'Approved', // 对应Approved状态
+                label: <FormattedMessage id="approved" defaultMessage="Approved" />,
+                key: 'Approved',
               },
               {
-                label: <span>已拒绝</span>,
-                key: 'Rejected', // 对应Rejected状态
+                label: <FormattedMessage id="rejected" defaultMessage="Rejected" />,
+                key: 'Rejected',
               },
             ],
             onChange: (key: any) => {

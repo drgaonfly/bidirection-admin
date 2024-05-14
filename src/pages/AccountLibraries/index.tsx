@@ -362,20 +362,20 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: <span>所有</span>,
-                key: '', // 不设置key或设置为空字符串，表示不过滤此项
+                label: <FormattedMessage id="all" defaultMessage="All" />,
+                key: '',
               },
               {
-                label: <span>未分配</span>,
-                key: 'false', // 对应Active状态
+                label: <FormattedMessage id="unassigned" defaultMessage="Unassigned" />,
+                key: 'false',
               },
               {
-                label: <span>已分配</span>,
-                key: 'true', // 对应Completed状态
+                label: <FormattedMessage id="assigned" defaultMessage="Assigned" />,
+                key: 'true',
               },
               {
-                label: <span>异常</span>,
-                key: 'Abnormal', // 对应Completed状态
+                label: <FormattedMessage id="abnormal" defaultMessage="Abnormal" />,
+                key: 'Abnormal',
               },
             ],
             onChange: (key: any) => {
