@@ -107,7 +107,7 @@ const Create: React.FC<Props> = (props) => {
         console.log(formName);
         console.log(info);
         if (formName === '0') {
-          const hide = message.loading('正在添加');
+          const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
 
           try {
             const res = await addItem('/assignments/available', { ...info.values });

@@ -145,4 +145,7 @@ export default {
   uploading: 'Uploading...',
   upload_successful: 'Upload successful',
   upload_failed: 'Upload failed, please try again!',
+  adding: 'Adding...',
+  add_successful: 'Added successfully',
+  add_failed: 'Add failed, please try again!',
 };

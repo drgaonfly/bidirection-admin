@@ -24,7 +24,7 @@ const handleAdd = async (fields: API.ItemData) => {
   try {
     await addItem('/assignments', { ...fields });
     hide();
-    message.success('Added successfully');
+    message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
   } catch (error: any) {
     hide();
@@ -117,7 +117,7 @@ const handleBatchAdd = async (fields: API.ItemData) => {
   try {
     await addItem('/assignments/upload', { ...fields });
     hide();
-    message.success('Added successfully');
+    message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
   } catch (error: any) {
     hide();

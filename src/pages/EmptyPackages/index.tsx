@@ -25,11 +25,11 @@ import { convertToTextObject, locationMapping, platformNames } from '@/utils/con
  * @param fields
  */
 const handleAdd = async (fields: API.ItemData) => {
-  const hide = message.loading('正在添加');
+  const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
     await addItem('/empty-packages', { ...fields });
     hide();
-    message.success('Added successfully');
+    message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
   } catch (error: any) {
     hide();

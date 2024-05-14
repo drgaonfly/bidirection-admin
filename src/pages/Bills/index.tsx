@@ -138,11 +138,11 @@ const taskColumns: ProColumns<API.ItemData>[] = [
  * @param fields
  */
 const handleAdd = async (fields: API.ItemData) => {
-  const hide = message.loading('正在添加');
+  const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
     await addItem('/bills', { ...fields });
     hide();
-    message.success('Added successfully');
+    message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
   } catch (error: any) {
     hide();
