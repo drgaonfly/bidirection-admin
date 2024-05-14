@@ -1,5 +1,4 @@
-import { useIntl } from '@umijs/max';
-import CopyToClipboard from '@/components/CopyToClipboard';
+import { FormattedMessage, useIntl } from '@umijs/max';
 import CountrySelect from '@/components/CountrySelect';
 import PlatformSelect from '@/components/PlatformSelect';
 import { addItem } from '@/services/ant-design-pro/api';
@@ -16,45 +15,56 @@ interface Props {
 const AccountTable = ({ accounts }: { accounts: any[] }) => {
   const columns = [
     {
-      title: '下单账号序号',
+      title: <FormattedMessage id="order_account_number" defaultMessage="Order Account Number" />,
       dataIndex: 'accountNumber',
       key: 'accountNumber',
-      render: (text: string) => (
-        <>
-          <span>{text}</span>
-          <CopyToClipboard text={text} />
-        </>
-      ),
+      copyable: true,
     },
     {
-      title: '登录账号',
+      title: <FormattedMessage id="login_account" defaultMessage="Login Account" />,
       dataIndex: 'loginAccount',
       key: 'loginAccount',
     },
     {
-      title: '登录密码',
+      title: <FormattedMessage id="login_password" defaultMessage="Login Password" />,
       dataIndex: 'loginPassword',
       key: 'loginPassword',
     },
     {
-      title: '是否分配',
+      title: <FormattedMessage id="is_assigned" defaultMessage="Is Assigned" />,
       dataIndex: 'isAssigned',
       key: 'isAssigned',
       valueEnum: {
-        true: { text: '已分配', status: 'Success' },
-        false: { text: '未分配', status: 'Error' },
+        true: {
+          text: <FormattedMessage id="assigned" defaultMessage="Assigned" />,
+          status: 'Success',
+        },
+        false: {
+          text: <FormattedMessage id="not_assigned" defaultMessage="Not Assigned" />,
+          status: 'Error',
+        },
       },
     },
     {
-      title: '最近分配时间',
+      title: <FormattedMessage id="recent_assigned_time" defaultMessage="Recent Assigned Time" />,
       dataIndex: 'assignedTime',
       key: 'assignedTime',
-      render: (text: string) => text || '未分配',
+      render: (text: string) =>
+        text || <FormattedMessage id="not_assigned" defaultMessage="Not Assigned" />,
     },
   ];
 
   if (accounts.length === 0) {
-    return <Empty description="找不到匹配的账号库" />;
+    return (
+      <Empty
+        description={
+          <FormattedMessage
+            id="no_matching_account_library"
+            defaultMessage="No matching account library found"
+          />
+        }
+      />
+    );
   }
 
   return (
@@ -74,9 +84,16 @@ const Create: React.FC<Props> = (props) => {
   useEffect(() => {
     const requestedAccounts = formRef.current?.getFieldsValue().numberOfAccounts;
     if (accounts.length !== Number(requestedAccounts)) {
-      setAccountFeedback(`请求了 ${requestedAccounts} 个账号，但只找到 ${accounts.length} 个。`);
+      setAccountFeedback(
+        intl.formatMessage(
+          { id: 'requested_accounts_not_found' },
+          { requestedAccounts, accountsLength: accounts.length },
+        ),
+      );
     } else {
-      setAccountFeedback(`请求的 ${requestedAccounts} 个账号已成功找到。`);
+      setAccountFeedback(
+        intl.formatMessage({ id: 'requested_accounts_found' }, { requestedAccounts }),
+      );
     }
   }, [accounts, formRef]);
 
@@ -140,14 +157,14 @@ const Create: React.FC<Props> = (props) => {
       // @ts-ignore
       onFinish={(values) => {
         if (accounts.length < 1) {
-          message.error('没有账号库无法提交');
+          message.error(intl.formatMessage({ id: 'no_account_library' }));
           return false;
         }
 
         if (accounts.length !== formRef.current?.getFieldsValue().numberOfAccounts) {
           Modal.confirm({
-            title: '确认提交',
-            content: '账号库数量不足，你确定要提交吗？',
+            title: intl.formatMessage({ id: 'confirm_submit' }),
+            content: intl.formatMessage({ id: 'insufficient_account_library' }),
             onOk() {
               setCurrent(0);
               onOpenChange(false);
@@ -173,26 +190,32 @@ const Create: React.FC<Props> = (props) => {
         });
       }}
     >
-      <StepsForm.StepForm formRef={formRef} initialValues={{}} title="填写店铺账号和数量">
+      <StepsForm.StepForm
+        formRef={formRef}
+        initialValues={{}}
+        title={intl.formatMessage({ id: 'fill_store_account_and_quantity' })}
+      >
         <CountrySelect />
 
         <PlatformSelect />
 
         <ProFormText
           name="storeAccount"
-          label="店铺账号"
+          label={intl.formatMessage({ id: 'store_account' })}
           width="md"
-          rules={[{ required: true, message: '请输入店铺账号' }]}
-          placeholder="请输入店铺账号"
+          rules={[{ required: true, message: intl.formatMessage({ id: 'enter_store_account' }) }]}
+          placeholder={intl.formatMessage({ id: 'enter_store_account' })}
         />
 
         <ProFormDigit
           name="numberOfAccounts"
-          label="账号数量"
+          label={intl.formatMessage({ id: 'account_quantity' })}
           width="md"
           min={1} // Minimum number of accounts must be at least 1
-          rules={[{ required: true, message: '请输入账号数量' }]}
-          placeholder="请输入账号数量"
+          rules={[
+            { required: true, message: intl.formatMessage({ id: 'enter_account_quantity' }) },
+          ]}
+          placeholder={intl.formatMessage({ id: 'enter_account_quantity' })}
         />
       </StepsForm.StepForm>
       <StepsForm.StepForm
@@ -200,7 +223,7 @@ const Create: React.FC<Props> = (props) => {
           target: '0',
           template: '0',
         }}
-        title="自动选择账号库并提交"
+        title={intl.formatMessage({ id: 'auto_select_account_and_submit' })}
       >
         {accountFeedback && (
           <div

@@ -131,4 +131,9 @@ export default {
   insufficient_account_library: 'Insufficient account library, are you sure you want to submit?',
   fill_store_account_and_quantity: 'Fill in store account and quantity',
   auto_select_account_and_submit: 'Auto Select Account Library and Submit',
+  recent_assigned_time: 'Recent Assigned Time',
+  no_matching_account_library: 'No matching account library found',
+  requested_accounts_not_found:
+    'Requested {requestedAccounts} accounts, but only found {accountsLength}.',
+  requested_accounts_found: 'Requested {requestedAccounts} accounts have been successfully found.',
 };

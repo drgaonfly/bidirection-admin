@@ -1,4 +1,4 @@
-import { useIntl } from '@umijs/max';
+import { FormattedMessage, useIntl } from '@umijs/max';
 import CountrySelect from '@/components/CountrySelect';
 import PlatformSelect from '@/components/PlatformSelect';
 import { addItem } from '@/services/ant-design-pro/api';
@@ -15,40 +15,56 @@ interface Props {
 const AccountTable = ({ accounts }: { accounts: any[] }) => {
   const columns = [
     {
-      title: '下单账号序号',
+      title: <FormattedMessage id="order_account_number" defaultMessage="Order Account Number" />,
       dataIndex: 'accountNumber',
       key: 'accountNumber',
       copyable: true,
     },
     {
-      title: '登录账号',
+      title: <FormattedMessage id="login_account" defaultMessage="Login Account" />,
       dataIndex: 'loginAccount',
       key: 'loginAccount',
     },
     {
-      title: '登录密码',
+      title: <FormattedMessage id="login_password" defaultMessage="Login Password" />,
       dataIndex: 'loginPassword',
       key: 'loginPassword',
     },
     {
-      title: '是否分配',
+      title: <FormattedMessage id="is_assigned" defaultMessage="Is Assigned" />,
       dataIndex: 'isAssigned',
       key: 'isAssigned',
       valueEnum: {
-        true: { text: '已分配', status: 'Success' },
-        false: { text: '未分配', status: 'Error' },
+        true: {
+          text: <FormattedMessage id="assigned" defaultMessage="Assigned" />,
+          status: 'Success',
+        },
+        false: {
+          text: <FormattedMessage id="not_assigned" defaultMessage="Not Assigned" />,
+          status: 'Error',
+        },
       },
     },
     {
-      title: '最近分配时间',
+      title: <FormattedMessage id="recent_assigned_time" defaultMessage="Recent Assigned Time" />,
       dataIndex: 'assignedTime',
       key: 'assignedTime',
-      render: (text: string) => text || '未分配',
+      render: (text: string) =>
+        text || <FormattedMessage id="not_assigned" defaultMessage="Not Assigned" />,
     },
   ];
 
   if (accounts.length === 0) {
-    return <Empty description="找不到匹配的账号库" />;
+    return (
+      <Empty
+        description={
+          <FormattedMessage
+            id="no_matching_account_library"
+            defaultMessage="No matching account library found"
+          />
+        }
+      />
+    );
   }
 
   return (
