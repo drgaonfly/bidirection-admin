@@ -460,7 +460,7 @@ const TableList: React.FC = () => {
         rowKey="_id"
         scroll={{ x: 1200 }}
         search={{
-          labelWidth: 120,
+          labelWidth: 180,
           collapsed: false,
           optionRender: (searchConfig, props, dom) => [
             <Button

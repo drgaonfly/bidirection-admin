@@ -254,7 +254,7 @@ const TableList: React.FC = () => {
         actionRef={actionRef}
         rowKey="_id"
         search={{
-          labelWidth: 120,
+          labelWidth: 180,
         }}
         toolBarRender={() => [
           <Button
