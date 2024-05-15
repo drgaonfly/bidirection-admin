@@ -3,6 +3,7 @@ import { Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { request } from '@umijs/max';
 import { UploadProps } from 'antd/lib/upload/interface';
+import { useIntl } from '@umijs/max';
 
 interface MyUploadProps {
   onFileUpload: (url: string) => void;
@@ -11,6 +12,7 @@ interface MyUploadProps {
 }
 
 const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept, url = '/upload' }) => {
+  const intl = useIntl();
   // 定义默认的accept值
   const defaultAccept = '*';
 
@@ -35,15 +37,23 @@ const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept, url = '/uploa
         const httpUrl = response.data.file; // 假设返回的signedURL就在data字段中
         onFileUpload(httpUrl);
       } else {
-        message.error('上传失败');
+        message.error(intl.formatMessage({ id: 'upload_failed', defaultMessage: 'Upload failed' }));
         if (onError) {
-          onError(new Error('上传失败'));
+          onError(
+            new Error(intl.formatMessage({ id: 'upload_failed', defaultMessage: 'Upload failed' })),
+          );
         }
       }
     } catch (error) {
-      message.error('上传异常');
+      message.error(
+        intl.formatMessage({ id: 'upload_exception', defaultMessage: 'Upload exception' }),
+      );
       if (onError) {
-        onError(new Error('上传异常'));
+        onError(
+          new Error(
+            intl.formatMessage({ id: 'upload_exception', defaultMessage: 'Upload exception' }),
+          ),
+        );
       }
     }
   };
@@ -65,9 +75,19 @@ const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept, url = '/uploa
         console.log(info.file, info.fileList);
       }
       if (info.file.status === 'done') {
-        message.success(`${info.file.name} 文件上传成功`);
+        message.success(
+          intl.formatMessage(
+            { id: 'file_upload_success', defaultMessage: '{name} file uploaded successfully' },
+            { name: info.file.name },
+          ),
+        );
       } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} 文件上传失败`);
+        message.error(
+          intl.formatMessage(
+            { id: 'file_upload_failure', defaultMessage: '{name} file upload failed' },
+            { name: info.file.name },
+          ),
+        );
       }
     },
   };
@@ -85,7 +105,12 @@ const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept, url = '/uploa
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
-      <p className="ant-upload-text">点击或拖拽文件到此区域上传</p>
+      <p className="ant-upload-text">
+        {intl.formatMessage({
+          id: 'upload_text',
+          defaultMessage: 'Click or drag file to this area to upload',
+        })}
+      </p>
     </Upload.Dragger>
   );
 };

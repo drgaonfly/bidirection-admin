@@ -165,16 +165,20 @@ const handleDownload = async (id: string) => {
 };
 
 const handleCancel = async (id: string) => {
-  const hide = message.loading('正在取消');
+  const hide = message.loading(<FormattedMessage id="canceling" defaultMessage="Canceling" />);
   try {
     await handleItem(`/tasks/${id}/cancel`);
     hide();
 
-    message.success('取消成功');
+    message.success(<FormattedMessage id="cancel_success" defaultMessage="Cancel successful" />);
     return true;
   } catch (error: any) {
     hide();
-    message.error(error?.response?.data?.message ?? '取消 失败，请重试!');
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="cancel_failed" defaultMessage="Cancel failed, please try again!" />
+      ),
+    );
     return false;
   }
 };

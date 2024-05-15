@@ -152,4 +152,11 @@ export default {
   confirm_cancel: 'Confirm Cancellation?',
   confirm_cancel_content: 'Are you sure you want to cancel?',
   exchange_rate: 'Exchange Rate',
+  upload_exception: 'Upload exception',
+  file_upload_success: '{name} file uploaded successfully',
+  file_upload_failure: '{name} file upload failed',
+  upload_text: 'Click or drag file to this area to upload',
+  canceling: 'Canceling',
+  cancel_success: 'Cancel successful',
+  cancel_failed: 'Cancel failed, please try again!',
 };

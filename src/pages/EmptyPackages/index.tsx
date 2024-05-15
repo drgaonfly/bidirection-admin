@@ -1,11 +1,5 @@
 import { useIntl } from '@umijs/max';
-import {
-  addItem,
-  handleItem,
-  queryList,
-  removeItem,
-  updateItem,
-} from '@/services/ant-design-pro/api';
+import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -113,21 +107,6 @@ const handleUploadBill = async (fields: API.ItemData) => {
         <FormattedMessage id="upload_failed" defaultMessage="Upload failed, please try again!" />
       ),
     );
-    return false;
-  }
-};
-
-const handleCancel = async (id: string) => {
-  const hide = message.loading('正在取消');
-  try {
-    await handleItem(`/empty-packages/${id}/cancel`);
-    hide();
-
-    message.success('取消成功');
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(error?.response?.data?.message ?? '取消 失败，请重试!');
     return false;
   }
 };
@@ -260,26 +239,26 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canCustomer && (
-          <a
-            key="cancel"
-            onClick={() => {
-              return Modal.confirm({
-                title: intl.formatMessage({ id: 'confirm_cancel' }),
-                onOk: async () => {
-                  await handleCancel(record._id!);
-                  setSelectedRows([]);
-                  actionRef.current?.reloadAndRest?.();
-                },
-                content: intl.formatMessage({ id: 'confirm_cancel_content' }),
-                okText: intl.formatMessage({ id: 'confirm' }),
-                cancelText: intl.formatMessage({ id: 'cancel' }),
-              });
-            }}
-          >
-            {intl.formatMessage({ id: 'cancel' })}
-          </a>
-        ),
+        // access.canCustomer && (
+        //   <a
+        //     key="cancel"
+        //     onClick={() => {
+        //       return Modal.confirm({
+        //         title: intl.formatMessage({ id: 'confirm_cancel' }),
+        //         onOk: async () => {
+        //           await handleCancel(record._id!);
+        //           setSelectedRows([]);
+        //           actionRef.current?.reloadAndRest?.();
+        //         },
+        //         content: intl.formatMessage({ id: 'confirm_cancel_content' }),
+        //         okText: intl.formatMessage({ id: 'confirm' }),
+        //         cancelText: intl.formatMessage({ id: 'cancel' }),
+        //       });
+        //     }}
+        //   >
+        //     {intl.formatMessage({ id: 'cancel' })}
+        //   </a>
+        // ),
         access.canSuperAdmin && (
           <a
             key="delete"

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadFile, UploadProps } from 'antd';
 import { message, Upload } from 'antd';
-import { request } from '@umijs/max';
+import { FormattedMessage, request } from '@umijs/max';
 
 interface OSSDataType {
   dir: string;
@@ -98,7 +98,12 @@ const AliyunOSSUpload = ({ value, onChange, accept, onFileUpload }: AliyunOSSUpl
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
-      <p className="ant-upload-text">点击或拖拽文件到此区域上传</p>
+      <p className="ant-upload-text">
+        <FormattedMessage
+          id="upload_text"
+          defaultMessage="Click or drag file to this area to upload"
+        />
+      </p>
     </Upload.Dragger>
   );
 };
