@@ -17,115 +17,120 @@ import { EditOutlined } from '@ant-design/icons';
 
 const taskColumns: ProColumns<API.ItemData>[] = [
   {
-    title: '编号',
+    title: <FormattedMessage id="code" defaultMessage="Code" />,
     dataIndex: 'code',
     width: 150,
     copyable: true,
   },
   {
-    title: '国家',
+    title: <FormattedMessage id="country" defaultMessage="Country" />,
     width: 100,
     dataIndex: 'country',
     valueEnum: convertToTextObject(locationMapping),
   },
   {
-    title: '平台',
+    title: <FormattedMessage id="platform" defaultMessage="Platform" />,
     width: 100,
     dataIndex: 'platform',
     valueEnum: convertToTextObject(platformNames),
   },
   {
-    title: '状态',
+    title: <FormattedMessage id="status" defaultMessage="Status" />,
     width: 100,
     dataIndex: 'status',
     valueEnum: {
-      Active: { text: '正常', status: 'Success' },
-      Cancelled: { text: '已取消', status: 'Error' },
-      Processing: { text: '处理中', status: 'Processing' },
-      Completed: { text: '已完成', status: 'Default' },
-      Issue: { text: '有问题', status: 'Warning' },
+      Active: {
+        text: <FormattedMessage id="status_active" defaultMessage="Active" />,
+        status: 'Success',
+      },
+      Cancelled: {
+        text: <FormattedMessage id="status_cancelled" defaultMessage="Cancelled" />,
+        status: 'Error',
+      },
+      Processing: {
+        text: <FormattedMessage id="status_processing" defaultMessage="Processing" />,
+        status: 'Processing',
+      },
+      Completed: {
+        text: <FormattedMessage id="status_completed" defaultMessage="Completed" />,
+        status: 'Default',
+      },
+      Issue: {
+        text: <FormattedMessage id="status_issue" defaultMessage="Issue" />,
+        status: 'Warning',
+      },
     },
     hideInSearch: true,
   },
   {
-    title: '客户',
+    title: <FormattedMessage id="customer" defaultMessage="Customer" />,
     dataIndex: 'user',
     width: 200,
     hideInSearch: true,
     render: (_, record: any) => {
-      // Assuming the user field is populated and includes an email field
-      // Check if the user object exists and has an email property
-      return record.user && record.user.name ? record.user.name : '未知';
+      return record.user && record.user.name ? (
+        record.user.name
+      ) : (
+        <FormattedMessage id="unknown" defaultMessage="Unknown" />
+      );
     },
   },
   {
-    title: '下单时间类型',
-    width: 180,
-    dataIndex: 'orderTimeType',
-    valueEnum: {
-      NormalOrder: { text: '正常下单' },
-      SpecificTimeOrder: { text: '指定时间下单' },
-    },
-  },
-  {
-    title: '下单时间',
+    title: <FormattedMessage id="code" defaultMessage="Code" />,
+    dataIndex: 'code',
     width: 150,
-    hideInSearch: true,
-    dataIndex: 'orderTime',
-    valueType: 'dateTime',
+    copyable: true,
   },
   {
-    title: '上传时间',
-    width: 150,
-    dataIndex: 'uploadTime',
-    valueType: 'date',
-  },
-  {
-    title: '评价类型',
-    width: 120,
-    dataIndex: 'reviewType',
-    valueEnum: {
-      NormalReview: { text: '正常评价' },
-      ReviewAfterModification: { text: '评价后补' },
-    },
-  },
-  {
-    title: '评论后补文件',
-    width: 180,
-    dataIndex: 'uploadedFile',
-    hideInSearch: true,
-  },
-  {
-    title: '单量',
-    width: 80,
-    dataIndex: 'quantity',
-    hideInSearch: true,
-  },
-  {
-    title: '下单类型',
-    width: 150,
-    dataIndex: 'orderType',
-    valueEnum: {
-      NormalOrder: { text: '正常下单' },
-      ContactForVolumeWeight: { text: '下单前联系改体积/重量' },
-      ContactForInventory: { text: '下单前联系开库存' },
-      ContactForPrice: { text: '下单前联系改价格' },
-    },
-  },
-  {
-    title: '账单文件',
+    title: <FormattedMessage id="country" defaultMessage="Country" />,
     width: 100,
-    dataIndex: 'billFile',
+    dataIndex: 'country',
+    valueEnum: convertToTextObject(locationMapping),
+  },
+  {
+    title: <FormattedMessage id="platform" defaultMessage="Platform" />,
+    width: 100,
+    dataIndex: 'platform',
+    valueEnum: convertToTextObject(platformNames),
+  },
+  {
+    title: <FormattedMessage id="status" defaultMessage="Status" />,
+    width: 100,
+    dataIndex: 'status',
+    valueEnum: {
+      Active: {
+        text: <FormattedMessage id="status_active" defaultMessage="Active" />,
+        status: 'Success',
+      },
+      Cancelled: {
+        text: <FormattedMessage id="status_cancelled" defaultMessage="Cancelled" />,
+        status: 'Error',
+      },
+      Processing: {
+        text: <FormattedMessage id="status_processing" defaultMessage="Processing" />,
+        status: 'Processing',
+      },
+      Completed: {
+        text: <FormattedMessage id="status_completed" defaultMessage="Completed" />,
+        status: 'Default',
+      },
+      Issue: {
+        text: <FormattedMessage id="status_issue" defaultMessage="Issue" />,
+        status: 'Warning',
+      },
+    },
+    hideInSearch: true,
+  },
+  {
+    title: <FormattedMessage id="customer" defaultMessage="Customer" />,
+    dataIndex: 'user',
+    width: 200,
     hideInSearch: true,
     render: (_, record: any) => {
-      // 确保文件URL存在
-      if (!record.billFile) return '无文件';
-
-      // 返回一个下载按钮或链接
-      return (
-        <a href={record.billFile} download target="_blank" rel="noopener noreferrer">
-          下载
-        </a>
+      return record.user && record.user.name ? (
+        record.user.name
+      ) : (
+        <FormattedMessage id="unknown" defaultMessage="Unknown" />
       );
     },
   },
@@ -514,7 +519,8 @@ const TableList: React.FC = () => {
                 handleModalOpen(true);
               }}
             >
-              <EditOutlined /> 批量设置
+              <EditOutlined />{' '}
+              <FormattedMessage id="batch_setting" defaultMessage="Batch Setting" />
             </Button>
           ),
         ]}

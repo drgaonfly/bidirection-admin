@@ -197,4 +197,11 @@ export default {
   review_failed: 'Review failed, please try again!',
   process: 'Process',
   review: 'Review',
+  status_active: 'Active',
+  status_cancelled: 'Cancelled',
+  status_processing: 'Processing',
+  status_completed: 'Completed',
+  status_issue: 'Issue',
+  order_time_type: 'Order Time Type',
+  review_after_modification_file: 'Review After Modification File',
 };
