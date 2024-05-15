@@ -5,6 +5,7 @@ import {
   ProDescriptions,
   ProDescriptionsItemProps,
 } from '@ant-design/pro-components';
+import { FormattedMessage } from '@umijs/max';
 import { Drawer } from 'antd';
 import React, { useState } from 'react';
 
@@ -17,44 +18,52 @@ interface Props {
 
 const columns: ProColumns<IPriceList>[] = [
   {
-    title: '国家',
+    title: <FormattedMessage id="country" defaultMessage="Country" />,
     dataIndex: 'country',
     key: 'country',
     formItemProps: {
-      rules: [{ required: true, message: '国家是必填项' }],
+      rules: [
+        {
+          required: true,
+          message: <FormattedMessage id="country_required" defaultMessage="Country is required" />,
+        },
+      ],
     },
     editable: () => true,
     valueEnum: convertToTextObject(locationMapping),
   },
-  // {
-  //   title: '是否本币',
-  //   dataIndex: 'isLocalCurrency',
-  //   key: 'isLocalCurrency',
-  //   valueType: 'select',
-  //   valueEnum: {
-  //     true: { text: '是', status: 'Success' },
-  //     false: { text: '否', status: 'Error' },
-  //   },
-  //   formItemProps: {
-  //     rules: [{ required: true, message: '是否本币是必填项' }],
-  //   },
-  //   editable: () => true,
-  // },
   {
-    title: '汇率',
+    title: <FormattedMessage id="exchange_rate" defaultMessage="Exchange Rate" />,
     dataIndex: 'exchangeRate',
     key: 'exchangeRate',
     formItemProps: {
-      rules: [{ required: true, message: '汇率是必填项' }],
+      rules: [
+        {
+          required: true,
+          message: (
+            <FormattedMessage
+              id="exchange_rate_required"
+              defaultMessage="Exchange rate is required"
+            />
+          ),
+        },
+      ],
     },
     editable: () => true,
   },
   {
-    title: '服务费',
+    title: <FormattedMessage id="service_fee" defaultMessage="Service Fee" />,
     dataIndex: 'serviceFee',
     key: 'serviceFee',
     formItemProps: {
-      rules: [{ required: true, message: '服务费是必填项' }],
+      rules: [
+        {
+          required: true,
+          message: (
+            <FormattedMessage id="service_fee_required" defaultMessage="Service fee is required" />
+          ),
+        },
+      ],
     },
     editable: () => true,
   },
@@ -91,7 +100,7 @@ const Show: React.FC<Props> = (props) => {
 
           <EditableProTable<IPriceList>
             rowKey="_id"
-            headerTitle="价格表"
+            headerTitle={<FormattedMessage id="price_list" defaultMessage="Price List" />}
             maxLength={5}
             scroll={{
               x: 960,

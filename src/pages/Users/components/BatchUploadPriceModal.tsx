@@ -2,6 +2,7 @@ import { Form, message } from 'antd';
 import { ModalForm } from '@ant-design/pro-components';
 import { useState } from 'react';
 import AliyunOSSUpload from '@/components/AliyunOSSUpload';
+import { FormattedMessage } from '@umijs/max';
 
 interface Props {
   open: boolean;
@@ -14,7 +15,7 @@ const BatchUploadPriceModal: React.FC<Props> = ({ open, onOpenChange, onFinish }
 
   return (
     <ModalForm
-      title="批量上传价格"
+      title={<FormattedMessage id="batch_upload_price" defaultMessage="Batch Upload Price" />}
       open={open}
       onOpenChange={onOpenChange}
       modalProps={{
@@ -22,12 +23,15 @@ const BatchUploadPriceModal: React.FC<Props> = ({ open, onOpenChange, onFinish }
         maskClosable: false,
       }}
       onFinish={async (values: any) => {
-        // 确保在提交前已经上传了图片和资源
         if (!file) {
-          message.error('请确保已上传表格文件');
+          message.error(
+            <FormattedMessage
+              id="ensure_file_uploaded"
+              defaultMessage="Please ensure a spreadsheet file has been uploaded"
+            />,
+          );
           return;
         }
-        // 将图片和资源URL添加到表单数据中
         await onFinish({
           ...values,
           file,
@@ -35,13 +39,16 @@ const BatchUploadPriceModal: React.FC<Props> = ({ open, onOpenChange, onFinish }
         onOpenChange(false);
       }}
     >
-      <Form.Item label="表格文件" name="file">
+      <Form.Item
+        label={<FormattedMessage id="spreadsheet_file" defaultMessage="Spreadsheet File" />}
+        name="file"
+      >
         <div style={{ marginBottom: '30px' }}>
           <a
             href="https://backend.maomaozhaocai.com/api/static/UserPriceListTemplate.xlsx"
             download
           >
-            下载模板
+            <FormattedMessage id="download_template" defaultMessage="Download Template" />
           </a>
         </div>
         <AliyunOSSUpload

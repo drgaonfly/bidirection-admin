@@ -212,4 +212,12 @@ export default {
   task_id_required: 'Task ID is required',
   preparing_download: 'Preparing download',
   download_failed: 'Download failed, please try again!',
+  upload_file_error: 'Please upload a file',
+  batch_download: 'Batch Download',
+  batch_upload_users: 'Batch Upload Users',
+  spreadsheet_file: 'Spreadsheet File',
+  batch_upload_price: 'Batch Upload Price',
+  country_required: 'Country is required',
+  exchange_rate_required: 'Exchange rate is required',
+  service_fee_required: 'Service fee is required',
 };

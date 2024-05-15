@@ -326,7 +326,8 @@ const TableList: React.FC = () => {
                 });
               }}
             >
-              <DownloadOutlined /> 批量下载
+              <DownloadOutlined />{' '}
+              <FormattedMessage id="batch_download" defaultMessage="Batch Download" />
             </Button>
           ),
         ]}
