@@ -15,58 +15,62 @@ import ShowBill from '@/pages/Bills/components/Show';
 
 const billColumns: ProColumns<API.ItemData>[] = [
   {
-    title: '客户',
+    title: <FormattedMessage id="customer" defaultMessage="Customer" />,
     dataIndex: 'customer',
     width: 200,
     hideInSearch: true,
     render: (_, record: any) => {
-      return record.customer && record.customer.name ? record.customer.name : '未知';
+      return record.customer && record.customer.name ? (
+        record.customer.name
+      ) : (
+        <FormattedMessage id="unknown" defaultMessage="Unknown" />
+      );
     },
   },
   {
-    title: '国家',
+    title: <FormattedMessage id="country" defaultMessage="Country" />,
     dataIndex: 'country',
     valueEnum: convertToTextObject(locationMapping),
   },
   {
-    title: '订单号',
+    title: <FormattedMessage id="order_number" defaultMessage="Order Number" />,
     dataIndex: 'orderNumber',
   },
   {
-    title: '下单时间',
+    title: <FormattedMessage id="order_time" defaultMessage="Order Time" />,
     dataIndex: 'uploadTime',
     valueType: 'date',
   },
   {
-    title: '店铺名',
+    title: <FormattedMessage id="store_name" defaultMessage="Store Name" />,
     dataIndex: 'storeName',
   },
   {
-    title: '金额',
+    title: <FormattedMessage id="amount" defaultMessage="Amount" />,
     dataIndex: 'amount',
     hideInSearch: true,
   },
   {
-    title: '汇率',
+    title: <FormattedMessage id="exchange_rate" defaultMessage="Exchange Rate" />,
     dataIndex: 'exchangeRate',
     hideInSearch: true,
   },
   {
-    title: '服务费',
+    title: <FormattedMessage id="service_fee" defaultMessage="Service Fee" />,
     dataIndex: 'serviceFee',
     hideInSearch: true,
   },
   {
-    title: '支付金额',
+    title: <FormattedMessage id="payment_amount" defaultMessage="Payment Amount" />,
     dataIndex: 'paymentAmount',
     hideInSearch: true,
   },
   {
-    title: '买手号',
+    title: <FormattedMessage id="buyer_id" defaultMessage="Buyer ID" />,
     dataIndex: 'buyerId',
   },
   {
-    title: '创建时间',
+    title: <FormattedMessage id="creation_time" defaultMessage="Creation Time" />,
     dataIndex: 'createdAt',
     valueType: 'dateTime',
     hideInSearch: true,
@@ -155,15 +159,19 @@ const handleRemove = async (ids: string[]) => {
 };
 
 const handleReview = async (fields: API.ItemData) => {
-  const hide = message.loading('正在审核');
+  const hide = message.loading(<FormattedMessage id="reviewing" defaultMessage="Reviewing" />);
   try {
     await updateItem(`/after-sales-orders/${fields._id}/review`, { ...fields });
     hide();
-    message.success('审核成功');
+    message.success(<FormattedMessage id="review_successful" defaultMessage="Review successful" />);
     return true;
   } catch (error: any) {
     hide();
-    message.error(error?.response?.data?.message ?? '审核失败，请重试！');
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="review_failed" defaultMessage="Review failed, please try again!" />
+      ),
+    );
     return false;
   }
 };
@@ -319,7 +327,7 @@ const TableList: React.FC = () => {
               }
             }}
           >
-            处理
+            <FormattedMessage id="process" defaultMessage="Process" />
           </a>
         ),
         record.status === 'Processing' && (
@@ -330,7 +338,7 @@ const TableList: React.FC = () => {
               setCurrentRow(record);
             }}
           >
-            审核
+            <FormattedMessage id="review" defaultMessage="Review" />
           </a>
         ),
         access.canSuperAdmin && (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ModalForm, ProFormTextArea, ProFormRadio } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
+import { useIntl } from '@umijs/max';
 
 export type FormValueType = Partial<API.ItemData>;
 
@@ -14,12 +15,13 @@ export type UpdateFormProps = {
 };
 
 const ReviewForm: React.FC<UpdateFormProps> = (props) => {
+  const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   const [status, setStatus] = useState('');
 
   return (
     <ModalForm
-      title="审核售后"
+      title={intl.formatMessage({ id: 'review_after_sale' })}
       width="40%"
       modalProps={{
         destroyOnClose: true,
@@ -37,12 +39,14 @@ const ReviewForm: React.FC<UpdateFormProps> = (props) => {
       <>
         <ProFormRadio.Group
           name="status"
-          label="审核结果"
+          label={intl.formatMessage({ id: 'review_result' })}
           options={[
-            { value: 'Approved', label: '审核通过' },
-            { value: 'Rejected', label: '审核不通过' },
+            { value: 'Approved', label: intl.formatMessage({ id: 'review_approved' }) },
+            { value: 'Rejected', label: intl.formatMessage({ id: 'review_rejected' }) },
           ]}
-          rules={[{ required: true, message: '请选择审核结果' }]}
+          rules={[
+            { required: true, message: intl.formatMessage({ id: 'please_select_review_result' }) },
+          ]}
           fieldProps={{
             onChange: (e) => setStatus(e.target.value),
           }}
@@ -50,10 +54,15 @@ const ReviewForm: React.FC<UpdateFormProps> = (props) => {
         {status === 'Rejected' && (
           <ProFormTextArea
             name="rejectionReason"
-            label="不通过原因"
+            label={intl.formatMessage({ id: 'rejection_reason' })}
             width="md"
-            placeholder="如果审核不通过，请输入原因"
-            rules={[{ required: true, message: '请输入不通过原因' }]}
+            placeholder={intl.formatMessage({ id: 'enter_rejection_reason' })}
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({ id: 'please_enter_rejection_reason' }),
+              },
+            ]}
           />
         )}
         <Form.Item name="_id" label={false}>
