@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { ProForm, ProFormText, ProFormDigit } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormDigit, ProFormSwitch } from '@ant-design/pro-components';
 import React from 'react';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   values?: any;
 }
 
-const BasicForm: React.FC<Props> = ({ newRecord }) => {
+const BasicForm: React.FC<Props> = ({ newRecord, values }) => {
   const intl = useIntl();
   console.log(newRecord);
   return (
@@ -43,6 +43,20 @@ const BasicForm: React.FC<Props> = ({ newRecord }) => {
           placeholder={intl.formatMessage({ id: 'enter_buyer_id' })}
         />
       </ProForm.Group>
+      {!newRecord && (
+        <ProForm.Group>
+          <ProFormSwitch
+            name="isSigned"
+            label={intl.formatMessage({ id: 'is_signed' })}
+            initialValue={values?.isSigned}
+          />
+          <ProFormSwitch
+            name="isReviewed"
+            label={intl.formatMessage({ id: 'is_reviewed' })}
+            initialValue={values?.isReviewed}
+          />
+        </ProForm.Group>
+      )}
     </>
   );
 };

@@ -14,6 +14,7 @@ import AfterSaleForm from './components/AfterSaleForm';
 
 import ShowTask from '@/pages/Tasks/components/Show';
 import { EditOutlined } from '@ant-design/icons';
+import BatchSetting from './components/BatchSetting';
 
 const taskColumns: ProColumns<API.ItemData>[] = [
   {
@@ -184,6 +185,26 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 
+const handleBatchSetting = async (fieldsArray: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    const promises = fieldsArray.map((fields: any) => updateItem(`/bills/${fields._id}`, fields));
+    await Promise.all(promises);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 /**
  *  Delete node
  * @zh-CN 删除节点
@@ -251,6 +272,7 @@ const TableList: React.FC = () => {
    * @zh-CN 新建窗口的弹窗
    *  */
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
+  const [batchSettingModalOpen, setBatchSettingModalOpen] = useState<boolean>(false);
   /**2024fc.xyz
    * @en-US The pop-up window of the distribution update window
    * @zh-CN 分布更新窗口的弹窗
@@ -515,7 +537,7 @@ const TableList: React.FC = () => {
               key="primary"
               onClick={() => {
                 console.log('selectedRowsState', selectedRowsState);
-                handleModalOpen(true);
+                setBatchSettingModalOpen(true);
               }}
             >
               <EditOutlined />{' '}
@@ -622,6 +644,21 @@ const TableList: React.FC = () => {
         onCancel={handleUpdateModalOpen}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
+      />
+
+      <BatchSetting
+        onSubmit={async (values) => {
+          const success = await handleBatchSetting(values);
+          if (success) {
+            setBatchSettingModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={setBatchSettingModalOpen}
+        batchSettingModalOpen={batchSettingModalOpen}
+        values={selectedRowsState || []}
       />
 
       <AfterSaleForm
