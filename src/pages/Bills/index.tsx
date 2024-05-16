@@ -313,9 +313,8 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'order_number' }),
-      width: 200,
       dataIndex: 'orderNumber',
-      tooltip: true,
+      width: 200,
       render: (dom, entity) => {
         return (
           <a
