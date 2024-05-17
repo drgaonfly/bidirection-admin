@@ -191,8 +191,8 @@ const TableList: React.FC = () => {
           checkedChildren={intl.formatMessage({ id: 'yes' })}
           unCheckedChildren={intl.formatMessage({ id: 'no' })}
           checked={record.isProcessed}
-          onChange={() => {
-            handleUpdate({ _id: record._id, isProcessed: !record.isProcessed });
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isProcessed: !record.isProcessed });
             if (actionRef.current) {
               actionRef.current.reload();
             }

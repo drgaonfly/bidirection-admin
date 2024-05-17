@@ -404,8 +404,8 @@ const TableList: React.FC = () => {
           checkedChildren={intl.formatMessage({ id: 'yes' })}
           unCheckedChildren={intl.formatMessage({ id: 'no' })}
           checked={record.isSigned}
-          onChange={() => {
-            handleUpdate({ _id: record._id, isSigned: !record.isSigned });
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isSigned: !record.isSigned });
             if (actionRef.current) {
               actionRef.current.reload();
             }
@@ -428,8 +428,8 @@ const TableList: React.FC = () => {
           checkedChildren={intl.formatMessage({ id: 'yes' })}
           unCheckedChildren={intl.formatMessage({ id: 'no' })}
           checked={record.isReviewed}
-          onChange={() => {
-            handleUpdate({ _id: record._id, isReviewed: !record.isReviewed });
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isReviewed: !record.isReviewed });
             if (actionRef.current) {
               actionRef.current.reload();
             }
