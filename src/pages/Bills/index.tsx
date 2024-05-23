@@ -24,6 +24,23 @@ const taskColumns: ProColumns<API.ItemData>[] = [
     copyable: true,
   },
   {
+    title: <FormattedMessage id="bill_file" />,
+    width: 100,
+    dataIndex: 'billFile',
+    hideInSearch: true,
+    render: (_, record: any) => {
+      // Ensure file URL exists
+      if (!record.billFile) return <FormattedMessage id="no_file" />;
+
+      // Return a download button or link
+      return (
+        <a href={record.billFile} download target="_blank" rel="noopener noreferrer">
+          <FormattedMessage id="download" />
+        </a>
+      );
+    },
+  },
+  {
     title: <FormattedMessage id="country" defaultMessage="Country" />,
     width: 100,
     dataIndex: 'country',
