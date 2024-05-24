@@ -26,7 +26,7 @@ export default {
   order_note: '订单备注',
   enter_order_note: '请输入订单备注',
   enter_detailed_order_note: '可选：请输入详细的订单备注',
-  code: '代码',
+  code: '编号',
   bill_file: '账单文件',
   no_file: '无文件',
   download: '下载',

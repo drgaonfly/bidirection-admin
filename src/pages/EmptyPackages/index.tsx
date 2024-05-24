@@ -121,8 +121,8 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'id' }),
-      dataIndex: '_id',
+      title: intl.formatMessage({ id: 'code' }),
+      dataIndex: 'code',
       width: 250,
       copyable: true,
       render: (dom, entity) => {
