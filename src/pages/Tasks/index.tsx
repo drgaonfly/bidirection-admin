@@ -19,6 +19,7 @@ import Show from './components/Show';
 import UploadForm from './components/UploadForm';
 import { convertToTextObject, locationMapping, platformNames } from '@/utils/constants';
 import UserDetail from '@/pages/Users/components/Show';
+import CopyToClipboard from '@/components/CopyToClipboard';
 
 const userColumns: ProColumns<API.ItemData>[] = [
   {
@@ -340,17 +341,21 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: 'user',
       width: 200,
-      hideInSearch: true,
       render: (dom, entity) => {
+        const name = entity.user ? entity.user.name : intl.formatMessage({ id: 'none' });
         return (
-          <a
-            onClick={() => {
-              setCurrentUser(entity.user);
-              setShowUserDetail(true);
-            }}
-          >
-            {entity.user ? entity.user.name : intl.formatMessage({ id: 'none' })}
-          </a>
+          <>
+            <a
+              onClick={() => {
+                setCurrentUser(entity.user);
+                setShowUserDetail(true);
+              }}
+            >
+              {name}
+            </a>
+            <span> </span>
+            <CopyToClipboard text={name} />
+          </>
         );
       },
     },
