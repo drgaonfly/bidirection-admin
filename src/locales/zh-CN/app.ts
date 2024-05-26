@@ -256,4 +256,5 @@ export default {
   'copy.error': '复制失败',
   'copy.tooltip': '复制数据到剪贴板',
   orderNote: '订单备注',
+  lastBillUploadTime: '最后账单上传时间',
 };

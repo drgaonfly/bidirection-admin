@@ -310,6 +310,13 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'lastBillUploadTime' }),
+      dataIndex: 'lastBillUploadTime',
+      width: 200,
+      hideInSearch: true,
+      valueType: 'dateTime',
+    },
+    {
       title: intl.formatMessage({ id: 'status' }),
       width: 100,
       dataIndex: 'status',

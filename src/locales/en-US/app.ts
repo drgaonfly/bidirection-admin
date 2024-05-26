@@ -257,4 +257,5 @@ export default {
   'copy.error': 'Copy failed',
   'copy.tooltip': 'Copy data to clipboard',
   orderNote: 'Order Note',
+  lastBillUploadTime: 'Last Bill Upload Time',
 };
