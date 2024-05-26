@@ -297,7 +297,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'source_file' }),
       dataIndex: 'file',
-      width: 150,
+      width: 100,
       hideInSearch: true,
       render: (_, record) => {
         if (!record.file) return intl.formatMessage({ id: 'no_file' });
@@ -308,6 +308,13 @@ const TableList: React.FC = () => {
           </a>
         );
       },
+    },
+    {
+      title: intl.formatMessage({ id: 'created_at' }),
+      width: 200,
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'billUploader' }),
