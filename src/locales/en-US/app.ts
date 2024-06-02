@@ -259,4 +259,5 @@ export default {
   orderNote: 'Order Note',
   lastBillUploadTime: 'Last Bill Upload Time',
   billUploader: 'Bill Uploader',
+  import: 'Import',
 };

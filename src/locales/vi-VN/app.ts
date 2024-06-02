@@ -259,4 +259,5 @@ export default {
   orderNote: 'Ghi chú đơn hàng',
   lastBillUploadTime: 'Thời gian tải lên hóa đơn cuối cùng',
   billUploader: 'Người tải lên hóa đơn',
+  import: 'Impor',
 };

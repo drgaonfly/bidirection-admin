@@ -258,4 +258,5 @@ export default {
   orderNote: '订单备注',
   lastBillUploadTime: '最后账单上传时间',
   billUploader: '账单上传者',
+  import: '导入',
 };

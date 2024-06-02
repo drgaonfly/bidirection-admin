@@ -12,6 +12,8 @@ import Show from './components/Show';
 import { convertToTextObject, locationMapping, platformNames } from '@/utils/constants';
 import ExportButton from '@/components/Export';
 import CopyToClipboard from '@/components/CopyToClipboard';
+import { UploadOutlined } from '@ant-design/icons';
+import BatchUploadModal from './components/BatchUploadModal';
 
 /**
  * @en-US Add node
@@ -93,6 +95,26 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+const handleBatchAdd = async (fields: API.ItemData) => {
+  const hide = message.loading(
+    <FormattedMessage id="bulk_uploading" defaultMessage="Bulk uploading..." />,
+  );
+  try {
+    await addItem('/assignment-records/upload', { ...fields });
+    hide();
+    message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="upload_failed" defaultMessage="Upload failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   /**
@@ -111,6 +133,7 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [batchUploadModalOpen, setBatchUploadModalOpen] = useState<boolean>(false);
   const access = useAccess();
 
   /**
@@ -290,17 +313,17 @@ const TableList: React.FC = () => {
           //     <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           //   </Button>
           // ),
-          // access.canCustomer && (
-          //   <Button
-          //     danger
-          //     key="batchUpload"
-          //     onClick={() => {
-          //       setBatchUploadModalOpen(true);
-          //     }}
-          //   >
-          //     <UploadOutlined /> 批量上传
-          //   </Button>
-          // ),
+          access.canCustomer && (
+            <Button
+              danger
+              key="batchUpload"
+              onClick={() => {
+                setBatchUploadModalOpen(true);
+              }}
+            >
+              <UploadOutlined /> <FormattedMessage id="import" defaultMessage="Import" />
+            </Button>
+          ),
         ]}
         request={async (params, sort, filter) =>
           queryList('/assignment-records', { ...params }, sort, filter)
@@ -375,6 +398,20 @@ const TableList: React.FC = () => {
         onCancel={handleUpdateModalOpen}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
+      />
+
+      <BatchUploadModal
+        open={batchUploadModalOpen}
+        onOpenChange={setBatchUploadModalOpen}
+        onFinish={async (values) => {
+          const success = await handleBatchAdd(values as API.ItemData);
+          if (success) {
+            setBatchUploadModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
       />
 
       <Show
