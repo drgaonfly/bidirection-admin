@@ -341,7 +341,6 @@ const TableList: React.FC = () => {
         rowKey="_id"
         scroll={{ x: 1200 }}
         search={{
-          labelWidth: 180,
           collapsed: false,
         }}
         toolBarRender={() => [
