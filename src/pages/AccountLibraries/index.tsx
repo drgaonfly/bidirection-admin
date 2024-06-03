@@ -208,30 +208,6 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'store_name' }),
-      copyable: true,
-      dataIndex: 'storeAccount',
-      width: 150,
-    },
-    {
-      title: intl.formatMessage({ id: 'recent_allocation_time' }),
-      width: 150,
-      dataIndex: 'assignedTime',
-      valueType: 'date',
-      sorter: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'operator' }),
-      dataIndex: 'user',
-      width: 150,
-      hideInSearch: true,
-      render: (_, record) => {
-        return record.user && record.user.name
-          ? record.user.name
-          : intl.formatMessage({ id: 'unknown' });
-      },
-    },
-    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       width: 250,
       fixed: 'right',
