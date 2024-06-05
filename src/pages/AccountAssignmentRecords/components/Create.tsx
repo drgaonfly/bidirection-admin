@@ -43,13 +43,6 @@ const AccountTable = ({ accounts }: { accounts: any[] }) => {
       dataIndex: 'loginPassword',
       key: 'loginPassword',
     },
-    {
-      title: <FormattedMessage id="recent_assigned_time" defaultMessage="Recent Assigned Time" />,
-      dataIndex: 'assignedTime',
-      key: 'assignedTime',
-      render: (text: string) =>
-        text || <FormattedMessage id="not_assigned" defaultMessage="Not Assigned" />,
-    },
   ];
 
   if (accounts.length === 0) {
@@ -212,7 +205,7 @@ const Create: React.FC<Props> = (props) => {
         <ProForm.Item
           name="assignedTime"
           label={intl.formatMessage({ id: 'assigned_time' })}
-          rules={[{ required: false }]}
+          rules={[{ required: true }]}
           initialValue={moment()} // 设置默认值为当前日期
         >
           <ProFormDateTimePicker
