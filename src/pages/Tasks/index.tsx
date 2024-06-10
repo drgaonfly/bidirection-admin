@@ -273,6 +273,24 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'billUploader' }),
+      dataIndex: 'billUploader',
+      width: 200,
+      copyable: true,
+      renderText: (_, record: any) => {
+        return record.billUploader && record.billUploader.name
+          ? record.billUploader.name
+          : intl.formatMessage({ id: 'unknown' });
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'lastBillUploadTime' }),
+      dataIndex: 'lastBillUploadTime',
+      width: 200,
+      hideInSearch: true,
+      valueType: 'dateTime',
+    },
+    {
       title: intl.formatMessage({ id: 'country' }),
       width: 150,
       // filters: true,
@@ -315,24 +333,6 @@ const TableList: React.FC = () => {
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'billUploader' }),
-      dataIndex: 'billUploader',
-      width: 200,
-      copyable: true,
-      renderText: (_, record: any) => {
-        return record.billUploader && record.billUploader.name
-          ? record.billUploader.name
-          : intl.formatMessage({ id: 'unknown' });
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'lastBillUploadTime' }),
-      dataIndex: 'lastBillUploadTime',
-      width: 200,
-      hideInSearch: true,
-      valueType: 'dateTime',
     },
     {
       title: intl.formatMessage({ id: 'status' }),
