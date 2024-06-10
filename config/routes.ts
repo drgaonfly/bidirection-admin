@@ -48,7 +48,7 @@ export default [
   {
     name: 'list.users',
     icon: 'user',
-    access: 'canSuperAdmin',
+    access: 'canAdmin',
     path: '/users',
     component: './Users',
   },

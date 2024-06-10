@@ -213,16 +213,18 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="edit"
-          onClick={() => {
-            // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
+        access.canSuperAdmin && (
+          <a
+            key="edit"
+            onClick={() => {
+              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
         access.canSuperAdmin && (
           <a
             key="delete"
@@ -257,43 +259,51 @@ const TableList: React.FC = () => {
           labelWidth: 180,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-          </Button>,
-          <Button
-            danger
-            key="batchUpload"
-            onClick={() => {
-              setBatchUploadModalOpen(true);
-            }}
-          >
-            <UploadOutlined />{' '}
-            <FormattedMessage id="batch_upload_users" defaultMessage="批量上传用户" />
-          </Button>,
-          <Button
-            type="dashed"
-            key="batchUploadPrices"
-            onClick={() => {
-              setBatchUploadPriceModalOpen(true);
-            }}
-          >
-            <UploadOutlined />{' '}
-            <FormattedMessage id="batch_upload_price" defaultMessage="批量上传价格表" />
-          </Button>,
+          access.canSuperAdmin && (
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          ),
+          access.canSuperAdmin && (
+            <Button
+              danger
+              key="batchUpload"
+              onClick={() => {
+                setBatchUploadModalOpen(true);
+              }}
+            >
+              <UploadOutlined />{' '}
+              <FormattedMessage id="batch_upload_users" defaultMessage="批量上传用户" />
+            </Button>
+          ),
+          access.canSuperAdmin && (
+            <Button
+              type="dashed"
+              key="batchUploadPrices"
+              onClick={() => {
+                setBatchUploadPriceModalOpen(true);
+              }}
+            >
+              <UploadOutlined />{' '}
+              <FormattedMessage id="batch_upload_price" defaultMessage="批量上传价格表" />
+            </Button>
+          ),
         ]}
         request={async (params, sort, filter) => queryList('/users', params, sort, filter)}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
+        rowSelection={
+          access.canSuperAdmin && {
+            onChange: (_, selectedRows) => {
+              setSelectedRows(selectedRows);
+            },
+          }
+        }
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
