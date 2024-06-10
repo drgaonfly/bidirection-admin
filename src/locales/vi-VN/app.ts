@@ -261,4 +261,10 @@ export default {
   billUploader: 'Người tải lên hóa đơn',
   import: 'Impor',
   claim: 'Yêu cầu',
+  SUPER_ADMIN: 'Quản trị viên cấp cao',
+  ADMIN: 'Quản trị viên',
+  CUSTOMER: 'Khách hàng',
+  ORDER_PLACER: 'Người đặt hàng',
+  REVIEWER: 'Người xem xét',
+  CUSTOMER_SERVICE: 'Dịch vụ khách hàng',
 };

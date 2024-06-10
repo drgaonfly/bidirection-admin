@@ -260,4 +260,10 @@ export default {
   billUploader: '账单上传者',
   import: '导入',
   claim: '领取',
+  SUPER_ADMIN: '超级管理员',
+  ADMIN: '管理员',
+  CUSTOMER: '客户',
+  ORDER_PLACER: '下单员',
+  REVIEWER: '评价人员',
+  CUSTOMER_SERVICE: '客服',
 };

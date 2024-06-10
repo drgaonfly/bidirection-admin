@@ -261,4 +261,10 @@ export default {
   billUploader: 'Bill Uploader',
   import: 'Import',
   claim: 'Claim',
+  SUPER_ADMIN: 'Super Admin',
+  ADMIN: 'Admin',
+  CUSTOMER: 'Customer',
+  ORDER_PLACER: 'Order Placer',
+  REVIEWER: 'Reviewer',
+  CUSTOMER_SERVICE: 'Customer Service',
 };

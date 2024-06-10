@@ -1,9 +1,10 @@
 export const ROLES = {
   SuperAdmin: 'SUPER_ADMIN',
-  Admin: 'ADMIN', // Added Admin role
+  Admin: 'ADMIN',
   Customer: 'CUSTOMER',
-  OrderClerk: 'ORDER_CLERK',
-  FinancialStaff: 'FINANCIAL_STAFF',
+  OrderPlacer: 'ORDER_PLACER', // New role for placing orders
+  Reviewer: 'REVIEWER', // New role for reviewing orders
+  CustomerService: 'CUSTOMER_SERVICE', // New role for customer service
 } as const;
 
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
@@ -15,7 +16,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser &&
       (currentUser.role === ROLES.Customer ||
         currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.OrderClerk ||
+        currentUser.role === ROLES.OrderPlacer ||
         currentUser.role === ROLES.SuperAdmin),
     // Check if the user is either in the specific role or a SuperAdmin for broader access
     canCustomer:
@@ -25,12 +26,11 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
         currentUser.role === ROLES.SuperAdmin),
     canOrderClerk:
       currentUser &&
-      (currentUser.role === ROLES.OrderClerk ||
+      (currentUser.role === ROLES.OrderPlacer ||
         currentUser.role === ROLES.Admin ||
         currentUser.role === ROLES.SuperAdmin),
     canFinancialStaff:
-      currentUser &&
-      (currentUser.role === ROLES.FinancialStaff || currentUser.role === ROLES.SuperAdmin),
+      currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
     canAdmin:
       currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
   };
