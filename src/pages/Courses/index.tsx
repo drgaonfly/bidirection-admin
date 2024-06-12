@@ -278,11 +278,12 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       width: 200,
       valueEnum: {
-        SUPER_ADMIN: intl.formatMessage({ id: 'super_admin' }),
-        CUSTOMER: intl.formatMessage({ id: 'customer' }),
-        ORDER_CLERK: intl.formatMessage({ id: 'order_clerk' }),
-        ADMIN: intl.formatMessage({ id: 'admin' }),
-        FINANCIAL_STAFF: intl.formatMessage({ id: 'financial_staff' }),
+        SUPER_ADMIN: intl.formatMessage({ id: 'SUPER_ADMIN' }),
+        ADMIN: intl.formatMessage({ id: 'ADMIN' }),
+        CUSTOMER: intl.formatMessage({ id: 'CUSTOMER' }),
+        ORDER_PLACER: intl.formatMessage({ id: 'ORDER_PLACER' }),
+        REVIEWER: intl.formatMessage({ id: 'REVIEWER' }),
+        CUSTOMER_SERVICE: intl.formatMessage({ id: 'CUSTOMER_SERVICE' }),
       },
     },
     {
