@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { ProForm, ProFormText, ProFormDigit } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
 import React from 'react';
 import { Form } from 'antd';
 import AliyunOSSUpload from '@/components/AliyunOSSUpload';
@@ -61,6 +61,19 @@ const BasicForm: React.FC<Props> = (props) => {
           min={0}
           rules={[{ required: true, message: intl.formatMessage({ id: 'enter_weight' }) }]}
           placeholder={intl.formatMessage({ id: 'enter_weight' })}
+        />
+        <ProFormSelect
+          name="videoType"
+          width="md"
+          label={intl.formatMessage({ id: 'videoType' })}
+          valueEnum={{
+            SUPER_ADMIN: intl.formatMessage({ id: 'SUPER_ADMIN' }),
+            ADMIN: intl.formatMessage({ id: 'ADMIN' }),
+            CUSTOMER: intl.formatMessage({ id: 'CUSTOMER' }),
+            ORDER_PLACER: intl.formatMessage({ id: 'ORDER_PLACER' }),
+            REVIEWER: intl.formatMessage({ id: 'REVIEWER' }),
+            CUSTOMER_SERVICE: intl.formatMessage({ id: 'CUSTOMER_SERVICE' }),
+          }}
         />
       </ProForm.Group>
     </>
