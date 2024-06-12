@@ -279,6 +279,12 @@ const TableList: React.FC = () => {
       width: 200,
     },
     {
+      title: intl.formatMessage({ id: 'videoType' }),
+      dataIndex: 'videoType',
+      hideInSearch: true,
+      width: 200,
+    },
+    {
       title: intl.formatMessage({ id: 'weight' }),
       dataIndex: 'weight',
       hideInSearch: true,
