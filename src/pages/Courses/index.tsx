@@ -273,16 +273,17 @@ const TableList: React.FC = () => {
       ),
     },
     {
-      title: intl.formatMessage({ id: 'duration' }),
-      dataIndex: 'duration',
-      hideInSearch: true,
-      width: 200,
-    },
-    {
       title: intl.formatMessage({ id: 'videoType' }),
       dataIndex: 'videoType',
       hideInSearch: true,
       width: 200,
+      valueEnum: {
+        SUPER_ADMIN: intl.formatMessage({ id: 'super_admin' }),
+        CUSTOMER: intl.formatMessage({ id: 'customer' }),
+        ORDER_CLERK: intl.formatMessage({ id: 'order_clerk' }),
+        ADMIN: intl.formatMessage({ id: 'admin' }),
+        FINANCIAL_STAFF: intl.formatMessage({ id: 'financial_staff' }),
+      },
     },
     {
       title: intl.formatMessage({ id: 'weight' }),

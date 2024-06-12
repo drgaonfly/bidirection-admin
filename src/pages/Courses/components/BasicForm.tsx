@@ -65,6 +65,7 @@ const BasicForm: React.FC<Props> = (props) => {
         <ProFormSelect
           name="videoType"
           width="md"
+          rules={[{ required: true, message: intl.formatMessage({ id: 'enter_weight' }) }]}
           label={intl.formatMessage({ id: 'videoType' })}
           valueEnum={{
             SUPER_ADMIN: intl.formatMessage({ id: 'SUPER_ADMIN' }),
