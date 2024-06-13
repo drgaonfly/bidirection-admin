@@ -306,7 +306,7 @@ const TableList: React.FC = () => {
       fixed: 'right',
       valueType: 'option',
       render: (_, record) => [
-        access.canSuperAdmin && (
+        access.canAdmin && (
           <a
             key="edit"
             onClick={() => {
@@ -318,7 +318,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canSuperAdmin && (
+        access.canAdmin && (
           <a
             key="delete"
             onClick={() => {
@@ -353,7 +353,7 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          access.canSuperAdmin && (
+          access.canAdmin && (
             <Button
               type="primary"
               key="primary"
@@ -412,7 +412,7 @@ const TableList: React.FC = () => {
         >
         </FooterToolbar>
       )} */}
-      {access.canSuperAdmin && (
+      {access.canAdmin && (
         <Create
           selectedRowsState={selectedRowsState}
           open={createModalOpen}
@@ -429,7 +429,7 @@ const TableList: React.FC = () => {
         />
       )}
 
-      {access.canSuperAdmin && (
+      {access.canAdmin && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
