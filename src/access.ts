@@ -54,7 +54,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
         currentUser.role === ROLES.CustomerService ||
         currentUser.role === ROLES.OrderPlacer ||
         currentUser.role === ROLES.SuperAdmin ||
-        currentUser.role === ROLES.Customer),
+        currentUser.role === ROLES.Customer ||
+        currentUser.role === ROLES.Reviewer),
 
     canSeeCourses:
       currentUser &&
