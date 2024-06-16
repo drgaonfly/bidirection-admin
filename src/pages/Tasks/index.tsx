@@ -469,7 +469,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        (access.canCustomer || access.canAdmin || access.canCustomerService) && (
+        (access.canCustomer || access.canCustomerService) && (
           <a
             key="edit"
             onClick={() => {
@@ -481,7 +481,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canCustomer || access.canAdmin) && record.status !== 'Processing' && (
+        (access.canCustomer || access.canCustomerService) && record.status !== 'Processing' && (
           <a
             key="claim"
             onClick={async (e) => {
@@ -500,7 +500,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'claim' })}
           </a>
         ),
-        (access.canOrderPlacer || access.canAdmin || access.canCustomerService) && (
+        (access.canOrderPlacer || access.canCustomerService) && (
           <a
             key="upload"
             onClick={() => {
@@ -511,7 +511,7 @@ const TableList: React.FC = () => {
             <FormattedMessage id="upload" defaultMessage="上传" />
           </a>
         ),
-        (access.canAdmin || access.canCustomerService) && (
+        access.canCustomerService && (
           <a
             key="cancel"
             onClick={() => {
@@ -567,7 +567,7 @@ const TableList: React.FC = () => {
           defaultCollapsed: false,
         }}
         toolBarRender={() => [
-          (access.canOrderPlacer || access.canAdmin) && (
+          (access.canOrderPlacer || access.canCustomerService) && (
             <Button
               type="primary"
               key="primary"
@@ -639,7 +639,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canOrderPlacer || access.canAdmin) && (
+          {access.canAdmin && (
             <Button
               danger
               onClick={() => {
