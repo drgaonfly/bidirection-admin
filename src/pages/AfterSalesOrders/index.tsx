@@ -314,7 +314,7 @@ const TableList: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record) => [
-        record.status === 'Pending' && (
+        access.canSeeAfterSalesOrders && record.status === 'Pending' && (
           <a
             key="requestApprove"
             onClick={() => {
@@ -338,7 +338,7 @@ const TableList: React.FC = () => {
         //     <FormattedMessage id="process" defaultMessage="Process" />
         //   </a>
         // ),
-        record.status === 'Processing' && (
+        access.canSeeAfterSalesOrders && record.status === 'Processing' && (
           <a
             key="review"
             onClick={() => {
