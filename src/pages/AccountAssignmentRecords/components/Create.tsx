@@ -206,7 +206,7 @@ const Create: React.FC<Props> = (props) => {
           name="assignedTime"
           label={intl.formatMessage({ id: 'assigned_time' })}
           rules={[{ required: true }]}
-          initialValue={moment().startOf('day')} // 设置默认值为当前日期的开始，即只有年月日，没有时分秒
+          initialValue={moment()} // 设置默认值为当前日期
         >
           <ProFormDateTimePicker
             width="md"
