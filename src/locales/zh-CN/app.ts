@@ -270,4 +270,6 @@ export default {
   billNote: '账单备注',
   note: '备注',
   customer_code: '客户编码',
+  empty_package_fee: '空包费',
+  empty_package_fee_required: '空包费是必填项',
 };

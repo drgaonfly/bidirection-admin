@@ -271,4 +271,6 @@ export default {
   billNote: 'Ghi chú hóa đơn',
   note: 'Ghi chú',
   customer_code: 'Mã khách hàng',
+  empty_package_fee: 'Phí gói trống',
+  empty_package_fee_required: 'Phí gói trống là bắt buộc',
 };

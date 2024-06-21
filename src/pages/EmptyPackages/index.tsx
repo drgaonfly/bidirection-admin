@@ -221,9 +221,21 @@ const TableList: React.FC = () => {
       ellipsis: true,
     },
     {
+      title: intl.formatMessage({ id: 'amount' }),
+      width: 80,
+      dataIndex: 'amount',
+      hideInSearch: true,
+    },
+    {
       title: intl.formatMessage({ id: 'quantity' }),
       width: 80,
       dataIndex: 'quantity',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'payment_amount' }),
+      width: 80,
+      dataIndex: 'paymentAmount',
       hideInSearch: true,
     },
     {

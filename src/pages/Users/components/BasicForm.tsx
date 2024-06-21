@@ -54,6 +54,16 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       editable: true,
     },
     {
+      title: intl.formatMessage({ id: 'empty_package_fee' }),
+      dataIndex: 'emptyPackageFee',
+      formItemProps: {
+        rules: [
+          { required: false, message: intl.formatMessage({ id: 'empty_package_fee_required' }) },
+        ],
+      },
+      editable: true,
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       valueType: 'option',
       render: (text: any, record: any, _: any, action: any) => [
@@ -149,6 +159,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             isLocalCurrency: false,
             exchangeRate: 0,
             serviceFee: 0,
+            emptyPackageFee: 0,
             country: '',
             platform: '',
           }),

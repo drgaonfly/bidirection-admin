@@ -271,4 +271,6 @@ export default {
   billNote: 'Bill Note',
   note: 'Note',
   customer_code: 'Customer Code',
+  empty_package_fee: 'Empty Package Fee',
+  empty_package_fee_required: 'Empty package fee is required',
 };
