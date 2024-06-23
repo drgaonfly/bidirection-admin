@@ -7,10 +7,16 @@ const UserSelect: React.FC = () => {
   const intl = useIntl();
   const access = useAccess();
   const { items: users, loading } = useQueryList('/users', access.canAdmin);
+
+  const filteredUsers = users.filter(
+    (user: any) =>
+      user.role !== 'ADMIN' && user.role !== 'ORDER_PLACER' && user.role !== 'REVIEWER',
+  );
+
   return (
     <ProFormSelect
       rules={[{ required: true }]}
-      options={users.map((user: any) => ({
+      options={filteredUsers.map((user: any) => ({
         label: user.name,
         value: user._id,
       }))}
