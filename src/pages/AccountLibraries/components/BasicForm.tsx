@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import CountrySelect from '@/components/CountrySelect';
 import PlatformSelect from '@/components/PlatformSelect';
 // import useQueryList from '@/hooks/useQueryList';
@@ -52,6 +52,13 @@ const BasicForm: React.FC<Props> = ({}) => {
           label={intl.formatMessage({ id: 'login_password' })}
           name="loginPassword"
           placeholder={intl.formatMessage({ id: 'enter_login_password' })}
+        />
+        <ProFormTextArea
+          name="remark"
+          label={intl.formatMessage({ id: 'note' })}
+          width="md"
+          rules={[{ required: false, message: intl.formatMessage({ id: 'note' }) }]}
+          placeholder={intl.formatMessage({ id: 'note' })}
         />
       </ProForm.Group>
     </>
