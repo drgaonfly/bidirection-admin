@@ -1,12 +1,11 @@
 import { ProFormSelect } from '@ant-design/pro-components';
 import React from 'react';
-import { useAccess, useIntl } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 import useQueryList from '@/hooks/useQueryList';
 
 const UserSelect: React.FC = () => {
   const intl = useIntl();
-  const access = useAccess();
-  const { items: users, loading } = useQueryList('/users', access.canAdmin);
+  const { items: users, loading } = useQueryList('/users');
 
   const filteredUsers = users.filter(
     (user: any) =>
