@@ -272,4 +272,6 @@ export default {
   customer_code: '客户编码',
   empty_package_fee: '空包费',
   empty_package_fee_required: '空包费是必填项',
+  upload_bill_file: '上传账单文件',
+  confirm_bill_content: '确定账单内容',
 };

@@ -678,7 +678,7 @@ const TableList: React.FC = () => {
         }}
       />
       <UploadForm
-        onSubmit={async (value) => {
+        onFinish={async (value) => {
           const success = await handleUploadBill(value); // 假设这是上传逻辑的函数
           if (success) {
             setUploadModalVisible(false); // 控制上传模态窗口的可见性
@@ -688,8 +688,8 @@ const TableList: React.FC = () => {
             }
           }
         }}
-        onCancel={setUploadModalVisible} // 关闭模态窗口
-        updateModalOpen={uploadModalVisible} // 控制上传模态窗口的开关
+        onOpenChange={setUploadModalVisible} // 关闭模态窗口
+        open={uploadModalVisible} // 控制上传模态窗口的开关
         values={currentRow || {}} // 当前行数据，用作表单的初始值或为新上传提供参考数据
       />
 

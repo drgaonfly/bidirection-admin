@@ -273,4 +273,6 @@ export default {
   customer_code: 'Mã khách hàng',
   empty_package_fee: 'Phí gói trống',
   empty_package_fee_required: 'Phí gói trống là bắt buộc',
+  upload_bill_file: 'Tải lên tệp hóa đơn',
+  confirm_bill_content: 'Xác nhận nội dung hóa đơn',
 };

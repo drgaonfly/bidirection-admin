@@ -273,4 +273,6 @@ export default {
   customer_code: 'Customer Code',
   empty_package_fee: 'Empty Package Fee',
   empty_package_fee_required: 'Empty package fee is required',
+  upload_bill_file: 'Upload Bill File',
+  confirm_bill_content: 'Confirm Bill Content',
 };
