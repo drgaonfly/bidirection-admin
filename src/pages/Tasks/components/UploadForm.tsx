@@ -77,6 +77,7 @@ const UploadForm: React.FC<UpdateFormProps> = (props) => {
   const [current, setCurrent] = useState<number>(0);
   const [bills, setBills] = useState<any[]>([]);
   const [file, setFile] = useState<string>('');
+  const { _id } = values;
 
   const [billFeedback, setBillFeedback] = useState('');
 
@@ -141,38 +142,20 @@ const UploadForm: React.FC<UpdateFormProps> = (props) => {
         );
       }}
       // @ts-ignore
-      onFinish={(values) => {
+      onFinish={() => {
         if (bills.length < 1) {
-          message.error(intl.formatMessage({ id: 'no_account_library' }));
+          message.error(intl.formatMessage({ id: 'no_bill_data' }));
           return false;
         }
 
-        if (bills.length !== formRef.current?.getFieldsValue().numberOfAccounts) {
-          Modal.confirm({
-            title: intl.formatMessage({ id: 'confirm_submit' }),
-            content: intl.formatMessage({ id: 'insufficient_account_library' }),
-            onOk() {
-              setCurrent(0);
-              onOpenChange(false);
-
-              return onFinish({
-                ...values,
-                accountLibraries: bills,
-              });
-            },
-            onCancel() {
-              // do nothing
-            },
-          });
-          return;
-        }
-
-        setCurrent(0);
         onOpenChange(false);
+        setCurrent(0);
+        setBills([]);
+        setFile('');
 
         return onFinish({
-          ...values,
-          accountLibraries: bills,
+          _id,
+          billsData: bills,
         });
       }}
     >

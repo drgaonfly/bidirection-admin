@@ -129,7 +129,8 @@ const handleRemove = async (ids: string[]) => {
 const handleUploadBill = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="uploading" defaultMessage="Uploading..." />);
   try {
-    await addItem('/tasks/upload-bills', { ...fields });
+    const res = await addItem('/tasks/upload-bills', { ...fields });
+    console.log('Res', res);
     hide();
     message.success(<FormattedMessage id="upload_successful" defaultMessage="Upload successful" />);
     return true;
@@ -143,43 +144,6 @@ const handleUploadBill = async (fields: API.ItemData) => {
     return false;
   }
 };
-
-// const handleDownload = async (id: string) => {
-//   const hide = message.loading(
-//     <FormattedMessage id="preparing_download" defaultMessage="Preparing download" />,
-//   );
-//   try {
-//     const response = await handleItem(`/tasks/download-task`, { taskId: id }); // Assuming handleItem can handle method and body
-//     hide();
-
-//     console.log('response', response);
-
-//     if (response?.data) {
-//       message.success(
-//         <FormattedMessage
-//           id="file_ready"
-//           defaultMessage="File is ready, download will start soon"
-//         />,
-//       );
-//       // Optionally handle the download URL from the response
-//       window.open(response.data.signedURL, '_blank');
-//       return true;
-//     } else {
-//       throw new Error('No download URL returned');
-//     }
-//   } catch (error: any) {
-//     hide();
-//     message.error(
-//       error?.response?.data?.message ?? (
-//         <FormattedMessage
-//           id="download_failed"
-//           defaultMessage="Download failed, please try again!"
-//         />
-//       ),
-//     );
-//     return false;
-//   }
-// };
 
 const handleCancel = async (id: string) => {
   const hide = message.loading(<FormattedMessage id="canceling" defaultMessage="Canceling" />);
