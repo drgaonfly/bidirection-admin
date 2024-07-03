@@ -12,6 +12,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import BatchUploadModal from './components/BatchUploadModal';
 import { convertToTextObject, locationMapping, platformNames } from '@/utils/constants';
+import ExportButton from '@/components/Export';
 
 /**
  * @en-US Add node
@@ -272,6 +273,10 @@ const TableList: React.FC = () => {
         search={{
           labelWidth: 150,
           defaultCollapsed: false,
+          optionRender: (searchConfig, props, dom) => [
+            <ExportButton key="export" form={props.form!} exportUrl="/accounts/export" />,
+            ...dom,
+          ],
         }}
         toolBarRender={() => [
           <Button
