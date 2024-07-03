@@ -13,6 +13,7 @@ import Show from './components/Show';
 import { convertToTextObject, locationMapping, platformNames } from '@/utils/constants';
 import ExportButton from '@/components/Export';
 import BatchSetting from './components/BatchSetting';
+import BatchDeleteButton from '@/components/BatchDelete';
 
 /**
  * @en-US Add node
@@ -312,6 +313,14 @@ const TableList: React.FC = () => {
           defaultCollapsed: false,
           optionRender: (searchConfig, props, dom) => [
             <ExportButton key="export" form={props.form!} exportUrl="/empty-packages/export" />,
+            access.canSuperAdmin && (
+              <BatchDeleteButton
+                key="delete"
+                form={props.form!}
+                deleteUrl="/empty-packages/delete-records"
+                actionRef={actionRef}
+              />
+            ),
             ...dom,
           ],
         }}
