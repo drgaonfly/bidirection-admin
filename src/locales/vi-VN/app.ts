@@ -253,6 +253,8 @@ export default {
   operation_record: 'Hồ sơ hoạt động',
   'operation.applyAfterSales': 'Áp dụng sau bán hàng',
   'operation.updateBill': 'Cập nhật hóa đơn',
+  'operation.changeIsSigned': 'Thay đổi đã ký',
+  'operation.changeIsReviewed': 'Thay đổi đã xem xét',
   'copy.success': 'Văn bản đã được sao chép vào bảng tạm',
   'copy.error': 'Sao chép thất bại',
   'copy.tooltip': 'Sao chép dữ liệu vào bảng tạm',

@@ -252,6 +252,8 @@ export default {
   operation_record: '操作记录',
   'operation.applyAfterSales': '申请售后',
   'operation.updateBill': '更新账单',
+  'operation.changeIsSigned': '更改签署状态',
+  'operation.changeIsReviewed': '更改审核状态',
   'copy.success': '文本已复制到剪贴板',
   'copy.error': '复制失败',
   'copy.tooltip': '复制数据到剪贴板',
