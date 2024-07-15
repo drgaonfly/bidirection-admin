@@ -282,4 +282,5 @@ export default {
   sequenceNumber: 'Sequence Number',
   creator: 'Creator',
   claimer: 'Claimer',
+  modification_time: 'Modification Time',
 };

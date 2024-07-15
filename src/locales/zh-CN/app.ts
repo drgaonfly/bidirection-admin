@@ -281,4 +281,5 @@ export default {
   sequenceNumber: '序号',
   creator: '创建者',
   claimer: '领取人',
+  modification_time: '修改时间',
 };

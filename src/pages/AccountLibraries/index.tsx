@@ -218,6 +218,14 @@ const TableList: React.FC = () => {
     {
       title: <FormattedMessage id="creation_time" defaultMessage="Creation Time" />,
       dataIndex: 'createdAt',
+      width: 100,
+      valueType: 'date',
+      sorter: true,
+    },
+    {
+      title: <FormattedMessage id="modification_time" defaultMessage="Modification Time" />,
+      dataIndex: 'updatedAt',
+      width: 100,
       valueType: 'date',
       sorter: true,
     },

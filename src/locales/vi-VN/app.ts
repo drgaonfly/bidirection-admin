@@ -282,4 +282,5 @@ export default {
   sequenceNumber: 'Số thứ tự',
   creator: 'Người tạo',
   claimer: 'Người yêu cầu',
+  modification_time: 'Thời gian chỉnh sửa',
 };
