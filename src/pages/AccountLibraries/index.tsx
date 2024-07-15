@@ -191,7 +191,6 @@ const TableList: React.FC = () => {
       dataIndex: 'remark',
       ellipsis: true,
       width: 150,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'is_abnormal' }),
