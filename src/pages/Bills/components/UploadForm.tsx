@@ -57,6 +57,20 @@ const BillTable = ({ bills }: { bills: any[] }) => {
       key: 'customerCode',
       width: 200,
     },
+    {
+      title: <FormattedMessage id="note" defaultMessage="Remark" />,
+      dataIndex: 'remark',
+      key: 'remark',
+      ellipsis: true,
+      width: 200,
+    },
+    {
+      title: <FormattedMessage id="upload_time" defaultMessage="Date" />,
+      dataIndex: 'date',
+      key: 'date',
+      valueType: 'datetime',
+      width: 200,
+    },
   ];
 
   if (bills.length === 0) {
@@ -133,7 +147,14 @@ const UploadForm: React.FC<UpdateFormProps> = (props) => {
           } catch (error: any) {
             console.log(error);
             setBills([]);
-            message.error(error?.response?.data?.message || 'Adding failed, please try again!');
+            Modal.error({
+              title: 'Error',
+              content: error?.response?.data?.error || 'Adding failed, please try again!',
+              okText: 'Confirm',
+              onOk() {
+                // 确认按钮的回调函数
+              },
+            });
             return false;
           } finally {
             setLoading(false);
@@ -151,7 +172,7 @@ const UploadForm: React.FC<UpdateFormProps> = (props) => {
       stepsFormRender={(dom, submitter) => {
         return (
           <Modal
-            width="50%"
+            width="90%"
             bodyStyle={{ padding: '32px 40px 48px' }}
             destroyOnClose
             title={intl.formatMessage({ id: 'upload_bill', defaultMessage: 'Upload Bill' })}
