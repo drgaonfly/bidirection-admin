@@ -334,26 +334,26 @@ const TableList: React.FC = () => {
    * */
 
   const columns: ProColumns<API.ItemData>[] = [
-    {
-      title: intl.formatMessage({ id: 'related_task' }),
-      dataIndex: 'task',
-      width: 200,
-      copyable: true,
-      render: (dom, record: any) => {
-        return record.task ? (
-          <a
-            onClick={() => {
-              setCurrentTask(record.task);
-              setShowTaskDetail(true);
-            }}
-          >
-            {record.task.code}
-          </a>
-        ) : (
-          intl.formatMessage({ id: 'none' })
-        );
-      },
-    },
+    // {
+    //   title: intl.formatMessage({ id: 'related_task' }),
+    //   dataIndex: 'task',
+    //   width: 200,
+    //   copyable: true,
+    //   render: (dom, record: any) => {
+    //     return record.task ? (
+    //       <a
+    //         onClick={() => {
+    //           setCurrentTask(record.task);
+    //           setShowTaskDetail(true);
+    //         }}
+    //       >
+    //         {record.task.code}
+    //       </a>
+    //     ) : (
+    //       intl.formatMessage({ id: 'none' })
+    //     );
+    //   },
+    // },
     {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: 'customer',
