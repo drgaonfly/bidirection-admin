@@ -48,7 +48,7 @@ const BatchUploadModal: React.FC<Props> = ({ open, onOpenChange, onFinish }) => 
       >
         <div style={{ marginBottom: '30px' }}>
           <a
-            href="https://backend.maomaozhaocai.com/api/static/AccountRepositoryTemplate.xlsx"
+            href="http://backend.maomaozhaocai.com/api/static/AccountRepositoryTemplate.xlsx"
             download
           >
             {intl.formatMessage({ id: 'download_template', defaultMessage: 'Download Template' })}
