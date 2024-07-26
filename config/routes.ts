@@ -88,6 +88,13 @@ export default [
     component: './AccountAssignmentRecords',
   },
   {
+    name: '账号分配记录-测试',
+    icon: 'fileText',
+    access: 'canSeeAssignmentRecords',
+    path: '/assignment-records',
+    component: './AccountAssignmentRecordsTest',
+  },
+  {
     name: 'list.createAfterSalesOrder',
     icon: 'customerService',
     access: 'canSeeAfterSalesOrders',
