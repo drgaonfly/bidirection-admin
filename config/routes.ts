@@ -90,7 +90,7 @@ export default [
   {
     name: '账号分配记录-测试',
     icon: 'fileText',
-    access: 'canSeeAssignmentRecords',
+    access: 'canSuperAdmin',
     path: '/assignment-records-test',
     component: './AccountAssignmentRecordsTest',
   },
