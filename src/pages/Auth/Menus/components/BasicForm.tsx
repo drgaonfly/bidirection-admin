@@ -14,7 +14,7 @@ interface Props {
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
   const { items: menus } = useQueryList('/menus');
-  const { items: permissions } = useQueryList('/permissions');
+  const { items: permissions, loading } = useQueryList('/permissions');
   console.log('parent', values);
 
   return (
@@ -77,6 +77,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
               children: 'children',
             },
             treeData: menus,
+            loading,
           }}
         />
       </ProForm.Group>

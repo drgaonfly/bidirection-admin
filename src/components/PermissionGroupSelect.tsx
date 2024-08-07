@@ -6,7 +6,7 @@ import useQueryList from '@/hooks/useQueryList';
 
 const PermissionGroupSelect = ({ name, label }: { name: string; label: string }) => {
   const intl = useIntl();
-  const { items: permissionGroups, loading } = useQueryList('/permission-groups/list');
+  const { items: permissionGroups, loading } = useQueryList('/permission-groups');
 
   return (
     <Spin spinning={loading}>

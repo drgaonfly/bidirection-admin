@@ -1,7 +1,7 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { Button, message, Modal } from 'antd';
@@ -9,6 +9,7 @@ import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
+import Show from './components/Show';
 
 /**
  * @en-US Add node
@@ -107,6 +108,7 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
 
   /**
@@ -119,6 +121,19 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
+      copyable: true,
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              setShowDetail(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
     },
     {
       title: intl.formatMessage({ id: 'permissions_list' }),
@@ -262,6 +277,15 @@ const TableList: React.FC = () => {
         onCancel={handleUpdateModalOpen}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
+      />
+      <Show
+        open={showDetail}
+        currentRow={currentRow as API.ItemData}
+        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
+        onClose={() => {
+          setCurrentRow(undefined);
+          setShowDetail(false);
+        }}
       />
     </PageContainer>
   );

@@ -14,7 +14,7 @@ interface Props {
 const BasicForm: React.FC<Props> = (props) => {
   const intl = useIntl();
   const { setImageUrl, imageUrl } = props;
-  const { items: categories } = useQueryList('/material-categories');
+  const { items: categories, loading } = useQueryList('/material-categories');
 
   const defaultFileList = imageUrl
     ? [
@@ -67,14 +67,11 @@ const BasicForm: React.FC<Props> = (props) => {
               children: 'children',
             },
             treeData: categories,
+            loading,
           }}
         />
 
-        <ProFormSwitch
-          name="featured"
-          label={intl.formatMessage({ id: 'featured' })}
-          tooltip={intl.formatMessage({ id: 'featured.tooltip' })}
-        />
+        <ProFormSwitch name="featured" label={intl.formatMessage({ id: 'featured' })} />
       </ProForm.Group>
     </>
   );

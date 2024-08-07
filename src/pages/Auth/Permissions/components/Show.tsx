@@ -84,16 +84,16 @@ const Show: React.FC<Props> = (props) => {
   const [position] = useState<'top' | 'bottom' | 'hidden'>('hidden');
   return (
     <Drawer width="70%" open={open} onClose={onClose} closable={false}>
-      {currentRow?.email && (
+      {currentRow?.name && (
         <>
           <ProDescriptions<API.ItemData>
             column={2}
-            title={currentRow?.email}
+            title={currentRow?.name}
             request={async () => ({
               data: currentRow || {},
             })}
             params={{
-              id: currentRow?.email,
+              id: currentRow?.name,
             }}
             columns={cols as ProDescriptionsItemProps<API.ItemData>[]}
           />

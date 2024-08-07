@@ -1,7 +1,7 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { Button, message, Modal, TreeSelect } from 'antd';
@@ -10,6 +10,7 @@ import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import useQueryList from '@/hooks/useQueryList';
+import Show from './components/Show';
 
 /**
  * @en-US Add node
@@ -91,6 +92,7 @@ const TableList: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const access = useAccess();
+  const [showDetail, setShowDetail] = useState<boolean>(false);
   const { items: categories } = useQueryList('/material-categories');
 
   /**
@@ -101,15 +103,19 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
-      render: (text, record) => (
-        <a
-          onClick={() => {
-            setCurrentRow(record);
-          }}
-        >
-          {text}
-        </a>
-      ),
+      copyable: true,
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              setShowDetail(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
     },
     {
       title: intl.formatMessage({ id: 'image' }),
@@ -119,12 +125,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'parent_category' }),
-      dataIndex: 'parent',
-      render: (_, record) => {
-        return record.parent && record.parent.name
-          ? record.parent.name
-          : intl.formatMessage({ id: '---' });
-      },
+      dataIndex: ['parent', 'name'],
       // @ts-ignore
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       renderFormItem: (_, { type, defaultRender, formItemProps, fieldProps, ...rest }, form) => {
@@ -136,7 +137,7 @@ const TableList: React.FC = () => {
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder={intl.formatMessage({ id: 'select.parent.category' })}
+            placeholder={intl.formatMessage({ id: 'select_parent_category' })}
             allowClear
             treeNodeFilterProp="name"
             fieldNames={{ label: 'name', value: '_id', children: 'children' }}
@@ -150,21 +151,10 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'featured' }),
       dataIndex: 'featured',
-      tooltip: intl.formatMessage({ id: 'featured.tooltip' }),
       valueEnum: {
         true: { text: intl.formatMessage({ id: 'yes' }), status: 'Error' },
         false: { text: intl.formatMessage({ id: 'no' }), status: 'Success' },
       },
-    },
-    {
-      title: intl.formatMessage({ id: 'description' }),
-      dataIndex: 'description',
-      ellipsis: true,
-      hideInSearch: true,
-      hideInTable: true,
-      render: (_, record: any) => (
-        <div dangerouslySetInnerHTML={{ __html: record.description as string }} />
-      ),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -178,17 +168,17 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          {intl.formatMessage({ id: 'link.edit' })}
+          {intl.formatMessage({ id: 'edit' })}
         </a>,
         access.canSuperAdmin && (
           <a
             key="delete"
             onClick={() => {
               Modal.confirm({
-                title: intl.formatMessage({ id: 'modal.delete.title' }),
-                content: intl.formatMessage({ id: 'modal.delete.content' }),
-                okText: intl.formatMessage({ id: 'modal.okText' }),
-                cancelText: intl.formatMessage({ id: 'modal.cancelText' }),
+                title: intl.formatMessage({ id: 'confirm_delete' }),
+                content: intl.formatMessage({ id: 'confirm_delete_content' }),
+                okText: intl.formatMessage({ id: 'confirm' }),
+                cancelText: intl.formatMessage({ id: 'cancel' }),
                 onOk: async () => {
                   await handleRemove([record._id!]);
                   actionRef.current?.reloadAndRest?.();
@@ -196,7 +186,7 @@ const TableList: React.FC = () => {
               });
             }}
           >
-            {intl.formatMessage({ id: 'link.delete' })}
+            {intl.formatMessage({ id: 'delete' })}
           </a>
         ),
       ],
@@ -206,7 +196,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'header.list' })}
+        headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
         search={{
@@ -295,6 +285,15 @@ const TableList: React.FC = () => {
         onCancel={handleUpdateModalOpen}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
+      />
+      <Show
+        open={showDetail}
+        currentRow={currentRow as API.ItemData}
+        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
+        onClose={() => {
+          setCurrentRow(undefined);
+          setShowDetail(false);
+        }}
       />
     </PageContainer>
   );

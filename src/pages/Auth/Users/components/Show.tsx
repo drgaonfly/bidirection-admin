@@ -100,7 +100,7 @@ const Show: React.FC<Props> = (props) => {
 
           <EditableProTable<IPriceList>
             rowKey="_id"
-            headerTitle={<FormattedMessage id="price_list" defaultMessage="Price List" />}
+            headerTitle={<FormattedMessage id="deatil_list" />}
             maxLength={5}
             scroll={{
               x: 960,
