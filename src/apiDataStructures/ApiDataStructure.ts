@@ -7,13 +7,13 @@ export interface Menu {
 }
 
 export interface Role {
-  permissions: any;
+  permissions: Permission[];
   _id: string;
   name: string;
 }
 
 export interface PermissionGroup {
-  _id: any;
+  _id: string;
   name: string;
   path: string;
   action: string;

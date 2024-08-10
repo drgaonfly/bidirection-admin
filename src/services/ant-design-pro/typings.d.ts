@@ -3,11 +3,12 @@
 
 declare namespace API {
   type CurrentUser = {
+    isAdmin: CurrentUser | undefined;
     data?: any;
     name?: string;
     avatar?: string;
     role?: string;
-    roles?: string[];
+    roles?: any;
     _id?: string;
     userid?: string;
     email?: string;

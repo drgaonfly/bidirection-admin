@@ -301,4 +301,5 @@ export default {
   modification_time: 'Modification Time',
   select_online: 'Online',
   select_offline: 'Offline',
+  isAdmin: 'isAdmin',
 };

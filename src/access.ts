@@ -7,83 +7,36 @@ export const ROLES = {
   CustomerService: 'CUSTOMER_SERVICE', // New role for customer service
 } as const;
 
+// const checkPermission = (currentUser: API.CurrentUser, action: string, path: string) => {
+//   return (
+//     currentUser &&
+//     currentUser.roles.some(
+//       (role: any) => role.permissions && !!role.permissions.find((item: any) => item.action === action && item.path === path),
+//     )
+//   );
+// };
+
+// export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
+//   const { currentUser } = initialState ?? {};
+//   return {
+//     canAdmin: currentUser && currentUser.isAdmin,
+//     canUpdateRole: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles/:id', "PUT")),
+//     canCreateRole: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles','POST')),
+//     canUpdateUser: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id','PUT')),
+//     canDeleteUser: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles','Delete')),
+//   };
+// }
+
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
   const { currentUser } = initialState ?? {};
 
   return {
     canSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
 
-    canSeeTasks:
-      currentUser &&
-      (currentUser.role === ROLES.Customer ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.OrderPlacer ||
-        currentUser.role === ROLES.Reviewer ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canSeeBills:
-      currentUser &&
-      (currentUser.role === ROLES.Customer ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.OrderPlacer ||
-        currentUser.role === ROLES.Reviewer ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canSeeEmptyPackages:
-      currentUser &&
-      (currentUser.role === ROLES.Customer ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canSeeAccountLibrary:
-      currentUser &&
-      (currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canSeeAssignmentRecords:
-      currentUser &&
-      (currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.SuperAdmin ||
-        currentUser.role === ROLES.OrderPlacer),
-
-    canSeeAfterSalesOrders:
-      currentUser &&
-      (currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.OrderPlacer ||
-        currentUser.role === ROLES.SuperAdmin ||
-        currentUser.role === ROLES.Reviewer),
-
-    canSeeCourses:
-      currentUser &&
-      (currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.SuperAdmin ||
-        currentUser.role === ROLES.Customer ||
-        currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.OrderPlacer ||
-        currentUser.role === ROLES.Reviewer),
-
     // Check if the user is either in the specific role or a SuperAdmin for broader access
     canCustomer:
       currentUser &&
       (currentUser.role === ROLES.Customer ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canOrderPlacer:
-      currentUser &&
-      (currentUser.role === ROLES.OrderPlacer ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canReviewer:
-      currentUser &&
-      (currentUser.role === ROLES.Reviewer ||
         currentUser.role === ROLES.Admin ||
         currentUser.role === ROLES.SuperAdmin),
 
@@ -95,11 +48,5 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
 
     canAdmin:
       currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
-    canEditUsers:
-      currentUser && (currentUser.role === ROLES.SuperAdmin || currentUser.role === ROLES.Admin),
-    isCustomerService: currentUser && currentUser.role === ROLES.CustomerService,
-    isSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
-    isOrderPlacer: currentUser && currentUser.role === ROLES.OrderPlacer,
-    isReviewer: currentUser && currentUser.role === ROLES.Reviewer,
   };
 }

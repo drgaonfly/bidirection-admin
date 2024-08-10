@@ -86,7 +86,7 @@ export default {
   upload_user: '上传用户',
   enter_name: '请输入名称',
   enter_path: '请输入路径',
-  enter_action: '请输入动作',
+  enter_action: '请输入方法',
   name: '名称',
   parent: '父级菜单',
   permissions_list: '权限列表',
@@ -99,7 +99,7 @@ export default {
   select_parent_menu: '请选择父级菜单',
   select_parent_category: '请选择父级目录',
   select_permissionGroup: '请选择权限组',
-  action: '行为',
+  action: '方法',
   permission_group: '权限组',
   permission: '权限',
   enter_email: '请输入邮箱',
@@ -302,4 +302,5 @@ export default {
   modification_time: '修改时间',
   select_online: '在线',
   select_offline: '离线',
+  isAdmin: '是否为超级管理员',
 };
