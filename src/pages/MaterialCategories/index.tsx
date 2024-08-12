@@ -187,7 +187,7 @@ const TableList: React.FC = () => {
         >
           {intl.formatMessage({ id: 'edit' })}
         </a>,
-        access.canSuperAdmin && (
+        access.canDeleteMaterialCategory && (
           <a
             key="delete"
             onClick={() => {
@@ -250,7 +250,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canSuperAdmin && (
+          {(access.canSuperAdmin || access.canDeleteMaterialCategory) && (
             <Button
               danger
               onClick={() => {
@@ -275,34 +275,38 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      <Create
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.ItemData);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
+      {(access.canSuperAdmin || access.canCreateMaterialCategory) && (
+        <Create
+          open={createModalOpen}
+          onOpenChange={handleModalOpen}
+          onFinish={async (value) => {
+            const success = await handleAdd(value as API.ItemData);
+            if (success) {
+              handleModalOpen(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
             }
-          }
-        }}
-      />
-      <Update
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalOpen(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
+          }}
+        />
+      )}
+      {(access.canSuperAdmin || access.canUpdateMaterialCategory) && (
+        <Update
+          onSubmit={async (value) => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalOpen(false);
+              setCurrentRow(undefined);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
             }
-          }
-        }}
-        onCancel={handleUpdateModalOpen}
-        updateModalOpen={updateModalOpen}
-        values={currentRow || {}}
-      />
+          }}
+          onCancel={handleUpdateModalOpen}
+          updateModalOpen={updateModalOpen}
+          values={currentRow || {}}
+        />
+      )}
       <Show
         open={showDetail}
         currentRow={currentRow as API.ItemData}

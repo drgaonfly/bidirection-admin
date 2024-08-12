@@ -209,7 +209,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canAdmin && (
+        access.canSuperAdmin && (
           <a
             key="edit"
             onClick={() => {
@@ -221,7 +221,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canAdmin && (
+        access.canSuperAdmin && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -244,7 +244,7 @@ const TableList: React.FC = () => {
           labelWidth: 100,
         }}
         toolBarRender={() => [
-          (access.canAdmin || access.canCustomerService) && (
+          (access.canSuperAdmin || access.canUpdateUser) && (
             <Button
               type="primary"
               key="primary"
@@ -255,7 +255,7 @@ const TableList: React.FC = () => {
               <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
             </Button>
           ),
-          (access.canAdmin || access.canCustomerService) && (
+          (access.canSuperAdmin || access.canUpdateUser) && (
             <Button
               danger
               key="batchUpload"
@@ -288,7 +288,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canAdmin && (
+          {(access.canSuperAdmin || access.canDeleteUser) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -299,35 +299,38 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      <Create
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.ItemData);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
+      {(access.canSuperAdmin || access.canCreateUser) && (
+        <Create
+          open={createModalOpen}
+          onOpenChange={handleModalOpen}
+          onFinish={async (value) => {
+            const success = await handleAdd(value as API.ItemData);
+            if (success) {
+              handleModalOpen(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
             }
-          }
-        }}
-      />
-      <Update
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalOpen(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
+          }}
+        />
+      )}
+      {(access.canSuperAdmin || access.canUpdateUser) && (
+        <Update
+          onSubmit={async (value) => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalOpen(false);
+              setCurrentRow(undefined);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
             }
-          }
-        }}
-        onCancel={handleUpdateModalOpen}
-        updateModalOpen={updateModalOpen}
-        values={currentRow || {}}
-      />
-
+          }}
+          onCancel={handleUpdateModalOpen}
+          updateModalOpen={updateModalOpen}
+          values={currentRow || {}}
+        />
+      )}
       <BatchUploadModal
         open={batchUploadModalOpen}
         onOpenChange={setBatchUploadModalOpen}
@@ -341,7 +344,6 @@ const TableList: React.FC = () => {
           }
         }}
       />
-
       <Recharge
         onSubmit={async (value) => {
           const success = await handleRecharge(value);

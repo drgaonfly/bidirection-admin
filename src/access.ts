@@ -1,52 +1,127 @@
-export const ROLES = {
-  SuperAdmin: 'SUPER_ADMIN',
-  Admin: 'ADMIN',
-  Customer: 'CUSTOMER',
-  OrderPlacer: 'ORDER_PLACER', // New role for placing orders
-  Reviewer: 'REVIEWER', // New role for reviewing orders
-  CustomerService: 'CUSTOMER_SERVICE', // New role for customer service
-} as const;
+// export const ROLES = {
+//   SuperAdmin: 'SUPER_ADMIN',
+//   Admin: 'ADMIN',
+//   Customer: 'CUSTOMER',
+//   OrderPlacer: 'ORDER_PLACER', // New role for placing orders
+//   Reviewer: 'REVIEWER', // New role for reviewing orders
+//   CustomerService: 'CUSTOMER_SERVICE', // New role for customer service
+// } as const;
 
-// const checkPermission = (currentUser: API.CurrentUser, action: string, path: string) => {
-//   return (
-//     currentUser &&
-//     currentUser.roles.some(
-//       (role: any) => role.permissions && !!role.permissions.find((item: any) => item.action === action && item.path === path),
-//     )
-//   );
-// };
-
-// export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
-//   const { currentUser } = initialState ?? {};
-//   return {
-//     canAdmin: currentUser && currentUser.isAdmin,
-//     canUpdateRole: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles/:id', "PUT")),
-//     canCreateRole: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles','POST')),
-//     canUpdateUser: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id','PUT')),
-//     canDeleteUser: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles','Delete')),
-//   };
-// }
+const checkPermission = (currentUser: API.CurrentUser, action: string, path: string) => {
+  return (
+    currentUser &&
+    currentUser.roles.some(
+      (role: any) =>
+        role.permissions &&
+        !!role.permissions.find((item: any) => item.action === action && item.path === path),
+    )
+  );
+};
 
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
   const { currentUser } = initialState ?? {};
-
   return {
-    canSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
+    canSuperAdmin: currentUser && currentUser.isAdmin,
 
-    // Check if the user is either in the specific role or a SuperAdmin for broader access
-    canCustomer:
+    canUpdateRole:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles/:id', 'PUT')),
+    canCreateRole:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles', 'POST')),
+    canDeleteRole:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles', 'DELETE')),
+    canGetRole:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/roles', 'GET')),
+
+    canUpdateUser:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id', 'PUT')),
+    canDeleteUser:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users', 'Delete')),
+    canCreateUser:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users', 'POST')),
+    canGetUser:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users', 'GET')),
+
+    canUpdateMenu:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/menus/:id', 'PUT')),
+    canDeleteMenu:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/menus', 'DELETE')),
+    canCreateMenu:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/menus', 'POST')),
+    canGetMenu:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/menus', 'GET')),
+
+    canUpdatePermission:
       currentUser &&
-      (currentUser.role === ROLES.Customer ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.SuperAdmin),
-
-    canCustomerService:
+      (currentUser.isAdmin || checkPermission(currentUser, '/permissions/:id', 'PUT')),
+    canDeletePermission:
       currentUser &&
-      (currentUser.role === ROLES.CustomerService ||
-        currentUser.role === ROLES.Admin ||
-        currentUser.role === ROLES.SuperAdmin),
+      (currentUser.isAdmin || checkPermission(currentUser, '/permissions', 'DELETE')),
+    canCreatePermission:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/permissions', 'POST')),
+    canGetPermission:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/permissions', 'GET')),
 
-    canAdmin:
-      currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
+    canUpdateDataPermission:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/data-permissions/:id', 'PUT')),
+    canDeleteDataPermission:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/data-permissions', 'DELETE')),
+    canCreateDataPermission:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/data-permissions', 'POST')),
+    canGetDataPermission:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/data-permissions', 'GET')),
+
+    canCreateMaterialCategory:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories', 'POST')),
+    canDeleteMaterialCategory:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories', 'DELETE')),
+    canUpdateMaterialCategory:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories/:id', 'PUT')),
+    canGetMaterialCategory:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories', 'GET')),
+
+    canCreatePermissionGroup:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups', 'POST')),
+    canDeletePermissionGroup:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups', 'DELETE')),
+    canUpdatePermissionGroup:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups/:id', 'PUT')),
+    canGetPermissionGroup:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups', 'GET')),
   };
 }
+
+// export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
+//   const { currentUser } = initialState ?? {};
+
+//   return {
+//     canSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
+
+//     // Check if the user is either in the specific role or a SuperAdmin for broader access
+//     canCustomer:
+//       currentUser &&
+//       (currentUser.role === ROLES.Customer ||
+//         currentUser.role === ROLES.Admin ||
+//         currentUser.role === ROLES.SuperAdmin),
+
+//     canCustomerService:
+//       currentUser &&
+//       (currentUser.role === ROLES.CustomerService ||
+//         currentUser.role === ROLES.Admin ||
+//         currentUser.role === ROLES.SuperAdmin),
+
+//     canAdmin:
+//       currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
+//   };
+// }

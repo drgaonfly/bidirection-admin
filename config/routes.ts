@@ -11,6 +11,8 @@
  * @doc https://umijs.org/docs/guides/routes
  */
 
+import access from '@/access';
+
 export default [
   {
     path: '/user',
@@ -49,6 +51,7 @@ export default [
     path: '/auth',
     name: 'list.auth',
     icon: 'table',
+    access: 'canGetMenu',
     routes: [
       {
         path: '/auth/users',
@@ -85,7 +88,6 @@ export default [
   {
     name: 'list.materialCategories',
     icon: 'checkCircle',
-    access: 'canSuperAdmin',
     path: '/material-categories',
     component: './MaterialCategories',
   },
