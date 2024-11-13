@@ -132,7 +132,14 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
-      sorter: true,
+      render: (_, record) => (record.createdAt ? new Date(record.createdAt).toLocaleString() : '-'),
+    },
+    {
+      title: intl.formatMessage({ id: 'updatedAt' }),
+      dataIndex: 'updatedAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+      render: (_, record) => (record.updatedAt ? new Date(record.updatedAt).toLocaleString() : '-'),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,

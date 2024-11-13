@@ -35,4 +35,5 @@ export default {
   'select.transactionType': 'Please select transaction type',
   'menu.bills': 'Bills',
   list: 'Bills List',
+  updatedAt: 'Update Time',
 };
