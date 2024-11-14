@@ -132,6 +132,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
+      hideInSearch: true,
       render: (_, record) => (record.createdAt ? new Date(record.createdAt).toLocaleString() : '-'),
     },
     {
@@ -155,7 +156,7 @@ const TableList: React.FC = () => {
         >
           {intl.formatMessage({ id: 'edit' })}
         </a>,
-        access.canDeleteMaterialCategory && (
+        access.canDeleteBill && (
           <a
             key="delete"
             onClick={() => {
@@ -259,7 +260,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteMaterialCategory) && (
+          {(access.canSuperAdmin || access.canDeleteBill) && (
             <Button
               danger
               onClick={() => {
@@ -284,7 +285,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateMaterialCategory) && (
+      {(access.canSuperAdmin || access.canCreateBill) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -299,7 +300,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateMaterialCategory) && (
+      {(access.canSuperAdmin || access.canUpdateBill) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

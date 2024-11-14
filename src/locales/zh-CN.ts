@@ -38,7 +38,7 @@ export default {
   'enter.fixedRate': '请输入固定汇率',
   'select.transactionType': '请选择交易类型',
   'menu.bills': '账单',
-  list: '账单列表',
+  list: '列表',
 
   // Bot 相关字段
   botId: '机器人ID',
@@ -81,4 +81,19 @@ export default {
   'modal.delete.content': '确定要删除选中的记录吗？',
   'modal.okText': '确认',
   'modal.cancelText': '取消',
+
+  // 表格相关
+  'pages.searchTable.updateForm.title': '编辑机器人',
+  'pages.searchTable.form.botId': '机器人ID',
+  'pages.searchTable.form.botToken': '机器人Token',
+  'pages.searchTable.form.botUsername': '机器人用户名',
+  'pages.searchTable.form.botName': '机器人名称',
+  'pages.searchTable.form.telegramId': 'Telegram ID',
+  'pages.searchTable.form.telegramUsername': 'Telegram 用户名',
+  'pages.searchTable.form.placeholder': '请输入',
+  'pages.searchTable.form.required': '此项为必填项',
+  description: '描述',
+  'pages.searchTable.form.description.placeholder': '请输入机器人描述',
+  'menu.bot': '机器人管理',
+  'pages.bot.list': '列表',
 };

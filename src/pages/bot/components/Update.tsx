@@ -1,4 +1,4 @@
-import { ModalForm, ProFormText } from '@ant-design/pro-components';
+import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 
 export type FormValueType = {
@@ -9,6 +9,7 @@ export type FormValueType = {
   botName?: string;
   telegramId?: string;
   telegramUsername?: string;
+  description?: string;
 };
 
 export type UpdateFormProps = {
@@ -26,42 +27,73 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     <ModalForm
       title={intl.formatMessage({ id: 'pages.searchTable.updateForm.title' })}
       open={updateModalOpen}
-      onFinish={async (formValues) => {
-        await onSubmit({ ...values, ...formValues }); // 合并原有值和表单值
+      modalProps={{
+        onCancel: () => onCancel(false),
       }}
-      onOpenChange={onCancel}
-      initialValues={values} // 设置初始值
+      onFinish={async (formValues) => {
+        await onSubmit({
+          ...values,
+          ...formValues,
+        });
+        return true;
+      }}
+      initialValues={values}
     >
       <ProFormText
         name="botId"
-        label={intl.formatMessage({ id: 'botId' })}
-        placeholder={intl.formatMessage({ id: 'please.enter' })}
+        label={intl.formatMessage({ id: 'pages.searchTable.form.botId' })}
+        placeholder={intl.formatMessage({
+          id: 'pages.searchTable.form.placeholder',
+        })}
       />
       <ProFormText
         name="botToken"
-        label={intl.formatMessage({ id: 'botToken' })}
-        placeholder={intl.formatMessage({ id: 'please.enter' })}
-        rules={[{ required: true }]}
+        label={intl.formatMessage({ id: 'pages.searchTable.form.botToken' })}
+        rules={[
+          {
+            required: true,
+            message: intl.formatMessage({ id: 'pages.searchTable.form.required' }),
+          },
+        ]}
+        placeholder={intl.formatMessage({
+          id: 'pages.searchTable.form.placeholder',
+        })}
       />
       <ProFormText
         name="botUsername"
-        label={intl.formatMessage({ id: 'botUsername' })}
-        placeholder={intl.formatMessage({ id: 'please.enter' })}
+        label={intl.formatMessage({ id: 'pages.searchTable.form.botUsername' })}
+        placeholder={intl.formatMessage({
+          id: 'pages.searchTable.form.placeholder',
+        })}
       />
       <ProFormText
         name="botName"
-        label={intl.formatMessage({ id: 'botName' })}
-        placeholder={intl.formatMessage({ id: 'please.enter' })}
+        label={intl.formatMessage({ id: 'pages.searchTable.form.botName' })}
+        placeholder={intl.formatMessage({
+          id: 'pages.searchTable.form.placeholder',
+        })}
       />
       <ProFormText
         name="telegramId"
-        label={intl.formatMessage({ id: 'telegramId' })}
-        placeholder={intl.formatMessage({ id: 'please.enter' })}
+        label={intl.formatMessage({ id: 'pages.searchTable.form.telegramId' })}
+        placeholder={intl.formatMessage({
+          id: 'pages.searchTable.form.placeholder',
+        })}
       />
       <ProFormText
         name="telegramUsername"
-        label={intl.formatMessage({ id: 'telegramUsername' })}
-        placeholder={intl.formatMessage({ id: 'please.enter' })}
+        label={intl.formatMessage({ id: 'pages.searchTable.form.telegramUsername' })}
+        placeholder={intl.formatMessage({
+          id: 'pages.searchTable.form.placeholder',
+        })}
+      />
+      <ProFormTextArea
+        name="description"
+        label={intl.formatMessage({ id: 'description' })}
+        placeholder={intl.formatMessage({ id: 'pages.searchTable.form.placeholder' })}
+        fieldProps={{
+          autoSize: { minRows: 2, maxRows: 6 },
+        }}
       />
     </ModalForm>
   );

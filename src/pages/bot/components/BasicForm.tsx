@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
 interface Props {
   values?: any;
@@ -47,6 +47,15 @@ const BasicForm: React.FC<Props> = () => {
           label={intl.formatMessage({ id: 'telegramUsername' })}
           width="md"
           placeholder={intl.formatMessage({ id: 'please.enter' })}
+        />
+        <ProFormTextArea
+          name="description"
+          label={intl.formatMessage({ id: 'description' })}
+          width="xl"
+          placeholder={intl.formatMessage({ id: 'please.enter' })}
+          fieldProps={{
+            autoSize: { minRows: 2, maxRows: 6 },
+          }}
         />
       </ProForm.Group>
     </>

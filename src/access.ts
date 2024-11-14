@@ -74,18 +74,22 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/data-permissions', 'GET')),
 
-    canCreateMaterialCategory:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories', 'POST')),
-    canDeleteMaterialCategory:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories', 'DELETE')),
-    canUpdateMaterialCategory:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories/:id', 'PUT')),
-    canGetMaterialCategory:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/material-categories', 'GET')),
+    canCreateBot:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'POST')),
+    canDeleteBot:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'DELETE')),
+    canUpdateBot:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots/:id', 'PUT')),
+    canGetBot: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'GET')),
+
+    canCreateBill:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills', 'POST')),
+    canDeleteBill:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills', 'DELETE')),
+    canUpdateBill:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills/:id', 'PUT')),
+    canGetBill:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills', 'GET')),
 
     canCreatePermissionGroup:
       currentUser &&

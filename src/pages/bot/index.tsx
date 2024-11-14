@@ -9,6 +9,7 @@ import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
+import DeleteLink from '@/components/DeleteLink';
 
 /**
  * @en-US Add node
@@ -108,7 +109,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'botToken' }),
       dataIndex: 'botToken',
       valueType: 'text',
-      hideInTable: true, // 出于安全考虑，在表格中隐藏 token
+      hideInTable: false, // 出于安全考虑，在表格中隐藏 token
       search: false,
     },
     {
@@ -126,10 +127,19 @@ const TableList: React.FC = () => {
       dataIndex: 'telegramId',
       valueType: 'text',
     },
+
     {
       title: intl.formatMessage({ id: 'telegramUsername' }),
       dataIndex: 'telegramUsername',
       valueType: 'text',
+    },
+    {
+      title: intl.formatMessage({ id: 'description' }),
+      dataIndex: 'description',
+      valueType: 'text',
+      ellipsis: true, // 超长自动省略
+      copyable: true, // 允许复制
+      search: false, // 搜索表单中不显示
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
@@ -137,13 +147,6 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
       hideInSearch: true,
       render: (_, record) => (record.createdAt ? new Date(record.createdAt).toLocaleString() : '-'),
-    },
-    {
-      title: intl.formatMessage({ id: 'updatedAt' }),
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      render: (_, record) => (record.updatedAt ? new Date(record.updatedAt).toLocaleString() : '-'),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
@@ -159,24 +162,14 @@ const TableList: React.FC = () => {
         >
           {intl.formatMessage({ id: 'edit' })}
         </a>,
-        access.canDeleteMaterialCategory && (
-          <a
+        access.canDeleteBot && (
+          <DeleteLink
             key="delete"
-            onClick={() => {
-              Modal.confirm({
-                title: intl.formatMessage({ id: 'confirm_delete' }),
-                content: intl.formatMessage({ id: 'confirm_delete_content' }),
-                okText: intl.formatMessage({ id: 'confirm' }),
-                cancelText: intl.formatMessage({ id: 'cancel' }),
-                onOk: async () => {
-                  await handleRemove([record._id!]);
-                  actionRef.current?.reloadAndRest?.();
-                },
-              });
+            onOk={async () => {
+              await handleRemove([record._id!]);
+              actionRef.current?.reloadAndRest?.();
             }}
-          >
-            {intl.formatMessage({ id: 'delete' })}
-          </a>
+          />
         ),
       ],
     },
@@ -185,7 +178,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list' })}
+        headerTitle={intl.formatMessage({ id: 'pages.bot.list' })}
         actionRef={actionRef}
         rowKey="_id"
         search={{
@@ -235,7 +228,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteMaterialCategory) && (
+          {(access.canSuperAdmin || access.canDeleteBot) && (
             <Button
               danger
               onClick={() => {
@@ -260,7 +253,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateMaterialCategory) && (
+      {(access.canSuperAdmin || access.canCreateBot) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -275,7 +268,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateMaterialCategory) && (
+      {(access.canSuperAdmin || access.canUpdateBot) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
@@ -287,7 +280,7 @@ const TableList: React.FC = () => {
               }
             }
           }}
-          onCancel={() => handleUpdateModalOpen(false)}
+          onCancel={handleUpdateModalOpen}
           updateModalOpen={updateModalOpen}
           values={currentRow || {}}
         />
