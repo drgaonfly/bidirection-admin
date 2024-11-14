@@ -39,4 +39,46 @@ export default {
   'select.transactionType': '请选择交易类型',
   'menu.bills': '账单',
   list: '账单列表',
+
+  // Bot 相关字段
+  botId: '机器人ID',
+  botToken: '机器人Token',
+  botUsername: '机器人用户名',
+  botName: '机器人名称',
+  telegramId: 'Telegram ID',
+  telegramUsername: 'Telegram 用户名',
+
+  // 操作相关
+  create: '创建',
+  modify: '修改',
+  edit: '编辑',
+  delete: '删除',
+
+  // 提示信息
+  'please.enter': '请输入',
+  confirm_delete: '确认删除',
+  confirm_delete_content: '确定要删除这条记录吗？',
+  confirm: '确认',
+  cancel: '取消',
+
+  // 操作反馈
+  'Added successfully': '添加成功',
+  'Adding failed, please try again!': '添加失败，请重试！',
+  'Updated successfully': '更新成功',
+  'Update failed, please try again!': '更新失败，请重试！',
+  'Deleted successfully and will refresh soon': '删除成功，即将刷新',
+  'Delete failed, please try again': '删除失败，请重试',
+
+  // 表格相关
+  'pages.searchTable.titleOption': '操作',
+  'pages.searchTable.new': '新建',
+  'pages.searchTable.chosen': '已选择',
+  'pages.searchTable.item': '项',
+  'pages.searchTable.batchDeletion': '批量删除',
+
+  // 模态框相关
+  'modal.delete.title': '删除确认',
+  'modal.delete.content': '确定要删除选中的记录吗？',
+  'modal.okText': '确认',
+  'modal.cancelText': '取消',
 };

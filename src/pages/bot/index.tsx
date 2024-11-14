@@ -9,8 +9,6 @@ import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
-import type { Key } from 'react';
-// import useQueryList from '@/hooks/useQueryList';
 
 /**
  * @en-US Add node
@@ -20,7 +18,7 @@ import type { Key } from 'react';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading('Adding...');
   try {
-    await addItem('/bills', { ...fields });
+    await addItem('/bots', { ...fields });
     hide();
     message.success('Added successfully');
     return true;
@@ -40,7 +38,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('Updating...');
   try {
-    await updateItem(`/bills/${fields._id}`, fields);
+    await updateItem(`/bots/${fields._id}`, fields);
     hide();
 
     message.success('Updated successfully');
@@ -63,7 +61,7 @@ const handleRemove = async (ids: string[]) => {
   if (!ids) return true;
   try {
     console.log('Attempting to delete:', ids);
-    const response = await removeItem('/bills', {
+    const response = await removeItem('/bots', {
       ids,
     });
     console.log('zhel', 'Delete response:', response);
@@ -90,7 +88,6 @@ const TableList: React.FC = () => {
    * @zh-CN 分布更新窗口的弹窗
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-  const [activeKey, setActiveKey] = useState<string>('');
 
   const actionRef = useRef<ActionType>();
   const formRef = useRef<ProFormInstance>();
@@ -103,35 +100,42 @@ const TableList: React.FC = () => {
    * */
   const columns: ProColumns<any>[] = [
     {
-      title: intl.formatMessage({ id: 'amount' }),
-      dataIndex: 'amount',
-      valueType: 'money',
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'botId' }),
+      dataIndex: 'botId',
+      valueType: 'text',
     },
     {
-      title: intl.formatMessage({ id: 'rate' }),
-      dataIndex: 'rate',
-      valueType: 'percent',
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'botToken' }),
+      dataIndex: 'botToken',
+      valueType: 'text',
+      hideInTable: true, // 出于安全考虑，在表格中隐藏 token
+      search: false,
     },
     {
-      title: intl.formatMessage({ id: 'fixedRate' }),
-      dataIndex: 'fixedRate',
-      valueType: 'digit',
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'botUsername' }),
+      dataIndex: 'botUsername',
+      valueType: 'text',
     },
     {
-      title: intl.formatMessage({ id: 'transactionType' }),
-      dataIndex: 'transactionType',
-      valueEnum: {
-        income: { text: intl.formatMessage({ id: 'transactionType.income' }), status: 'Success' },
-        issue: { text: intl.formatMessage({ id: 'transactionType.issue' }), status: 'Error' },
-      },
+      title: intl.formatMessage({ id: 'botName' }),
+      dataIndex: 'botName',
+      valueType: 'text',
+    },
+    {
+      title: intl.formatMessage({ id: 'telegramId' }),
+      dataIndex: 'telegramId',
+      valueType: 'text',
+    },
+    {
+      title: intl.formatMessage({ id: 'telegramUsername' }),
+      dataIndex: 'telegramUsername',
+      valueType: 'text',
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
+      hideInSearch: true,
       render: (_, record) => (record.createdAt ? new Date(record.createdAt).toLocaleString() : '-'),
     },
     {
@@ -197,35 +201,7 @@ const TableList: React.FC = () => {
           },
         }}
         formRef={formRef}
-        toolbar={{
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                label: intl.formatMessage({ id: 'all', defaultMessage: '全部' }),
-                key: '',
-              },
-              {
-                label: intl.formatMessage({ id: 'transactionType.income', defaultMessage: '收入' }),
-                key: 'income',
-              },
-              {
-                label: intl.formatMessage({ id: 'transactionType.issue', defaultMessage: '支出' }),
-                key: 'issue',
-              },
-            ],
-            onChange: (activeKey?: Key) => {
-              setActiveKey(activeKey as string);
-              if (formRef.current) {
-                formRef.current.setFieldsValue({
-                  transactionType: activeKey ? (activeKey as string) : undefined,
-                });
-                formRef.current.submit();
-              }
-            },
-          },
-        }}
+        toolbar={{}}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -237,7 +213,7 @@ const TableList: React.FC = () => {
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={async (params, sort, filter) => queryList('/bills/fetch', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/bots', params, sort, filter)}
         pagination={{
           defaultPageSize: 10,
           showQuickJumper: true,
@@ -311,7 +287,7 @@ const TableList: React.FC = () => {
               }
             }
           }}
-          onCancel={handleUpdateModalOpen}
+          onCancel={() => handleUpdateModalOpen(false)}
           updateModalOpen={updateModalOpen}
           values={currentRow || {}}
         />

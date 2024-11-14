@@ -92,4 +92,10 @@ export default [
     component: './Bills',
     icon: 'UsergroupAddOutlined',
   },
+  {
+    path: '/bot',
+    name: 'menu.bot',
+    component: './bot',
+    icon: 'GatewayOutlined',
+  },
 ];

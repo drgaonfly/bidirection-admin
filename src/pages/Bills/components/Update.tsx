@@ -44,9 +44,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       }}
       initialValues={{ ...values, parent: values.parent?._id }}
     >
-      <BasicForm
-        setImageUrl={setImageUrl}
-        imageUrl={imageUrl} // 传递图片URL以显示已上传的图片
+      <BasicForm // 传递图片URL以显示已上传的图片
         values={values}
       />
       <Form.Item name="_id" label={false}>
