@@ -13,7 +13,7 @@ export type FormValueType = {
 };
 
 export type UpdateFormProps = {
-  onCancel: (flag?: boolean) => void;
+  onCancel: (flag: boolean) => void;
   onSubmit: (values: FormValueType) => Promise<void>;
   updateModalOpen: boolean;
   values: Partial<FormValueType>;

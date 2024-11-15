@@ -8,8 +8,8 @@ interface Props {
   newRecord?: boolean;
   onFinish: (formData: any) => Promise<void>;
   values?: any;
-  setImageUrl: (url: string) => void;
-  imageUrl?: string | undefined;
+  // setImageUrl: (url: string) => void;
+  // imageUrl?: string | undefined;
 }
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
