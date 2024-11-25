@@ -96,4 +96,53 @@ export default {
   'pages.searchTable.form.description.placeholder': '请输入机器人描述',
   'menu.bot': '机器人管理',
   'pages.bot.list': '列表',
+
+  // 客户管理相关
+  'list.customers': '客户管理',
+  username: '用户名',
+  enter_username: '请输入用户名',
+  username_too_short: '用户名至少2个字符',
+  username_too_long: '用户名最多50个字符',
+  email: '邮箱',
+  enter_email: '请输入邮箱',
+  invalid_email: '请输入有效的邮箱地址',
+  phone: '电话',
+  enter_phone: '请输入电话号码',
+  address: '地址',
+  enter_address: '请输入地址',
+  status: '状态',
+  active: '活跃',
+  inactive: '不活跃',
+  created_at: '创建时间',
+  updated_at: '更新时间',
+
+  // 操作相关
+  adding: '正在添加...',
+  add_successful: '添加成功',
+  updating: '正在更新...',
+  update_successful: '更新成功',
+  update_failed: '更新失败，请重试',
+  deleting: '正在删除...',
+  delete_successful: '删除成功，即将刷新',
+  delete_failed: '删除失败，请重试',
+  upload_failed: '上传失败，请重试',
+  please_select_status: '请选择状态',
+
+  // 菜单项
+  'menu.list.customers': '客户管理',
+  'menu.认证管理': '认证管理',
+  'menu.认证管理.用户管理': '用户管理',
+  'menu.认证管理.角色管理': '角色管理',
+  'menu.认证管理.菜单管理': '菜单管理',
+  'menu.认证管理.权限管理': '权限管理',
+  'menu.认证管理.权限组管理': '权限组管理',
+  'menu.认证管理.数据权限管理': '数据权限管理',
+  'menu.用户管理': '用户管理',
+  'menu.customers': '客户管理',
+
+  // 标签页操作
+  'tabs.close.left': '关闭左侧标签页',
+  'tabs.close.right': '关闭右侧标签页',
+  'tabs.close.others': '关闭其他标签页',
+  'tabs.refresh': '刷新当前页面',
 };

@@ -86,4 +86,10 @@ export default [
       },
     ],
   },
+  {
+    path: '/customers',
+    name: 'list.customers',
+    icon: 'UserOutlined',
+    component: './Customer',
+  },
 ];

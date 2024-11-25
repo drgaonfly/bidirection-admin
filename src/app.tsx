@@ -10,6 +10,7 @@ import {
   SmileOutlined,
   TeamOutlined,
   UsergroupAddOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -32,6 +33,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   DatabaseOutlined: <DatabaseOutlined />,
   GatewayOutlined: <GatewayOutlined />,
   SecurityScanOutlined: <SecurityScanOutlined />,
+  UserOutlined: <UserOutlined />,
 };
 
 console.log('iconEnum', iconEnum);
