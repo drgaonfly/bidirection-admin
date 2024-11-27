@@ -104,4 +104,10 @@ export default [
     icon: 'BookOutlined',
     component: './Lesson',
   },
+  {
+    path: '/comments',
+    name: 'list.comments',
+    icon: 'CommentOutlined',
+    component: './Comment',
+  },
 ];

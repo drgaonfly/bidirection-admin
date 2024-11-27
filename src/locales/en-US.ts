@@ -214,4 +214,20 @@ export default {
   'pages.lesson.rating': 'Rating',
   'pages.lesson.content': 'Comment',
   'pages.lesson.commentCount': 'Comments Count',
+
+  // Comments
+  'pages.comment.list': 'Comment List',
+  'pages.comment.customer': 'Customer',
+  'pages.comment.content': 'Content',
+  'pages.comment.content.required': 'Please enter comment content',
+  'pages.comment.content.placeholder': 'Please enter your comment',
+  'pages.comment.content.maxLength': 'Comment cannot exceed 500 characters',
+  'pages.comment.rating': 'Rating',
+  'pages.comment.rating.required': 'Please select a rating',
+  'pages.comment.rating.1': '1 Star',
+  'pages.comment.rating.2': '2 Stars',
+  'pages.comment.rating.3': '3 Stars',
+  'pages.comment.rating.4': '4 Stars',
+  'pages.comment.rating.5': '5 Stars',
+  'menu.comments': 'Comment Management',
 };

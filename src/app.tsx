@@ -14,6 +14,7 @@ import {
   ReadOutlined,
   SolutionOutlined,
   BookOutlined,
+  CommentOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -40,6 +41,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   ReadOutlined: <ReadOutlined />,
   SolutionOutlined: <SolutionOutlined />,
   BookOutlined: <BookOutlined />,
+  CommentOutlined: <CommentOutlined />,
 };
 
 console.log('iconEnum', iconEnum);

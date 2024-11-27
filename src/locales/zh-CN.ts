@@ -253,4 +253,20 @@ export default {
   'pages.lesson.content': '评论内容',
   'pages.lesson.rating': '评分',
   'pages.lesson.commentCount': '评论数量',
+
+  // 评论相关
+  'pages.comment.list': '评论列表',
+  'pages.comment.customer': '客户',
+  'pages.comment.content': '评论内容',
+  'pages.comment.content.required': '请输入评论内容',
+  'pages.comment.content.placeholder': '请输入您的评论',
+  'pages.comment.content.maxLength': '评论内容不能超过500字',
+  'pages.comment.rating': '评分',
+  'pages.comment.rating.required': '请选择评分',
+  'pages.comment.rating.1': '1分',
+  'pages.comment.rating.2': '2分',
+  'pages.comment.rating.3': '3分',
+  'pages.comment.rating.4': '4分',
+  'pages.comment.rating.5': '5分',
+  'menu.comments': '评论管理',
 };
