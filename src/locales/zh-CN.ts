@@ -211,4 +211,46 @@ export default {
   'upload.hint': '支持单个或批量上传，严禁上传公司数据或其他违禁文件',
   please_upload_image: '请上传图片文件',
   image_must_smaller_than_2mb: '图片必须小于2MB',
+
+  // 课程管理相关
+  'pages.lesson.teacher': '教师',
+  'pages.lesson.teacher.required': '请选择教师',
+
+  'pages.lesson.lessonType': '课程类型',
+  'pages.lesson.type.required': '请选择课程类型',
+  'pages.lesson.type.trial': '试听课',
+  'pages.lesson.type.conversational': '会话英语',
+  'pages.lesson.type.business': '商务英语',
+  'pages.lesson.type.meeting': '会议准备',
+  'pages.lesson.type.presentation': '演讲准备',
+  'pages.lesson.type.job': '工作申请',
+  'pages.lesson.type.interview': '面试准备',
+  'pages.lesson.type.reading': '指导阅读和讨论',
+
+  'pages.lesson.language': '教学语言',
+  'pages.lesson.language.required': '请选择教学语言',
+  'pages.lesson.language.english': '英语',
+  'pages.lesson.language.chinese': '中文（普通话）',
+  'pages.lesson.language.japanese': '日语',
+  'pages.lesson.language.french': '法语',
+  'pages.lesson.language.spanish': '西班牙语',
+
+  'pages.lesson.description': '课程描述',
+  'pages.lesson.description.required': '请输入课程描述',
+  'pages.lesson.description.maxLength': '课程描述不能超过1000字',
+
+  'pages.lesson.price': '课程价格',
+  'pages.lesson.price.required': '请输入课程价格',
+
+  'pages.lesson.duration': '课程时长',
+  'pages.lesson.duration.required': '请选择课程时长',
+  'pages.lesson.duration.30': '30分钟',
+  'pages.lesson.duration.45': '45分钟',
+  'pages.lesson.duration.60': '60分钟',
+  'pages.lesson.duration.90': '90分钟',
+  'pages.lesson.duration.120': '120分钟',
+  'menu.lessons': '课程管理',
+  'pages.lesson.content': '评论内容',
+  'pages.lesson.rating': '评分',
+  'pages.lesson.commentCount': '评论数量',
 };

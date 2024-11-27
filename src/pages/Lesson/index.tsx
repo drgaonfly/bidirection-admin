@@ -1,7 +1,7 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import { FooterToolbar, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
+import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { Button, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -21,9 +21,11 @@ import DeleteLink from '@/components/DeleteLink';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/customers', { ...fields });
+    await addItem('/lessons', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
+    console.log('-------------', fields);
+
     return true;
   } catch (error: any) {
     hide();
@@ -45,7 +47,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/customers/${fields._id}`, fields);
+    await updateItem(`/lessons/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -71,7 +73,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/customers', {
+    await removeItem('/lessons', {
       ids,
     });
     hide();
@@ -120,75 +122,95 @@ const TableList: React.FC = () => {
   // Define roles object with index signature
 
   const columns: ProColumns<API.ItemData>[] = [
+    // {
+    //   title: intl.formatMessage({ id: 'pages.lesson.teacher' }),
+    //   dataIndex: 'teacher',
+    //   render: (dom, entity) => {
+    //     return (
+    //       <a
+    //         onClick={() => {
+    //           setCurrentRow(entity);
+    //           setShowDetail(true);
+    //         }}
+    //       >
+    //         {dom}
+    //       </a>
+    //     );
+    //   },
+    // },
     {
-      title: intl.formatMessage({ id: 'username', defaultMessage: '用户名' }),
-      dataIndex: 'username',
-      copyable: true,
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'email', defaultMessage: '邮箱' }),
-      dataIndex: 'email',
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'phone', defaultMessage: '电话' }),
-      dataIndex: 'phone',
-      hideInSearch: true,
-      renderFormItem: (item, { ...rest }) => {
-        return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_phone' })} />;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'address', defaultMessage: '地址' }),
-      dataIndex: 'address',
-      hideInSearch: true,
-      ellipsis: true,
-      renderFormItem: (item, { ...rest }) => {
-        return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_address' })} />;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
-      dataIndex: 'status',
+      title: intl.formatMessage({ id: 'pages.lesson.lessonType' }),
+      dataIndex: 'lessonType',
       valueEnum: {
-        active: {
-          text: intl.formatMessage({ id: 'active', defaultMessage: '活跃' }),
-          status: 'Success',
+        'Trial Lesson': { text: intl.formatMessage({ id: 'pages.lesson.type.trial' }) },
+        'Conversational English': {
+          text: intl.formatMessage({ id: 'pages.lesson.type.conversational' }),
         },
-        inactive: {
-          text: intl.formatMessage({ id: 'inactive', defaultMessage: '不活跃' }),
-          status: 'Error',
+        'Business English': { text: intl.formatMessage({ id: 'pages.lesson.type.business' }) },
+        'Meeting Preparation': { text: intl.formatMessage({ id: 'pages.lesson.type.meeting' }) },
+        'Presentation Skills': {
+          text: intl.formatMessage({ id: 'pages.lesson.type.presentation' }),
         },
+        'Job Application': { text: intl.formatMessage({ id: 'pages.lesson.type.job' }) },
+        'Interview Preparation': {
+          text: intl.formatMessage({ id: 'pages.lesson.type.interview' }),
+        },
+        'Reading and Discussion': { text: intl.formatMessage({ id: 'pages.lesson.type.reading' }) },
       },
     },
     {
-      title: intl.formatMessage({ id: 'created_at', defaultMessage: '创建时间' }),
+      title: intl.formatMessage({ id: 'pages.lesson.language' }),
+      dataIndex: 'language',
+      valueEnum: {
+        English: { text: intl.formatMessage({ id: 'pages.lesson.language.english' }) },
+        'Chinese (Mandarin)': { text: intl.formatMessage({ id: 'pages.lesson.language.chinese' }) },
+        Japanese: { text: intl.formatMessage({ id: 'pages.lesson.language.japanese' }) },
+        French: { text: intl.formatMessage({ id: 'pages.lesson.language.french' }) },
+        Spanish: { text: intl.formatMessage({ id: 'pages.lesson.language.spanish' }) },
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'pages.lesson.description' }),
+      dataIndex: 'description',
+      ellipsis: true,
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'pages.lesson.price' }),
+      dataIndex: 'price',
+      valueType: 'money',
+      hideInSearch: true,
+      sorter: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'pages.lesson.duration' }),
+      dataIndex: 'duration',
+      valueType: 'select',
+      valueEnum: {
+        30: { text: intl.formatMessage({ id: 'pages.lesson.duration.30' }) },
+        45: { text: intl.formatMessage({ id: 'pages.lesson.duration.45' }) },
+        60: { text: intl.formatMessage({ id: 'pages.lesson.duration.60' }) },
+        90: { text: intl.formatMessage({ id: 'pages.lesson.duration.90' }) },
+        120: { text: intl.formatMessage({ id: 'pages.lesson.duration.120' }) },
+      },
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'created_at' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
       sorter: true,
     },
     {
-      title: intl.formatMessage({ id: 'updated_at', defaultMessage: '更新时间' }),
+      title: intl.formatMessage({ id: 'updated_at' }),
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
       hideInSearch: true,
       sorter: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: <FormattedMessage id="pages.searchTable.titleOption" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -247,7 +269,7 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/customers', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/lessons', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {

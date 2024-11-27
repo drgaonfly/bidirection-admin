@@ -171,4 +171,47 @@ export default {
     'Support single or bulk upload. Strictly prohibited from uploading company data or other banned files',
   please_upload_image: 'Please upload image file',
   image_must_smaller_than_2mb: 'Image must be smaller than 2MB',
+
+  // Lesson Management
+  'pages.lesson.teacher': 'Teacher',
+  'pages.lesson.teacher.required': 'Please select a teacher',
+
+  'pages.lesson.lessonType': 'Lesson Type',
+  'pages.lesson.type.required': 'Please select lesson type',
+  'pages.lesson.type.trial': 'Trial Lesson',
+  'pages.lesson.type.conversational': 'Conversational English',
+  'pages.lesson.type.business': 'Business English',
+  'pages.lesson.type.meeting': 'Meeting Preparation',
+  'pages.lesson.type.presentation': 'Presentation Skills',
+  'pages.lesson.type.job': 'Job Application',
+  'pages.lesson.type.interview': 'Interview Preparation',
+  'pages.lesson.type.reading': 'Reading and Discussion',
+
+  'pages.lesson.language': 'Teaching Language',
+  'pages.lesson.language.required': 'Please select teaching language',
+  'pages.lesson.language.english': 'English',
+  'pages.lesson.language.chinese': 'Chinese (Mandarin)',
+  'pages.lesson.language.japanese': 'Japanese',
+  'pages.lesson.language.french': 'French',
+  'pages.lesson.language.spanish': 'Spanish',
+
+  'pages.lesson.description': 'Description',
+  'pages.lesson.description.required': 'Please enter lesson description',
+  'pages.lesson.description.maxLength': 'Description cannot exceed 1000 characters',
+
+  'pages.lesson.price': 'Price',
+  'pages.lesson.price.required': 'Please enter lesson price',
+
+  'pages.lesson.duration': 'Duration',
+  'pages.lesson.duration.required': 'Please select lesson duration',
+  'pages.lesson.duration.30': '30 Minutes',
+  'pages.lesson.duration.45': '45 Minutes',
+  'pages.lesson.duration.60': '60 Minutes',
+  'pages.lesson.duration.90': '90 Minutes',
+  'pages.lesson.duration.120': '120 Minutes',
+  'menu.lessons': 'Lessons',
+  'pages.lesson.comments': 'Comments',
+  'pages.lesson.rating': 'Rating',
+  'pages.lesson.content': 'Comment',
+  'pages.lesson.commentCount': 'Comments Count',
 };

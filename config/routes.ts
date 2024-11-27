@@ -98,4 +98,10 @@ export default [
     icon: 'SolutionOutlined',
     component: './Teacher',
   },
+  {
+    path: '/lessons',
+    name: 'list.lessons',
+    icon: 'BookOutlined',
+    component: './Lesson',
+  },
 ];
