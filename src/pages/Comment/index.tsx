@@ -193,7 +193,7 @@ const TableList: React.FC = () => {
         actionRef={actionRef}
         rowKey="_id"
         search={{
-          labelWidth: 150,
+          labelWidth: 75,
           collapsed: false,
           span: {
             xs: 24, // 手机端占满

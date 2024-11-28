@@ -2,6 +2,7 @@ import { useIntl } from '@umijs/max';
 import React from 'react';
 import { ProForm, ProFormText, ProFormSelect, ProFormDigit } from '@ant-design/pro-components';
 import { Form, Input, message } from 'antd';
+import { UploadFile } from 'antd/lib/upload/interface';
 
 import MyUpload from '@/components/MyUpload';
 // import { RcFile } from 'antd/es/upload';
@@ -13,9 +14,17 @@ interface Props {
   values?: any;
   setImageUrl: (url: string) => void;
   imageUrl?: string;
+  defaultFileList?: UploadFile[];
 }
 
-const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values, setImageUrl, imageUrl }) => {
+const BasicForm: React.FC<Props> = ({
+  newRecord,
+  onFinish,
+  values,
+  setImageUrl,
+  imageUrl,
+  defaultFileList = [],
+}) => {
   const intl = useIntl();
   const [formRef] = ProForm.useForm();
   console.log(imageUrl);
@@ -237,6 +246,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values, setImageUrl, 
               formRef.setFieldsValue({ avatar: url });
             }}
             url="/upload"
+            defaultFileList={defaultFileList}
           />
         </ProForm.Item>
 

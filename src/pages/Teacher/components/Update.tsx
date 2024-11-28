@@ -2,7 +2,7 @@ import { useIntl } from '@umijs/max';
 import React, { useEffect, useState } from 'react';
 import BasicForm from './BasicForm';
 import { Modal } from 'antd';
-// import extractPathFromUrl from '@/utils/extractPathFromUrl';
+import { UploadFile } from 'antd/lib/upload/interface';
 
 export type FormValueType = Partial<API.ItemData>;
 
@@ -11,24 +11,43 @@ export type UpdateFormProps = {
   onSubmit: (values: FormValueType) => Promise<void>;
   updateModalOpen: boolean;
   values: {
-    avatar?: {
-      url?: string;
-    };
+    avatar?: string;
   } & Partial<API.ItemData>;
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
-  const [imageUrl, setImageUrl] = useState<string | undefined>(values.avatar?.url || '');
+
+  console.log('Initial values:', values);
+
+  const [imageUrl, setImageUrl] = useState<string | undefined>(values.avatar || '');
+
+  const defaultFileList: UploadFile[] = values.avatar
+    ? [
+        {
+          uid: '-1',
+          name: 'avatar.png',
+          status: 'done' as const,
+          url: values.avatar,
+          type: 'image/png',
+          thumbUrl: values.avatar,
+        },
+      ]
+    : [];
 
   useEffect(() => {
-    setImageUrl(values.avatar?.url);
+    console.log('Values changed:', values);
+    setImageUrl(values.avatar);
   }, [values]);
 
   const handleSubmit = async (formValues: any) => {
+    console.log('Submitting form with values:', formValues);
+    console.log('Current imageUrl:', imageUrl);
+
     await onSubmit({
       ...formValues,
+      avatar: imageUrl,
     });
   };
 
@@ -47,6 +66,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         onFinish={handleSubmit}
         setImageUrl={setImageUrl}
         imageUrl={imageUrl}
+        defaultFileList={defaultFileList}
       />
     </Modal>
   );
