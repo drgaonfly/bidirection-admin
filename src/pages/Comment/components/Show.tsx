@@ -20,10 +20,10 @@ const Show: React.FC<Props> = (props) => {
       centered
       className="rounded-lg overflow-hidden"
     >
-      {currentRow?.chatId && ( // 修改为 botId，因为您的数据中使用的是 botId
+      {currentRow?.customer && ( // 修改为 botId，因为您的数据中使用的是 botId
         <ProDescriptions<API.ItemData>
           column={2}
-          title={currentRow?.chatId} // 使用 botId 作为标题
+          title={currentRow?.customer.username} // 使用 botId 作为标题
           request={async () => ({
             data: currentRow || {},
           })}

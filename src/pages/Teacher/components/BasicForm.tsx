@@ -27,7 +27,7 @@ const BasicForm: React.FC<Props> = ({
 }) => {
   const intl = useIntl();
   const [formRef] = ProForm.useForm();
-  console.log(imageUrl);
+  console.log('----------------', imageUrl);
 
   const defaultFileList: UploadFile[] = imageUrl
     ? [

@@ -38,16 +38,21 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
 
   useEffect(() => {
     console.log('Values changed:', values);
+
     setImageUrl(values.avatar);
   }, [values]);
 
   const handleSubmit = async (formValues: any) => {
     console.log('Submitting form with values:', formValues);
     console.log('Current imageUrl:', imageUrl);
-
+    console.log(values);
+    // 判断formValues.avatar是否包含http或者是https，如果包含的化，就删除掉这个字段
+    if (formValues.avatar?.includes('http') || formValues.avatar?.includes('https')) {
+      delete formValues.avatar;
+    }
     await onSubmit({
       ...formValues,
-      avatar: imageUrl,
+      // avatar: imageUrl,
     });
   };
 

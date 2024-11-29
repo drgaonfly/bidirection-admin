@@ -123,7 +123,7 @@ const TableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'pages.teacher.avatar' }),
-      dataIndex: 'image',
+      dataIndex: 'avatar',
       hideInSearch: true,
       render: (_, record) => (
         <img
@@ -317,20 +317,6 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       ellipsis: true,
       width: 200,
-    },
-    {
-      title: intl.formatMessage({ id: 'created_at' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      sorter: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'updated_at' }),
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      sorter: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,

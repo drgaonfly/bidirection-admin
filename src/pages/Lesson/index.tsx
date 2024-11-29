@@ -125,18 +125,18 @@ const TableList: React.FC = () => {
     // {
     //   title: intl.formatMessage({ id: 'pages.lesson.teacher' }),
     //   dataIndex: 'teacher',
-    //   render: (dom, entity) => {
-    //     return (
-    //       <a
-    //         onClick={() => {
-    //           setCurrentRow(entity);
-    //           setShowDetail(true);
-    //         }}
-    //       >
-    //         {dom}
-    //       </a>
-    //     );
-    //   },
+    // render: (dom, entity) => {
+    //   return (
+    //     <a
+    //       onClick={() => {
+    //         setCurrentRow(entity);
+    //         setShowDetail(true);
+    //       }}
+    //     >
+    //       {dom}
+    //     </a>
+    //   );
+    // },
     // },
     {
       title: intl.formatMessage({ id: 'pages.lesson.lessonType' }),
@@ -156,6 +156,18 @@ const TableList: React.FC = () => {
           text: intl.formatMessage({ id: 'pages.lesson.type.interview' }),
         },
         'Reading and Discussion': { text: intl.formatMessage({ id: 'pages.lesson.type.reading' }) },
+      },
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              setShowDetail(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
       },
     },
     {
@@ -194,20 +206,6 @@ const TableList: React.FC = () => {
         120: { text: intl.formatMessage({ id: 'pages.lesson.duration.120' }) },
       },
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'created_at' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      sorter: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'updated_at' }),
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      sorter: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,

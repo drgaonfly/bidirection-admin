@@ -124,11 +124,6 @@ const TableList: React.FC = () => {
         );
       },
     },
-    // {
-    //   title: intl.formatMessage({ id: 'pages.comment.user' }),
-    //   dataIndex: ['user', 'username'],  // 假设用户对象中有 username 字段
-    //   valueType: 'text',
-    // },
     {
       title: intl.formatMessage({ id: 'pages.comment.content' }),
       dataIndex: 'content',
