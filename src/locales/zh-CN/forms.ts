@@ -325,4 +325,17 @@ export default {
   'resume.status.draft': '草稿',
   'resume.status.published': '已发布',
   'resume.lastUpdated': '最后更新时间',
+
+  'withdrawal.customer': '客户',
+  'withdrawal.bankAccount': '银行账号',
+  'withdrawal.bankName': '开户行',
+  'withdrawal.accountHolder': '账户持有人',
+  'withdrawal.remarks': '备注',
+  'withdrawal.completedAt': '完成时间',
+  'withdrawal.status.approved': '已批准',
+  'withdrawal.status.rejected': '已拒绝',
+  'withdrawal.status.pending': '待处理',
+  'withdrawal.status.completed': '已完成',
+  'withdrawal.status': '状态',
+  'withdrawal.amount': '金额',
 };

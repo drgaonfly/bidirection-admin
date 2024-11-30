@@ -103,6 +103,26 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetPermissionGroup:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups', 'GET')),
+
+    canCreateResume:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes', 'POST')),
+    canDeleteResume:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes', 'DELETE')),
+    canUpdateResume:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes/:id', 'PUT')),
+    canGetResume:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes', 'GET')),
+
+    canCreateWithdrawal:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'POST')),
+    canDeleteWithdrawal:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'DELETE')),
+    canUpdateWithdrawal:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals/:id', 'PUT')),
+    canGetWithdrawal:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'GET')),
   };
 }
 

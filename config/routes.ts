@@ -122,4 +122,10 @@ export default [
     icon: 'FileOutlined',
     component: './Resume',
   },
+  {
+    path: '/withdrawals',
+    name: 'list.withdrawals',
+    icon: 'TransactionOutlined',
+    component: './withdrawals',
+  },
 ];

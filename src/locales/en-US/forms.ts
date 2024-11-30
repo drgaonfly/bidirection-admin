@@ -292,4 +292,17 @@ export default {
   'resume.status': 'Status',
   'resume.status.draft': 'Draft',
   'resume.status.published': 'Published',
+
+  'withdrawal.customer': 'Customer',
+  'withdrawal.bankAccount': 'Bank Account',
+  'withdrawal.bankName': 'Bank Name',
+  'withdrawal.accountHolder': 'Account Holder',
+  'withdrawal.remarks': 'Remarks',
+  'withdrawal.completedAt': 'Completed Time',
+  'withdrawal.status.approved': 'Approved',
+  'withdrawal.status.rejected': 'Rejected',
+  'withdrawal.status.pending': 'Pending',
+  'withdrawal.status.completed': 'Completed',
+  'withdrawal.status': 'Status',
+  'withdrawal.amount': 'Amount',
 };

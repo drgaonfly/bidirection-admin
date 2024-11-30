@@ -25,8 +25,7 @@ import DeleteLink from '@/components/DeleteLink';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading('Adding...');
   try {
-    await addItem('/resumes', { ...fields });
-    console.log('_________________', fields);
+    await addItem('/withdrawals', { ...fields });
     hide();
     message.success('Added successfully');
     return true;
@@ -46,7 +45,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('Updating...');
   try {
-    await updateItem(`/resumes/${fields._id}`, fields);
+    await updateItem(`/withdrawals/${fields._id}`, fields);
     hide();
 
     message.success('Updated successfully');
@@ -69,7 +68,7 @@ const handleRemove = async (ids: string[]) => {
   if (!ids) return true;
   try {
     console.log('Attempting to delete:', ids);
-    const response = await removeItem('/resumes', {
+    const response = await removeItem('/withdrawals', {
       ids,
     });
     console.log('zhel', 'Delete response:', response);
@@ -107,10 +106,12 @@ const TableList: React.FC = () => {
    * @en-US International configuration
    * @zh-CN 国际化配置
    * */
-  const columns: ProColumns<API.ItemData>[] = [
+  const columns: ProColumns<any>[] = [
     {
-      title: intl.formatMessage({ id: 'resume.customer' }),
+      title: intl.formatMessage({ id: 'withdrawal.customer' }),
       dataIndex: ['customer', 'username'],
+      valueType: 'text',
+      width: 120,
       render: (dom, entity) => {
         return (
           <a
@@ -125,92 +126,87 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'resume.fullName' }),
-      dataIndex: 'fullName',
+      title: intl.formatMessage({ id: 'withdrawal.amount' }),
+      dataIndex: 'amount',
+      valueType: 'money',
+      width: 100,
+      search: false,
     },
     {
-      title: intl.formatMessage({ id: 'resume.birthDate' }),
-      dataIndex: 'birthDate',
-      valueType: 'date',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.location' }),
-      dataIndex: 'location',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.degree' }),
-      dataIndex: 'degree',
-      valueEnum: {
-        Bachelor: { text: intl.formatMessage({ id: 'resume.degree.bachelor' }) },
-        Master: { text: intl.formatMessage({ id: 'resume.degree.master' }) },
-        Doctor: { text: intl.formatMessage({ id: 'resume.degree.doctor' }) },
-        Other: { text: intl.formatMessage({ id: 'resume.degree.other' }) },
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.school' }),
-      dataIndex: 'school',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.major' }),
-      dataIndex: 'major',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.teachingYears' }),
-      dataIndex: 'teachingYears',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.teachingLevel' }),
-      dataIndex: 'teachingLevel',
-      valueEnum: {
-        Primary: { text: intl.formatMessage({ id: 'resume.level.primary' }) },
-        Junior: { text: intl.formatMessage({ id: 'resume.level.junior' }) },
-        Senior: { text: intl.formatMessage({ id: 'resume.level.senior' }) },
-        College: { text: intl.formatMessage({ id: 'resume.level.college' }) },
-        Other: { text: intl.formatMessage({ id: 'resume.level.other' }) },
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'resume.status' }),
+      title: intl.formatMessage({ id: 'withdrawal.status' }),
       dataIndex: 'status',
+      width: 120,
+      valueType: 'select',
       valueEnum: {
-        draft: {
-          text: intl.formatMessage({ id: 'resume.status.draft' }),
-          status: 'Default',
+        pending: {
+          text: intl.formatMessage({ id: 'withdrawal.status.pending' }),
+          status: 'Processing',
         },
-        published: {
-          text: intl.formatMessage({ id: 'resume.status.published' }),
+        approved: {
+          text: intl.formatMessage({ id: 'withdrawal.status.approved' }),
+          status: 'Warning',
+        },
+        rejected: {
+          text: intl.formatMessage({ id: 'withdrawal.status.rejected' }),
+          status: 'Error',
+        },
+        completed: {
+          text: intl.formatMessage({ id: 'withdrawal.status.completed' }),
           status: 'Success',
         },
       },
     },
-
+    {
+      title: intl.formatMessage({ id: 'withdrawal.bankAccount' }),
+      dataIndex: 'bankAccount',
+      valueType: 'text',
+      width: 160,
+    },
+    {
+      title: intl.formatMessage({ id: 'withdrawal.bankName' }),
+      dataIndex: 'bankName',
+      valueType: 'text',
+      width: 160,
+    },
+    {
+      title: intl.formatMessage({ id: 'withdrawal.accountHolder' }),
+      dataIndex: 'accountHolder',
+      valueType: 'text',
+      width: 120,
+    },
+    {
+      title: intl.formatMessage({ id: 'withdrawal.remarks' }),
+      dataIndex: 'remarks',
+      valueType: 'text',
+      width: 160,
+      hideInSearch: true,
+    },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
       dataIndex: 'option',
       valueType: 'option',
+      width: 120,
       render: (_, record) => [
-        <a
-          key="edit"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-        <DeleteLink
-          key="delete"
-          onOk={async () => {
-            await handleRemove([record._id!]);
-            actionRef.current?.reloadAndRest?.();
-          }}
-        />,
+        (access.canSuperAdmin || access.canUpdateWithdrawal) && (
+          <a
+            key="edit"
+            onClick={() => {
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
+        (access.canSuperAdmin || access.canDeleteWithdrawal) && (
+          <DeleteLink
+            key="delete"
+            onOk={async () => {
+              await handleRemove([record._id!]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          />
+        ),
       ],
     },
   ];
@@ -246,7 +242,7 @@ const TableList: React.FC = () => {
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={async (params, sort, filter) => queryList('/resumes', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/withdrawals', params, sort, filter)}
         pagination={{
           defaultPageSize: 10,
           showQuickJumper: true,
@@ -268,7 +264,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteResume) && (
+          {(access.canSuperAdmin || access.canDeleteWithdrawal) && (
             <Button
               danger
               onClick={() => {
@@ -293,7 +289,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateResume) && (
+      {(access.canSuperAdmin || access.canCreateWithdrawal) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -308,18 +304,16 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canCreateResume) && (
-        <Show
-          open={showDetail}
-          currentRow={currentRow as API.ItemData}
-          columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
-          onClose={() => {
-            setCurrentRow(undefined);
-            setShowDetail(false);
-          }}
-        />
-      )}
-      {(access.canSuperAdmin || access.canUpdateResume) && (
+      <Show
+        open={showDetail}
+        currentRow={currentRow as API.ItemData}
+        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
+        onClose={() => {
+          setCurrentRow(undefined);
+          setShowDetail(false);
+        }}
+      />
+      {(access.canSuperAdmin || access.canUpdateWithdrawal) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

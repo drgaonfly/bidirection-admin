@@ -20,6 +20,7 @@ import {
   StarOutlined,
   FileTextOutlined,
   ProfileOutlined,
+  TransactionOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -52,6 +53,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   StarOutlined: <StarOutlined />,
   FileTextOutlined: <FileTextOutlined />,
   ProfileOutlined: <ProfileOutlined />,
+  TransactionOutlined: <TransactionOutlined />,
 };
 
 console.log('iconEnum', iconEnum);
