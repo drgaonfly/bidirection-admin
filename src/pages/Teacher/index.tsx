@@ -13,6 +13,7 @@ import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 // import DeleteLink from '@/components/DeleteLink';
+import { Image } from 'antd';
 
 /**
  * @en-US Add node
@@ -125,16 +126,18 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'avatar' }),
       dataIndex: 'avatar',
       hideInSearch: true,
+      valueType: 'image',
       render: (_, record) => (
-        <img
+        <Image
           src={record.avatar}
           alt="avatar"
+          width={45}
+          height={45}
           style={{
-            width: '45px',
-            height: '45px',
             borderRadius: '50%',
             objectFit: 'cover',
           }}
+          preview={true}
         />
       ),
     },
