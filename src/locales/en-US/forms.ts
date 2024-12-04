@@ -206,10 +206,10 @@ export default {
   'pages.comment.rating.5': '5 Stars',
   'menu.comments': 'Comment ',
 
-  'menu.vipMembers': 'VIP Member ',
-  'pages.vipMember.title': 'VIP Member ',
+  'menu.vipMembers': 'Member ',
+  'pages.vipMember.title': 'Member ',
   'pages.vipMember.customer': 'Member',
-  'pages.vipMember.level': 'VIP Level',
+  'pages.vipMember.level': 'Level',
   'pages.vipMember.level.1': 'Regular',
   'pages.vipMember.level.2': 'Silver',
   'pages.vipMember.level.3': 'Gold',
@@ -226,17 +226,17 @@ export default {
   'pages.vipMember.enter.amount': 'Please enter membership fee',
   'pages.vipMember.select.dates': 'Please select membership period',
 
-  'menu.list.vip_members': 'VIP Member List',
-  'menu.vip_members': 'VIP Members',
-  'menu.list.vip_members.list': 'VIP Member List',
+  'menu.list.vip_members': 'Member List',
+  'menu.vip_members': 'Members',
+  'menu.list.vip_members.list': 'Member List',
 
-  'pages.vip_members': 'VIP Members',
-  'pages.vip_members.list': 'VIP Member List',
+  'pages.vip_members': 'Members',
+  'pages.vip_members.list': 'Member List',
 
   // VIP Members
-  'menu.vip-members': 'VIP Members',
+  'menu.vip-members': ' Members',
   'menu.resumes': 'Resumes',
-  'menu.list.vip-members': 'VIP Member List',
+  'menu.list.vip-members': 'Member List',
 
   // Teachers
   'menu.list.teachers': 'Teacher List',

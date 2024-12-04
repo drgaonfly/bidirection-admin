@@ -1,7 +1,8 @@
 import { useIntl } from '@umijs/max';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BasicForm from './BasicForm';
-import { Modal } from 'antd';
+import { ModalForm } from '@ant-design/pro-components';
+import { Form, Input } from 'antd';
 
 export type FormValueType = Partial<API.ItemData>;
 
@@ -10,25 +11,49 @@ export type UpdateFormProps = {
   onSubmit: (values: FormValueType) => Promise<void>;
   updateModalOpen: boolean;
   values: {
-    roles?: { id: number }[];
+    videoUrl?: string;
+    video?: string;
   } & Partial<API.ItemData>;
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
+  const [videoUrl, setVideoUrl] = useState<string | undefined>('');
+
+  useEffect(() => {
+    setVideoUrl(values.videoUrl);
+  }, [values]);
+
   return (
-    <Modal
-      maskClosable={false}
-      width="50%"
-      destroyOnClose
+    <ModalForm
       title={intl.formatMessage({ id: 'modify' })}
+      width="50%"
+      modalProps={{
+        destroyOnClose: true,
+        maskClosable: false,
+      }}
       open={updateModalOpen}
-      footer={false}
-      onCancel={() => onCancel(false)}
+      onOpenChange={onCancel}
+      onFinish={async (values: any) => {
+        onSubmit({
+          ...values,
+          videoUrl,
+        });
+      }}
+      initialValues={{ ...values }}
+      submitter={false}
     >
-      <BasicForm values={values} onFinish={onSubmit} />
-    </Modal>
+      <BasicForm
+        videoUrl={videoUrl}
+        setVideoUrl={setVideoUrl}
+        values={values}
+        onFinish={onSubmit}
+      />
+      <Form.Item name="_id" label={false}>
+        <Input type="hidden" />
+      </Form.Item>
+    </ModalForm>
   );
 };
 

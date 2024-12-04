@@ -3,8 +3,8 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, message, Modal } from 'antd';
+import { PlusOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -112,6 +112,9 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
+  const [videoUrl, setVideoUrl] = useState<string>('');
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState('');
 
   /**
    * @en-US International configuration
@@ -181,6 +184,29 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'video', defaultMessage: '视频' }),
+      dataIndex: 'video',
+      hideInSearch: true,
+      render: (video) =>
+        video ? (
+          <Button
+            type="link"
+            icon={<PlayCircleOutlined />}
+            onClick={() => {
+              setCurrentVideo(video as string);
+              setVideoModalOpen(true);
+            }}
+          >
+            {intl.formatMessage({ id: 'play_video', defaultMessage: '播放视频' })}
+          </Button>
+        ) : (
+          <span>{intl.formatMessage({ id: 'no_video', defaultMessage: '无视频' })}</span>
+        ),
+      renderFormItem: (item, { ...rest }) => {
+        return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_video' })} />;
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
       dataIndex: 'status',
       valueEnum: {
@@ -203,6 +229,8 @@ const TableList: React.FC = () => {
           <a
             key="edit"
             onClick={() => {
+              console.log();
+
               handleUpdateModalOpen(true);
               setCurrentRow(record);
             }}
@@ -289,10 +317,15 @@ const TableList: React.FC = () => {
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
+          setVideoUrl={setVideoUrl}
           onFinish={async (value) => {
-            const success = await handleAdd(value as API.ItemData);
+            const success = await handleAdd({
+              ...value,
+              video: videoUrl,
+            } as API.ItemData);
             if (success) {
               handleModalOpen(false);
+              setVideoUrl('');
               if (actionRef.current) {
                 actionRef.current.reload();
               }
@@ -326,6 +359,15 @@ const TableList: React.FC = () => {
           setShowDetail(false);
         }}
       />
+      <Modal
+        title={intl.formatMessage({ id: 'video_player', defaultMessage: '视频播放' })}
+        open={videoModalOpen}
+        onCancel={() => setVideoModalOpen(false)}
+        footer={null}
+        width={800}
+      >
+        <video controls style={{ width: '100%' }} src={currentVideo} />
+      </Modal>
     </PageContainer>
   );
 };

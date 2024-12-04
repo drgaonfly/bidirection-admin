@@ -246,11 +246,11 @@ export default {
   'menu.comments': '评论',
 
   // VIP 会员相关
-  'menu.vip_members': 'VIP 会员',
-  'menu.vipMembers': 'VIP 会员',
-  'pages.vipMember.title': 'VIP 会员',
+  'menu.vip_members': '会员',
+  'menu.vipMembers': '会员',
+  'pages.vipMember.title': '会员',
   'pages.vipMember.customer': '会员用户',
-  'pages.vipMember.level': 'VIP 等级',
+  'pages.vipMember.level': '等级',
   'pages.vipMember.level.1': '普通会员',
   'pages.vipMember.level.2': '白银会员',
   'pages.vipMember.level.3': '黄金会员',
@@ -273,13 +273,13 @@ export default {
   'menu.withdrawals': '提现',
 
   // 如果你使用了面包屑，可能还需要这些
-  'pages.vip_members': 'VIP 会员',
-  'pages.vip_members.list': 'VIP 会员列表',
+  'pages.vip_members': '会员',
+  'pages.vip_members.list': '会员列表',
 
   // VIP会员相关
-  'menu.vip-members': 'VIP 会员',
+  'menu.vip-members': '会员',
   'menu.resumes': '简历',
-  'menu.list.vip-members': 'VIP 会员列表',
+  'menu.list.vip-members': '会员列表',
 
   // 新增字段的翻译
   level: '级别',
