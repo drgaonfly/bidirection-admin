@@ -73,7 +73,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
         <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'session', defaultMessage: '会话' })}
+          label={intl.formatMessage({ id: 'session', defaultMessage: '验证码' })}
           name="session"
         />
 
