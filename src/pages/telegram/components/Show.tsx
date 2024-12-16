@@ -23,10 +23,10 @@ const Show: React.FC<Props> = (props) => {
       centered
       className="rounded-lg overflow-hidden"
     >
-      {currentRow?.username && (
+      {currentRow?._id && (
         <ProDescriptions<API.ItemData>
           column={2}
-          title={currentRow?.username}
+          title={currentRow?.botName}
           request={async () => ({
             data: currentRow || {},
           })}

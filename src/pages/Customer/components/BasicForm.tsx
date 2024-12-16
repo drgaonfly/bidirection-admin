@@ -40,7 +40,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       <ProForm.Group>
         <ProxySelect />
 
-        <ProFormText
+        {/* <ProFormText
           rules={[{ required: true, message: intl.formatMessage({ id: 'enter_username' }) }]}
           width="md"
           label={intl.formatMessage({ id: 'username' })}
@@ -55,7 +55,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'email' })}
           name="email"
-        />
+        /> */}
         <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'phoneNumber', defaultMessage: '电话号码' })}

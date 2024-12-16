@@ -377,4 +377,5 @@ export default {
   enter_url: '请输入网址',
   enter_bot_name: '请输入机器人名称',
   enter_remarks: '请输入备注',
+  'pages.comment.proxy': '代理用户',
 };
