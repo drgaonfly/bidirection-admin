@@ -40,26 +40,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       <ProForm.Group>
         <ProxySelect />
 
-        {/* <ProFormText
-          rules={[{ required: true, message: intl.formatMessage({ id: 'enter_username' }) }]}
-          width="md"
-          label={intl.formatMessage({ id: 'username' })}
-          name="username"
-        />
-
         <ProFormText
-          rules={[
-            { required: true, message: intl.formatMessage({ id: 'enter_email' }) },
-            { type: 'email', message: intl.formatMessage({ id: 'invalid_email' }) },
-          ]}
-          width="md"
-          label={intl.formatMessage({ id: 'email' })}
-          name="email"
-        /> */}
-        <ProFormText
+          rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'phoneNumber', defaultMessage: '电话号码' })}
           name="phoneNumber"
+          initialValue="" // 设置默认值为空
         />
 
         <ProFormText.Password
@@ -68,23 +54,23 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="password"
         />
 
-        <ProFormTextArea
+        {/* <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'phoneCode', defaultMessage: '电话区号' })}
           name="phoneCode"
-        />
+        /> */}
 
         <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'session', defaultMessage: '验证码' })}
+          label={intl.formatMessage({ id: 'session', defaultMessage: 'session' })}
           name="session"
         />
-
-        <ProFormTextArea
+        {/* 
+        <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'cookies', defaultMessage: 'Cookies' })}
           name="cookies"
-        />
+        /> */}
 
         <ProFormText
           width="md"
@@ -92,13 +78,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="ip"
         />
 
-        <ProFormTextArea
+        <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'certification', defaultMessage: '二级认证' })}
+          label={intl.formatMessage({ id: 'certification', defaultMessage: '验证码' })}
           name="certification"
         />
 
-        <ProFormText
+        <ProFormTextArea
           width="md"
           label={intl.formatMessage({ id: 'remarks', defaultMessage: '备注' })}
           name="remarks"

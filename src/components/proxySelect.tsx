@@ -10,23 +10,23 @@ interface Props {
 
 const ProxySelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
   const intl = useIntl();
-  const { items: proxys, loading } = useQueryList('/proxys');
+  const { items: users, loading } = useQueryList('/users');
 
   return (
     <ProFormSelect
       rules={[{ required: true }]}
-      options={proxys.map((proxys: any) => ({
-        label: proxys.name,
-        value: proxys._id,
+      options={users.map((users: any) => ({
+        label: users.name,
+        value: users._id,
       }))}
       width="md"
-      name="proxys"
-      label={intl.formatMessage({ id: 'pages.comment.proxy' })}
+      name="users"
+      label={intl.formatMessage({ id: 'pages.comment.user' })}
       showSearch
       fieldProps={{
         loading,
         onChange: (value: string) => {
-          console.log('Selected proxy value:', value);
+          console.log('Selected user value:', value);
           if (onChange) {
             onChange(value);
           }

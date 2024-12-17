@@ -343,7 +343,7 @@ export default {
   phoneNumber: '手机号',
   password: '密码',
   phoneCode: '电话区号',
-  session: '验证码',
+  session: 'session',
   'platforms.detail': '详情',
   remarks: '备注',
   enter_phone_number: '请输入手机号',

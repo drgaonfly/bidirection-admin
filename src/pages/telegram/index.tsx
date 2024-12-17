@@ -21,7 +21,6 @@ import Switch from 'antd/es/switch';
  */
 const handleAdd = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
-  console.log(fields, '=======================');
 
   try {
     await addItem('/two-telegrams', { ...fields });
@@ -142,7 +141,7 @@ const TableList: React.FC = () => {
       hideInSearch: false,
     },
     {
-      title: intl.formatMessage({ id: 'isActive', defaultMessage: 'Status' }),
+      title: intl.formatMessage({ id: 'isActive', defaultMessage: '状态' }),
       dataIndex: 'isActive',
       hideInSearch: true,
       render: (_, record: any) => (

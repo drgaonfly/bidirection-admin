@@ -24,7 +24,7 @@ import DeleteLink from '@/components/DeleteLink';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/proxys', { ...fields });
+    await addItem('/users', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -48,7 +48,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/proxys/${fields._id}`, fields);
+    await updateItem(`/users/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -67,7 +67,7 @@ const handleUpdate = async (fields: FormValueType) => {
 const handleRecharge = async (fields: FormValueType) => {
   const hide = message.loading('正在充值');
   try {
-    await addItem(`/proxys/${fields._id}/recharge`, fields);
+    await addItem(`/users/${fields._id}/recharge`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -89,7 +89,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/proxys', {
+    await removeItem('/users', {
       ids,
     });
     hide();
@@ -116,7 +116,7 @@ const handleBatchAdd = async (fields: API.ItemData) => {
     <FormattedMessage id="bulk_uploading" defaultMessage="Bulk uploading..." />,
   );
   try {
-    const res = (await addItem('/proxys/batch-upload', { ...fields })) as any;
+    const res = (await addItem('/users/batch-upload', { ...fields })) as any;
     hide();
     message.success('已提交');
     return { success: true, data: res.data };
@@ -286,7 +286,7 @@ const TableList: React.FC = () => {
           //   </Button>
           // ),
         ]}
-        request={async (params, sort, filter) => queryList('/proxys', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/users', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {

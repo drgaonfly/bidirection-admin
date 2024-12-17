@@ -125,7 +125,7 @@ const TableList: React.FC = () => {
   const columns: ProColumns<any>[] = [
     {
       title: intl.formatMessage({ id: 'name', defaultMessage: '用名' }),
-      dataIndex: ['proxys', 'name'],
+      dataIndex: ['users', 'name'],
     },
     {
       title: intl.formatMessage({ id: 'phoneNumber', defaultMessage: '电话号码' }),
@@ -146,24 +146,11 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'phoneCode', defaultMessage: '电话区号' }),
-      dataIndex: 'phoneCode',
-      hideInSearch: false,
-    },
-    {
       title: intl.formatMessage({ id: 'session', defaultMessage: '验证码' }),
       dataIndex: 'session',
       hideInSearch: true,
       renderFormItem: (item, { ...rest }) => {
         return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_session' })} />;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'cookies', defaultMessage: 'Cookies' }),
-      dataIndex: 'cookies',
-      render: (_, record) => {
-        const cookies = record.cookies as string[] | undefined;
-        return cookies ? cookies.join(', ') : '-';
       },
     },
     {
@@ -173,7 +160,7 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'certification', defaultMessage: '二级认证' }),
+      title: intl.formatMessage({ id: 'certification', defaultMessage: '验证码' }),
       dataIndex: 'certification',
       hideInSearch: true,
     },
