@@ -353,4 +353,5 @@ export default {
   'menu.employees': 'Employees',
   'pages.customer.user': 'User',
   'menu.telegram-users': 'Telegram Users',
+  'pages.employee.proxy': 'Proxy',
 };

@@ -3,6 +3,7 @@ import React from 'react';
 import { ProForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
+import ProxysSelect from '@/components/proxysSelects';
 
 interface Props {
   newRecord?: boolean;
@@ -20,6 +21,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       initialValues={{
         ...values,
         roles: values?.roles?.map((role: { _id: string }) => role._id),
+        proxys: values?.proxys?._id,
       }}
       onFinish={async (values) => {
         await onFinish({
@@ -41,12 +43,14 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
-        <ProFormText
+        {/* <ProFormText
           rules={[{ required: true, message: intl.formatMessage({ id: 'enter_name' }) }]}
           width="md"
           label={intl.formatMessage({ id: 'name' })}
           name="name"
-        />
+        /> */}
+        <ProxysSelect />
+
         <ProFormText
           rules={[{ required: true, message: intl.formatMessage({ id: 'enter_email' }) }]}
           width="md"

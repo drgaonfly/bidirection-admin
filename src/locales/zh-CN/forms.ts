@@ -383,4 +383,5 @@ export default {
   'menu.employees': '员工管理',
   'pages.customer.user': '用户',
   'menu.telegram-users': '机器人用户',
+  'pages.employee.proxy': '代理用户',
 };

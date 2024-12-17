@@ -22,6 +22,8 @@ import DeleteLink from '@/components/DeleteLink';
  */
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
+  console.log(fields, 'fields=======================================');
+
   try {
     await addItem('/employees', { ...fields });
     hide();
@@ -165,8 +167,8 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'name' }),
-      dataIndex: 'name',
+      title: intl.formatMessage({ id: 'pages.employee.proxy' }),
+      dataIndex: ['proxys', 'name'],
       renderFormItem: (item, { ...rest }) => {
         return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_name' })} />;
       },
