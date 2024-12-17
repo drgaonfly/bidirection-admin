@@ -350,4 +350,5 @@ export default {
   enter_bot_name: 'Please enter bot name',
   enter_remarks: 'Please enter remarks',
   'menu.message': 'Message',
+  'menu.employees': 'Employees',
 };

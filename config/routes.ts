@@ -112,4 +112,10 @@ export default [
     icon: 'TableOutlined',
     component: './Messages',
   },
+  {
+    path: '/employees',
+    name: 'list.employees',
+    icon: 'UsergroupAddOutlined',
+    component: './Employee',
+  },
 ];

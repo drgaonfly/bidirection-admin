@@ -380,4 +380,5 @@ export default {
   'pages.comment.proxy': '代理用户',
   'list.messages': '信息管理',
   'menu.messages': '信息管理',
+  'menu.employees': '员工管理',
 };
