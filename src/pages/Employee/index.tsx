@@ -186,6 +186,15 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        <a
+          key="detail"
+          onClick={() => {
+            setCurrentRow(record);
+            setShowDetail(true);
+          }}
+        >
+          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+        </a>,
         access.canSuperAdmin && (
           <a
             key="edit"

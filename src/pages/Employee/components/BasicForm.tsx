@@ -15,6 +15,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
 
   const { items: roles, loading } = useQueryList('/roles');
+  const filteredRoles = roles?.filter((role: { name: string }) => role.name === '员工'); // 只筛选出名称为员工的角色
 
   return (
     <ProForm
@@ -64,18 +65,21 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="password"
         />
 
-        <ProFormCheckbox.Group
-          name="roles"
-          layout="horizontal"
-          label={intl.formatMessage({ id: 'role_choose' })}
-          options={roles?.map((role: { name: string; _id: string }) => ({
-            label: role.name,
-            value: role._id,
-          }))}
-          fieldProps={{
-            disabled: loading, // 确保在 loading 时禁用复选框
-          }}
-        />
+        {/* 点击编辑不显示*/}
+        {newRecord && (
+          <ProFormCheckbox.Group
+            name="roles"
+            layout="horizontal"
+            label={intl.formatMessage({ id: 'role_choose' })}
+            options={filteredRoles?.map((role: { name: string; _id: string }) => ({
+              label: role.name,
+              value: role._id,
+            }))}
+            fieldProps={{
+              disabled: loading, // 确保在 loading 时禁用复选框
+            }}
+          />
+        )}
       </ProForm.Group>
 
       {!newRecord && (
