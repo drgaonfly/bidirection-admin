@@ -60,18 +60,20 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="password"
         />
 
-        <ProFormCheckbox.Group
-          name="roles"
-          layout="horizontal"
-          label={intl.formatMessage({ id: 'role_choose' })}
-          options={roles?.map((role: { name: string; _id: string }) => ({
-            label: role.name,
-            value: role._id,
-          }))}
-          fieldProps={{
-            disabled: loading, // 确保在 loading 时禁用复选框
-          }}
-        />
+        {newRecord && (
+          <ProFormCheckbox.Group
+            name="roles"
+            layout="horizontal"
+            label={intl.formatMessage({ id: 'role_choose' })}
+            options={roles?.map((role: { name: string; _id: string }) => ({
+              label: role.name,
+              value: role._id,
+            }))}
+            fieldProps={{
+              disabled: loading, // 确保在 loading 时禁用复选框
+            }}
+          />
+        )}
       </ProForm.Group>
 
       {!newRecord && (

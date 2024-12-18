@@ -2,7 +2,7 @@ import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import { FooterToolbar, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
+import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
@@ -22,7 +22,6 @@ import DeleteLink from '@/components/DeleteLink';
  */
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
-  console.log(fields, 'fields=======================================');
 
   try {
     await addItem('/employees', { ...fields });
@@ -150,9 +149,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'email' }),
       dataIndex: 'email',
       copyable: true,
-      renderFormItem: (item, { ...rest }) => {
-        return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_email' })} />;
-      },
+
       render: (dom, entity) => {
         return (
           <a
@@ -169,9 +166,6 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'pages.employee.proxy' }),
       dataIndex: ['proxy', 'name'],
-      renderFormItem: (item, { ...rest }) => {
-        return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_name' })} />;
-      },
     },
     {
       title: intl.formatMessage({ id: 'role' }),
@@ -227,16 +221,8 @@ const TableList: React.FC = () => {
         actionRef={actionRef}
         rowKey="_id"
         search={{
-          labelWidth: 65,
+          labelWidth: 120,
           collapsed: false,
-          span: {
-            xs: 24, // 手机端占满
-            sm: 24, // 平板端占满
-            md: 8, // 电脑端占满
-            lg: 8, // 大屏幕占满
-            xl: 8, // 超大屏幕
-            xxl: 8, // 超超大屏幕
-          },
         }}
         toolBarRender={() => [
           (access.canSuperAdmin || access.canCreateNewEmployee) && (
