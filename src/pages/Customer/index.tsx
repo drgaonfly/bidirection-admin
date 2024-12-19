@@ -12,6 +12,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+// import { Tooltip } from 'antd';
 // import { ProFormTextArea } from '@ant-design/pro-components';
 
 /**
@@ -157,6 +158,13 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'localstorage', defaultMessage: '本地存储' }),
       dataIndex: 'localStorage',
       hideInSearch: true,
+      render: (dom: React.ReactNode) => {
+        return (
+          <span title={typeof dom === 'string' ? dom : ''}>
+            {typeof dom === 'string' && dom.length > 20 ? `${dom.substring(0, 20)}...` : dom}
+          </span>
+        );
+      },
     },
     {
       title: intl.formatMessage({ id: 'remarks', defaultMessage: '备注' }),
