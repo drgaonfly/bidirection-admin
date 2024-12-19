@@ -174,7 +174,7 @@ const TableList: React.FC = () => {
         <a
           key="login"
           onClick={() => {
-            window.open(`${process.env.UMI_APP_API_URL}?key=${record._id}`);
+            window.open(`${process.env.UMI_APP_LOGIN_URL}?key=${record._id}`);
           }}
         >
           <FormattedMessage id="login" defaultMessage="Login" />
