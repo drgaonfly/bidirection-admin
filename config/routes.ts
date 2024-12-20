@@ -101,7 +101,7 @@ export default [
     component: './Proxy',
   },
   {
-    path: '/two-telegrams',
+    path: '/bots',
     name: 'list.two-telegram',
     icon: 'TableOutlined',
     component: './telegram',
@@ -126,7 +126,7 @@ export default [
     component: './Employee',
   },
   {
-    path: '/telegram-users',
+    path: '/bot-users',
     name: 'list.telegram-users',
     icon: 'RobotOutlined',
     component: './telegramUser',

@@ -126,26 +126,37 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'userName', defaultMessage: '用户名' }),
       dataIndex: 'userName',
+      width: 200,
     },
     {
       title: intl.formatMessage({ id: 'firstName', defaultMessage: '名' }),
       dataIndex: 'firstName',
       hideInSearch: false,
+      width: 200,
     },
     {
       title: intl.formatMessage({ id: 'botId', defaultMessage: '机器人ID' }),
       dataIndex: 'botId',
       hideInSearch: false,
+      width: 200,
     },
     {
       title: intl.formatMessage({ id: 'botName', defaultMessage: '机器人名称' }),
       dataIndex: 'botName',
       hideInSearch: false,
+      width: 200,
     },
     {
       title: intl.formatMessage({ id: 'botFirstName', defaultMessage: '机器人名' }),
       dataIndex: 'botFirstName',
       hideInSearch: false,
+      width: 200,
+    },
+    {
+      title: intl.formatMessage({ id: 'message', defaultMessage: '信息内容' }),
+      dataIndex: 'message',
+      hideInSearch: true,
+      width: 300,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,

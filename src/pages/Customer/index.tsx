@@ -202,7 +202,6 @@ const TableList: React.FC = () => {
         return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_remarks' })} />;
       },
     },
-
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',

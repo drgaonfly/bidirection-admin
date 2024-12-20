@@ -55,6 +55,11 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="email"
         />
         <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'inviteCode' })}
+          name="inviteCode"
+        />
+        <ProFormText
           rules={[{ required: newRecord }]}
           width="md"
           label={intl.formatMessage({ id: 'password' })}
