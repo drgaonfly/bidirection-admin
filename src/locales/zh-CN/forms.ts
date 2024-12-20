@@ -388,4 +388,5 @@ export default {
   'pages.customer.proxy': '邀请人',
   copy_success: '复制成功',
   copy: '复制',
+  'pages.comment.user': '邀请人',
 };

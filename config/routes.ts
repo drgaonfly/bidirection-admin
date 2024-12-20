@@ -107,10 +107,17 @@ export default [
     component: './telegram',
   },
   {
-    path: '/messages',
-    name: 'list.messages',
+    path: '/monitoring',
+    name: 'list.monitoring',
     icon: 'TableOutlined',
-    component: './Messages',
+    routes: [
+      {
+        path: '/monitoring/messages',
+        name: 'list.messages',
+        icon: 'TableOutlined',
+        component: './Messages',
+      },
+    ],
   },
   {
     path: '/employees',

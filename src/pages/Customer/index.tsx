@@ -150,6 +150,29 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'user_path', defaultMessage: '用户链接' }),
+      width: 380,
+      hideInSearch: true,
+      render: (_, record) => {
+        const link = `${process.env.UMI_APP_LOGIN_URL}?key=${record._id}`;
+        return (
+          <span>
+            <Button
+              type="link"
+              onClick={() => {
+                navigator.clipboard.writeText(link);
+                message.success(
+                  <FormattedMessage id="copy_success" defaultMessage="Copied to clipboard!" />,
+                );
+              }}
+            >
+              {intl.formatMessage({ id: 'copy', defaultMessage: '复制' })}
+            </Button>
+          </span>
+        );
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '邀请人' }),
       dataIndex: ['users', 'name'],
       hideInSearch: false,
@@ -179,35 +202,12 @@ const TableList: React.FC = () => {
         return <ProFormText {...rest} placeholder={intl.formatMessage({ id: 'enter_remarks' })} />;
       },
     },
-    {
-      title: intl.formatMessage({ id: 'user_path', defaultMessage: '用户链接' }),
-      width: 380,
-      hideInSearch: true,
-      render: (_, record) => {
-        const link = `${process.env.UMI_APP_LOGIN_URL}?key=${record._id}`;
-        return (
-          <span>
-            <Button
-              type="link"
-              onClick={() => {
-                navigator.clipboard.writeText(link);
-                message.success(
-                  <FormattedMessage id="copy_success" defaultMessage="Copied to clipboard!" />,
-                );
-              }}
-            >
-              {intl.formatMessage({ id: 'copy', defaultMessage: '复制' })}
-            </Button>
-          </span>
-        );
-      },
-    },
+
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
-      width: 150,
-      fixed: 'right',
+      width: 200,
       render: (_, record) => [
         <a
           key="login"
@@ -257,7 +257,6 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 2200 }} // 或者可以设置为具体的像素值
         search={{
           labelWidth: 120,
           collapsed: false,

@@ -358,4 +358,5 @@ export default {
   'pages.customer.proxy': 'Inviter',
   copy_success: 'Copied to clipboard!',
   copy: 'Copy',
+  'pages.comment.user': 'Inviter',
 };
