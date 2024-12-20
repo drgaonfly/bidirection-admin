@@ -387,4 +387,10 @@ export default {
   proxy: 'Proxy', // Added missing message
   localstorage: 'Local Storage',
   inviteCode: 'Invite Code',
+  'menu.bots': 'Bots',
+  'menu.bot-users': 'Bot Users',
+  isOnline: 'Is Online',
+  'isOnline.true': 'Yes',
+  'isOnline.false': 'No',
+  telegram: 'Telegram',
 };

@@ -124,6 +124,12 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
+      title: intl.formatMessage({ id: 'user', defaultMessage: '用户' }),
+      dataIndex: ['user', 'name'],
+      hideInSearch: false,
+      width: 200,
+    },
+    {
       title: intl.formatMessage({ id: 'botToken', defaultMessage: 'Bot Token' }),
       dataIndex: 'botToken',
       hideInSearch: false,
@@ -136,9 +142,10 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'botName', defaultMessage: 'Bot Name' }),
-      dataIndex: 'botName',
+      title: intl.formatMessage({ id: 'message  ', defaultMessage: '消息' }),
+      dataIndex: 'message',
       hideInSearch: false,
+      width: 270,
     },
     {
       title: intl.formatMessage({ id: 'isActive', defaultMessage: '状态' }),

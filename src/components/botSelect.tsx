@@ -10,18 +10,18 @@ interface Props {
 
 const ProxySelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
   const intl = useIntl();
-  const { items: user, loading } = useQueryList('/users');
+  const { items: bot, loading } = useQueryList('/two-telegrams');
 
   return (
     <ProFormSelect
       rules={[{ required: true }]}
-      options={user.map((user: any) => ({
-        label: user.name,
-        value: user._id,
+      options={bot.map((bot: any) => ({
+        label: bot.botToken,
+        value: bot._id,
       }))}
       width="md"
-      name="user"
-      label={intl.formatMessage({ id: 'telegram' })}
+      name="bot"
+      label={intl.formatMessage({ id: 'pages.comment.user' })}
       showSearch
       fieldProps={{
         loading,

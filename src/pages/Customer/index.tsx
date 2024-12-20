@@ -3,8 +3,8 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProFormText, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Button, message, Modal, Switch } from 'antd';
+import { CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -127,7 +127,7 @@ const TableList: React.FC = () => {
       dataIndex: 'phoneNumber',
       copyable: true,
       hideInSearch: false,
-      width: 230,
+      width: 250,
     },
     {
       title: intl.formatMessage({ id: 'certification', defaultMessage: '验证码' }),
@@ -151,7 +151,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'user_path', defaultMessage: '用户链接' }),
-      width: 380,
+      width: 200,
       hideInSearch: true,
       render: (_, record) => {
         const link = `${process.env.UMI_APP_LOGIN_URL}?key=${record._id}`;
@@ -166,7 +166,7 @@ const TableList: React.FC = () => {
                 );
               }}
             >
-              {intl.formatMessage({ id: 'copy', defaultMessage: '复制' })}
+              <CopyOutlined />
             </Button>
           </span>
         );
@@ -174,7 +174,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '邀请人' }),
-      dataIndex: ['users', 'name'],
+      dataIndex: ['user', 'name'],
       hideInSearch: false,
       width: 200,
     },
@@ -183,6 +183,12 @@ const TableList: React.FC = () => {
       dataIndex: 'ip',
       hideInSearch: true,
       copyable: true,
+      width: 300,
+    },
+    {
+      title: intl.formatMessage({ id: 'telegram', defaultMessage: '飞机号' }),
+      dataIndex: ['bot', 'botToken'],
+      hideInSearch: false,
       width: 300,
     },
     {
@@ -203,9 +209,29 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
+      dataIndex: 'isOnline',
+      hideInSearch: true,
+      width: 200,
+      render: (_, record: any) => (
+        <Switch
+          checkedChildren={intl.formatMessage({ id: 'platform.online' })}
+          unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
+          checked={record.isOnline}
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }}
+        />
+      ),
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       width: 200,
       render: (_, record) => [
         <a
@@ -256,6 +282,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
+        scroll={{ x: 2000 }}
         search={{
           labelWidth: 120,
           collapsed: false,

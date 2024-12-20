@@ -1,7 +1,8 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormSwitch } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormSwitch, ProFormTextArea } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
+import UserSelect from '@/components/proxySelect';
 
 interface Props {
   newRecord?: boolean;
@@ -37,6 +38,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
+        <UserSelect />
+
         <ProFormText
           rules={[{ required: true, message: intl.formatMessage({ id: 'enter_bot_token' }) }]}
           width="md"
@@ -50,18 +53,16 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'url', defaultMessage: 'URL' })}
           name="url"
         />
-
-        <ProFormText
-          rules={[{ required: true, message: intl.formatMessage({ id: 'enter_bot_name' }) }]}
-          width="md"
-          label={intl.formatMessage({ id: 'botName', defaultMessage: 'Bot Name' })}
-          name="botName"
-        />
-
         <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'remarks', defaultMessage: 'Remarks' })}
           name="remarks"
+        />
+
+        <ProFormTextArea
+          width="md"
+          label={intl.formatMessage({ id: 'message', defaultMessage: '消息' })}
+          name="message"
         />
 
         <ProFormSwitch

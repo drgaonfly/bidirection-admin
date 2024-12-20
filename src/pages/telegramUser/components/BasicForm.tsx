@@ -3,6 +3,7 @@ import React from 'react';
 import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 // import ProxySelect from '@/components/proxySelect';
+import BotSelect from '@/components/botSelect';
 
 interface Props {
   newRecord?: boolean;
@@ -39,6 +40,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
+        <BotSelect />
+
         <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'userName', defaultMessage: '用户名' })}
@@ -49,24 +52,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'firstName', defaultMessage: '名' })}
           name="firstName"
-        />
-
-        <ProFormText
-          width="md"
-          label={intl.formatMessage({ id: 'botId', defaultMessage: '机器人ID' })}
-          name="botId"
-        />
-
-        <ProFormText
-          width="md"
-          label={intl.formatMessage({ id: 'botName', defaultMessage: '机器人名称' })}
-          name="botName"
-        />
-
-        <ProFormText
-          width="md"
-          label={intl.formatMessage({ id: 'botFirstName', defaultMessage: '机器人名' })}
-          name="botFirstName"
         />
         <ProFormTextArea
           width="md"

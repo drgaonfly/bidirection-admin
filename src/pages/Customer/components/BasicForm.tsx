@@ -1,8 +1,9 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
+import { ProForm, ProFormSwitch, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import ProxySelect from '@/components/proxySelect';
+import BotSelect from '@/components/botSelect';
 
 interface Props {
   newRecord?: boolean;
@@ -17,7 +18,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     <ProForm
       initialValues={{
         ...values,
-        users: values?.users?._id,
+        user: values?.user?._id,
+        bot: values?.bot?._id,
       }}
       onFinish={async (values) => {
         await onFinish({
@@ -67,6 +69,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="phoneCode"
         />
 
+        <BotSelect />
+
         <ProFormTextArea
           width="md"
           label={intl.formatMessage({ id: 'localstorage', defaultMessage: '本地存储' })}
@@ -77,6 +81,11 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'remarks', defaultMessage: '备注' })}
           name="remarks"
+        />
+        <ProFormSwitch
+          label={intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' })}
+          name="isOnline"
+          initialValue={true}
         />
       </ProForm.Group>
 
