@@ -387,7 +387,6 @@ export default {
   proxy: 'Proxy', // Added missing message
   localstorage: 'Local Storage',
   inviteCode: 'Invite Code',
-  'menu.bots': 'Bots',
   isOnline: 'Is Online',
   'isOnline.true': 'Yes',
   'isOnline.false': 'No',

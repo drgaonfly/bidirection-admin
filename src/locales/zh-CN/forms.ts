@@ -408,7 +408,6 @@ export default {
   'menu.monitoring.messages': '信息管理',
   'menu.monitoring.list.messages': '信息管理',
   inviteCode: '邀请码',
-  'menu.bots': '机器人',
   isOnline: '是否在线',
   'isOnline.true': '是',
   'isOnline.false': '否',
