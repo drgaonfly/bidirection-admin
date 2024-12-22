@@ -10,7 +10,6 @@ import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
-import BatchUploadModal from './components/BatchUploadModal';
 // import Recharge from './components/Recharge';
 import { Role } from '@/apiDataStructures/ApiDataStructure';
 import DeleteButton from '@/components/DeleteButton';
@@ -111,26 +110,6 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
-const handleBatchAdd = async (fields: API.ItemData) => {
-  const hide = message.loading(
-    <FormattedMessage id="bulk_uploading" defaultMessage="Bulk uploading..." />,
-  );
-  try {
-    const res = (await addItem('/proxys/batch-upload', { ...fields })) as any;
-    hide();
-    message.success('已提交');
-    return { success: true, data: res.data };
-  } catch (error: any) {
-    hide();
-    message.error(
-      error?.response?.data?.message ?? (
-        <FormattedMessage id="upload_failed" defaultMessage="Upload failed, please try again!" />
-      ),
-    );
-    return false;
-  }
-};
-
 const TableList: React.FC = () => {
   const intl = useIntl();
   /**
@@ -143,7 +122,6 @@ const TableList: React.FC = () => {
    * @zh-CN 分布更新窗口的弹窗
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-  const [batchUploadModalOpen, setBatchUploadModalOpen] = useState<boolean>(false);
   // const [batchUploadPriceModalOpen, setBatchUploadPriceModalOpen] = useState<boolean>(false);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -321,19 +299,6 @@ const TableList: React.FC = () => {
           values={currentRow || {}}
         />
       )}
-      <BatchUploadModal
-        open={batchUploadModalOpen}
-        onOpenChange={setBatchUploadModalOpen}
-        onFinish={async (values: any) => {
-          const { success, data } = (await handleBatchAdd(values as API.ItemData)) as any;
-          if (success && data) {
-            // setBatchUploadModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      />
 
       <Show
         open={showDetail}

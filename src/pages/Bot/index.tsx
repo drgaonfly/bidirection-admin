@@ -13,6 +13,7 @@ import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import Switch from 'antd/es/switch';
+import ConfigureForm from './components/ConfigureForm';
 
 /**
  * @en-US Add node
@@ -115,6 +116,7 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [configureModalVisible, setConfigureModalVisible] = useState<boolean>(false);
 
   /**
    * @en-US International configuration
@@ -138,6 +140,12 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'bot_name', defaultMessage: 'Bot Name' }),
       dataIndex: 'name',
+      hideInSearch: false,
+      width: 200,
+    },
+    {
+      title: intl.formatMessage({ id: 'user_name', defaultMessage: '用户名' }),
+      dataIndex: 'userName',
       hideInSearch: false,
       width: 200,
     },
@@ -176,6 +184,18 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        <a
+          key="configure"
+          onClick={() => {
+            setConfigureModalVisible(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'configure',
+            defaultMessage: 'Configure',
+          })}
+        </a>,
         <a
           key="detail"
           onClick={() => {
@@ -315,6 +335,21 @@ const TableList: React.FC = () => {
           setCurrentRow(undefined);
           setShowDetail(false);
         }}
+      />
+      <ConfigureForm
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            setConfigureModalVisible(false);
+            setCurrentRow(undefined);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={setConfigureModalVisible}
+        updateModalOpen={configureModalVisible}
+        values={currentRow || {}}
       />
       <Modal
         title={intl.formatMessage({ id: 'video_player', defaultMessage: '视频播放' })}

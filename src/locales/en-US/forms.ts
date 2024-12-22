@@ -374,7 +374,7 @@ export default {
   chatGroup: 'Chat Group',
   sender: 'Sender',
   messageType: 'Message Type',
-  'menu.list.two-telegram': 'Two Telegram',
+  'menu.list.two-telegram': 'Telegram Bot',
   'menu.list.employees': 'Employees',
   'menu.list.bot-users': 'Bot Users',
   'menu.monitoring.messages': 'Message',
@@ -387,5 +387,12 @@ export default {
   proxy: 'Proxy', // Added missing message
   localstorage: 'Local Storage',
   inviteCode: 'Invite Code',
-
+  bot_name: 'Bot Name',
+  isActive: 'Is Active',
+  'menu.bots': 'Bots',
+  configure: 'Configure',
+  user_name: 'User Name',
+  isOnline: 'Is Online',
+  'isOnline.true': 'Online',
+  'isOnline.false': 'Offline',
 };

@@ -54,16 +54,16 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="name"
         />
 
-        <ProFormTextArea
+        <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'remarks', defaultMessage: 'Remarks' })}
-          name="remarks"
+          label={intl.formatMessage({ id: 'user_name', defaultMessage: '用户名' })}
+          name="userName"
         />
 
         <ProFormTextArea
           width="md"
-          label={intl.formatMessage({ id: 'message', defaultMessage: '消息' })}
-          name="message"
+          label={intl.formatMessage({ id: 'remarks', defaultMessage: 'Remarks' })}
+          name="remarks"
         />
 
         <ProFormSwitch
