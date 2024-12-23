@@ -42,7 +42,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         <UserSelect />
 
         <ProFormText
-          rules={[{ required: true, message: intl.formatMessage({ id: 'enter_bot_token' }) }]}
+          rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'token', defaultMessage: 'Bot Token' })}
           name="token"
@@ -58,6 +58,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'user_name', defaultMessage: '用户名' })}
           name="userName"
+          rules={[{ required: true }]}
         />
 
         <ProFormTextArea

@@ -25,26 +25,20 @@ const Show: React.FC<Props> = (props) => {
   const [employees, setEmployees] = useState<DataSourceType[]>([]); // 添加状态以存储员工数据
 
   const fetchEmployees = async (proxyId: string) => {
+    setEmployees([]); // 清空上一个点击的员工数据
     // 添加获取员工的函数
-    const hide = message.loading(
-      <FormattedMessage id="loading_employees" defaultMessage="Loading employees..." />,
-    );
+    const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
     try {
       const response = (await queryList(`/proxys/employees/${proxyId}`, { method: 'GET' })) as {
         success: boolean;
         data: DataSourceType[];
       };
-      // Check if the response indicates success
+      // 检查响应是否显示成功
       if (response.success) {
         const data = response.data; // 直接使用 data
-        console.log(data);
         if (Array.isArray(data)) {
           setEmployees(data);
-        } else {
-          console.error('Expected an array but received:', data);
         }
-      } else {
-        console.error('Failed to fetch employees:', response);
       }
       hide();
     } catch (error) {

@@ -24,7 +24,7 @@ const handleAdd = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
 
   try {
-    await addItem('/two-telegrams', { ...fields });
+    await addItem('/bots', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -48,7 +48,7 @@ const handleAdd = async (fields: any) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/two-telegrams/${fields._id}`, fields);
+    await updateItem(`/bots/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -74,7 +74,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/two-telegrams', {
+    await removeItem('/bots', {
       ids,
     });
     hide();
@@ -279,7 +279,7 @@ const TableList: React.FC = () => {
           },
         }}
         toolBarRender={() => [
-          access.canSuperAdmin && (
+          (access.canSuperAdmin || access.canCreateBot) && (
             <Button
               type="primary"
               key="primary"
@@ -291,10 +291,10 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/two-telegrams', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/bots', params, sort, filter)}
         columns={columns}
         rowSelection={
-          access.canSuperAdmin && {
+          (access.canSuperAdmin || access.canCreateBot) && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },
@@ -311,7 +311,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteMenu) && (
+          {(access.canSuperAdmin || access.canDeleteBot) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -322,7 +322,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateMenu) && (
+      {(access.canSuperAdmin || access.canCreateBot) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -339,7 +339,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateMenu) && (
+      {(access.canSuperAdmin || access.canUpdateBot) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
