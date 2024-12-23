@@ -84,6 +84,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'name' })}
           name="name"
+          disabled={!newRecord}
         />
 
         <ProForm.Item name="permissions" label={intl.formatMessage({ id: 'permission_choose' })}>

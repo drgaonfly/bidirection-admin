@@ -136,6 +136,7 @@ const TableList: React.FC = () => {
       dataIndex: 'token',
       hideInSearch: false,
       copyable: true,
+      width: 450,
     },
     {
       title: intl.formatMessage({ id: 'bot-name', defaultMessage: 'Bot Name' }),
@@ -180,9 +181,33 @@ const TableList: React.FC = () => {
       ),
     },
     {
+      title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
+      dataIndex: 'isOnline',
+      hideInSearch: false,
+      valueEnum: {
+        true: { text: intl.formatMessage({ id: 'platform.online' }), status: 'Success' },
+        false: { text: intl.formatMessage({ id: 'platform.offline' }), status: 'Error' },
+      },
+      render: (_, record: any) => (
+        <Switch
+          checkedChildren={intl.formatMessage({ id: 'platform.online' })}
+          unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
+          checked={record.isOnline}
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }}
+        />
+      ),
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
+      width: 200,
+      fixed: 'right',
       render: (_, record) => [
         <a
           key="configure"
@@ -237,6 +262,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
+        scroll={{ x: 2000 }}
         search={{
           labelWidth: 120,
           collapsed: false,

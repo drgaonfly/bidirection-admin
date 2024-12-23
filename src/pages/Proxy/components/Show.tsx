@@ -1,11 +1,12 @@
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { EditableProTable, ProColumns } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
+// import { Role } from '@/apiDataStructures/ApiDataStructure';
+import { queryList } from '@/services/ant-design-pro/api';
 import { Role } from '@/apiDataStructures/ApiDataStructure';
-import axios from 'axios';
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -25,10 +26,29 @@ const Show: React.FC<Props> = (props) => {
 
   const fetchEmployees = async (proxyId: string) => {
     // 添加获取员工的函数
+    const hide = message.loading(
+      <FormattedMessage id="loading_employees" defaultMessage="Loading employees..." />,
+    );
     try {
-      const response = await axios.get(`/employees/${proxyId}`);
-      setEmployees(response.data.data); // 更新员工数据状态
+      const response = (await queryList(`/proxys/employees/${proxyId}`, { method: 'GET' })) as {
+        success: boolean;
+        data: DataSourceType[];
+      };
+      // Check if the response indicates success
+      if (response.success) {
+        const data = response.data; // 直接使用 data
+        console.log(data);
+        if (Array.isArray(data)) {
+          setEmployees(data);
+        } else {
+          console.error('Expected an array but received:', data);
+        }
+      } else {
+        console.error('Failed to fetch employees:', response);
+      }
+      hide();
     } catch (error) {
+      hide();
       console.error('Failed to fetch employees:', error);
     }
   };
@@ -43,9 +63,6 @@ const Show: React.FC<Props> = (props) => {
   const filteredColumns = cols.filter((col) => col.dataIndex !== 'option');
   const columns: ProColumns<DataSourceType>[] = [
     {
-      title: intl.formatMessage({ id: 'employess' }),
-    },
-    {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
       copyable: true,
@@ -54,10 +71,6 @@ const Show: React.FC<Props> = (props) => {
       title: intl.formatMessage({ id: 'email' }),
       dataIndex: 'email',
       copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'pages.employee.proxy' }),
-      dataIndex: ['proxy', 'name'],
     },
     {
       title: intl.formatMessage({ id: 'role' }),
