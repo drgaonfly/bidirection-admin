@@ -50,8 +50,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
         <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'bot-name', defaultMessage: 'Bot Name' })}
-          name="name"
+          label={intl.formatMessage({ id: 'bot_name', defaultMessage: 'Bot Name' })}
+          name="botName"
         />
 
         <ProFormText
@@ -64,6 +64,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'remarks', defaultMessage: 'Remarks' })}
           name="remarks"
+        />
+
+        <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'message', defaultMessage: 'Message' })}
+          name="message"
         />
 
         <ProFormSwitch

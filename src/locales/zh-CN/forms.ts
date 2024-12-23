@@ -421,4 +421,5 @@ export default {
   firstName: '名字',
   lastName: '姓氏',
   'bot-name': '名称',
+  BotStartMessage: '机器人启动后回复的信息',
 };

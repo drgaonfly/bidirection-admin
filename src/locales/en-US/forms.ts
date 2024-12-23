@@ -397,4 +397,5 @@ export default {
   'isOnline.false': 'Offline',
   bot: 'Bot',
   'bot-name': 'Name',
+  BotStartMessage: 'Bot Start Reply Message',
 };
