@@ -20,7 +20,6 @@ import DeleteLink from '@/components/DeleteLink';
  */
 const handleAdd = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
-  console.log(fields, '=======================');
 
   try {
     await addItem('/bot-users', { ...fields });

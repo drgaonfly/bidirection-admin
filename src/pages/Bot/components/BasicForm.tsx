@@ -50,7 +50,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
         <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'bot_name', defaultMessage: 'Bot Name' })}
+          label={intl.formatMessage({ id: 'bot-name', defaultMessage: 'Bot Name' })}
           name="name"
         />
 

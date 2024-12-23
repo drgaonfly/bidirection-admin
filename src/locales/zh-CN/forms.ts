@@ -19,7 +19,7 @@ export default {
 
   // Bot 相关字段
   botId: '机器人ID',
-  botToken: '机器人Token',
+  botToken: 'Token',
   botUsername: '机器人用户名',
   botName: '机器人名称',
   telegramId: 'Telegram ID',
@@ -62,7 +62,7 @@ export default {
   // 表格相关
   'pages.searchTable.updateForm.title': '编辑机器人',
   'pages.searchTable.form.botId': '机器人ID',
-  'pages.searchTable.form.botToken': '机器人Token',
+  'pages.searchTable.form.botToken': 'Token',
   'pages.searchTable.form.botUsername': '机器人用户名',
   'pages.searchTable.form.botName': '机器人名称',
   'pages.searchTable.form.telegramId': 'Telegram ID',
@@ -416,4 +416,9 @@ export default {
   isOnline: '是否在线',
   'isOnline.true': '在线',
   'isOnline.false': '离线',
+  bot: '机器人',
+  userName: '用户名',
+  firstName: '名字',
+  lastName: '姓氏',
+  'bot-name': '名称',
 };

@@ -1,10 +1,11 @@
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
 import { Modal } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { EditableProTable, ProColumns } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 import { Role } from '@/apiDataStructures/ApiDataStructure';
+import axios from 'axios';
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -20,8 +21,30 @@ type DataSourceType = {
 const Show: React.FC<Props> = (props) => {
   const intl = useIntl();
   const { onClose, open, currentRow, columns: cols } = props;
+  const [employees, setEmployees] = useState<DataSourceType[]>([]); // 添加状态以存储员工数据
+
+  const fetchEmployees = async (proxyId: string) => {
+    // 添加获取员工的函数
+    try {
+      const response = await axios.get(`/employees/${proxyId}`);
+      setEmployees(response.data.data); // 更新员工数据状态
+    } catch (error) {
+      console.error('Failed to fetch employees:', error);
+    }
+  };
+
+  useEffect(() => {
+    // 使用 useEffect 监听 currentRow 的变化
+    if (currentRow?._id) {
+      fetchEmployees(currentRow._id); // 调用获取员工的函数
+    }
+  }, [currentRow]);
+
   const filteredColumns = cols.filter((col) => col.dataIndex !== 'option');
   const columns: ProColumns<DataSourceType>[] = [
+    {
+      title: intl.formatMessage({ id: 'employess' }),
+    },
     {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
@@ -92,7 +115,7 @@ const Show: React.FC<Props> = (props) => {
             recordCreatorProps={false}
             loading={false}
             columns={columns}
-            value={[]}
+            value={employees}
             className="bg-white"
           />
         </>
