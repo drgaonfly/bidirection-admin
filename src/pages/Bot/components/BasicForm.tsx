@@ -48,19 +48,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="token"
         />
 
-        <ProFormText
-          width="md"
-          label={intl.formatMessage({ id: 'bot_name', defaultMessage: 'Bot Name' })}
-          name="botName"
-        />
-
-        <ProFormText
-          width="md"
-          label={intl.formatMessage({ id: 'user_name', defaultMessage: '用户名' })}
-          name="userName"
-          rules={[{ required: true }]}
-        />
-
         <ProFormTextArea
           width="md"
           label={intl.formatMessage({ id: 'remarks', defaultMessage: '备注' })}
