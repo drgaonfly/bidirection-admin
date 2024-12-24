@@ -100,6 +100,7 @@ declare namespace API {
     name?: string;
     createdAt?: string;
     updatedAt?: string;
+    isOnline?: boolean;
   };
 
   type LoginResult = {

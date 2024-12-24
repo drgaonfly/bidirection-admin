@@ -117,7 +117,7 @@ const TableList: React.FC = () => {
   const access = useAccess();
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [configureModalVisible, setConfigureModalVisible] = useState<boolean>(false);
-
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -155,13 +155,6 @@ const TableList: React.FC = () => {
       hideInSearch: false,
     },
     {
-      title: intl.formatMessage({ id: 'remarks', defaultMessage: 'Remarks' }),
-      dataIndex: 'remarks',
-      hideInSearch: true,
-      valueType: 'text',
-      ellipsis: true,
-    },
-    {
       title: intl.formatMessage({ id: 'BotStartMessage', defaultMessage: 'BotStartMessage' }),
       dataIndex: 'message',
       hideInSearch: true,
@@ -189,6 +182,13 @@ const TableList: React.FC = () => {
           }}
         />
       ),
+    },
+    {
+      title: intl.formatMessage({ id: 'remarks', defaultMessage: 'Remarks' }),
+      dataIndex: 'remarks',
+      hideInSearch: true,
+      valueType: 'text',
+      ellipsis: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -276,7 +276,43 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/bots', params, sort, filter)}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="所有" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="platform.online" defaultMessage="Online" />,
+                key: 'true',
+              },
+              {
+                label: <FormattedMessage id="platform.offline" defaultMessage="Offline" />,
+                key: 'false',
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
+        request={async (params, sort, filter) => {
+          const response = await queryList('/bots', params, sort, filter);
+          // 根据 activeKey 过滤数据
+          if (activeKey) {
+            return {
+              ...response,
+              data: response.data?.filter((item) => String(item.isOnline) === activeKey),
+            };
+          }
+          return response;
+        }}
         columns={columns}
         rowSelection={
           (access.canSuperAdmin || access.canCreateBot) && {
