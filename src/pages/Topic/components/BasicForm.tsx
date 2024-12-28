@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormSelect } from '@ant-design/pro-components';
+import { ProForm } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import AnswerSelect from '@/components/AnswerSelect';
 import AliyunOSSUpload from '@/components/AliyunOSSUpload';
@@ -54,7 +54,7 @@ const BasicForm: React.FC<Props> = ({
     <ProForm
       initialValues={{
         ...values,
-        answer: values?.answer?.map((answer: any) => answer._id),
+        answer: values?.answer?._id,
         video1: video1,
         video2: video2,
       }}
@@ -81,27 +81,6 @@ const BasicForm: React.FC<Props> = ({
     >
       <ProForm.Group>
         <AnswerSelect />
-
-        <ProFormSelect
-          name="issue"
-          label={intl.formatMessage({ id: 'issue' })}
-          width="md"
-          valueEnum={{
-            normal: { text: intl.formatMessage({ id: 'issue.normal', defaultMessage: 'Normal' }) },
-            unfriendly: {
-              text: intl.formatMessage({ id: 'issue.unfriendly', defaultMessage: 'Unfriendly' }),
-            },
-            recogError: {
-              text: intl.formatMessage({
-                id: 'issue.recogError',
-                defaultMessage: 'Recognition Error',
-              }),
-            },
-            videoError: {
-              text: intl.formatMessage({ id: 'issue.videoError', defaultMessage: 'Video Error' }),
-            },
-          }}
-        />
       </ProForm.Group>
 
       <ProForm.Group>

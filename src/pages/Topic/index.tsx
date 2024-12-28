@@ -124,16 +124,14 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: intl.formatMessage({ id: 'number' }),
+      dataIndex: 'number',
+      hideInSearch: true,
+    },
+    {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: ['answer', 'name'],
       hideInSearch: true,
-      render: (_, record) => (
-        <div>
-          {record.answer.map((answer: any) => (
-            <div key={answer._id}>{answer.name}</div>
-          ))}
-        </div>
-      ),
     },
     {
       title: intl.formatMessage({ id: 'video1', defaultMessage: '视频' }),
@@ -150,23 +148,6 @@ const TableList: React.FC = () => {
       render: (dom: React.ReactNode, entity: API.ItemData) => (
         <VideoPlayer entity={entity} videoUrl={entity.video2} />
       ),
-    },
-    {
-      title: intl.formatMessage({ id: 'issue' }),
-      dataIndex: 'issue',
-      valueType: 'select',
-      valueEnum: {
-        normal: { text: intl.formatMessage({ id: 'issue.normal', defaultMessage: 'Normal' }) },
-        unfriendly: {
-          text: intl.formatMessage({ id: 'issue.unfriendly', defaultMessage: 'Unfriendly' }),
-        },
-        recogError: {
-          text: intl.formatMessage({ id: 'issue.recogError', defaultMessage: 'Recognition Error' }),
-        },
-        videoError: {
-          text: intl.formatMessage({ id: 'issue.videoError', defaultMessage: 'Video Error' }),
-        },
-      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

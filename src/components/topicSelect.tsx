@@ -16,7 +16,7 @@ const TopicSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
     <ProFormSelect
       rules={[{ required: true }]}
       options={topic.map((topic: any) => ({
-        label: topic.issue,
+        label: topic.video1,
         value: topic._id,
       }))}
       width="md"

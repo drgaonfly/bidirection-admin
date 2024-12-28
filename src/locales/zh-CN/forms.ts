@@ -126,7 +126,7 @@ export default {
   'menu.topics': '题目管理',
   name: '名称',
   'pages.comment.user': '用户',
-  'pages.comment.topic': '问题',
+  'pages.comment.topic': '题目',
   'pages.comment.record': '记录',
   topic: '答案',
   'menu.records': '记录管理',
@@ -134,4 +134,9 @@ export default {
   'answers.name': '答案名称',
   video1: '视频1',
   video2: '视频2',
+  'status.doing': '正在',
+  'status.right': '答对',
+  'status.wrong': '答错',
+  answerCount: '数量',
+  number: '编号',
 };

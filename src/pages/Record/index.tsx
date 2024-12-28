@@ -1,10 +1,9 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
-import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -12,7 +11,6 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -126,9 +124,26 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'pages.topic' }),
-      dataIndex: ['topic', 'issue'],
+      title: intl.formatMessage({ id: 'answerCount' }),
+      dataIndex: 'answerCount',
       hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'issue' }),
+      dataIndex: 'issue',
+      valueType: 'select',
+      valueEnum: {
+        normal: { text: intl.formatMessage({ id: 'issue.normal', defaultMessage: 'Normal' }) },
+        unfriendly: {
+          text: intl.formatMessage({ id: 'issue.unfriendly', defaultMessage: 'Unfriendly' }),
+        },
+        recogError: {
+          text: intl.formatMessage({ id: 'issue.recogError', defaultMessage: 'Recognition Error' }),
+        },
+        videoError: {
+          text: intl.formatMessage({ id: 'issue.videoError', defaultMessage: 'Video Error' }),
+        },
+      },
     },
     {
       title: intl.formatMessage({ id: 'user' }),
@@ -136,22 +151,15 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
+      title: intl.formatMessage({ id: 'status' }),
+      dataIndex: 'status',
+      hideInSearch: true,
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canSuperAdmin && (
-          <a
-            key="edit"
-            onClick={() => {
-              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
-              handleUpdateModalOpen(true);
-              setCurrentRow(record);
-            }}
-          >
-            {intl.formatMessage({ id: 'edit' })}
-          </a>
-        ),
         access.canSuperAdmin && (
           <DeleteLink
             onOk={async () => {
@@ -173,17 +181,17 @@ const TableList: React.FC = () => {
         rowKey="_id"
         search={{ labelWidth: 100 }}
         toolBarRender={() => [
-          access.canSuperAdmin && (
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                handleModalOpen(true);
-              }}
-            >
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            </Button>
-          ),
+          // access.canSuperAdmin && (
+          //   <Button
+          //     type="primary"
+          //     key="primary"
+          //     onClick={() => {
+          //       handleModalOpen(true);
+          //     }}
+          //   >
+          //     <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+          //   </Button>
+          // ),
         ]}
         request={async (params, sort, filter) => queryList('/records', params, sort, filter)}
         columns={columns}

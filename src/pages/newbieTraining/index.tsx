@@ -1,14 +1,15 @@
 import React from 'react';
-import { Layout, Button, Radio, Input } from 'antd';
+import { Layout, Button, Input, Radio, Row, Col } from 'antd';
 import { IoCopyOutline } from 'react-icons/io5';
 
 const { Header, Content, Sider } = Layout;
 
 export default function NewbieTraining() {
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Layout>
-        <Sider width="60%" style={{ background: '#fff' }}>
+    <Row gutter={[24, 24]}>
+      {/* Sider 部分 */}
+      <Col xs={24} sm={24} md={12} lg={12}>
+        <Sider width="100%" style={{ background: '#fff' }}>
           {/* 顶部控制栏 */}
           <Header
             style={{
@@ -21,17 +22,15 @@ export default function NewbieTraining() {
           >
             <div className="text-blue-500">视频一</div>
             <div className="text-gray-500">视频二</div>
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between' }}>
-              <div>预计到达466单</div>
-              <div className="flex items-center gap-2">
-                <Button type="primary" className="px-3 py-1">
-                  正常运单
-                </Button>
-                <Button className="px-3 py-1">全屏</Button>
-                <Button className="px-3 py-1">提交(ENTER)</Button>
-                <Button className="px-3 py-1">减速(W)</Button>
-                <Button className="px-3 py-1">暂停/播放(S)</Button>
-                <Button className="px-3 py-1">加速(E)</Button>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+              <div className="flex items-center gap-2 text-sm">
+                <div className="text-gray-500 text-md">预计到达466单</div>
+                <div className="text-gray-500 text-md">正常运单</div>
+                <Button className="px-3 py-1 text-sm">全屏</Button>
+                <Button className="px-3 py-1 text-sm">提交(ENTER)</Button>
+                <Button className="px-3 py-1 text-sm">减速(W)</Button>
+                <Button className="px-3 py-1 text-sm">暂停/播放(S)</Button>
+                <Button className="px-3 py-1 text-sm">加速(E)</Button>
               </div>
             </div>
           </Header>
@@ -57,9 +56,11 @@ export default function NewbieTraining() {
             </div>
           </Content>
         </Sider>
+      </Col>
 
-        {/* 右侧商品列表 */}
-        <Layout style={{ width: '40%', background: '#f0f2f5' }}>
+      {/* 右侧商品列表 */}
+      <Col xs={24} sm={24} md={12} lg={12}>
+        <Layout style={{ background: '#f0f2f5' }}>
           <Content style={{ padding: '16px' }}>
             {/* 添加顶部订单号和搜索框 */}
             <div className="flex justify-between items-center mb-4 space-x-4">
@@ -94,7 +95,7 @@ export default function NewbieTraining() {
             </div>
           </Content>
         </Layout>
-      </Layout>
-    </Layout>
+      </Col>
+    </Row>
   );
 }
