@@ -71,6 +71,7 @@ declare namespace API {
     updatedAt?: string;
     createdAt?: string;
     progress?: number;
+    videoUrl?: string[];
   };
 
   type ResData = {

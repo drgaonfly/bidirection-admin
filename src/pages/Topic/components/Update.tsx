@@ -10,7 +10,8 @@ export type UpdateFormProps = {
   onSubmit: (values: FormValueType) => Promise<void>;
   updateModalOpen: boolean;
   values: {
-    videoUrl?: string;
+    video1?: string;
+    video2?: string;
     video?: string;
   } & Partial<API.ItemData>;
 };
@@ -19,10 +20,14 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
 
-  const [videoUrl, setVideoUrl] = useState<string | undefined>('');
+  const [video1, setvideo1] = useState<string | undefined>('');
+  const [video2, setvideo2] = useState<string | undefined>('');
 
   useEffect(() => {
-    setVideoUrl(values.videoUrl);
+    setvideo1(values.video1);
+  }, [values]);
+  useEffect(() => {
+    setvideo2(values.video2);
   }, [values]);
   return (
     <Modal
@@ -37,8 +42,10 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <BasicForm
         values={values}
         onFinish={onSubmit}
-        setVideoUrl={setVideoUrl}
-        videoUrl={videoUrl}
+        setvideo1={setvideo1}
+        setvideo2={setvideo2}
+        video1={video1}
+        video2={video2}
       />
     </Modal>
   );

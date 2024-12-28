@@ -113,7 +113,8 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
-  const [videoUrl, setVideoUrl] = useState<string>('');
+  const [video1, setvideo1] = useState<string>('');
+  const [video2, setvideo2] = useState<string>('');
 
   /**
    * @en-US International configuration
@@ -135,11 +136,19 @@ const TableList: React.FC = () => {
       ),
     },
     {
-      title: intl.formatMessage({ id: 'video', defaultMessage: '视频' }),
-      dataIndex: 'videoUrl',
+      title: intl.formatMessage({ id: 'video1', defaultMessage: '视频' }),
+      dataIndex: 'video1',
       hideInSearch: true,
       render: (dom: React.ReactNode, entity: API.ItemData) => (
-        <VideoPlayer entity={entity} videoUrl={entity.videoUrl} />
+        <VideoPlayer entity={entity} videoUrl={entity.video1} />
+      ),
+    },
+    {
+      title: intl.formatMessage({ id: 'video2' }),
+      dataIndex: 'video2',
+      hideInSearch: true,
+      render: (dom: React.ReactNode, entity: API.ItemData) => (
+        <VideoPlayer entity={entity} videoUrl={entity.video2} />
       ),
     },
     {
@@ -255,15 +264,18 @@ const TableList: React.FC = () => {
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
-          setVideoUrl={setVideoUrl}
+          setvideo1={setvideo1}
+          setvideo2={setvideo2}
           onFinish={async (value) => {
             const success = await handleAdd({
               ...value,
-              videoUrl: videoUrl,
+              video1: video1,
+              video2: video2,
             } as API.ItemData);
             if (success) {
               handleModalOpen(false);
-              setVideoUrl('');
+              setvideo1('');
+              setvideo2('');
               if (actionRef.current) {
                 actionRef.current.reload();
               }

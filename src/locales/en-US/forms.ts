@@ -97,7 +97,7 @@ export default {
   'tabs.refresh': 'Refresh Current Page',
 
   'menu.list.answers': 'Answer management',
-  'menu.答案管理': 'Answer management',
+  'menu.题目管理': 'Answer management',
   'answers.brandName': 'Brand Name',
   'answers.skuName': 'SKU Name',
   'answers.image': 'Package Image',
@@ -123,4 +123,6 @@ export default {
   'menu.records': 'Record management',
   'pages.topic': 'Issue',
   'answers.name': 'Answer Name',
+  video1: 'Video1',
+  video2: 'Video2',
 };

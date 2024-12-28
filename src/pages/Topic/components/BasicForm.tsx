@@ -9,20 +9,42 @@ interface Props {
   newRecord?: boolean;
   onFinish: (formData: any) => Promise<void>;
   values?: any;
-  setVideoUrl: (url: string) => void;
-  videoUrl?: string | undefined;
+  setvideo1: (url: string) => void;
+  video1?: string | undefined;
+  video2?: string | undefined;
+  setvideo2: (url: string) => void;
 }
 
-const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values, setVideoUrl, videoUrl }) => {
+const BasicForm: React.FC<Props> = ({
+  newRecord,
+  onFinish,
+  values,
+  setvideo1,
+  video1,
+  setvideo2,
+  video2,
+}) => {
   const intl = useIntl();
 
-  const defaultFileList = videoUrl
+  const defaultFileList = video1
     ? [
         {
           uid: '-1',
           name: 'video.mp4',
           status: 'done',
-          url: videoUrl,
+          url: video1,
+          type: 'video/mp4',
+        },
+      ]
+    : undefined;
+
+  const defaultFileList2 = video2
+    ? [
+        {
+          uid: '-1',
+          name: 'video.mp4',
+          status: 'done',
+          url: video2,
           type: 'video/mp4',
         },
       ]
@@ -33,12 +55,14 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values, setVideoUrl, 
       initialValues={{
         ...values,
         answer: values?.answer?.map((answer: any) => answer._id),
-        videoUrl: videoUrl,
+        video1: video1,
+        video2: video2,
       }}
       onFinish={async (values) => {
         await onFinish({
           ...values,
-          videoUrl: videoUrl,
+          video1: video1,
+          video2: video2,
         });
       }}
       submitter={{
@@ -80,14 +104,24 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values, setVideoUrl, 
       </ProForm.Group>
 
       <ProForm.Group>
-        <Form.Item required label={intl.formatMessage({ id: 'video_url' })} name="video">
+        <Form.Item required label={intl.formatMessage({ id: 'video1' })}>
           <AliyunOSSUpload
             onFileUpload={(url: string) => {
               console.log('Uploaded file URL:', url);
-              setVideoUrl(url);
+              setvideo1(url);
             }}
             accept=".mp4,.avi,.mov,.flv,.wmv"
             defaultFileList={defaultFileList}
+          />
+        </Form.Item>
+
+        <Form.Item required label={intl.formatMessage({ id: 'video2' })}>
+          <AliyunOSSUpload
+            onFileUpload={(url: string) => {
+              setvideo2(url);
+            }}
+            accept=".mp4,.avi,.mov,.flv,.wmv"
+            defaultFileList={defaultFileList2}
           />
         </Form.Item>
       </ProForm.Group>
