@@ -10,7 +10,8 @@ import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
-import { Image } from 'antd';
+// import Recharge from './components/Recharge';
+import { Role } from '@/apiDataStructures/ApiDataStructure';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 
@@ -22,7 +23,7 @@ import DeleteLink from '@/components/DeleteLink';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/answers', { ...fields });
+    await addItem('/proxies', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -46,7 +47,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/answers/${fields._id}`, fields);
+    await updateItem(`/proxies/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -72,7 +73,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/answers', {
+    await removeItem('/proxies', {
       ids,
     });
     hide();
@@ -113,6 +114,7 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  // const [rechargeModalVisible, setRechargeModalVisible] = useState(false);
   const access = useAccess();
 
   /**
@@ -123,45 +125,39 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'brandName' }),
-      dataIndex: 'brandName',
+      title: intl.formatMessage({ id: 'email' }),
+      dataIndex: 'email',
       copyable: true,
-      hideInSearch: false,
+      render: (dom, entity) => {
+        return (
+          <a
+            onClick={() => {
+              setCurrentRow(entity);
+              setShowDetail(true);
+            }}
+          >
+            {dom}
+          </a>
+        );
+      },
     },
     {
-      title: intl.formatMessage({ id: 'answers.image' }),
-      dataIndex: 'image',
+      title: intl.formatMessage({ id: 'inviteCode' }),
+      dataIndex: 'inviteCode',
+      hideInSearch: false,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'name' }),
+      dataIndex: 'name',
+    },
+    {
+      title: intl.formatMessage({ id: 'role' }),
+      dataIndex: 'roles',
       hideInSearch: true,
-      valueType: 'image',
-      render: (_, record) => (
-        <Image
-          src={record.image}
-          alt="image"
-          width={45}
-          height={45}
-          style={{
-            objectFit: 'cover',
-          }}
-          preview={true}
-        />
-      ),
-    },
-    {
-      title: intl.formatMessage({ id: 'answers.skuName' }),
-      dataIndex: 'skuName',
-      hideInSearch: false,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'answers.sn' }),
-      dataIndex: 'sn',
-      hideInSearch: false,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'answers.spec' }),
-      dataIndex: 'spec',
-      hideInSearch: true,
+      renderText: (_, record: any) => {
+        return record.roles?.map((role: Role) => role.name)?.join(', ');
+      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -175,12 +171,13 @@ const TableList: React.FC = () => {
             setShowDetail(true);
           }}
         >
-          <FormattedMessage id="detail" />
+          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canSuperAdmin && (
+        access.canUpdateProxy && (
           <a
             key="edit"
             onClick={() => {
+              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
               handleUpdateModalOpen(true);
               setCurrentRow(record);
             }}
@@ -188,7 +185,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canSuperAdmin && (
+        access.canDeleteProxy && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -207,9 +204,12 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        search={{ labelWidth: 120 }}
+        search={{
+          labelWidth: 120,
+          collapsed: false,
+        }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canUpdateUser) && (
+          (access.canSuperAdmin || access.canCreateProxy) && (
             <Button
               type="primary"
               key="primary"
@@ -221,7 +221,7 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/answers', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/proxies', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {
@@ -241,7 +241,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteUser) && (
+          {(access.canSuperAdmin || access.canDeleteProxy) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -252,7 +252,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateUser) && (
+      {(access.canSuperAdmin || access.canCreateProxy) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -267,7 +267,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateUser) && (
+      {(access.canSuperAdmin || access.canUpdateProxy) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

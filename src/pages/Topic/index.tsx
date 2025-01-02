@@ -122,7 +122,8 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'number' }),
       dataIndex: 'topicNumber',
-      hideInSearch: true,
+      hideInSearch: false,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'video1', defaultMessage: '视频' }),
@@ -139,6 +140,11 @@ const TableList: React.FC = () => {
       render: (dom: React.ReactNode, entity: API.ItemData) => (
         <VideoPlayer entity={entity} videoUrl={entity.video2} />
       ),
+    },
+    {
+      title: intl.formatMessage({ id: 'createdAt' }),
+      dataIndex: 'createdAt',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

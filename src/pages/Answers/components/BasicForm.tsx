@@ -74,13 +74,22 @@ const BasicForm: React.FC<Props> = ({
       }}
     >
       <ProForm.Group>
-        <AliyunOSSUpload
-          onFileUpload={(url: string) => {
-            console.log('Uploaded file URL:', url);
-            setImageUrl(url);
-          }}
-          accept=".jpg,.jpeg,.png,.pdf"
-          defaultFileList={defaultFileList}
+        <Form.Item required label={intl.formatMessage({ id: 'image' })}>
+          <AliyunOSSUpload
+            onFileUpload={(url: string) => {
+              console.log('Uploaded file URL:', url);
+              setImageUrl(url);
+            }}
+            accept=".jpg,.jpeg,.png,.pdf"
+            defaultFileList={defaultFileList}
+          />
+        </Form.Item>
+
+        <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'rowNumber' })}
+          name="rowNumber"
+          initialValue={1}
         />
       </ProForm.Group>
 
@@ -115,14 +124,6 @@ const BasicForm: React.FC<Props> = ({
           name="spec"
         />
       </ProForm.Group>
-
-      {/* <ProFormText
-          rules={[{ required: true }]}
-          width="md"
-          label={intl.formatMessage({ id: 'answers.rowNumber' })}
-          name="rowNumber"
-          initialValue={1}
-        /> */}
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>

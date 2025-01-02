@@ -116,47 +116,23 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'GET')),
 
     // proxy权限
-    canCreateNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles', 'POST')),
-    canDeleteNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles', 'DELETE')),
-    canUpdateNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles/:id', 'PUT')),
-    canGetNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles', 'GET')),
+    canCreateProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'POST')),
+    canDeleteProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'DELETE')),
+    canUpdateProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies/:id', 'PUT')),
+    canGetProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'GET')),
 
     // employee权限
-    canCreateNewEmployee:
+    canCreateEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'POST')),
-    canDeleteNewEmployee:
+    canDeleteEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'DELETE')),
-    canUpdateNewEmployee:
+    canUpdateEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees/:id', 'PUT')),
-    canGetNewEmployee:
+    canGetEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'GET')),
   };
 }
-
-// export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
-//   const { currentUser } = initialState ?? {};
-
-//   return {
-//     canSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
-
-//     // Check if the user is either in the specific role or a SuperAdmin for broader access
-//     canCustomer:
-//       currentUser &&
-//       (currentUser.role === ROLES.Customer ||
-//         currentUser.role === ROLES.Admin ||
-//         currentUser.role === ROLES.SuperAdmin),
-
-//     canCustomerService:
-//       currentUser &&
-//       (currentUser.role === ROLES.CustomerService ||
-//         currentUser.role === ROLES.Admin ||
-//         currentUser.role === ROLES.SuperAdmin),
-
-//     canAdmin:
-//       currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
-//   };
-// }
