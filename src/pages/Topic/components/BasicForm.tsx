@@ -1,8 +1,7 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { ProForm } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
-import AnswerSelect from '@/components/AnswerSelect';
 import AliyunOSSUpload from '@/components/AliyunOSSUpload';
 
 interface Props {
@@ -55,14 +54,14 @@ const BasicForm: React.FC<Props> = ({
       initialValues={{
         ...values,
         answer: values?.answer?._id,
-        video1: video1,
-        video2: video2,
+        video1,
+        video2,
       }}
       onFinish={async (values) => {
         await onFinish({
           ...values,
-          video1: video1,
-          video2: video2,
+          video1,
+          video2,
         });
       }}
       submitter={{
@@ -79,17 +78,6 @@ const BasicForm: React.FC<Props> = ({
         },
       }}
     >
-      <ProForm.Group>
-        <AnswerSelect />
-
-        <ProFormText
-          name={['correctAnswers', 'count']}
-          label={intl.formatMessage({ id: 'count' })}
-          rules={[{ required: true }]}
-          initialValue={1}
-        />
-      </ProForm.Group>
-
       <ProForm.Group>
         <Form.Item required label={intl.formatMessage({ id: 'video1' })}>
           <AliyunOSSUpload

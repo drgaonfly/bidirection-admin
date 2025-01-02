@@ -26,9 +26,11 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   useEffect(() => {
     setvideo1(values.video1);
   }, [values]);
+
   useEffect(() => {
     setvideo2(values.video2);
   }, [values]);
+
   return (
     <Modal
       maskClosable={false}
