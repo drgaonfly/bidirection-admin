@@ -1,9 +1,6 @@
-import { queryList } from '@/services/ant-design-pro/api';
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
-
-import CustomerTable from './CustomerTable'; // 导入客户表格组件
+import React from 'react';
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -15,30 +12,6 @@ interface Props {
 const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns } = props;
   const filteredColumns = columns.filter((col) => col.dataIndex !== 'option');
-  const [customers, setCustomers] = useState<any[]>(currentRow?.customers || []);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const [paging, setPaging] = useState<{ current: number; pageSize: number }>({
-    current: 1,
-    pageSize: 5,
-  });
-
-  const query = async () => {
-    setLoading(true);
-    const response = (await queryList(`/users/${currentRow?._id}`, {}, {})) as any;
-    console.log(response);
-    if (response?.success) {
-      const customersData = response.data.customers || [];
-      setCustomers(customersData);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (currentRow) {
-      query().catch(console.error);
-    }
-  }, [currentRow]);
 
   return (
     <Modal
@@ -75,12 +48,6 @@ const Show: React.FC<Props> = (props) => {
             }}
             size="small"
             className="custom-descriptions"
-          />
-          <CustomerTable
-            customers={customers}
-            loading={loading}
-            paging={paging}
-            setPaging={setPaging}
           />
         </>
       )}

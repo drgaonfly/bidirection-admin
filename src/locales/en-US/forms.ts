@@ -137,4 +137,8 @@ export default {
   correctAnswers: 'Correct Answers',
   count: 'Count',
   rowNumber: 'Row Number',
+  'menu.employees': 'proxy management',
+  'menu.proxies': 'proxy management',
+  'proxy.employee': 'proxy employee',
+  'platforms.detail': 'detail',
 };

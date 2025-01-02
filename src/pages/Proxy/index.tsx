@@ -142,12 +142,6 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'inviteCode' }),
-      dataIndex: 'inviteCode',
-      hideInSearch: false,
-      copyable: true,
-    },
-    {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
     },

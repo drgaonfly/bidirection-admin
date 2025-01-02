@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 // import { Role } from '@/apiDataStructures/ApiDataStructure';
 // import moment from 'moment';
 import EmployeeTable from './EmployeeTable'; // 导入员工表格组件
-import CustomerTable from './CustomerTable'; // 导入客户表格组件
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -19,16 +18,10 @@ const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns } = props;
   const filteredColumns = columns.filter((col) => col.dataIndex !== 'option');
   const [employees, setEmployees] = useState<any[]>(currentRow?.employees || []);
-  const [customers, setCustomers] = useState<any[]>(currentRow?.customers || []);
   const [loading, setLoading] = useState<boolean>(false);
 
   // 添加分页状态
   const [pagination, setPagination] = useState<{ current: number; pageSize: number }>({
-    current: 1,
-    pageSize: 5,
-  });
-
-  const [paging, setPaging] = useState<{ current: number; pageSize: number }>({
     current: 1,
     pageSize: 5,
   });
@@ -41,8 +34,6 @@ const Show: React.FC<Props> = (props) => {
       // 确保 employees 是数组
       const employeesData = response.data.employees || [];
       setEmployees(employeesData);
-      const customersData = response.data.customers || [];
-      setCustomers(customersData);
     }
     setLoading(false);
   };
@@ -94,12 +85,6 @@ const Show: React.FC<Props> = (props) => {
             loading={loading}
             pagination={pagination}
             setPagination={setPagination}
-          />
-          <CustomerTable
-            customers={customers}
-            loading={loading}
-            paging={paging}
-            setPaging={setPaging}
           />
         </>
       )}

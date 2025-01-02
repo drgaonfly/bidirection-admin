@@ -145,4 +145,8 @@ export default {
   correctAnswers: '正确答案',
   count: '数量',
   rowNumber: '分组',
+  'menu.proxies': '代理管理',
+  'menu.employees': '员工管理',
+  'proxy.employee': '代理用户',
+  'platforms.detail': '详情',
 };
