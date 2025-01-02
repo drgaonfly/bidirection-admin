@@ -1,112 +1,248 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Layout, Button, Input, Radio, Row, Col, InputNumber, Modal } from 'antd';
+import { Layout, Button, Input, Radio, Row, Col, InputNumber, Modal, message } from 'antd';
 import CopyToClipboard from '@/components/CopyToClipboard';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { queryList, addItem } from '@/services/ant-design-pro/api';
+import { queryList } from '@/services/ant-design-pro/api';
 
 const { Header, Content, Sider } = Layout;
+
+// 定义接口响应类型
+interface AnswerItem {
+  _id: string;
+  brandName: string;
+  skuName: string;
+  image: string;
+  rowNumber: number;
+  spec: string;
+  sn: string;
+  id: string;
+  topic: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface AnswerResponse {
+  success: boolean;
+  data: AnswerItem[];
+  total: number;
+}
+
+// 定义 Answer 类型
+interface Answer {
+  _id: string;
+  skuName: string;
+  brandName: string;
+  spec: string;
+  image: string;
+  id: string;
+}
+
+// 定义 Topic 类型
+interface TopicItem {
+  _id: string;
+  video1: string;
+  video2: string;
+  issue?: string;
+  topicNumber: string;
+  answers: Answer[];
+  correctAnswers: {
+    answer: Answer;
+  }[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface TopicResponse {
+  success: boolean;
+  data: TopicItem[];
+  total: number;
+}
+
+// 定义提交数据的接口
+interface SubmitData {
+  answers: Array<{
+    id: string;
+    quantity: number;
+  }>;
+  issue: string;
+}
+
+// 定义状态类型
+type RecordStatus = 'pending' | 'success' | 'fail';
+
+interface TrainingRecord {
+  id: string;
+  status: RecordStatus;
+}
+
+interface NewbieTrainingResponse {
+  success: boolean;
+  data: {
+    currentUser: {
+      topics: Array<{
+        topic: {
+          _id: string;
+          topicNumber: string;
+        };
+        status: 'pending' | 'success' | 'fail';
+      }>;
+    };
+    currentTopic: any;
+    topics: any[];
+    isHasTopics: boolean;
+  };
+}
 
 export default function NewbieTraining() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [activeVideo, setActiveVideo] = useState(1);
-  const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [selectedStatus, setSelectedStatus] = useState<number>(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
-  const [topics, setTopics] = useState<any[]>([]);
-  const [statuses, setStatuses] = useState<any[]>([]);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [products, setProducts] = useState<any[]>([]);
+  const [topicData, setTopicData] = useState<TopicItem | null>(null);
+  const [trainingRecords, setTrainingRecords] = useState<TrainingRecord[]>([]);
 
-  // 添加商品数据数组（这里使用示例数据，你可以根据实际情况修改）
-  const products = [
-    // category 1
-    {
-      name: '爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 1,
-    },
-    {
-      name: '爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 1,
-    },
-    {
-      name: '爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 1,
-    },
-    {
-      name: '爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 1,
-    },
-    {
-      name: '爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 1,
-    },
-    // category 2
-    {
-      name: '石斌_石斌椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 2,
-    },
-    {
-      name: '石斌_石斌椰蓉奶酪味面包90G_90毫升',
-      image:
-        'https://image.op-api.hetuntech.cn/resources/1470756546412577/bce6826ca8611079b72dd4273d042f0e.png',
-      category: 2,
-    },
-  ];
+  // 获取商品数据的函数
+  const fetchProducts = async () => {
+    try {
+      const params = {
+        current: 1,
+        pageSize: 100,
+      };
+
+      const response = (await queryList('/answers', params)) as unknown as AnswerResponse;
+      console.log('fetchProducts', response);
+      if (response?.success && Array.isArray(response.data)) {
+        setProducts(
+          response.data.map((item) => ({
+            name: item.skuName || '',
+            image: item.image || '',
+            category: item.rowNumber || 1,
+            id: item._id,
+            spec: item.spec,
+            brandName: item.brandName,
+            sn: item.sn,
+          })),
+        );
+      } else {
+        setProducts([]);
+      }
+    } catch (error) {
+      console.error('获取商品数据失败:', error);
+      setProducts([]);
+    }
+  };
+
+  // 在组件加载时获取商品数据
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   // 添加搜索处理函数
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchKeyword.toLowerCase()),
   );
 
+  // 获取视频数据的函数
+  const fetchTopicData = async () => {
+    try {
+      const params = {
+        current: 1,
+        pageSize: 1, // 假设我们只需要一个 topic
+      };
+
+      const response = (await queryList('/topics', params)) as unknown as TopicResponse;
+      console.log('fetchTopicData', response);
+
+      if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
+        setTopicData(response.data[0]);
+        // 如果有视频，自动设置第一个视频
+        if (response.data[0].video1) {
+          setActiveVideo(1);
+        }
+      }
+    } catch (error) {
+      console.error('获取视频数据失败:', error);
+    }
+  };
+
+  // 在组件加载时获取视频数据
+  useEffect(() => {
+    fetchTopicData();
+  }, []);
+
   // 获取新手训练数据的函数
   const fetchNewbieTrainingData = async () => {
     try {
-      console.log('请求开始...');
-      const response = await queryList('/records/newbie-training');
-      console.log('请求响应:', response);
+      const response = (await queryList(
+        '/records/newbie-training',
+      )) as unknown as NewbieTrainingResponse;
+      console.log('fetchNewbieTrainingData', response);
 
-      if (response?.data) {
-        setTopics(response.data);
-        setStatuses(response.data);
+      if (response?.success && response.data.currentUser.topics) {
+        const formattedRecords = response.data.currentUser.topics.map((topic) => ({
+          id: topic.topic.topicNumber,
+          status: topic.status as RecordStatus,
+        }));
+        setTrainingRecords(formattedRecords);
       }
     } catch (error) {
-      console.log('请求错误:', error);
+      console.error('获取新手训练数据失败:', error);
+    }
+  };
+
+  // 提交训练记录
+  const submitNewbieTrainingRecord = async () => {
+    try {
+      // 转换商品数量数据为提交格式
+      const answers = Object.entries(quantities)
+        .filter(([, quantity]) => quantity > 0)
+        .map(([id, quantity]) => ({
+          id,
+          quantity,
+        }));
+
+      // 准备提交数据
+      const submitData: SubmitData = {
+        answers: selectedStatus === 1 ? answers : [],
+        issue:
+          selectedStatus === 1
+            ? 'No Issue'
+            : selectedStatus === 2
+            ? 'Unfriendly Operation'
+            : selectedStatus === 3
+            ? 'Recognition Error'
+            : 'Video Error',
+      };
+
+      // 发送请求
+      const response = await queryList('/records/submit-newbie-training/' + topicData?._id, {
+        method: 'POST',
+        data: submitData,
+      });
+
+      if (response.success) {
+        message.success('提交成功');
+        // 刷新数据
+        fetchNewbieTrainingData();
+      } else {
+        message.error('提交失败');
+      }
+    } catch (error) {
+      console.error('提交训练记录失败:', error);
+      message.error('提交失败: ' + (error as Error).message);
+    } finally {
+      setIsSubmitModalVisible(false);
     }
   };
 
   useEffect(() => {
-    fetchNewbieTrainingData(); // 页面刷新时调用
-    console.log('数据请求发起');
+    fetchNewbieTrainingData();
   }, []);
-
-  // 提交新手训练记录的函数
-  const submitNewbieTrainingRecord = async (id: string) => {
-    const topicId = id; // 假设您使用 activeVideo 作为 topicId
-    try {
-      const response = await addItem(`/submit-newbie-training/${topicId}`); // 调用提交记录的接口
-      console.log('Newbie training record submitted:', response);
-    } catch (error) {
-      console.error('Error submitting newbie training record:', error);
-    }
-  };
-
-  console.log(submitNewbieTrainingRecord);
-
-  console.log(topics);
-  console.log(statuses);
 
   // 视频控制函数
   const handleFullScreen = () => {
@@ -210,15 +346,19 @@ export default function NewbieTraining() {
   // 在组件加载时自动播放视频
   React.useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.log('自动播放失败:', error);
-        // 大多数浏览器需要用户交互才能自动播放带声音的视频
-        // 可以选择静音播放
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          videoRef.current.play();
-        }
-      });
+      // 设置视频为静音状态
+      videoRef.current.muted = true;
+
+      // 尝试播放
+      videoRef.current
+        .play()
+        .then(() => {
+          // 播放成功后可以取消静音（需要用户交互）
+          console.log('视频开始自动播放');
+        })
+        .catch((error) => {
+          console.warn('视频自动播放失败，需要用户交互:', error);
+        });
     }
   }, []);
 
@@ -233,7 +373,7 @@ export default function NewbieTraining() {
         </div>
       </div>
 
-      <Row gutter={[24, 24]}>
+      <Row gutter={[5, 5]}>
         {/* 左侧区域 (3份) */}
         <Col xs={24} sm={24} md={14} lg={14} xl={14}>
           <Sider width="100%" style={{ background: '#fff' }}>
@@ -256,7 +396,7 @@ export default function NewbieTraining() {
                     className={`cursor-pointer ${
                       activeVideo === 1 ? 'text-blue-500' : 'text-gray-500'
                     }`}
-                    onClick={() => handleVideoSwitch(1)}
+                    onClick={() => topicData?.video1 && handleVideoSwitch(1)}
                     style={{ padding: '8px', cursor: 'pointer' }}
                   >
                     视频一
@@ -265,12 +405,15 @@ export default function NewbieTraining() {
                     className={`cursor-pointer ${
                       activeVideo === 2 ? 'text-blue-500' : 'text-gray-500'
                     }`}
-                    onClick={() => handleVideoSwitch(2)}
+                    onClick={() => topicData?.video2 && handleVideoSwitch(2)}
                     style={{ padding: '8px', cursor: 'pointer' }}
                   >
                     视频二
                   </div>
                   <div className="text-gray-500 text-md">预计到达466单</div>
+                  {topicData?.issue && (
+                    <div className="text-gray-500 text-md">问题：{topicData.issue}</div>
+                  )}
                   <div
                     className="text-xs rounded-md px-2 py-1"
                     style={{
@@ -322,11 +465,7 @@ export default function NewbieTraining() {
               <div className="relative bg-black aspect-video">
                 <video ref={videoRef} className="w-full h-full" controls autoPlay key={activeVideo}>
                   <source
-                    src={
-                      activeVideo === 1
-                        ? 'https://video.cabinet-rgshb.hetuntech.cn/orderLibrary/20241111647899019275681792_0.mp4'
-                        : 'https://video.cabinet-rgshb.hetuntech.cn/orderLibrary/20241111647906093401382912_0.mp4'
-                    }
+                    src={activeVideo === 1 ? topicData?.video1 : topicData?.video2}
                     type="video/mp4"
                   />
                 </video>
@@ -358,7 +497,9 @@ export default function NewbieTraining() {
                       quantity > 0 && (
                         <div key={index} className="flex items-center justify-between p-2 border-b">
                           <div className="flex-1">
-                            <div className="text-sm">爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升</div>
+                            <div className="text-sm">
+                              {topicData?.answers?.find((a) => a._id === index)?.skuName || ''}
+                            </div>
                           </div>
                           <div className="flex items-center gap-4">
                             <InputNumber
@@ -425,9 +566,10 @@ export default function NewbieTraining() {
                         <div className="grid grid-cols-4">
                           {filteredProducts
                             .filter((product) => product.category === categoryNum)
-                            .map((product, productIndex) => {
-                              const uniqueIndex = `${categoryNum}-${productIndex}`;
-
+                            // .map((product, productIndex) => {
+                            //   const uniqueIndex = `${categoryNum}-${productIndex}`;
+                            .map((product) => {
+                              const uniqueIndex = product.id;
                               return (
                                 <div
                                   key={uniqueIndex}
@@ -440,7 +582,7 @@ export default function NewbieTraining() {
                                 >
                                   <div
                                     className="text-xs text-center mt-1 text-gray-600 truncate w-full"
-                                    title={product.name}
+                                    title={`${product.brandName} ${product.name} ${product.spec}`}
                                   >
                                     {product.name}
                                   </div>
@@ -515,23 +657,12 @@ export default function NewbieTraining() {
       >
         <div className="p-4">
           <div className="grid grid-cols-4 gap-4">
-            {[
-              { id: '202411116479060934013829', status: 'correct' },
-              { id: '202411116479040331760394', status: 'wrong' },
-              { id: '202411116477466053443624', status: 'pending' },
-              { id: '202411116478993430971760', status: 'correct' },
-              { id: '202411116478993430971765', status: 'wrong' },
-              // ... 更多订单号
-            ].map((item, index) => (
+            {trainingRecords.map((item, index) => (
               <div key={index} className="flex items-center gap-1 text-xs">
                 <span
                   style={{
                     color:
-                      item.status === 'correct'
-                        ? 'green'
-                        : item.status === 'wrong'
-                        ? 'red'
-                        : 'gray',
+                      item.status === 'success' ? 'green' : item.status === 'fail' ? 'red' : 'gray',
                   }}
                 >
                   ●
@@ -562,13 +693,7 @@ export default function NewbieTraining() {
         footer={
           <div className="flex justify-end gap-2">
             <Button onClick={() => setIsSubmitModalVisible(false)}>取消</Button>
-            <Button
-              type="primary"
-              onClick={() => {
-                // 处理提交逻辑
-                setIsSubmitModalVisible(false);
-              }}
-            >
+            <Button type="primary" onClick={submitNewbieTrainingRecord}>
               确认
             </Button>
           </div>
@@ -582,7 +707,9 @@ export default function NewbieTraining() {
               ([index, quantity]) =>
                 quantity > 0 && (
                   <div key={index} className="flex justify-between items-center">
-                    <div className="text-sm">爱彼依_爱彼依椰蓉奶酪味面包90G_90毫升</div>
+                    <div className="text-sm">
+                      {topicData?.answers?.find((a) => a._id === index)?.skuName || ''}
+                    </div>
                     <div className="text-sm">X{quantity}</div>
                   </div>
                 ),
