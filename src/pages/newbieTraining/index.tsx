@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Layout, Button, Input, Radio, Row, Col, InputNumber, Modal, message } from 'antd';
 import CopyToClipboard from '@/components/CopyToClipboard';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -35,6 +35,7 @@ interface Answer {
   spec: string;
   image: string;
   id: string;
+  rowNumber?: number;
 }
 
 // 定义 Topic 类型
@@ -93,6 +94,15 @@ interface NewbieTrainingResponse {
   };
 }
 
+interface Product {
+  id: string;
+  name: string;
+  image: string;
+  category: number;
+  brandName: string;
+  spec: string;
+}
+
 export default function NewbieTraining() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playbackRate, setPlaybackRate] = useState(1);
@@ -102,11 +112,11 @@ export default function NewbieTraining() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [topicData, setTopicData] = useState<TopicItem | null>(null);
   const [trainingRecords, setTrainingRecords] = useState<TrainingRecord[]>([]);
 
-  // 获取商品数据的函数
+  // 获取商品数据
   const fetchProducts = async () => {
     try {
       const params = {
@@ -116,20 +126,17 @@ export default function NewbieTraining() {
 
       const response = (await queryList('/answers', params)) as unknown as AnswerResponse;
       console.log('fetchProducts', response);
+
       if (response?.success && Array.isArray(response.data)) {
-        setProducts(
-          response.data.map((item) => ({
-            name: item.skuName || '',
-            image: item.image || '',
-            category: item.rowNumber || 1,
-            id: item._id,
-            spec: item.spec,
-            brandName: item.brandName,
-            sn: item.sn,
-          })),
-        );
-      } else {
-        setProducts([]);
+        const formattedProducts = response.data.map((item) => ({
+          id: item._id,
+          name: item.skuName,
+          image: item.image,
+          category: item.rowNumber ?? 1,
+          brandName: item.brandName,
+          spec: item.spec,
+        }));
+        setProducts(formattedProducts);
       }
     } catch (error) {
       console.error('获取商品数据失败:', error);
@@ -137,15 +144,17 @@ export default function NewbieTraining() {
     }
   };
 
-  // 在组件加载时获取商品数据
+  // 使用 useMemo 处理商品过滤
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(searchKeyword.toLowerCase()),
+    );
+  }, [products, searchKeyword]);
+
+  // 在组件加载时获取数据
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  // 添加搜索处理函数
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchKeyword.toLowerCase()),
-  );
 
   // 获取视频数据的函数
   const fetchTopicData = async () => {
@@ -498,7 +507,12 @@ export default function NewbieTraining() {
                         <div key={index} className="flex items-center justify-between p-2 border-b">
                           <div className="flex-1">
                             <div className="text-sm">
-                              {topicData?.answers?.find((a) => a._id === index)?.skuName || ''}
+                              {(() => {
+                                const product = products.find((p) => p.id === index);
+                                return product
+                                  ? `${product.brandName} ${product.name} ${product.spec}`
+                                  : '';
+                              })()}
                             </div>
                           </div>
                           <div className="flex items-center gap-4">
@@ -708,7 +722,12 @@ export default function NewbieTraining() {
                 quantity > 0 && (
                   <div key={index} className="flex justify-between items-center">
                     <div className="text-sm">
-                      {topicData?.answers?.find((a) => a._id === index)?.skuName || ''}
+                      {(() => {
+                        const product = products.find((p) => p.id === index);
+                        return product
+                          ? `${product.brandName} ${product.name} ${product.spec}`
+                          : '';
+                      })()}
                     </div>
                     <div className="text-sm">X{quantity}</div>
                   </div>
