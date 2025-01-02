@@ -6,6 +6,16 @@ import { queryList, addItem } from '@/services/ant-design-pro/api';
 
 const { Header, Content, Sider } = Layout;
 
+// 定义 answer 的类型
+interface Answer {
+  id: string;
+  skuName: string;
+  brandName: string | null;
+  spec: string | null;
+  image: string;
+  category?: number;
+}
+
 export default function NewbieTraining() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playbackRate, setPlaybackRate] = useState(1);
@@ -15,23 +25,13 @@ export default function NewbieTraining() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [topicData, setTopicData] = useState<{
-    currentTopic?: {
-      _id: string;
-      video1?: string;
-      video2?: string;
-      expectedCount?: number;
-      issue?: string;
-      answers?: Array<{
-        id: string;
-        skuName: string;
-        brandName: string | null;
-        spec: string | null;
-        image: string;
-        category?: number;
-      }>;
-    };
-  }>({});
+  const [video1, setVideo1] = useState<string>('');
+  const [video2, setVideo2] = useState<string>('');
+  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [topicId, setTopicId] = useState<string>('');
+  const [expectedCount, setExpectedCount] = useState<number>();
+  const [issue, setIssue] = useState<string>();
+  const [topicNumber, setTopicNumber] = useState<string>('');
 
   // 获取新手训练数据
   const fetchNewbieTraining = async () => {
@@ -44,33 +44,141 @@ export default function NewbieTraining() {
       if (response && 'data' in response) {
         const { data } = response as any;
         const currentTopic = data.currentTopic;
+        const answers = data.answers;
 
-        // 将视频数据和商品数据保存到 state 中
-        setTopicData({
-          currentTopic: {
-            _id: currentTopic._id,
-            video1: currentTopic.video1,
-            video2: currentTopic.video2,
-            answers: currentTopic.answers.map((answer: any) => ({
-              id: answer.id,
-              skuName: answer.skuName,
-              brandName: answer.brandName,
-              spec: answer.spec,
-              image: answer.image,
-              category: 1,
-            })),
-          },
-        });
+        // 分别设置各个状态
+        setTopicId(currentTopic._id);
+        setVideo1(currentTopic.video1 || '');
+        setVideo2(currentTopic.video2 || '');
+        setExpectedCount(currentTopic.expectedCount);
+        setTopicNumber(currentTopic.topicNumber || '');
+        setIssue(currentTopic.issue);
+        setAnswers(
+          answers.map((answer: any) => ({
+            id: answer.id,
+            skuName: answer.skuName,
+            brandName: answer.brandName,
+            spec: answer.spec,
+            image: answer.image,
+            category: 1,
+          })),
+        );
       }
     } catch (error) {
       console.error('获取数据失败:', error);
     }
   };
 
+  // 添加提交函数
+  const handleSubmit = async () => {
+    try {
+      if (!topicId) {
+        message.error('题目ID不存在');
+        return;
+      }
+
+      let submitData = {
+        issue: 'No Issue',
+        answers: [] as Array<{ id: string; quantity: number }>,
+      };
+
+      // 如果不是"无异常"状态，设置对应的issue
+      if (selectedStatus !== 1) {
+        const issueMap = {
+          2: 'Unfriendly Operation',
+          3: 'Recognition Error',
+          4: 'Video Error',
+        };
+        submitData.issue = issueMap[selectedStatus as keyof typeof issueMap] || 'No Issue';
+      } else {
+        // 如果是"无异常"状态，收集所有数量大于0的商品
+        submitData.answers = Object.entries(quantities)
+          .filter(([, quantity]) => quantity > 0)
+          .map(([id, quantity]) => ({
+            id,
+            quantity,
+          }));
+      }
+
+      // 使用 addItem 发送 POST 请求
+      const response = await addItem(`/records/submit-newbie-training/${topicId}`, submitData);
+
+      if (response?.success) {
+        message.success('提交成功');
+        setIsSubmitModalVisible(false);
+
+        const { currentTopic } = response.data as any;
+
+        // 分别更新各个状态
+        setTopicId(currentTopic._id);
+        setVideo1(currentTopic.video1 || '');
+        setVideo2(currentTopic.video2 || '');
+        setExpectedCount(currentTopic.expectedCount);
+        setIssue(currentTopic.issue);
+        setAnswers(currentTopic.answers || []);
+
+        // 重置状态
+        setQuantities({});
+        setSelectedStatus(1);
+
+        // 切换到新题目的第一个有效视频
+        if (currentTopic.video1) {
+          setActiveVideo(1);
+        } else if (currentTopic.video2) {
+          setActiveVideo(2);
+        }
+      } else {
+        message.error(response?.message || '提交失败');
+      }
+    } catch (error) {
+      console.error('提交失败:', error);
+      message.error('提交失败，请重试');
+    }
+  };
+
   // 在组件加载时获取数据
   useEffect(() => {
-    fetchNewbieTraining();
-  }, []);
+    const initPage = async () => {
+      await fetchNewbieTraining();
+      // 获取数据后尝试播放视频
+      if (videoRef.current) {
+        videoRef.current.muted = true;
+        videoRef.current.playbackRate = playbackRate;
+        try {
+          await videoRef.current.play();
+          console.log('初始视频自动播放成功');
+        } catch (error) {
+          console.warn('初始视频自动播放失败:', error);
+        }
+      }
+    };
+
+    initPage();
+  }, []); // 仅在组件挂载时执行
+
+  // 当视频源改变时自动播放
+  useEffect(() => {
+    if (videoRef.current && (video1 || video2)) {
+      videoRef.current.muted = true;
+      videoRef.current.playbackRate = playbackRate;
+
+      const playVideo = async () => {
+        try {
+          await videoRef.current?.play();
+          console.log('视频切换后自动播放成功');
+        } catch (error) {
+          console.warn('视频切换后自动播放失败:', error);
+          // 如果播放失败，确保视频是静音的并重试
+          if (videoRef.current) {
+            videoRef.current.muted = true;
+            videoRef.current.play();
+          }
+        }
+      };
+
+      playVideo();
+    }
+  }, [activeVideo, video1, video2, playbackRate]); // 当视频源或播放速率改变时重新触发
 
   // 视频控制函数
   const handleFullScreen = () => {
@@ -171,109 +279,22 @@ export default function NewbieTraining() {
     }));
   };
 
-  // 在组件加载时自动播放视频
-  React.useEffect(() => {
-    if (videoRef.current) {
-      // 设置视频为静音状态
-      videoRef.current.muted = true;
-
-      // 尝试播放
-      videoRef.current
-        .play()
-        .then(() => {
-          // 播放成功后可以取消静音（需要用户交互）
-          console.log('视频开始自动播放');
-        })
-        .catch((error) => {
-          console.warn('视频自动播放失败，需要用户交互:', error);
-        });
-    }
-  }, []);
-
   const filteredProducts = useMemo(() => {
-    if (!topicData.currentTopic?.answers) return [];
+    if (!answers) return [];
 
-    return topicData.currentTopic.answers.filter(
+    return answers.filter(
       (product) =>
         product.skuName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
         (product.brandName &&
           product.brandName.toLowerCase().includes(searchKeyword.toLowerCase())),
     );
-  }, [searchKeyword, topicData.currentTopic?.answers]);
+  }, [searchKeyword, answers]);
 
-  // 添加提交函数
-  const handleSubmit = async () => {
-    try {
-      const currentTopicId = topicData?.currentTopic?._id; // 获取当前题目ID
-      if (!currentTopicId) {
-        message.error('题目ID不存在');
-        return;
-      }
-
-      let submitData = {
-        issue: 'No Issue',
-        answers: [] as Array<{ id: string; quantity: number }>,
-      };
-
-      // 如果不是"无异常"状态，设置对应的issue
-      if (selectedStatus !== 1) {
-        const issueMap = {
-          2: 'Unfriendly Operation',
-          3: 'Recognition Error',
-          4: 'Video Error',
-        };
-        submitData.issue = issueMap[selectedStatus as keyof typeof issueMap] || 'No Issue';
-      } else {
-        // 如果是"无异常"状态，收集所有数量大于0的商品
-        submitData.answers = Object.entries(quantities)
-          .filter(([, quantity]) => quantity > 0)
-          .map(([id, quantity]) => ({
-            id,
-            quantity,
-          }));
-      }
-
-      // 使用 addItem 发送 POST 请求
-      const response = await addItem(
-        `/records/submit-newbie-training/${currentTopicId}`,
-        submitData,
-      );
-
-      if (response?.success) {
-        message.success('提交成功');
-        setIsSubmitModalVisible(false);
-
-        const { currentTopic } = response.data as any;
-
-        setTopicData({
-          currentTopic: {
-            _id: currentTopic._id,
-            video1: currentTopic.video1,
-            video2: currentTopic.video2,
-            answers: currentTopic.answers,
-            expectedCount: currentTopic.expectedCount,
-            issue: currentTopic.issue,
-          },
-        });
-
-        // 重置状态
-        setQuantities({});
-        setSelectedStatus(1);
-
-        // 切换到新题目的第一个有效视频
-        if (currentTopic.video1) {
-          setActiveVideo(1);
-        } else if (currentTopic.video2) {
-          setActiveVideo(2);
-        }
-      } else {
-        message.error(response?.message || '提交失败');
-      }
-    } catch (error) {
-      console.error('提交失败:', error);
-      message.error('提交失败，请重试');
-    }
-  };
+  // 获取所有不重复的分类
+  const categories = useMemo(() => {
+    if (!answers) return [];
+    return [...new Set(answers.map((product) => product.category))].sort();
+  }, [answers]);
 
   return (
     <>
@@ -309,38 +330,32 @@ export default function NewbieTraining() {
                     className={`cursor-pointer ${
                       activeVideo === 1 ? 'text-blue-500' : 'text-gray-500'
                     }`}
-                    onClick={() => topicData?.currentTopic?.video1 && handleVideoSwitch(1)}
+                    onClick={() => video1 && handleVideoSwitch(1)}
                     style={{
                       padding: '8px',
-                      cursor: topicData?.currentTopic?.video1 ? 'pointer' : 'not-allowed',
-                      opacity: topicData?.currentTopic?.video1 ? 1 : 0.5,
+                      cursor: video1 ? 'pointer' : 'not-allowed',
+                      opacity: video1 ? 1 : 0.5,
                     }}
                   >
-                    视频一{!topicData?.currentTopic?.video1 && '(无)'}
+                    视频一{!video1 && '(无)'}
                   </div>
                   <div
                     className={`cursor-pointer ${
                       activeVideo === 2 ? 'text-blue-500' : 'text-gray-500'
                     }`}
-                    onClick={() => topicData?.currentTopic?.video2 && handleVideoSwitch(2)}
+                    onClick={() => video2 && handleVideoSwitch(2)}
                     style={{
                       padding: '8px',
-                      cursor: topicData?.currentTopic?.video2 ? 'pointer' : 'not-allowed',
-                      opacity: topicData?.currentTopic?.video2 ? 1 : 0.5,
+                      cursor: video2 ? 'pointer' : 'not-allowed',
+                      opacity: video2 ? 1 : 0.5,
                     }}
                   >
-                    视频二{!topicData?.currentTopic?.video2 && '(无)'}
+                    视频二{!video2 && '(无)'}
                   </div>
                   <div className="text-gray-500 text-md">
-                    {topicData?.currentTopic?.expectedCount
-                      ? `预计到达${topicData.currentTopic.expectedCount}单`
-                      : ''}
+                    {expectedCount ? `预计到达${expectedCount}单` : ''}
                   </div>
-                  {topicData?.currentTopic?.issue && (
-                    <div className="text-gray-500 text-md">
-                      问题：{topicData.currentTopic.issue}
-                    </div>
-                  )}
+                  {issue && <div className="text-gray-500 text-md">问题：{issue}</div>}
                   <div
                     className="text-xs rounded-md px-2 py-1"
                     style={{
@@ -390,15 +405,14 @@ export default function NewbieTraining() {
             {/* 左侧视频区域 */}
             <Content style={{ padding: '16px' }}>
               <div className="relative bg-black aspect-video">
-                <video ref={videoRef} className="w-full h-full" controls autoPlay key={activeVideo}>
-                  <source
-                    src={
-                      activeVideo === 1
-                        ? topicData.currentTopic?.video1
-                        : topicData.currentTopic?.video2
-                    }
-                    type="video/mp4"
-                  />
+                <video
+                  ref={videoRef}
+                  className="w-full h-full"
+                  controls
+                  autoPlay
+                  key={activeVideo === 1 ? video1 : video2}
+                >
+                  <source src={activeVideo === 1 ? video1 : video2} type="video/mp4" />
                 </video>
                 <div className="absolute top-2 right-2 text-white">{playbackRate.toFixed(1)}x</div>
               </div>
@@ -430,9 +444,7 @@ export default function NewbieTraining() {
                           <div className="flex-1">
                             <div className="text-sm">
                               {(() => {
-                                const product = topicData.currentTopic?.answers?.find(
-                                  (p: any) => p.id === index,
-                                );
+                                const product = answers.find((p: any) => p.id === index);
                                 return product
                                   ? `${product.brandName} ${product.skuName} ${product.spec}`
                                   : '';
@@ -474,8 +486,8 @@ export default function NewbieTraining() {
               <div className="bg-white p-4 rounded-md">
                 <div className="flex xl:flex-row flex-col xl:justify-between xl:items-center mb-4 xl:space-x-4 space-y-4 xl:space-y-0">
                   <div className="flex items-center space-x-1">
-                    <span>202411116479064851622174720</span>
-                    <CopyToClipboard text="202411116479064851622174720" />
+                    <span>{topicNumber}</span>
+                    <CopyToClipboard text={topicNumber} />
                   </div>
                   <div className="flex items-center">
                     <Input
@@ -490,7 +502,7 @@ export default function NewbieTraining() {
                 </div>
 
                 {/* 动态渲染分类和商品 */}
-                {[1, 2].map((category) => (
+                {categories.map((category) => (
                   <React.Fragment key={category}>
                     <div className="flex">
                       {/* 左侧分类号 */}
@@ -565,7 +577,9 @@ export default function NewbieTraining() {
                         </div>
                       </div>
                     </div>
-                    {category < 2 && <div className="border-t border-gray-200 my-4" />}
+                    {categories.indexOf(category) !== categories.length - 1 && (
+                      <div className="border-t border-gray-200 my-4" />
+                    )}
                   </React.Fragment>
                 ))}
               </div>
@@ -591,9 +605,9 @@ export default function NewbieTraining() {
         }
         width={800}
       >
-        {/* <div className="p-4">
+        <div className="p-4">
           <div className="grid grid-cols-4 gap-4">
-            {trainingRecords.map((item, index) => (
+            {answers.map((item: any, index: any) => (
               <div key={index} className="flex items-center gap-1 text-xs">
                 <span
                   style={{
@@ -604,12 +618,12 @@ export default function NewbieTraining() {
                   ●
                 </span>
                 <span className="text-gray-600 hover:text-blue-500 cursor-pointer truncate">
-                  {item.id}
+                  {item.topicNumber || ''}
                 </span>
               </div>
             ))}
           </div>
-        </div> */}
+        </div>
       </Modal>
 
       {/* 提交 Modal */}
@@ -645,7 +659,11 @@ export default function NewbieTraining() {
                   <div key={index} className="flex justify-between items-center">
                     <div className="text-sm">
                       {(() => {
-                        return '显示选择的商品信息';
+                        // 获取商品信息
+                        const product = answers.find((p: any) => p.id === index);
+                        return product
+                          ? `${product.brandName} ${product.skuName} ${product.spec}`
+                          : '';
                       })()}
                     </div>
                     <div className="text-sm">X{quantity}</div>
