@@ -132,4 +132,8 @@ export default {
   'status.wrong': 'Wrong',
   answerCount: 'Count',
   number: 'Number',
+  brandName: 'Name',
+  configure: 'Configure',
+  correctAnswers: 'Correct Answers',
+  count: 'Count',
 };

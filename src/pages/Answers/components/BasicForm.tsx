@@ -82,12 +82,14 @@ const BasicForm: React.FC<Props> = ({
           accept=".jpg,.jpeg,.png,.pdf"
           defaultFileList={defaultFileList}
         />
+      </ProForm.Group>
 
+      <ProForm.Group>
         <ProFormText
           rules={[{ required: true }]}
           width="md"
-          label={intl.formatMessage({ id: 'answers.name' })}
-          name="name"
+          label={intl.formatMessage({ id: 'brandName' })}
+          name="brandName"
         />
 
         <ProFormText
@@ -96,7 +98,9 @@ const BasicForm: React.FC<Props> = ({
           label={intl.formatMessage({ id: 'answers.skuName' })}
           name="skuName"
         />
+      </ProForm.Group>
 
+      <ProForm.Group>
         <ProFormText
           rules={[{ required: true }]}
           width="md"
@@ -110,15 +114,15 @@ const BasicForm: React.FC<Props> = ({
           label={intl.formatMessage({ id: 'answers.spec' })}
           name="spec"
         />
+      </ProForm.Group>
 
-        <ProFormText
+      {/* <ProFormText
           rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'answers.rowNumber' })}
           name="rowNumber"
           initialValue={1}
-        />
-      </ProForm.Group>
+        /> */}
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>

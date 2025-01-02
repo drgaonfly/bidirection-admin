@@ -13,6 +13,7 @@ import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import VideoPlayer from '@/components/VideoPlayer';
+import Configure from './components/ConfigureForm';
 
 /**
  * @en-US Add node
@@ -115,21 +116,12 @@ const TableList: React.FC = () => {
   const access = useAccess();
   const [video1, setvideo1] = useState<string>('');
   const [video2, setvideo2] = useState<string>('');
+  const [configureModalVisible, setConfigureModalVisible] = useState<boolean>(false);
 
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'number' }),
       dataIndex: 'topicNumber',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'name' }),
-      dataIndex: ['correctAnswers', 'answer', 'name'],
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'count' }),
-      dataIndex: ['correctAnswers', 'count'],
       hideInSearch: true,
     },
     {
@@ -153,6 +145,27 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        <a
+          key="configure"
+          onClick={() => {
+            setConfigureModalVisible(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'configure',
+            defaultMessage: 'Configure',
+          })}
+        </a>,
+        <a
+          key="detail"
+          onClick={() => {
+            setCurrentRow(record);
+            setShowDetail(true);
+          }}
+        >
+          <FormattedMessage id="detail" />
+        </a>,
         access.canSuperAdmin && (
           <a
             key="edit"
@@ -252,6 +265,21 @@ const TableList: React.FC = () => {
           }}
         />
       )}
+      <Configure
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            setConfigureModalVisible(false);
+            setCurrentRow(undefined);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={setConfigureModalVisible}
+        updateModalOpen={configureModalVisible}
+        values={currentRow || {}}
+      />
       {(access.canSuperAdmin || access.canUpdateMenu) && (
         <Update
           onSubmit={async (value) => {

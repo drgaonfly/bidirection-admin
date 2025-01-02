@@ -123,8 +123,8 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'answers.name' }),
-      dataIndex: 'name',
+      title: intl.formatMessage({ id: 'brandName' }),
+      dataIndex: 'brandName',
       copyable: true,
     },
     {
@@ -159,12 +159,6 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'answers.spec' }),
       dataIndex: 'spec',
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'answers.rowNumber' }),
-      dataIndex: 'rowNumber',
-      hideInSearch: true,
-      render: (text) => text,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

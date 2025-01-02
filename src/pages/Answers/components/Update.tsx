@@ -52,7 +52,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   return (
     <Modal
       maskClosable={false}
-      width="70%"
+      width="45%"
       destroyOnClose
       title={intl.formatMessage({ id: 'modify' })}
       open={updateModalOpen}

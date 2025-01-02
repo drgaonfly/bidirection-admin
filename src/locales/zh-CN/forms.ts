@@ -139,4 +139,9 @@ export default {
   'status.wrong': '答错',
   'answers.answerCount': '数量',
   'answers.rowNumber': '行数',
+  number: '编号',
+  brandName: '名称',
+  configure: '配置',
+  correctAnswers: '正确答案',
+  count: '数量',
 };

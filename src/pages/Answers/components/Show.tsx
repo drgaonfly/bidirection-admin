@@ -26,12 +26,12 @@ const Show: React.FC<Props> = (props) => {
       {currentRow?._id && (
         <ProDescriptions<API.ItemData>
           column={2}
-          title={currentRow?.phoneNumber}
+          title={currentRow?.brandName}
           request={async () => ({
             data: currentRow || {},
           })}
           params={{
-            id: currentRow?.name,
+            id: currentRow?._id,
           }}
           columns={filteredColumns as ProDescriptionsItemProps<API.ItemData>[]}
           style={{ marginTop: '20px' }}
