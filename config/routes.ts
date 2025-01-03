@@ -134,7 +134,6 @@ export default [
     path: '/withdraw',
     name: 'list.withdraw',
     icon: 'WalletOutlined',
-    component: './withdraw',
-
-  }
+    component: './Withdraw',
+  },
 ];
