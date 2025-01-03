@@ -453,7 +453,13 @@ export default function NewbieTraining() {
                 <span
                   style={{
                     color:
-                      item.status === 'success' ? 'green' : item.status === 'fail' ? 'red' : 'gray',
+                      item.status === 'success'
+                        ? '#6ec283'
+                        : item.status === 'fail'
+                        ? 'red'
+                        : item.status === 'doing'
+                        ? '#1890ff'
+                        : 'gray',
                   }}
                 >
                   ●
