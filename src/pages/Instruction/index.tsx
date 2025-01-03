@@ -214,6 +214,7 @@ const TableList: React.FC = () => {
           }
         >
           {(access.canSuperAdmin || access.canDeleteInstruction) && (
+
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -224,6 +225,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
+
       {(access.canSuperAdmin || access.canCreateInstruction) && (
         <Create
           open={createModalOpen}
@@ -240,6 +242,7 @@ const TableList: React.FC = () => {
         />
       )}
       {(access.canSuperAdmin || access.canUpdateInstruction) && (
+
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
