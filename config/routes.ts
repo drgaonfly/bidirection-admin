@@ -127,13 +127,13 @@ export default [
   {
     path: '/instructions',
     name: 'list.instructions',
-    icon: 'BookOutlined',
+    icon: 'QuestionCircleOutlined',
     component: './Instruction',
   },
   {
     path: '/withdraw',
     name: 'list.withdraw',
     icon: 'WalletOutlined',
-    component: './Withdraw',
+    component: './withdraw',
   },
 ];

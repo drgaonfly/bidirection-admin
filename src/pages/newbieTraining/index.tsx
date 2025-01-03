@@ -20,15 +20,17 @@ interface Answer {
   brandName: string | null;
   spec: string | null;
   image: string;
-  category?: number;
+  rowNumber?: number;
 }
 
 export default function NewbieTraining() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [activeVideo, setActiveVideo] = useState(1);
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const [selectedStatus, setSelectedStatus] = useState<number>(1);
+  // 创建一个用于存储视频元素的引用
+  const videoRef = useRef<HTMLVideoElement>(null); // 存储视频元素的引用
+  const [playbackRate, setPlaybackRate] = useState(1); // 视频播放速度的状态
+  const [activeVideo, setActiveVideo] = useState(1); // 当前激活的视频的状态
+
+  const [quantities, setQuantities] = useState<Record<string, number>>({}); // 商品数量的状态
+  const [selectedStatus, setSelectedStatus] = useState<number>(1); // 当前选中的状态的状态
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -39,6 +41,14 @@ export default function NewbieTraining() {
   // const [expectedCount, setExpectedCount] = useState<number>();
   const [issue, setIssue] = useState<string>();
   const [topicNumber, setTopicNumber] = useState<string>('');
+  const [allTopics, setAllTopics] = useState<
+    Array<{
+      topic: {
+        topicNumber: string;
+      };
+      status: string;
+    }>
+  >([]);
 
   // 获取新手训练数据
   const fetchNewbieTraining = async () => {
@@ -52,6 +62,10 @@ export default function NewbieTraining() {
         const { data } = response as any;
         const currentTopic = data.currentTopic;
         const answers = data.answers;
+        const topics = data.topics;
+
+        // 设置所有题目信息
+        setAllTopics(topics);
 
         // 分别设置各个状态
         setTopicId(currentTopic._id);
@@ -67,7 +81,7 @@ export default function NewbieTraining() {
             brandName: answer.brandName,
             spec: answer.spec,
             image: answer.image,
-            category: 1,
+            rowNumber: answer.rowNumber,
           })),
         );
       }
@@ -298,7 +312,7 @@ export default function NewbieTraining() {
   // 获取所有不重复的分类
   const categories = useMemo(() => {
     if (!answers) return [];
-    return [...new Set(answers.map((product) => product.category))].sort();
+    return [...new Set(answers.map((product) => product.rowNumber))].sort();
   }, [answers]);
 
   return (
@@ -520,7 +534,7 @@ export default function NewbieTraining() {
                       <div className="flex-1">
                         <div className="grid grid-cols-4">
                           {filteredProducts
-                            .filter((product) => product.category === category)
+                            .filter((product) => product.rowNumber === category)
                             .map((product) => {
                               const uniqueIndex = product.id;
                               return (
@@ -612,7 +626,7 @@ export default function NewbieTraining() {
       >
         <div className="p-4">
           <div className="grid grid-cols-4 gap-4">
-            {answers.map((item: any, index: any) => (
+            {allTopics.map((item, index) => (
               <div key={index} className="flex items-center gap-1 text-xs">
                 <span
                   style={{
@@ -623,7 +637,7 @@ export default function NewbieTraining() {
                   ●
                 </span>
                 <span className="text-gray-600 hover:text-blue-500 cursor-pointer truncate">
-                  {item.topicNumber}
+                  {item.topic.topicNumber}
                 </span>
               </div>
             ))}
@@ -684,7 +698,7 @@ export default function NewbieTraining() {
         <div className="grid grid-cols-4 py-2">
           <div
             className="flex flex-col items-center cursor-pointer"
-            onClick={() => history.push('/guide')}
+            onClick={() => history.push('/instructions')}
           >
             <QuestionCircleOutlined className="text-xl" />
             <span className="text-xs mt-1">使用说明</span>
