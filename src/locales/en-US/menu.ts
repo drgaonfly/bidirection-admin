@@ -88,4 +88,6 @@ export default {
   'menu.auth.permission-groups': 'Permission Groups',
   'menu.material-categories': 'Material Categories',
   'menu.auth.data-permissions': 'Data Permissions',
+  'menu.list.withdraw': 'Withdraw',
+  'menu.withdraw': 'Withdraw',
 };

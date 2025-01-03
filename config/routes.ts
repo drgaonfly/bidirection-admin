@@ -124,4 +124,10 @@ export default [
     icon: 'UsergroupAddOutlined',
     component: './Employee',
   },
+  {
+    path: '/withdraw',
+    name: 'list.withdraw',
+    icon: 'WalletOutlined',
+    component: './withdraw',
+  },
 ];
