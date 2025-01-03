@@ -1,4 +1,4 @@
-import { useIntl } from '@umijs/max';
+// import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -20,7 +20,7 @@ import { Card, Row, Col, Button, Statistic } from 'antd';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/records', { ...fields });
+    await addItem('/withdraws', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -44,7 +44,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/records/${fields._id}`, fields);
+    await updateItem(`/withdraws/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -70,7 +70,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/records', {
+    await removeItem('/withdraws', {
       ids,
     });
     hide();
@@ -93,7 +93,7 @@ const handleRemove = async (ids: string[]) => {
 };
 
 const WithdrawPage: React.FC = () => {
-  const intl = useIntl();
+  // const intl = useIntl();
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -120,36 +120,66 @@ const WithdrawPage: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'answers.sn' }),
-      dataIndex: ['answers', 'sn'],
+      title: '提现编号',
+      dataIndex: 'withdrawalNumber',
+      copyable: true,
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'issue' }),
-      dataIndex: 'issue',
-      valueType: 'select',
-      valueEnum: {
-        normal: { text: intl.formatMessage({ id: 'issue.normal', defaultMessage: 'Normal' }) },
-        unfriendly: {
-          text: intl.formatMessage({ id: 'issue.unfriendly', defaultMessage: 'Unfriendly' }),
-        },
-        recogError: {
-          text: intl.formatMessage({ id: 'issue.recogError', defaultMessage: 'Recognition Error' }),
-        },
-        videoError: {
-          text: intl.formatMessage({ id: 'issue.videoError', defaultMessage: 'Video Error' }),
+      title: '申请时间',
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: false,
+      search: {
+        transform: (value) => {
+          return {
+            startTime: value[0],
+            endTime: value[1],
+          };
         },
       },
     },
     {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: ['user', 'name'],
-      hideInSearch: true,
+      title: '提现方式',
+      dataIndex: 'withdrawalMethod',
+      valueType: 'select',
+      valueEnum: {
+        WeChat: { text: '微信' },
+        Alipay: { text: '支付宝' },
+        Cash: { text: '现金' },
+        Other: { text: '其他' },
+      },
     },
     {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
+      title: '审核状态',
+      dataIndex: 'reviewStatus',
+      valueType: 'select',
+      valueEnum: {
+        unreviewed: { text: '待审核', status: 'default' },
+        reviewed: { text: '已审核', status: 'success' },
+      },
+    },
+    {
+      title: '打款状态',
+      dataIndex: 'paymentStatus',
+      valueType: 'select',
+      valueEnum: {
+        unpaid: { text: '待打款', status: 'default' },
+        paid: { text: '已打款', status: 'success' },
+      },
+    },
+    {
+      title: '提现金额(元)',
+      dataIndex: 'amount',
+      valueType: 'money',
       hideInSearch: true,
+      search: false,
+    },
+    {
+      title: '用户信息',
+      dataIndex: ['user', 'username'],
+      hideInSearch: true,
+      render: (_, record) => <span>{record.user?.username || '-'}</span>,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -157,7 +187,19 @@ const WithdrawPage: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         access.canSuperAdmin && (
+          <a
+            key="edit"
+            onClick={() => {
+              setCurrentRow(record);
+              handleUpdateModalOpen(true);
+            }}
+          >
+            编辑
+          </a>
+        ),
+        access.canSuperAdmin && (
           <DeleteLink
+            key="delete"
             onOk={async () => {
               await handleRemove([record._id!]);
               setSelectedRows([]);
@@ -176,7 +218,11 @@ const WithdrawPage: React.FC = () => {
           <Row gutter={24}>
             <Col span={8}>
               <Statistic title="可用余额" value={0.0} precision={2} suffix="元" />
-              <Button type="primary" style={{ marginTop: 16 }} onClick={() => {}}>
+              <Button
+                type="primary"
+                style={{ marginTop: 16 }}
+                onClick={() => handleModalOpen(true)}
+              >
                 申请提现
               </Button>
             </Col>
@@ -187,24 +233,11 @@ const WithdrawPage: React.FC = () => {
         </Card>
 
         <ProTable<API.ItemData, API.PageParams>
-          headerTitle={intl.formatMessage({ id: 'list' })}
+          headerTitle="提现记录"
           actionRef={actionRef}
           rowKey="_id"
-          search={{ labelWidth: 100 }}
-          toolBarRender={() => [
-            // access.canSuperAdmin && (
-            //   <Button
-            //     type="primary"
-            //     key="primary"
-            //     onClick={() => {
-            //       handleModalOpen(true);
-            //     }}
-            //   >
-            //     <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            //   </Button>
-            // ),
-          ]}
-          request={async (params, sort, filter) => queryList('/records', params, sort, filter)}
+          search={{ labelWidth: 120 }}
+          request={async (params, sort, filter) => queryList('/withdraws', params, sort, filter)}
           columns={columns}
           rowSelection={
             access.canSuperAdmin && {
