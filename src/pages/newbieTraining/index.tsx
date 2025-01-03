@@ -29,7 +29,7 @@ export default function NewbieTraining() {
   const [video2, setVideo2] = useState<string>('');
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [topicId, setTopicId] = useState<string>('');
-  const [expectedCount, setExpectedCount] = useState<number>();
+  // const [expectedCount, setExpectedCount] = useState<number>();
   const [issue, setIssue] = useState<string>();
   const [topicNumber, setTopicNumber] = useState<string>('');
 
@@ -50,7 +50,7 @@ export default function NewbieTraining() {
         setTopicId(currentTopic._id);
         setVideo1(currentTopic.video1 || '');
         setVideo2(currentTopic.video2 || '');
-        setExpectedCount(currentTopic.expectedCount);
+        // setExpectedCount(currentTopic.expectedCount);
         setTopicNumber(currentTopic.topicNumber || '');
         setIssue(currentTopic.issue);
         setAnswers(
@@ -107,26 +107,12 @@ export default function NewbieTraining() {
         message.success('提交成功');
         setIsSubmitModalVisible(false);
 
-        const { currentTopic } = response.data as any;
-
-        // 分别更新各个状态
-        setTopicId(currentTopic._id);
-        setVideo1(currentTopic.video1 || '');
-        setVideo2(currentTopic.video2 || '');
-        setExpectedCount(currentTopic.expectedCount);
-        setIssue(currentTopic.issue);
-        setAnswers(currentTopic.answers || []);
-
         // 重置状态
         setQuantities({});
         setSelectedStatus(1);
 
-        // 切换到新题目的第一个有效视频
-        if (currentTopic.video1) {
-          setActiveVideo(1);
-        } else if (currentTopic.video2) {
-          setActiveVideo(2);
-        }
+        // 获取新题目数据
+        await fetchNewbieTraining();
       } else {
         message.error(response?.message || '提交失败');
       }
@@ -213,7 +199,7 @@ export default function NewbieTraining() {
   };
 
   // 监听视频播放速度变化
-  React.useEffect(() => {
+  useEffect(() => {
     const video = videoRef.current;
     const handleRateChange = () => {
       if (video) {
@@ -352,9 +338,9 @@ export default function NewbieTraining() {
                   >
                     视频二{!video2 && '(无)'}
                   </div>
-                  <div className="text-gray-500 text-md">
+                  {/* <div className="text-gray-500 text-md">
                     {expectedCount ? `预计到达${expectedCount}单` : ''}
-                  </div>
+                  </div> */}
                   {issue && <div className="text-gray-500 text-md">问题：{issue}</div>}
                   <div
                     className="text-xs rounded-md px-2 py-1"
