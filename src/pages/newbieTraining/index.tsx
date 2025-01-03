@@ -41,6 +41,14 @@ export default function NewbieTraining() {
   // const [expectedCount, setExpectedCount] = useState<number>();
   const [issue, setIssue] = useState<string>();
   const [topicNumber, setTopicNumber] = useState<string>('');
+  const [allTopics, setAllTopics] = useState<
+    Array<{
+      topic: {
+        topicNumber: string;
+      };
+      status: string;
+    }>
+  >([]);
 
   // 获取新手训练数据
   const fetchNewbieTraining = async () => {
@@ -54,6 +62,10 @@ export default function NewbieTraining() {
         const { data } = response as any;
         const currentTopic = data.currentTopic;
         const answers = data.answers;
+        const topics = data.topics;
+
+        // 设置所有题目信息
+        setAllTopics(topics);
 
         // 分别设置各个状态
         setTopicId(currentTopic._id);
@@ -614,7 +626,7 @@ export default function NewbieTraining() {
       >
         <div className="p-4">
           <div className="grid grid-cols-4 gap-4">
-            {answers.map((item: any, index: any) => (
+            {allTopics.map((item, index) => (
               <div key={index} className="flex items-center gap-1 text-xs">
                 <span
                   style={{
@@ -625,7 +637,7 @@ export default function NewbieTraining() {
                   ●
                 </span>
                 <span className="text-gray-600 hover:text-blue-500 cursor-pointer truncate">
-                  {item.topicNumber}
+                  {item.topic.topicNumber}
                 </span>
               </div>
             ))}
