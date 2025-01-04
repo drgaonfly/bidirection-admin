@@ -3,7 +3,7 @@ import { Button, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 interface BeginProps {
-  onStart: () => void;
+  onStart: (resetProgress?: boolean) => void;
 }
 
 const Begin: React.FC<BeginProps> = ({ onStart }) => {
@@ -11,14 +11,17 @@ const Begin: React.FC<BeginProps> = ({ onStart }) => {
     Modal.confirm({
       title: '查询到历史记录，是否继续？',
       icon: <ExclamationCircleOutlined style={{ color: '#faad14' }} />,
-      okText: '确定',
+      okText: '继续训练',
       cancelText: '取消',
-      onOk: onStart,
+      onOk: () => onStart(false),
+      onCancel: () => {
+        return Promise.resolve();
+      },
     });
   }, []);
 
   const handleStart = () => {
-    onStart();
+    onStart(true);
   };
 
   const handleOverview = () => {

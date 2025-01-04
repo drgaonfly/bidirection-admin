@@ -47,8 +47,8 @@ export default function NewbieTraining() {
   const [video2, setVideo2] = useState<string>('');
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [topicId, setTopicId] = useState<string>('');
-  // const [expectedCount, setExpectedCount] = useState<number>();
   const [issue, setIssue] = useState<string>();
+
   const [topicNumber, setTopicNumber] = useState<string>('');
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [allTopics, setAllTopics] = useState<
@@ -58,16 +58,13 @@ export default function NewbieTraining() {
     }>
   >([]);
 
-  const handleStart = () => {
-    setHasStarted(true);
-  };
-
   // 获取新手训练数据
-  const fetchNewbieTraining = async () => {
+  const fetchNewbieTraining = async (resetProgress?: boolean) => {
     try {
       const response = await queryList('/records/newbie-training', {
         current: 1,
         pageSize: 10,
+        emptyRecordFlag: resetProgress ? 'true' : 'false', // 添加重置标志
       });
 
       if (response && 'data' in response) {
@@ -83,7 +80,7 @@ export default function NewbieTraining() {
         setTopicId(currentTopic._id);
         setVideo1(currentTopic.video1 || '');
         setVideo2(currentTopic.video2 || '');
-        // setExpectedCount(currentTopic.expectedCount);
+
         setTopicNumber(currentTopic.topicNumber || '');
         setIssue(currentTopic.issue);
         setAnswers(
@@ -99,6 +96,18 @@ export default function NewbieTraining() {
       }
     } catch (error) {
       console.error('获取数据失败:', error);
+      throw error;
+    }
+  };
+
+  // 重置新手训练数据
+  const handleStart = async (resetProgress?: boolean) => {
+    try {
+      await fetchNewbieTraining(resetProgress);
+      setHasStarted(true);
+    } catch (error) {
+      console.error('获取训练数据失败:', error);
+      message.error('获取训练数据失败，请重试');
     }
   };
 
