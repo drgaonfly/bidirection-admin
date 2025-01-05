@@ -1,9 +1,9 @@
-import { useIntl } from '@umijs/max';
+// import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -11,6 +11,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import { Card, Row, Col, Button, Statistic } from 'antd';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -19,7 +20,7 @@ import DeleteLink from '@/components/DeleteLink';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/records', { ...fields });
+    await addItem('/withdraws', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -43,7 +44,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/records/${fields._id}`, fields);
+    await updateItem(`/withdraws/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -69,7 +70,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/records', {
+    await removeItem('/withdraws', {
       ids,
     });
     hide();
@@ -91,8 +92,8 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
-const TableList: React.FC = () => {
-  const intl = useIntl();
+const WithdrawPage: React.FC = () => {
+  // const intl = useIntl();
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -110,7 +111,6 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
-  const [activeKey, setActiveKey] = useState<string | undefined>('');
 
   /**
    * @en-US International configuration
@@ -120,56 +120,66 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'issue' }),
-      dataIndex: 'issue',
-      valueType: 'select',
-      valueEnum: {
-        'No Issue': {
-          text: intl.formatMessage({ id: 'issue.noIssue', defaultMessage: 'No Issue' }),
-        },
-        'Unfriendly Operation': {
-          text: intl.formatMessage({
-            id: 'issue.unfriendly',
-            defaultMessage: 'Unfriendly Operation',
-          }),
-        },
-        'Recognition Error': {
-          text: intl.formatMessage({
-            id: 'issue.recognitionError',
-            defaultMessage: 'Recognition Error',
-          }),
-        },
-        'Video Error/Frame Loss': {
-          text: intl.formatMessage({
-            id: 'issue.videoError',
-            defaultMessage: 'Video Error/Frame Loss',
-          }),
-        },
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: ['user', 'name'],
+      title: '提现编号',
+      dataIndex: 'withdrawalNumber',
+      copyable: true,
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
-      valueType: 'select',
-      valueEnum: {
-        pending: {
-          text: intl.formatMessage({ id: 'status.pending', defaultMessage: 'Pending' }),
-          status: 'default',
-        },
-        success: {
-          text: intl.formatMessage({ id: 'status.success', defaultMessage: 'Success' }),
-          status: 'success',
-        },
-        fail: {
-          text: intl.formatMessage({ id: 'status.fail', defaultMessage: 'Failed' }),
-          status: 'error',
+      title: '申请时间',
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: false,
+      search: {
+        transform: (value) => {
+          return {
+            startTime: value[0],
+            endTime: value[1],
+          };
         },
       },
+    },
+    {
+      title: '提现方式',
+      dataIndex: 'withdrawalMethod',
+      valueType: 'select',
+      valueEnum: {
+        WeChat: { text: '微信' },
+        Alipay: { text: '支付宝' },
+        Cash: { text: '现金' },
+        Other: { text: '其他' },
+      },
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'reviewStatus',
+      valueType: 'select',
+      valueEnum: {
+        unreviewed: { text: '待审核', status: 'default' },
+        reviewed: { text: '已审核', status: 'success' },
+      },
+    },
+    {
+      title: '打款状态',
+      dataIndex: 'paymentStatus',
+      valueType: 'select',
+      valueEnum: {
+        unpaid: { text: '待打款', status: 'default' },
+        paid: { text: '已打款', status: 'success' },
+      },
+    },
+    {
+      title: '提现金额(元)',
+      dataIndex: 'amount',
+      valueType: 'money',
+      hideInSearch: true,
+      search: false,
+    },
+    {
+      title: '用户信息',
+      dataIndex: ['user', 'username'],
+      hideInSearch: true,
+      render: (_, record) => <span>{record.user?.username || '-'}</span>,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -177,7 +187,19 @@ const TableList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         access.canSuperAdmin && (
+          <a
+            key="edit"
+            onClick={() => {
+              setCurrentRow(record);
+              handleUpdateModalOpen(true);
+            }}
+          >
+            编辑
+          </a>
+        ),
+        access.canSuperAdmin && (
           <DeleteLink
+            key="delete"
             onOk={async () => {
               await handleRemove([record._id!]);
               setSelectedRows([]);
@@ -189,47 +211,36 @@ const TableList: React.FC = () => {
     },
   ];
 
+  const handleWithdrawClick = () => {
+    Modal.warning({
+      title: '无法申请提现',
+      content: '您的可用余额不足，暂时无法申请提现。',
+      okText: '知道了',
+    });
+  };
+
   return (
     <PageContainer>
+      <Card style={{ marginBottom: 24 }}>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Statistic title="可用余额" value={0.0} precision={2} suffix="元" />
+            <Button type="primary" style={{ marginTop: 16 }} onClick={handleWithdrawClick}>
+              申请提现
+            </Button>
+          </Col>
+          <Col span={8}>
+            <Statistic title="不可用余额" value={0.0} precision={2} suffix="元" />
+          </Col>
+        </Row>
+      </Card>
+
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list' })}
+        headerTitle="提现记录"
         actionRef={actionRef}
         rowKey="_id"
-        search={{ labelWidth: 100 }}
-        toolBarRender={() => []}
-        toolbar={{
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                label: <FormattedMessage id="platform.all" defaultMessage="所有" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="status.pending" defaultMessage="Pending" />,
-                key: 'pending', // 匹配 valueEnum 中的 pending
-              },
-              {
-                label: <FormattedMessage id="status.success" defaultMessage="Success" />,
-                key: 'success', // 匹配 valueEnum 中的 success
-              },
-              {
-                label: <FormattedMessage id="status.fail" defaultMessage="Failed" />,
-                key: 'fail', // 匹配 valueEnum 中的 fail
-              },
-            ],
-            onChange: (key: any) => {
-              setActiveKey(key);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            },
-          },
-        }}
-        request={async (params, sort, filter) =>
-          queryList('/records', { ...params, status: activeKey }, sort, filter)
-        }
+        search={{ labelWidth: 120 }}
+        request={async (params, sort, filter) => queryList('/withdraws', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {
@@ -249,7 +260,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteRecord) && (
+          {(access.canSuperAdmin || access.canDeleteWithdraw) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -260,7 +271,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateRecord) && (
+      {(access.canSuperAdmin || access.canCreateWithdraw) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -275,7 +286,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateRecord) && (
+      {(access.canSuperAdmin || access.canUpdateWithdraw) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
@@ -305,4 +316,4 @@ const TableList: React.FC = () => {
   );
 };
 
-export default TableList;
+export default WithdrawPage;

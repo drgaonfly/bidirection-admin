@@ -90,7 +90,7 @@ const BasicForm: React.FC<Props> = ({
           />
         </Form.Item>
 
-        <Form.Item required label={intl.formatMessage({ id: 'video2' })}>
+        <Form.Item label={intl.formatMessage({ id: 'video2' })}>
           <AliyunOSSUpload
             onFileUpload={(url: string) => {
               setvideo2(url);

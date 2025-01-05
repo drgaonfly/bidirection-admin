@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { queryList } from '@/services/ant-design-pro/api';
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
-// import { FormattedMessage } from '@umijs/max';
 import { Modal } from 'antd';
-import AnswersTable, { AnswerItem } from './AnswersTable';
-import { useIntl } from '@umijs/max';
+import React, { useEffect, useState } from 'react';
+// import handleUpdate from '@/customer/index';
+// import { Role } from '@/apiDataStructures/ApiDataStructure';
+// import moment from 'moment';
+import EmployeeTable from './EmployeeTable'; // 导入员工表格组件
+
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
   open: boolean;
@@ -14,15 +17,30 @@ interface Props {
 const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns } = props;
   const filteredColumns = columns.filter((col) => col.dataIndex !== 'option');
-
-  const [answers, setAnswers] = useState<AnswerItem[]>(currentRow?.answers || []);
+  const [employees, setEmployees] = useState<any[]>(currentRow?.employees || []);
   const [loading, setLoading] = useState<boolean>(false);
-  const intl = useIntl();
+
+  // 添加分页状态
+  const [pagination, setPagination] = useState<{ current: number; pageSize: number }>({
+    current: 1,
+    pageSize: 5,
+  });
+
+  const query = async () => {
+    setLoading(true);
+    const response = (await queryList(`/users/${currentRow?._id}`, {}, {})) as any;
+    console.log(response);
+    if (response?.success) {
+      // 确保 employees 是数组
+      const employeesData = response.data.employees || [];
+      setEmployees(employeesData);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (currentRow) {
-      setAnswers(currentRow.answers || []);
-      setLoading(false);
+      query().catch(console.error);
     }
   }, [currentRow]);
 
@@ -31,15 +49,15 @@ const Show: React.FC<Props> = (props) => {
       open={open}
       onCancel={onClose}
       footer={null}
-      width="60%"
+      width="50%"
       centered
       className="rounded-lg overflow-hidden"
     >
-      {currentRow?._id && (
+      {currentRow?.email && (
         <>
           <ProDescriptions<API.ItemData>
             column={2}
-            title={`${intl.formatMessage({ id: 'number' })}: ${currentRow?.id}`}
+            title={currentRow?.email}
             request={async () => ({
               data: currentRow || {},
             })}
@@ -62,11 +80,11 @@ const Show: React.FC<Props> = (props) => {
             size="small"
             className="custom-descriptions"
           />
-          <AnswersTable
-            answers={answers}
+          <EmployeeTable
+            employees={employees}
             loading={loading}
-            pagination={{ current: 1, pageSize: 5 }}
-            setPagination={() => {}}
+            pagination={pagination}
+            setPagination={setPagination}
           />
         </>
       )}

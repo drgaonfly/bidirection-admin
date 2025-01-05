@@ -1,3 +1,4 @@
+import 'react-quill/dist/quill.snow.css';
 import { Footer, SelectLang, AvatarDropdown, AvatarName } from '@/components';
 import {
   DatabaseOutlined,
@@ -24,6 +25,11 @@ import {
   TableOutlined,
   RobotOutlined,
   CheckCircleOutlined,
+  WalletOutlined,
+  PlayCircleOutlined,
+  QuestionCircleOutlined,
+  HomeOutlined,
+  InfoCircleOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -61,6 +67,11 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   TableOutlined: <TableOutlined />,
   RobotOutlined: <RobotOutlined />,
   CheckCircleOutlined: <CheckCircleOutlined />,
+  WalletOutlined: <WalletOutlined />,
+  PlayCircleOutlined: <PlayCircleOutlined />,
+  QuestionCircleOutlined: <QuestionCircleOutlined />,
+  HomeOutlined: <HomeOutlined />,
+  InfoCircleOutlined: <InfoCircleOutlined />,
 };
 
 console.log('iconEnum', iconEnum);

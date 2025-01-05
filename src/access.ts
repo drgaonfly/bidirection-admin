@@ -65,23 +65,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/data-permissions', 'GET')),
 
-    canCreateBot:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'POST')),
-    canDeleteBot:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'DELETE')),
-    canUpdateBot:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots/:id', 'PUT')),
-    canGetBot: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'GET')),
-
-    canCreateBill:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills', 'POST')),
-    canDeleteBill:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills', 'DELETE')),
-    canUpdateBill:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills/:id', 'PUT')),
-    canGetBill:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bills', 'GET')),
-
     canCreatePermissionGroup:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups', 'POST')),
@@ -95,68 +78,76 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/permission-groups', 'GET')),
 
-    canCreateResume:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes', 'POST')),
-    canDeleteResume:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes', 'DELETE')),
-    canUpdateResume:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes/:id', 'PUT')),
-    canGetResume:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/resumes', 'GET')),
-
-    canCreateWithdrawal:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'POST')),
-    canDeleteWithdrawal:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'DELETE')),
-    canUpdateWithdrawal:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals/:id', 'PUT')),
-    canGetWithdrawal:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdrawals', 'GET')),
+    //withdraws权限
+    canCreateWithdraw:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdraws', 'POST')),
+    canDeleteWithdraw:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdraws', 'DELETE')),
+    canUpdateWithdraw:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdraws/:id', 'PUT')),
+    canGetWithdraw:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/withdraws', 'GET')),
 
     // proxy权限
-    canCreateNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles', 'POST')),
-    canDeleteNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles', 'DELETE')),
-    canUpdateNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles/:id', 'PUT')),
-    canGetNewRole:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/new-roles', 'GET')),
+    canCreateProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'POST')),
+    canDeleteProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'DELETE')),
+    canUpdateProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies/:id', 'PUT')),
+    canGetProxy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'GET')),
 
     // employee权限
-    canCreateNewEmployee:
+    canCreateEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'POST')),
-    canDeleteNewEmployee:
+    canDeleteEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'DELETE')),
-    canUpdateNewEmployee:
+    canUpdateEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees/:id', 'PUT')),
-    canGetNewEmployee:
+    canGetEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'GET')),
+
+    //Topic权限
+    canCreateTopic:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics', 'POST')),
+    canDeleteTopic:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics', 'DELETE')),
+    canUpdateTopic:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics/:id', 'PUT')),
+    canGetTopic:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics', 'GET')),
+
+    //Record权限
+    canCreateRecord:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/records', 'POST')),
+    canDeleteRecord:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/records', 'DELETE')),
+    canUpdateRecord:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/records/:id', 'PUT')),
+    canGetRecord:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/records', 'GET')),
+
+    //Answers权限
+    canCreateAnswer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/answers', 'POST')),
+    canDeleteAnswer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/answers', 'DELETE')),
+    canUpdateAnswer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/answers/:id', 'PUT')),
+    canGetAnswer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/answers', 'GET')),
+
+    // Instructions权限
+    canCreateInstruction:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'POST')),
+    canDeleteInstruction:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'DELETE')),
+    canUpdateInstruction:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/instructions/:id', 'PUT')),
+    canGetInstruction:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'GET')),
   };
 }
-
-// export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
-//   const { currentUser } = initialState ?? {};
-
-//   return {
-//     canSuperAdmin: currentUser && currentUser.role === ROLES.SuperAdmin,
-
-//     // Check if the user is either in the specific role or a SuperAdmin for broader access
-//     canCustomer:
-//       currentUser &&
-//       (currentUser.role === ROLES.Customer ||
-//         currentUser.role === ROLES.Admin ||
-//         currentUser.role === ROLES.SuperAdmin),
-
-//     canCustomerService:
-//       currentUser &&
-//       (currentUser.role === ROLES.CustomerService ||
-//         currentUser.role === ROLES.Admin ||
-//         currentUser.role === ROLES.SuperAdmin),
-
-//     canAdmin:
-//       currentUser && (currentUser.role === ROLES.Admin || currentUser.role === ROLES.SuperAdmin),
-//   };
-// }

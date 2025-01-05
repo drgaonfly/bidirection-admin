@@ -1,9 +1,10 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message } from 'antd';
+import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -11,6 +12,8 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import ReactQuill from 'react-quill';
+
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -19,7 +22,7 @@ import DeleteLink from '@/components/DeleteLink';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/records', { ...fields });
+    await addItem('/instructions', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -43,7 +46,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/records/${fields._id}`, fields);
+    await updateItem(`/instructions/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -69,7 +72,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/records', {
+    await removeItem('/instructions', {
       ids,
     });
     hide();
@@ -110,7 +113,6 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
-  const [activeKey, setActiveKey] = useState<string | undefined>('');
 
   /**
    * @en-US International configuration
@@ -120,62 +122,45 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'issue' }),
-      dataIndex: 'issue',
-      valueType: 'select',
-      valueEnum: {
-        'No Issue': {
-          text: intl.formatMessage({ id: 'issue.noIssue', defaultMessage: 'No Issue' }),
-        },
-        'Unfriendly Operation': {
-          text: intl.formatMessage({
-            id: 'issue.unfriendly',
-            defaultMessage: 'Unfriendly Operation',
-          }),
-        },
-        'Recognition Error': {
-          text: intl.formatMessage({
-            id: 'issue.recognitionError',
-            defaultMessage: 'Recognition Error',
-          }),
-        },
-        'Video Error/Frame Loss': {
-          text: intl.formatMessage({
-            id: 'issue.videoError',
-            defaultMessage: 'Video Error/Frame Loss',
-          }),
-        },
-      },
+      title: intl.formatMessage({ id: 'instruction.title' }),
+      dataIndex: 'title',
+      copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: ['user', 'name'],
+      title: <FormattedMessage id="instruction.content" />,
+      dataIndex: 'content',
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
-      valueType: 'select',
-      valueEnum: {
-        pending: {
-          text: intl.formatMessage({ id: 'status.pending', defaultMessage: 'Pending' }),
-          status: 'default',
-        },
-        success: {
-          text: intl.formatMessage({ id: 'status.success', defaultMessage: 'Success' }),
-          status: 'success',
-        },
-        fail: {
-          text: intl.formatMessage({ id: 'status.fail', defaultMessage: 'Failed' }),
-          status: 'error',
-        },
+      width: 400,
+      render: (dom) => {
+        return (
+          <div>
+            <ReactQuill
+              value={dom as string} // 使用 ReactQuill 显示内容
+              readOnly={true} // 设置为只读模式
+              theme="bubble" // 使用轻量的 Bubble 主题
+            />
+          </div>
+        );
       },
     },
+
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        access.canSuperAdmin && (
+          <a
+            key="edit"
+            onClick={() => {
+              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
         access.canSuperAdmin && (
           <DeleteLink
             onOk={async () => {
@@ -196,40 +181,20 @@ const TableList: React.FC = () => {
         actionRef={actionRef}
         rowKey="_id"
         search={{ labelWidth: 100 }}
-        toolBarRender={() => []}
-        toolbar={{
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                label: <FormattedMessage id="platform.all" defaultMessage="所有" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="status.pending" defaultMessage="Pending" />,
-                key: 'pending', // 匹配 valueEnum 中的 pending
-              },
-              {
-                label: <FormattedMessage id="status.success" defaultMessage="Success" />,
-                key: 'success', // 匹配 valueEnum 中的 success
-              },
-              {
-                label: <FormattedMessage id="status.fail" defaultMessage="Failed" />,
-                key: 'fail', // 匹配 valueEnum 中的 fail
-              },
-            ],
-            onChange: (key: any) => {
-              setActiveKey(key);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            },
-          },
-        }}
-        request={async (params, sort, filter) =>
-          queryList('/records', { ...params, status: activeKey }, sort, filter)
-        }
+        toolBarRender={() => [
+          access.canSuperAdmin && (
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            </Button>
+          ),
+        ]}
+        request={async (params, sort, filter) => queryList('/instructions', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {
@@ -249,7 +214,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteRecord) && (
+          {(access.canSuperAdmin || access.canDeleteInstruction) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -260,7 +225,8 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateRecord) && (
+
+      {(access.canSuperAdmin || access.canCreateInstruction) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -275,7 +241,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateRecord) && (
+      {(access.canSuperAdmin || access.canUpdateInstruction) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

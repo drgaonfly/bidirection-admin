@@ -112,4 +112,40 @@ export default [
     component: './Record',
     icon: 'FileTextOutlined',
   },
+  {
+    path: '/proxies',
+    name: 'list.proxies',
+    icon: 'GlobalOutlined',
+    component: './Proxy',
+  },
+  {
+    path: '/employees',
+    name: 'list.employees',
+    icon: 'UsergroupAddOutlined',
+    component: './Employee',
+  },
+  {
+    path: '/instructions',
+    name: 'list.instructions',
+    icon: 'QuestionCircleOutlined',
+    component: './Instruction',
+  },
+  {
+    path: '/withdraws',
+    name: 'list.withdraw',
+    icon: 'WalletOutlined',
+    component: './withdraw',
+  },
+  {
+    path: '/examination-rooms',
+    name: 'list.examination-rooms',
+    icon: 'HomeOutlined',
+    component: './newbieTraining',
+  },
+  {
+    path: '/usage-instructions',
+    name: 'list.usage-instructions',
+    icon: 'QuestionCircleOutlined',
+    component: './Instruction',
+  },
 ];

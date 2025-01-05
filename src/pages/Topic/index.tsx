@@ -121,8 +121,9 @@ const TableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'number' }),
-      dataIndex: 'topicNumber',
-      hideInSearch: true,
+      dataIndex: 'id',
+      hideInSearch: false,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'video1', defaultMessage: '视频' }),
@@ -136,9 +137,13 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'video2' }),
       dataIndex: 'video2',
       hideInSearch: true,
-      render: (dom: React.ReactNode, entity: API.ItemData) => (
-        <VideoPlayer entity={entity} videoUrl={entity.video2} />
-      ),
+      render: (dom: React.ReactNode, entity: API.ItemData) =>
+        entity.video2 ? <VideoPlayer entity={entity} videoUrl={entity.video2} /> : <span>无</span>,
+    },
+    {
+      title: intl.formatMessage({ id: 'createdAt' }),
+      dataIndex: 'createdAt',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -231,7 +236,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteMenu) && (
+          {(access.canSuperAdmin || access.canDeleteTopic) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -242,7 +247,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateMenu) && (
+      {(access.canSuperAdmin || access.canCreateTopic) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -280,7 +285,7 @@ const TableList: React.FC = () => {
         updateModalOpen={configureModalVisible}
         values={currentRow || {}}
       />
-      {(access.canSuperAdmin || access.canUpdateMenu) && (
+      {(access.canSuperAdmin || access.canUpdateTopic) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

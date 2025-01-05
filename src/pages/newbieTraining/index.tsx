@@ -1,348 +1,190 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react';
-import { Layout, Button, Input, Radio, Row, Col, InputNumber, Modal, message } from 'antd';
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  Layout,
+  Button,
+  Input,
+  Radio,
+  Row,
+  Col,
+  InputNumber,
+  Modal,
+  message,
+  Progress,
+  Image,
+} from 'antd';
 import CopyToClipboard from '@/components/CopyToClipboard';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { queryList } from '@/services/ant-design-pro/api';
+import {
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
+  PlayCircleOutlined,
+  TrophyOutlined,
+  WalletOutlined,
+} from '@ant-design/icons';
+import { queryList, addItem } from '@/services/ant-design-pro/api';
+import { history } from '@umijs/max';
+import VideoPlayer from './components/VideoPlayer';
+import Begin from './components/Begin';
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
-// 定义接口响应类型
-interface AnswerItem {
-  _id: string;
-  brandName: string;
-  skuName: string;
-  image: string;
-  rowNumber: number;
-  spec: string;
-  sn: string;
-  id: string;
-  topic: any;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface AnswerResponse {
-  success: boolean;
-  data: AnswerItem[];
-  total: number;
-}
-
-// 定义 Answer 类型
+// 定义 answer 的类型
 interface Answer {
-  _id: string;
-  skuName: string;
-  brandName: string;
-  spec: string;
-  image: string;
   id: string;
+  skuName: string;
+  brandName: string | null;
+  spec: string | null;
+  image: string;
   rowNumber?: number;
 }
 
-// 定义 Topic 类型
-interface TopicItem {
-  _id: string;
-  video1: string;
-  video2: string;
-  issue?: string;
-  topicNumber: string;
-  answers: Answer[];
-  correctAnswers: {
-    answer: Answer;
-  }[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface TopicResponse {
-  success: boolean;
-  data: TopicItem[];
-  total: number;
-}
-
-// 定义提交数据的接口
-interface SubmitData {
-  answers: Array<{
-    id: string;
-    quantity: number;
-  }>;
-  issue: string;
-}
-
-// 定义状态类型
-type RecordStatus = 'pending' | 'success' | 'fail';
-
-interface TrainingRecord {
-  id: string;
-  status: RecordStatus;
-}
-
-interface NewbieTrainingResponse {
-  success: boolean;
-  data: {
-    currentUser: {
-      topics: Array<{
-        topic: {
-          _id: string;
-          topicNumber: string;
-        };
-        status: 'pending' | 'success' | 'fail';
-      }>;
-    };
-    currentTopic: any;
-    topics: any[];
-    isHasTopics: boolean;
-  };
-}
-
-interface Product {
-  id: string;
-  name: string;
-  image: string;
-  category: number;
-  brandName: string;
-  spec: string;
-}
-
 export default function NewbieTraining() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [activeVideo, setActiveVideo] = useState(1);
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [hasStarted, setHasStarted] = useState(false);
+  // 移除不需要的视频相关状态
   const [selectedStatus, setSelectedStatus] = useState<number>(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [topicData, setTopicData] = useState<TopicItem | null>(null);
-  const [trainingRecords, setTrainingRecords] = useState<TrainingRecord[]>([]);
+  const [video1, setVideo1] = useState<string>('');
+  const [video2, setVideo2] = useState<string>('');
+  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [topicId, setTopicId] = useState<string>('');
+  const [issue, setIssue] = useState<string>();
 
-  // 获取商品数据
-  const fetchProducts = async () => {
+  const [id, setId] = useState<string>('');
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [allTopics, setAllTopics] = useState<
+    Array<{
+      topic: { id: string };
+      status: string;
+    }>
+  >([]);
+
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  // 获取新手训练数据
+  const fetchNewbieTraining = async (resetProgress?: boolean) => {
     try {
-      const params = {
+      const response = await queryList('/records/newbie-training', {
         current: 1,
-        pageSize: 100,
-      };
+        pageSize: 10,
+        emptyRecordFlag: resetProgress ? 'true' : 'false', // 添加重置标志
+      });
 
-      const response = (await queryList('/answers', params)) as unknown as AnswerResponse;
-      console.log('fetchProducts', response);
+      if (response && 'data' in response) {
+        const { data } = response as any;
+        const currentTopic = data.currentTopic;
+        const answers = data.answers;
+        const topics = data.topics;
 
-      if (response?.success && Array.isArray(response.data)) {
-        const formattedProducts = response.data.map((item) => ({
-          id: item._id,
-          name: item.skuName,
-          image: item.image,
-          category: item.rowNumber ?? 1,
-          brandName: item.brandName,
-          spec: item.spec,
-        }));
-        setProducts(formattedProducts);
+        // 设置所有题目信息
+        setAllTopics(topics);
+
+        // 分别设置各个状态
+        setTopicId(currentTopic._id);
+        setVideo1(currentTopic.video1 || '');
+        setVideo2(currentTopic.video2 || '');
+
+        setId(currentTopic.id || '');
+        setIssue(currentTopic.issue);
+        setAnswers(
+          answers.map((answer: any) => ({
+            id: answer.id,
+            skuName: answer.skuName,
+            brandName: answer.brandName,
+            spec: answer.spec,
+            image: answer.image,
+            rowNumber: answer.rowNumber,
+          })),
+        );
       }
     } catch (error) {
-      console.error('获取商品数据失败:', error);
-      setProducts([]);
+      console.error('获取数据失败:', error);
+      throw error;
     }
   };
 
-  // 使用 useMemo 处理商品过滤
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) =>
-      product.name.toLowerCase().includes(searchKeyword.toLowerCase()),
-    );
-  }, [products, searchKeyword]);
+  // 重置新手训练数据
+  const handleStart = async (resetProgress?: boolean) => {
+    try {
+      await fetchNewbieTraining(resetProgress);
+      setHasStarted(true);
+    } catch (error) {
+      console.error('获取训练数据失败:', error);
+      message.error('获取训练数据失败，请重试');
+    }
+  };
+
+  // 添加提交函数
+  const handleSubmit = async () => {
+    if (submitLoading) return; // 如果正在提交，直接返回
+
+    setSubmitLoading(true);
+    try {
+      if (!topicId) {
+        message.error('题目ID不存在');
+        return;
+      }
+
+      let submitData = {
+        issue: 'No Issue',
+        answers: [] as Array<{ id: string; count: number }>,
+      };
+
+      if (selectedStatus !== 1) {
+        const issueMap = {
+          2: 'Unfriendly Operation',
+          3: 'Recognition Error',
+          4: 'Video Error',
+        };
+        submitData.issue = issueMap[selectedStatus as keyof typeof issueMap] || 'No Issue';
+      } else {
+        submitData.answers = Object.entries(quantities)
+          .filter(([, count]) => count > 0)
+          .map(([id, count]) => ({
+            id,
+            count,
+          }));
+      }
+
+      const response = await addItem(`/records/submit-newbie-training/${topicId}`, submitData);
+
+      if (response?.success) {
+        message.success('提交成功');
+        setIsSubmitModalVisible(false);
+        setQuantities({});
+        setSelectedStatus(1);
+        await fetchNewbieTraining();
+      } else {
+        message.error(response?.message || '提交失败');
+      }
+    } catch (error) {
+      console.error('提交失败:', error);
+      message.error('提交失败，请重试');
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
 
   // 在组件加载时获取数据
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  // 获取视频数据的函数
-  const fetchTopicData = async () => {
-    try {
-      const params = {
-        current: 1,
-        pageSize: 1, // 假设我们只需要一个 topic
-      };
-
-      const response = (await queryList('/topics', params)) as unknown as TopicResponse;
-      console.log('fetchTopicData', response);
-
-      if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
-        setTopicData(response.data[0]);
-        // 如果有视频，自动设置第一个视频
-        if (response.data[0].video1) {
-          setActiveVideo(1);
-        }
-      }
-    } catch (error) {
-      console.error('获取视频数据失败:', error);
-    }
-  };
-
-  // 在组件加载时获取视频数据
-  useEffect(() => {
-    fetchTopicData();
-  }, []);
-
-  // 获取新手训练数据的函数
-  const fetchNewbieTrainingData = async () => {
-    try {
-      const response = (await queryList(
-        '/records/newbie-training',
-      )) as unknown as NewbieTrainingResponse;
-      console.log('fetchNewbieTrainingData', response);
-
-      if (response?.success && response.data.currentUser.topics) {
-        const formattedRecords = response.data.currentUser.topics.map((topic) => ({
-          id: topic.topic.topicNumber,
-          status: topic.status as RecordStatus,
-        }));
-        setTrainingRecords(formattedRecords);
-      }
-    } catch (error) {
-      console.error('获取新手训练数据失败:', error);
-    }
-  };
-
-  // 提交训练记录
-  const submitNewbieTrainingRecord = async () => {
-    try {
-      // 转换商品数量数据为提交格式
-      const answers = Object.entries(quantities)
-        .filter(([, quantity]) => quantity > 0)
-        .map(([id, quantity]) => ({
-          id,
-          quantity,
-        }));
-
-      // 准备提交数据
-      const submitData: SubmitData = {
-        answers: selectedStatus === 1 ? answers : [],
-        issue:
-          selectedStatus === 1
-            ? 'No Issue'
-            : selectedStatus === 2
-            ? 'Unfriendly Operation'
-            : selectedStatus === 3
-            ? 'Recognition Error'
-            : 'Video Error',
-      };
-
-      // 发送请求
-      const response = await queryList('/records/submit-newbie-training/' + topicData?._id, {
-        method: 'POST',
-        data: submitData,
-      });
-
-      if (response.success) {
-        message.success('提交成功');
-        // 刷新数据
-        fetchNewbieTrainingData();
-      } else {
-        message.error('提交失败');
-      }
-    } catch (error) {
-      console.error('提交训练记录失败:', error);
-      message.error('提交失败: ' + (error as Error).message);
-    } finally {
-      setIsSubmitModalVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchNewbieTrainingData();
-  }, []);
-
-  // 视频控制函数
-  const handleFullScreen = () => {
-    if (videoRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        videoRef.current.requestFullscreen();
-      }
-    }
-  };
-
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-      } else {
-        videoRef.current.pause();
-      }
-    }
-  };
-
-  const handleSpeedChange = (change: number) => {
-    if (videoRef.current) {
-      // 获取视频当前的播放速度
-      const currentRate = videoRef.current.playbackRate;
-      // 计算新的播放速度，并限制在合理范围内
-      const newRate = Math.max(0.25, Math.min(2, currentRate + change));
-      videoRef.current.playbackRate = newRate;
-      setPlaybackRate(newRate);
-    }
-  };
-
-  // 监听视频播放速度变化
-  React.useEffect(() => {
-    const video = videoRef.current;
-    const handleRateChange = () => {
-      if (video) {
-        setPlaybackRate(video.playbackRate);
-      }
+    const initPage = async () => {
+      await fetchNewbieTraining();
     };
 
-    if (video) {
-      video.addEventListener('ratechange', handleRateChange);
-    }
+    initPage();
+  }, []); // 仅在组件挂载时执行
 
-    return () => {
-      if (video) {
-        video.removeEventListener('ratechange', handleRateChange);
-      }
-    };
-  }, []);
-
-  // 键盘事件处理
+  // 键盘事件处理 - 只保留 ENTER 键的处理
   React.useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      switch (e.key.toUpperCase()) {
-        case 'ENTER':
-          // 处理提交逻辑
-          break;
-        case 'W':
-          handleSpeedChange(-0.25);
-          break;
-        case 'S':
-          handlePlayPause();
-          break;
-        case 'E':
-          handleSpeedChange(0.25);
-          break;
+      if (e.key.toUpperCase() === 'ENTER') {
+        // 处理提交逻辑
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [playbackRate]);
-
-  // 视频切换处理函数
-  const handleVideoSwitch = (videoNum: number) => {
-    setActiveVideo(videoNum);
-    // 切换视频时重置播放速度
-    setPlaybackRate(1);
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
-        console.log('切换视频后自动播放失败:', error);
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          videoRef.current.play();
-        }
-      });
-    }
-  };
+  }, []);
 
   // 处理数量变化的函数
   const handleQuantityChange = (uniqueIndex: string, change: number) => {
@@ -352,390 +194,390 @@ export default function NewbieTraining() {
     }));
   };
 
-  // 在组件加载时自动播放视频
-  React.useEffect(() => {
-    if (videoRef.current) {
-      // 设置视频为静音状态
-      videoRef.current.muted = true;
+  const filteredProducts = useMemo(() => {
+    if (!answers) return [];
 
-      // 尝试播放
-      videoRef.current
-        .play()
-        .then(() => {
-          // 播放成功后可以取消静音（需要用户交互）
-          console.log('视频开始自动播放');
-        })
-        .catch((error) => {
-          console.warn('视频自动播放失败，需要用户交互:', error);
-        });
-    }
-  }, []);
+    return answers.filter(
+      (product) =>
+        product.skuName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        (product.brandName &&
+          product.brandName.toLowerCase().includes(searchKeyword.toLowerCase())),
+    );
+  }, [searchKeyword, answers]);
+
+  // 获取所有不重复的分类
+  const categories = useMemo(() => {
+    if (!answers) return [];
+    return [...new Set(answers.map((product) => product.rowNumber))].sort();
+  }, [answers]);
+
+  // 在组件内添加计算进度的函数
+  const calculateProgress = useMemo(() => {
+    if (!allTopics || allTopics.length === 0) return 0;
+
+    const completedTopics = allTopics.filter(
+      (topic) => topic.status === 'success' || topic.status === 'fail',
+    ).length;
+
+    return Math.round((completedTopics / allTopics.length) * 100);
+  }, [allTopics]);
 
   return (
     <>
-      <div className="mb-4 text-xl font-medium pl-4 pr-8 py-4 bg-white">
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-medium font-bold">新手训练</div>
-          <Button className="text-sm rounded-md px-2 py-1" onClick={() => setIsModalVisible(true)}>
-            答题概况
-          </Button>
-        </div>
-      </div>
-
-      <Row gutter={[5, 5]}>
-        {/* 左侧区域 (3份) */}
-        <Col xs={24} sm={24} md={14} lg={14} xl={14}>
-          <Sider width="100%" style={{ background: '#fff' }}>
-            {/* 顶部控制栏 */}
-            <Header
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '8px 16px',
-                borderBottom: '1px solid #e8e8e8',
-                background: '#fff',
-                height: 'auto',
-                minHeight: '64px',
-              }}
-            >
-              <div className="flex xl:flex-row flex-col justify-between w-full">
-                {/* 左侧视频切换和信息 */}
-                <div className="flex items-center gap-2 text-sm">
-                  <div
-                    className={`cursor-pointer ${
-                      activeVideo === 1 ? 'text-blue-500' : 'text-gray-500'
-                    }`}
-                    onClick={() => topicData?.video1 && handleVideoSwitch(1)}
-                    style={{ padding: '8px', cursor: 'pointer' }}
-                  >
-                    视频一
-                  </div>
-                  <div
-                    className={`cursor-pointer ${
-                      activeVideo === 2 ? 'text-blue-500' : 'text-gray-500'
-                    }`}
-                    onClick={() => topicData?.video2 && handleVideoSwitch(2)}
-                    style={{ padding: '8px', cursor: 'pointer' }}
-                  >
-                    视频二
-                  </div>
-                  <div className="text-gray-500 text-md">预计到达466单</div>
-                  {topicData?.issue && (
-                    <div className="text-gray-500 text-md">问题：{topicData.issue}</div>
-                  )}
-                  <div
-                    className="text-xs rounded-md px-2 py-1"
-                    style={{
-                      backgroundColor: '#f6ffed',
-                      color: 'green',
-                      border: '1px solid green',
+      {!hasStarted ? (
+        <Begin onStart={handleStart} />
+      ) : (
+        <>
+          <div className="mb-4 text-xl font-medium pl-4 pr-8 py-4 bg-white">
+            <div className="flex items-center justify-between">
+              <div className="text-xl font-medium font-bold">新手训练</div>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" style={{ width: '300px' }}>
+                  <Progress
+                    percent={calculateProgress}
+                    size="small"
+                    format={(percent) => `${percent}%`}
+                    strokeColor={{
+                      '0%': '#108ee9',
+                      '100%': '#87d068',
                     }}
-                  >
-                    正常运单
-                  </div>
-                </div>
-
-                {/* 右侧按钮组 */}
-                <div className="flex gap-2 text-sm">
-                  <div className="sm:flex flex-col sm:flex-row gap-2 text-sm">
-                    <div className="flex gap-2">
-                      <Button onClick={handleFullScreen} className="px-1 py-1 text-sm">
-                        全屏
-                      </Button>
-                      <Button
-                        className="px-1 py-1 text-sm text-white rounded-md"
-                        style={{ backgroundColor: '#1890ff' }}
-                        onClick={() => setIsSubmitModalVisible(true)}
-                      >
-                        提交(ENTER)
-                      </Button>
-                      <Button
-                        onClick={() => handleSpeedChange(-0.25)}
-                        className="px-1 py-1 text-sm"
-                      >
-                        减速(W)
-                      </Button>
-                    </div>
-                    <div className="flex gap-2 mt-2 sm:mt-0">
-                      <Button onClick={handlePlayPause} className="px-1 py-1 text-sm">
-                        暂停/播放(S)
-                      </Button>
-                      <Button onClick={() => handleSpeedChange(0.25)} className="px-1 py-1 text-sm">
-                        加速(E)
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Header>
-
-            {/* 左侧视频区域 */}
-            <Content style={{ padding: '16px' }}>
-              <div className="relative bg-black aspect-video">
-                <video ref={videoRef} className="w-full h-full" controls autoPlay key={activeVideo}>
-                  <source
-                    src={activeVideo === 1 ? topicData?.video1 : topicData?.video2}
-                    type="video/mp4"
                   />
-                </video>
-                <div className="absolute top-2 right-2 text-white">{playbackRate.toFixed(1)}x</div>
-              </div>
-
-              {/* 视频下方的选项 */}
-              <div className="flex gap-4 mt-4">
-                <Radio.Group
-                  name="videoStatus"
-                  className="xl:space-x-4 space-y-4 xl:space-y-0"
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
+                </div>
+                <Button
+                  className="text-sm rounded-md px-2 py-1"
+                  onClick={() => setIsModalVisible(true)}
                 >
-                  <Radio value={1}>无异常(1)</Radio>
-                  <Radio value={2}>非友好操作(2)</Radio>
-                  <Radio value={3}>识别异常(3)</Radio>
-                  <Radio value={4}>视频错误、画面丢失(4)</Radio>
-                </Radio.Group>
+                  答题概况
+                </Button>
               </div>
+            </div>
+          </div>
 
-              <hr />
+          <Row gutter={[5, 5]}>
+            {/* 左侧区域 (3份) */}
+            <Col xs={24} sm={24} md={14} lg={14} xl={14}>
+              <Sider width="100%" style={{ background: '#fff', padding: '10px' }}>
+                <VideoPlayer
+                  video1={video1}
+                  video2={video2}
+                  issue={issue}
+                  onSubmit={() => setIsSubmitModalVisible(true)}
+                  remainingCount={allTopics.filter((topic) => topic.status === 'pending').length}
+                />
 
-              {/* 只在选择"无异常"时显示商品列表 */}
-              {selectedStatus === 1 && (
-                <div>
-                  {Object.entries(quantities).map(
-                    ([index, quantity]) =>
-                      quantity > 0 && (
-                        <div key={index} className="flex items-center justify-between p-2 border-b">
-                          <div className="flex-1">
-                            <div className="text-sm">
-                              {(() => {
-                                const product = products.find((p) => p.id === index);
-                                return product
-                                  ? `${product.brandName} ${product.name} ${product.spec}`
-                                  : '';
-                              })()}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <InputNumber
-                              value={quantity}
-                              onChange={(value) => {
-                                const newValue = value ?? 0;
-                                const change = newValue - quantity;
-                                handleQuantityChange(index, change);
-                              }}
-                              min={0}
-                              className="w-16"
-                            />
-                            <div
-                              onClick={() => handleQuantityChange(index, -quantity)}
-                              className="text-blue-500 hover:text-blue-700 cursor-pointer"
-                            >
-                              删除
-                            </div>
-                          </div>
-                        </div>
-                      ),
-                  )}
-                </div>
-              )}
-            </Content>
-          </Sider>
-        </Col>
-
-        {/* 右侧区域 (2份) */}
-        <Col xs={24} sm={24} md={10} lg={10} xl={10}>
-          <Layout style={{ background: '#f0f2f5' }}>
-            <Content style={{ padding: '0px' }}>
-              {/* 添加顶部订单号和搜索框 */}
-              <div className="bg-white p-4 rounded-md">
-                <div className="flex xl:flex-row flex-col xl:justify-between xl:items-center mb-4 xl:space-x-4 space-y-4 xl:space-y-0">
-                  <div className="flex items-center space-x-1">
-                    <span>202411116479064851622174720</span>
-                    <CopyToClipboard text="202411116479064851622174720" />
-                  </div>
-                  <div className="flex items-center">
-                    <Input
-                      type="text"
-                      placeholder="请输入商品名称"
-                      className="border rounded px-4 py-1 mr-2 w-48"
-                      value={searchKeyword}
-                      onChange={(e) => setSearchKeyword(e.target.value)}
-                    />
-                    <span className="text-gray-600 text-xs">商品搜索</span>
-                  </div>
+                {/* 视频下方的选项和提交按钮 */}
+                <div className="flex justify-between items-center mt-4">
+                  <Radio.Group
+                    name="videoStatus"
+                    className="xl:space-x-4 space-y-4 xl:space-y-0"
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                  >
+                    <Radio value={1}>无异常(1)</Radio>
+                    <Radio value={2}>非友好操作(2)</Radio>
+                    <Radio value={3}>识别异常(3)</Radio>
+                    <Radio value={4}>视频错误、画面丢失(4)</Radio>
+                  </Radio.Group>
                 </div>
 
-                {/* 动态渲染分类和商品 */}
-                {[1, 2].map((categoryNum) => (
-                  <React.Fragment key={categoryNum}>
-                    <div className="flex">
-                      {/* 左侧分类号 */}
-                      <div className="flex items-center text-sm font-medium mr-4">
-                        <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
-                          {categoryNum}
-                        </div>
+                <hr className="my-4" />
+
+                {/* 只在选择"无异常"时显示商品列表 */}
+                {selectedStatus === 1 && (
+                  <div>
+                    {Object.entries(quantities).map(
+                      ([index, count]) =>
+                        count > 0 && (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-2 border-b"
+                          >
+                            <div className="flex-1">
+                              <div className="text-sm">
+                                {(() => {
+                                  const product = answers.find((p: any) => p.id === index);
+                                  return product
+                                    ? `${product.brandName} ${product.skuName} ${product.spec}`
+                                    : '';
+                                })()}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <InputNumber
+                                value={count}
+                                onChange={(value) => {
+                                  const newValue = value ?? 0;
+                                  const change = newValue - count;
+                                  handleQuantityChange(index, change);
+                                }}
+                                min={0}
+                                className="w-16"
+                              />
+                              <div
+                                onClick={() => handleQuantityChange(index, -count)}
+                                className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                              >
+                                删除
+                              </div>
+                            </div>
+                          </div>
+                        ),
+                    )}
+                  </div>
+                )}
+              </Sider>
+            </Col>
+
+            {/* 右侧区域 (2份) */}
+            <Col xs={24} sm={24} md={10} lg={10} xl={10}>
+              <Layout style={{ background: '#f0f2f5' }}>
+                <Content style={{ padding: '0px' }}>
+                  {/* 添加顶部订单号和搜索框 */}
+                  <div className="bg-white p-4 rounded-md">
+                    <div className="flex xl:flex-row flex-col xl:justify-between xl:items-center mb-4 xl:space-x-4 space-y-4 xl:space-y-0">
+                      <div className="flex items-center space-x-1">
+                        <span>{id}</span>
+                        <CopyToClipboard text={id} />
                       </div>
-                      {/* 右侧商品网格 */}
-                      <div className="flex-1">
-                        <div className="grid grid-cols-4">
-                          {filteredProducts
-                            .filter((product) => product.category === categoryNum)
-                            // .map((product, productIndex) => {
-                            //   const uniqueIndex = `${categoryNum}-${productIndex}`;
-                            .map((product) => {
-                              const uniqueIndex = product.id;
-                              return (
-                                <div
-                                  key={uniqueIndex}
-                                  className="flex flex-col items-center p-2 relative"
-                                  style={{
-                                    border: '1px solid #e8e8e8',
-                                    borderRadius: '0px',
-                                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                                  }}
-                                >
-                                  <div
-                                    className="text-xs text-center mt-1 text-gray-600 truncate w-full"
-                                    title={`${product.brandName} ${product.name} ${product.spec}`}
-                                  >
-                                    {product.name}
-                                  </div>
-                                  <img
-                                    src={product.image}
-                                    alt="商品图片"
-                                    className="w-full aspect-square object-contain"
-                                    style={{
-                                      cursor: selectedStatus === 1 ? 'pointer' : 'not-allowed',
-                                    }}
-                                    onClick={() =>
-                                      selectedStatus === 1 && handleQuantityChange(uniqueIndex, 1)
-                                    }
-                                  />
-                                  {/* 数量控制器 */}
-                                  {quantities[uniqueIndex] > 0 && selectedStatus === 1 && (
-                                    <div className="flex items-center justify-between w-full">
-                                      <div
-                                        className="text-lg font-bold flex items-center justify-center text-blue-500 cursor-pointer"
-                                        onClick={() =>
-                                          selectedStatus === 1 &&
-                                          handleQuantityChange(uniqueIndex, -1)
-                                        }
-                                      >
-                                        -
-                                      </div>
-                                      <span className="text-sm">
-                                        {quantities[uniqueIndex] || 0}
-                                      </span>
-                                      <div
-                                        className="text-lg font-bold flex items-center justify-center text-blue-500 cursor-pointer"
-                                        onClick={() =>
-                                          selectedStatus === 1 &&
-                                          handleQuantityChange(uniqueIndex, 1)
-                                        }
-                                      >
-                                        +
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                        </div>
+                      <div className="flex items-center">
+                        <Input
+                          type="text"
+                          placeholder="请输入商品名称"
+                          className="border rounded px-4 py-1 mr-2 w-48"
+                          value={searchKeyword}
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                        />
+                        <span className="text-gray-600 text-xs">商品搜索</span>
                       </div>
                     </div>
-                    {categoryNum < 2 && <div className="border-t border-gray-200 my-4" />}
-                  </React.Fragment>
+
+                    {/* 动态渲染分类和商品 */}
+                    <div className="h-[calc(105vh-400px)] overflow-y-auto">
+                      {categories.map((category: any) => (
+                        <React.Fragment key={category}>
+                          <div className="flex">
+                            {/* 左侧分类号 */}
+                            <div className="flex items-center text-sm font-medium mr-4">
+                              <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center">
+                                {category}
+                              </div>
+                            </div>
+                            {/* 右侧商品网格 */}
+                            <div className="flex-1">
+                              <div className="grid grid-cols-4">
+                                {filteredProducts
+                                  .filter((product) => product.rowNumber === category)
+                                  .map((product) => {
+                                    const uniqueIndex = product.id;
+                                    return (
+                                      <div
+                                        key={uniqueIndex}
+                                        className="flex flex-col items-center p-2 relative"
+                                        style={{
+                                          border: '1px solid #e8e8e8',
+                                          borderRadius: '0px',
+                                          boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                                        }}
+                                      >
+                                        <div
+                                          className="text-xs text-center mt-1 text-gray-600 truncate w-full"
+                                          title={`${product.brandName} ${product.skuName} ${product.spec}`}
+                                        >
+                                          {product.skuName}
+                                        </div>
+                                        <Image
+                                          src={product.image}
+                                          alt="商品图片"
+                                          className="w-full aspect-square object-contain"
+                                          preview={true}
+                                          style={{
+                                            cursor:
+                                              selectedStatus === 1 ? 'pointer' : 'not-allowed',
+                                          }}
+                                          onClick={(e) => {
+                                            // 阻止预览事件，只在selectedStatus为1时添加商品
+                                            e.stopPropagation();
+                                            if (selectedStatus === 1) {
+                                              handleQuantityChange(uniqueIndex, 1);
+                                            }
+                                          }}
+                                        />
+                                        {/* 数量控制器 */}
+                                        {quantities[uniqueIndex] > 0 && selectedStatus === 1 && (
+                                          <div className="flex items-center justify-between w-full">
+                                            <div
+                                              className="text-lg font-bold flex items-center justify-center text-blue-500 cursor-pointer"
+                                              onClick={() =>
+                                                selectedStatus === 1 &&
+                                                handleQuantityChange(uniqueIndex, -1)
+                                              }
+                                            >
+                                              -
+                                            </div>
+                                            <span className="text-sm">
+                                              {quantities[uniqueIndex] || 0}
+                                            </span>
+                                            <div
+                                              className="text-lg font-bold flex items-center justify-center text-blue-500 cursor-pointer"
+                                              onClick={() =>
+                                                selectedStatus === 1 &&
+                                                handleQuantityChange(uniqueIndex, 1)
+                                              }
+                                            >
+                                              +
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                              </div>
+                            </div>
+                          </div>
+                          {categories.indexOf(category) !== categories.length - 1 && (
+                            <div className="border-t border-gray-200 my-4" />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </Content>
+              </Layout>
+            </Col>
+          </Row>
+
+          {/* 答题概况 Modal */}
+          <Modal
+            title={
+              <div className="flex items-center gap-2">
+                <ExclamationCircleOutlined style={{ color: '#1890ff' }} />
+                <span>答题概况</span>
+              </div>
+            }
+            open={isModalVisible}
+            closable={false}
+            footer={
+              <Button type="primary" onClick={() => setIsModalVisible(false)}>
+                知道了
+              </Button>
+            }
+            width={800}
+          >
+            <div className="p-4">
+              <div className="grid grid-cols-4 gap-4">
+                {allTopics.map((item, index) => (
+                  <div key={index} className="flex items-center gap-1 text-xs">
+                    <span
+                      style={{
+                        color:
+                          item.status === 'success'
+                            ? '#6ec283'
+                            : item.status === 'fail'
+                            ? 'red'
+                            : item.status === 'doing'
+                            ? '#1890ff'
+                            : 'gray',
+                      }}
+                    >
+                      ●
+                    </span>
+                    <span className="text-gray-600 hover:text-blue-500 cursor-pointer truncate">
+                      {item.topic.id}
+                    </span>
+                  </div>
                 ))}
               </div>
-            </Content>
-          </Layout>
-        </Col>
-      </Row>
-
-      {/* 答题概况 Modal */}
-      <Modal
-        title={
-          <div className="flex items-center gap-2">
-            <ExclamationCircleOutlined style={{ color: '#1890ff' }} />
-            <span>答题概况</span>
-          </div>
-        }
-        open={isModalVisible}
-        closable={false}
-        footer={
-          <Button type="primary" onClick={() => setIsModalVisible(false)}>
-            知道了
-          </Button>
-        }
-        width={800}
-      >
-        <div className="p-4">
-          <div className="grid grid-cols-4 gap-4">
-            {trainingRecords.map((item, index) => (
-              <div key={index} className="flex items-center gap-1 text-xs">
-                <span
-                  style={{
-                    color:
-                      item.status === 'success' ? 'green' : item.status === 'fail' ? 'red' : 'gray',
-                  }}
-                >
-                  ●
-                </span>
-                <span className="text-gray-600 hover:text-blue-500 cursor-pointer truncate">
-                  {item.id}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Modal>
-
-      {/* 提交 Modal */}
-      <Modal
-        title={
-          selectedStatus === 1 ? (
-            <span>确认提交</span>
-          ) : (
-            <div className="flex items-center gap-2">
-              <ExclamationCircleOutlined style={{ color: '#faad14' }} />
-              <span>确认标记订单为异常吗？</span>
             </div>
-          )
-        }
-        open={isSubmitModalVisible}
-        closable={false}
-        footer={
-          <div className="flex justify-end gap-2">
-            <Button onClick={() => setIsSubmitModalVisible(false)}>取消</Button>
-            <Button type="primary" onClick={submitNewbieTrainingRecord}>
-              确认
-            </Button>
+          </Modal>
+
+          {/* 提交 Modal */}
+          <Modal
+            title={
+              selectedStatus === 1 ? (
+                <span>确认提交</span>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <ExclamationCircleOutlined style={{ color: '#faad14' }} />
+                  <span>确认标记订单为异常吗？</span>
+                </div>
+              )
+            }
+            open={isSubmitModalVisible}
+            closable={false}
+            footer={
+              <div className="flex justify-end gap-2">
+                <Button onClick={() => setIsSubmitModalVisible(false)}>取消</Button>
+                <Button
+                  type="primary"
+                  onClick={handleSubmit}
+                  loading={submitLoading}
+                  disabled={submitLoading}
+                >
+                  {submitLoading ? '提交中...' : '确认'}
+                </Button>
+              </div>
+            }
+            width={500}
+          >
+            {selectedStatus === 1 ? (
+              // 显示选择的商品信息
+              <div className="space-y-4">
+                {Object.entries(quantities).map(
+                  ([index, count]) =>
+                    count > 0 && (
+                      <div key={index} className="flex justify-between items-center">
+                        <div className="text-sm">
+                          {(() => {
+                            // 获取商品信息
+                            const product = answers.find((p: any) => p.id === index);
+                            return product
+                              ? `${product.brandName} ${product.skuName} ${product.spec}`
+                              : '';
+                          })()}
+                        </div>
+                        <div className="text-sm">X{count}</div>
+                      </div>
+                    ),
+                )}
+              </div>
+            ) : null}
+          </Modal>
+
+          {/* 移动端底部导航栏 */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden">
+            <div className="grid grid-cols-4 py-2">
+              <div
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => history.push('/instructions')}
+              >
+                <QuestionCircleOutlined className="text-xl" />
+                <span className="text-xs mt-1">使用说明管理</span>
+              </div>
+              <div
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => history.push('/newbie-training')}
+              >
+                <PlayCircleOutlined className="text-xl" />
+                <span className="text-xs mt-1">测试</span>
+              </div>
+              <div
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => history.push('/examination-rooms')}
+              >
+                <TrophyOutlined className="text-xl" />
+                <span className="text-xs mt-1">考场</span>
+              </div>
+              <div
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => history.push('/withdraw')}
+              >
+                <WalletOutlined className="text-xl" />
+                <span className="text-xs mt-1">提现</span>
+              </div>
+            </div>
           </div>
-        }
-        width={500}
-      >
-        {selectedStatus === 1 ? (
-          // 显示选择的商品信息
-          <div className="space-y-4">
-            {Object.entries(quantities).map(
-              ([index, quantity]) =>
-                quantity > 0 && (
-                  <div key={index} className="flex justify-between items-center">
-                    <div className="text-sm">
-                      {(() => {
-                        const product = products.find((p) => p.id === index);
-                        return product
-                          ? `${product.brandName} ${product.name} ${product.spec}`
-                          : '';
-                      })()}
-                    </div>
-                    <div className="text-sm">X{quantity}</div>
-                  </div>
-                ),
-            )}
-          </div>
-        ) : null}
-      </Modal>
+        </>
+      )}
     </>
   );
 }

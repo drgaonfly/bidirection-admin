@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
-// import { FormattedMessage } from '@umijs/max';
 import { Modal } from 'antd';
-import AnswersTable, { AnswerItem } from './AnswersTable';
-import { useIntl } from '@umijs/max';
+import React from 'react';
+
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
   open: boolean;
@@ -15,31 +13,20 @@ const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns } = props;
   const filteredColumns = columns.filter((col) => col.dataIndex !== 'option');
 
-  const [answers, setAnswers] = useState<AnswerItem[]>(currentRow?.answers || []);
-  const [loading, setLoading] = useState<boolean>(false);
-  const intl = useIntl();
-
-  useEffect(() => {
-    if (currentRow) {
-      setAnswers(currentRow.answers || []);
-      setLoading(false);
-    }
-  }, [currentRow]);
-
   return (
     <Modal
       open={open}
       onCancel={onClose}
       footer={null}
-      width="60%"
+      width="50%"
       centered
       className="rounded-lg overflow-hidden"
     >
-      {currentRow?._id && (
+      {currentRow?.email && (
         <>
           <ProDescriptions<API.ItemData>
             column={2}
-            title={`${intl.formatMessage({ id: 'number' })}: ${currentRow?.id}`}
+            title={currentRow?.email}
             request={async () => ({
               data: currentRow || {},
             })}
@@ -61,12 +48,6 @@ const Show: React.FC<Props> = (props) => {
             }}
             size="small"
             className="custom-descriptions"
-          />
-          <AnswersTable
-            answers={answers}
-            loading={loading}
-            pagination={{ current: 1, pageSize: 5 }}
-            setPagination={() => {}}
           />
         </>
       )}
