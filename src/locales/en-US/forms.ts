@@ -164,4 +164,5 @@ export default {
   topicCount: 'topic count',
   'menu.examination-rooms': 'Examination Rooms',
   'menu.Welcome': 'Welcome',
+  'topic.id': 'number',
 };

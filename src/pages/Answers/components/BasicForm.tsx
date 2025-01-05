@@ -4,6 +4,7 @@ import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { Form, Input, message } from 'antd';
 import { UploadFile } from 'antd/lib/upload/interface';
 import AliyunOSSUpload from '@/components/AliyunOSSUpload';
+import TopicSelect from '@/components/topicSelect';
 
 interface Props {
   newRecord?: boolean;
@@ -73,17 +74,19 @@ const BasicForm: React.FC<Props> = ({
         },
       }}
     >
+      <Form.Item required label={intl.formatMessage({ id: 'image' })}>
+        <AliyunOSSUpload
+          onFileUpload={(url: string) => {
+            console.log('Uploaded file URL:', url);
+            setImageUrl(url);
+          }}
+          accept=".jpg,.jpeg,.png,.pdf"
+          defaultFileList={defaultFileList}
+        />
+      </Form.Item>
+
       <ProForm.Group>
-        <Form.Item required label={intl.formatMessage({ id: 'image' })}>
-          <AliyunOSSUpload
-            onFileUpload={(url: string) => {
-              console.log('Uploaded file URL:', url);
-              setImageUrl(url);
-            }}
-            accept=".jpg,.jpeg,.png,.pdf"
-            defaultFileList={defaultFileList}
-          />
-        </Form.Item>
+        <TopicSelect />
 
         <ProFormText
           width="md"

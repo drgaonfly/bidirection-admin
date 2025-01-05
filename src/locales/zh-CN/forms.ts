@@ -105,7 +105,7 @@ export default {
   upload_failed: '上传失败，请重试',
   please_select_status: '请选择状态',
 
-  'menu.list.answers': '题目管理',
+  'menu.list.answers': '答案管理',
   'menu.list.instructions': '使用说明管理',
   'menu.题目管理': '题目管理',
   'answers.brandName': '品牌名称',
@@ -114,7 +114,7 @@ export default {
   'answers.spec': '规格',
   'answers.sn': '条形码',
   Name: '名称',
-  'menu.answers': '题目管理',
+  'menu.answers': '答案管理',
   detail: '详情',
   issue: '问题',
   'issue.normal': '正常',
@@ -165,4 +165,5 @@ export default {
   topicCount: '题目数量',
   'platform.online': '在线',
   'platform.offline': '离线',
+  'topic.id': '编号',
 };

@@ -16,12 +16,12 @@ const TopicSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
     <ProFormSelect
       rules={[{ required: true }]}
       options={topic.map((topic: any) => ({
-        label: topic.video1,
+        label: topic.id, //编号
         value: topic._id,
       }))}
       width="md"
       name="topic"
-      label={intl.formatMessage({ id: 'pages.comment.topic' })}
+      label={intl.formatMessage({ id: 'topic.id' })}
       showSearch
       fieldProps={{
         loading,
