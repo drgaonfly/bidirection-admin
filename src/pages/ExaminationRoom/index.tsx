@@ -76,27 +76,27 @@ export default function NewbieTraining() {
   // 获取接单数据
   const fetchNewbieTraining = async (resetProgress?: boolean) => {
     try {
-      const response = await queryList('/records/newbie-training', {
+      const response = await queryList('/records/exam', {
         emptyRecordFlag: resetProgress ? 'true' : 'false', // 添加重置标志
       });
 
       if (response && 'data' in response) {
         const { data } = response as any;
-        const currentTopic = data.currentTopic;
+        const currentExamTopic = data.currentExamTopic;
         const answers = data.answers;
-        const topics = data.topics;
+        const examTopics = data.examTopics;
         const isAllCompleted = data.isAllCompleted;
 
         // 设置所有题目信息
-        setAllTopics(topics);
+        setAllTopics(examTopics);
 
         // 如果有当前题目，设置相关状态
-        if (currentTopic) {
-          setTopicId(currentTopic._id);
-          setVideo1(currentTopic.video1 || '');
-          setVideo2(currentTopic.video2 || '');
-          setId(currentTopic.id || '');
-          setIssue(currentTopic.issue);
+        if (currentExamTopic) {
+          setTopicId(currentExamTopic._id);
+          setVideo1(currentExamTopic.video1 || '');
+          setVideo2(currentExamTopic.video2 || '');
+          setId(currentExamTopic.id || '');
+          setIssue(currentExamTopic.issue);
           setAnswers(answers);
         } else if (isAllCompleted) {
           // 如果没有当前题目且所有题目已完成
@@ -160,7 +160,7 @@ export default function NewbieTraining() {
           }));
       }
 
-      const response = await addItem(`/records/submit-newbie-training/${topicId}`, submitData);
+      const response = await addItem(`/records/submit-exam/${topicId}`, submitData);
 
       if (response?.success) {
         // 根据返回的 record 状态显示不同的提示
@@ -598,7 +598,7 @@ export default function NewbieTraining() {
               </div>
               <div
                 className="flex flex-col items-center cursor-pointer"
-                onClick={() => history.push('/newbie-training')}
+                onClick={() => history.push('/exam')}
               >
                 <PlayCircleOutlined className="text-xl" />
                 <span className="text-xs mt-1">接单</span>
