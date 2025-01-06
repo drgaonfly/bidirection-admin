@@ -166,4 +166,8 @@ export default {
   'platform.online': '在线',
   'platform.offline': '离线',
   'topic.id': '编号',
+  'menu.使用说明': '使用说明', // Added missing translation
+  'menu.提现管理': '提现管理', // Added missing translation
+  'menu.考场': '考场',
+  'menu.list.usage-instructions': '使用说明',
 };

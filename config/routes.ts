@@ -33,7 +33,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/Welcome',
+    redirect: '/usage-instructions',
   },
   {
     path: '*',
@@ -146,6 +146,6 @@ export default [
     path: '/usage-instructions',
     name: 'list.usage-instructions',
     icon: 'QuestionCircleOutlined',
-    component: './Instruction',
+    component: './Welcome',
   },
 ];
