@@ -123,7 +123,8 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'topic.id' }),
       dataIndex: ['topic', 'id'],
-      hideInSearch: true,
+      hideInSearch: false,
+      width: 300,
       copyable: true,
     },
     {
@@ -140,6 +141,12 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       render: (dom: React.ReactNode, entity: API.ItemData) =>
         entity.video2 ? <VideoPlayer entity={entity} videoUrl={entity.video2} /> : <span>无</span>,
+    },
+    {
+      title: intl.formatMessage({ id: 'user' }),
+      dataIndex: ['user', 'name'],
+      copyable: true,
+      hideInSearch: false,
     },
     {
       title: intl.formatMessage({ id: 'issue' }),
@@ -170,14 +177,10 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: ['user', 'name'],
-      hideInSearch: true,
-    },
-    {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
       valueType: 'select',
+      hideInSearch: true,
       valueEnum: {
         pending: {
           text: intl.formatMessage({ id: 'status.pending', defaultMessage: 'Pending' }),
