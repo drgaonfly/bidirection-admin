@@ -11,6 +11,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import VideoPlayer from '@/components/VideoPlayer';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -120,6 +121,34 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: intl.formatMessage({ id: 'topic.id' }),
+      dataIndex: ['topic', 'id'],
+      hideInSearch: false,
+      width: 300,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'video1', defaultMessage: '视频' }),
+      dataIndex: 'video1',
+      hideInSearch: true,
+      render: (dom: React.ReactNode, entity: API.ItemData) => (
+        <VideoPlayer entity={entity} videoUrl={entity.video1} />
+      ),
+    },
+    {
+      title: intl.formatMessage({ id: 'video2' }),
+      dataIndex: 'video2',
+      hideInSearch: true,
+      render: (dom: React.ReactNode, entity: API.ItemData) =>
+        entity.video2 ? <VideoPlayer entity={entity} videoUrl={entity.video2} /> : <span>无</span>,
+    },
+    {
+      title: intl.formatMessage({ id: 'user' }),
+      dataIndex: ['user', 'name'],
+      copyable: true,
+      hideInSearch: false,
+    },
+    {
       title: intl.formatMessage({ id: 'issue' }),
       dataIndex: 'issue',
       valueType: 'select',
@@ -148,14 +177,10 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: ['user', 'name'],
-      hideInSearch: true,
-    },
-    {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
       valueType: 'select',
+      hideInSearch: true,
       valueEnum: {
         pending: {
           text: intl.formatMessage({ id: 'status.pending', defaultMessage: 'Pending' }),

@@ -118,7 +118,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   return (
     <div>
       {/* 顶部控制栏 */}
-      <div className="flex xl:flex-row flex-col xl:space-y-0 space-y-4 justify-between w-full p-4 border-b">
+      <div className="flex xl:flex-row flex-col justify-between w-full p-4 border-b">
         {/* 左侧视频切换和信息 */}
         <div className="flex items-center gap-2 text-sm">
           <div
@@ -148,9 +148,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             视频二{!video2 && '(无)'}
           </div>
           {issue && <div className="text-gray-500 text-md">问题：{issue}</div>}
-          <div className="px-1 py-1 text-sm">
-            预计剩余 {remainingCount > 0 ? remainingCount + 1 : 0} 单
-          </div>
+          <div className="px-1 py-1 text-sm">预计剩余 {remainingCount + 1} 单</div>
         </div>
 
         {/* 右侧按钮组 */}

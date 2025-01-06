@@ -1,8 +1,44 @@
 import { FormattedMessage, useIntl } from '@umijs/max';
-import React from 'react';
+import React, { useState } from 'react';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import ReactQuill from 'react-quill';
+
+// Define the type for the Editor component
+interface EditorProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}
+
+// Editor Component (Controlled Component)
+const Editor: React.FC<EditorProps> & { modules: any; formats: string[] } = ({ value, onChange, placeholder }) => {
+  return (
+    <ReactQuill
+      theme="snow"
+      value={value}
+      onChange={onChange}
+      modules={Editor.modules} // Access static property
+      formats={Editor.formats} // Access static property
+      placeholder={placeholder}
+    />
+  );
+};
+
+// Define the Quill modules
+Editor.modules = {
+  toolbar: [
+    'link', 'image', , 'bold', 'italic'
+  ]
+};
+
+// Define the Quill formats
+Editor.formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image',
+];
 
 interface Props {
   newRecord?: boolean;
@@ -12,8 +48,12 @@ interface Props {
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
+  const [content, setContent] = useState(values?.content || ''); // State for content in the editor
 
-  //表单初始化filteredRoles数据更新时，确保表单中的角色选择能加载出来
+  // Handle editor content change
+  const handleEditorChange = (value: string) => {
+    setContent(value);
+  };
 
   return (
     <ProForm
@@ -23,6 +63,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       onFinish={async (values) => {
         await onFinish({
           ...values,
+          content, // Include content from the editor
         });
       }}
       submitter={{
@@ -30,7 +71,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           return (
             <div style={{ textAlign: 'right' }}>
               {dom.map((button, index) => (
-                <span key={index} style={{ marginLeft: 8 }}>
+                <span key={index}>
                   {button}
                 </span>
               ))}
@@ -55,7 +96,11 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={<FormattedMessage id="instruction.content" defaultMessage="内容" />}
           name="content"
         >
-          <ReactQuill placeholder="请输入内容" style={{ height: '200px', marginBottom: '50px' }} />
+          <Editor
+            value={content}
+            onChange={handleEditorChange}
+            placeholder="请输入内容"
+          />
         </ProForm.Item>
       </ProForm.Group>
 

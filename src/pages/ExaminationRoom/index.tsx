@@ -15,9 +15,10 @@ import {
 import CopyToClipboard from '@/components/CopyToClipboard';
 import { ExclamationCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import { queryList, addItem } from '@/services/ant-design-pro/api';
+import { useModel } from '@umijs/max';
 import VideoPlayer from './components/VideoPlayer';
 import Begin from './components/Begin';
-import Finished from './components/Finished';
+import Overlay from './components/Overlayer';
 
 const { Content, Sider } = Layout;
 
@@ -39,7 +40,7 @@ const ISSUE_TYPES = {
   VIDEO_ERROR: 'Video Error',
 } as const;
 
-export default function NewbieTraining() {
+export default function Examination() {
   const [hasStarted, setHasStarted] = useState(false);
   // 修改状态类型
   const [selectedStatus, setSelectedStatus] = useState<string>(ISSUE_TYPES.NO_ISSUE);
@@ -62,35 +63,44 @@ export default function NewbieTraining() {
   >([]);
 
   const [submitLoading, setSubmitLoading] = useState(false);
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
 
   // 添加状态控制预览
   const [previewImage, setPreviewImage] = useState<string>('');
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [onlineVisible, setOnlineVisible] = useState<boolean>(currentUser!.isOnline);
 
-  // 获取新手训练数据
-  const fetchNewbieTraining = async (resetProgress?: boolean) => {
+  // 获取接单数据
+  const fetchExamination = async (resetProgress?: boolean) => {
     try {
-      const response = await queryList('/records/newbie-training', {
+      const response = await queryList('/records/exam', {
         emptyRecordFlag: resetProgress ? 'true' : 'false', // 添加重置标志
       });
 
       if (response && 'data' in response) {
         const { data } = response as any;
-        const currentTopic = data.currentTopic;
+        const currentExamTopic = data.currentExamTopic;
         const answers = data.answers;
-        const topics = data.topics;
+        const examTopics = data.examTopics;
         const isAllCompleted = data.isAllCompleted;
+        const isOnline = data.isOnline;
 
+        if (isOnline) {
+          setOnlineVisible(true);
+        } else {
+          setOnlineVisible(false);
+        }
         // 设置所有题目信息
-        setAllTopics(topics);
+        setAllTopics(examTopics);
 
         // 如果有当前题目，设置相关状态
-        if (currentTopic) {
-          setTopicId(currentTopic._id);
-          setVideo1(currentTopic.video1 || '');
-          setVideo2(currentTopic.video2 || '');
-          setId(currentTopic.id || '');
-          setIssue(currentTopic.issue);
+        if (currentExamTopic) {
+          setTopicId(currentExamTopic._id);
+          setVideo1(currentExamTopic.video1 || '');
+          setVideo2(currentExamTopic.video2 || '');
+          setId(currentExamTopic.id || '');
+          setIssue(currentExamTopic.issue);
           setAnswers(answers);
         } else if (isAllCompleted) {
           // 如果没有当前题目且所有题目已完成
@@ -111,14 +121,14 @@ export default function NewbieTraining() {
     }
   };
 
-  // 重置新手训练数据
+  // 重置接单数据
   const handleStart = async (resetProgress?: boolean) => {
     try {
-      await fetchNewbieTraining(resetProgress);
+      await fetchExamination(resetProgress);
       setHasStarted(true);
     } catch (error) {
-      console.error('获取训练数据失败:', error);
-      message.error('获取训练数据失败，请重试');
+      console.error('获取接单数据失败:', error);
+      message.error('获取接单数据失败，请重试');
     }
   };
 
@@ -154,7 +164,7 @@ export default function NewbieTraining() {
           }));
       }
 
-      const response = await addItem(`/records/submit-newbie-training/${topicId}`, submitData);
+      const response = await addItem(`/records/submit-exam/${topicId}`, submitData);
 
       if (response?.success) {
         // 根据返回的 record 状态显示不同的提示
@@ -169,7 +179,7 @@ export default function NewbieTraining() {
         setSelectedStatus(ISSUE_TYPES.NO_ISSUE);
 
         // 重新获取数据
-        await fetchNewbieTraining();
+        await fetchExamination();
       }
     } catch (error) {
       console.error('提交失败:', error);
@@ -182,7 +192,7 @@ export default function NewbieTraining() {
   // 在组件加载时获取数据
   useEffect(() => {
     const initPage = async () => {
-      await fetchNewbieTraining();
+      await fetchExamination();
     };
 
     initPage();
@@ -236,17 +246,19 @@ export default function NewbieTraining() {
     return Math.round((completedTopics.length / allTopics.length) * 100);
   }, [allTopics]);
 
+  if (!onlineVisible) {
+    return <Overlay />;
+  }
+
   return (
     <>
-      {!allTopics.some((topic) => topic.status === 'pending') ? (
-        <Finished onRestart={() => handleStart(true)} allTopics={allTopics} />
-      ) : !hasStarted ? (
+      {!hasStarted ? (
         <Begin onStart={handleStart} />
       ) : (
         <>
           <div className="mb-4 text-xl font-medium pl-4 pr-8 py-4 bg-white">
             <div className="flex flex-col sm:flex-row items-center justify-between">
-              <div className="text-xl font-medium font-bold">新手训练</div>
+              <div className="text-xl font-medium font-bold">接单</div>
               <div className="flex items-center gap-2" style={{ marginLeft: '8px' }}>
                 <div
                   className="flex items-center gap-2"

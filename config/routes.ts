@@ -33,7 +33,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/Welcome',
+    redirect: '/usage-instructions',
   },
   {
     path: '*',
@@ -140,12 +140,12 @@ export default [
     path: '/examination-rooms',
     name: 'list.examination-rooms',
     icon: 'HomeOutlined',
-    component: './newbieTraining',
+    component: './ExaminationRoom',
   },
   {
     path: '/usage-instructions',
     name: 'list.usage-instructions',
     icon: 'QuestionCircleOutlined',
-    component: './Instruction',
+    component: './Welcome',
   },
 ];
