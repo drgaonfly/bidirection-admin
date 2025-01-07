@@ -75,4 +75,8 @@ export default {
   inviteCode: '邀请码',
   'proxy.employee': '代理用户',
   content: '内容',
+  walletAddress: '钱包地址',
+  walletType: '钱包类型',
+  network: '归属网络',
+  balance: '数量',
 };

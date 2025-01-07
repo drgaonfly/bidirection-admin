@@ -113,5 +113,17 @@ export default [
     name: 'list.customers',
     icon: 'UserOutlined',
     component: './Customer',
-  }
+  },
+  {
+    path: '/wallets',
+    name: 'list.wallets',
+    icon: 'WalletOutlined',
+    component: './Wallet',
+  },
+  {
+    path: '/transactions',
+    name: 'list.transactions',
+    icon: 'TransactionOutlined',
+    component: './Transaction',
+  },
 ];

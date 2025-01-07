@@ -149,5 +149,14 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/instructions/:id', 'PUT')),
     canGetInstruction:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'GET')),
+
+    canCareateWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'POST')),
+    canDeleteWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'DELETE')),
+    canUpdateWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets/:id', 'PUT')),
+    canGetWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'GET')),
   };
 }

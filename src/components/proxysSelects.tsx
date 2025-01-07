@@ -10,7 +10,7 @@ interface Props {
 
 const ProxysSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
   const intl = useIntl();
-  const { items: proxys, loading } = useQueryList('/proxys');
+  const { items: proxys, loading } = useQueryList('/proxies');
 
   return (
     <ProFormSelect
