@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message } from 'antd';
+import { Badge, Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -197,6 +197,18 @@ const TableList: React.FC = () => {
       renderText: (_, record: any) => {
         return record.roles?.map((role: Role) => role.name)?.join(', ');
       },
+    },
+    // ... existing email and password columns ...
+    {
+      title: intl.formatMessage({ id: 'live' }),
+      dataIndex: 'live',
+      hideInSearch: true,
+      render: (text) => (
+        <Badge
+          status={text ? 'success' : 'default'}
+          text={text ? intl.formatMessage({ id: 'online' }) : intl.formatMessage({ id: 'offline' })}
+        />
+      ),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

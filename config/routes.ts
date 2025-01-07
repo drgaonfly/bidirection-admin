@@ -32,10 +32,6 @@ export default [
     component: './Welcome',
   },
   {
-    path: '/',
-    redirect: '/usage-instructions',
-  },
-  {
     path: '*',
     layout: false,
     component: './404',
@@ -46,12 +42,6 @@ export default [
     name: 'list.change-password',
     icon: 'TableOutlined',
     component: './account/change-password',
-  },
-  {
-    path: '/newbie-training',
-    name: 'list.newbie-training',
-    icon: 'UserOutlined',
-    component: './newbieTraining',
   },
   {
     path: '/auth',
@@ -93,59 +83,5 @@ export default [
         component: './Auth/DataPermissions',
       },
     ],
-  },
-  {
-    path: '/answers',
-    name: 'list.answers',
-    component: './Answers',
-    icon: 'SolutionOutlined',
-  },
-  {
-    path: '/topics',
-    name: 'list.topic',
-    component: './Topic',
-    icon: 'CheckCircleOutlined',
-  },
-  {
-    path: '/records',
-    name: 'list.record',
-    component: './Record',
-    icon: 'FileTextOutlined',
-  },
-  {
-    path: '/proxies',
-    name: 'list.proxies',
-    icon: 'GlobalOutlined',
-    component: './Proxy',
-  },
-  {
-    path: '/employees',
-    name: 'list.employees',
-    icon: 'UsergroupAddOutlined',
-    component: './Employee',
-  },
-  {
-    path: '/instructions',
-    name: 'list.instructions',
-    icon: 'QuestionCircleOutlined',
-    component: './Instruction',
-  },
-  {
-    path: '/withdraws',
-    name: 'list.withdraw',
-    icon: 'WalletOutlined',
-    component: './withdraw',
-  },
-  {
-    path: '/examination-rooms',
-    name: 'list.examination-rooms',
-    icon: 'HomeOutlined',
-    component: './ExaminationRoom',
-  },
-  {
-    path: '/usage-instructions',
-    name: 'list.usage-instructions',
-    icon: 'QuestionCircleOutlined',
-    component: './Welcome',
   },
 ];
