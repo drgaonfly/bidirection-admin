@@ -182,7 +182,7 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       search: false,
       render: (text, record) => {
-        return (record.wallet?.balance || 0) + (record.transactedBalance || 0);
+        return (record.wallet.balance || 0) + (record.transactedBalance || 0);
       },
     },
     {

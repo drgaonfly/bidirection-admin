@@ -3,7 +3,7 @@ import React from 'react';
 import { ProForm, ProFormText, ProFormCheckbox, ProFormSelect } from '@ant-design/pro-components';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
-import CustomerSelect from '@/components/customerSelect';
+import WalletSelect from '@/components/walletCustomerSelect';
 
 interface Props {
   newRecord?: boolean;
@@ -58,7 +58,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
-        <CustomerSelect />
+        <WalletSelect />
 
         <ProFormSelect
           name="type"
