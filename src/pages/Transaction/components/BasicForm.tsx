@@ -60,26 +60,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       <ProForm.Group>
         <CustomerSelect />
 
-        <ProFormText
-          name={['wallet', 'address']}
-          label={intl.formatMessage({ id: 'walletAddress' })}
-          width="md"
-        />
-
-        <ProFormText
-          name={['wallet', 'network']}
-          label={intl.formatMessage({ id: 'network' })}
-          width="md"
-        />
-      </ProForm.Group>
-
-      <ProForm.Group>
-        <ProFormText
-          name={['wallet', 'type']}
-          label={intl.formatMessage({ id: 'walletType' })}
-          width="md"
-        />
-
         <ProFormSelect
           name="type"
           label={intl.formatMessage({ id: 'transactionType' })}
@@ -100,22 +80,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'transactedBalance' })}
           width="md"
           rules={[{ required: true }]}
-        />
-      </ProForm.Group>
-
-      <ProForm.Group>
-        <ProFormText
-          name={['wallet', 'balance']}
-          label={intl.formatMessage({ id: 'previousBalance' })}
-          width="md"
-          disabled
-        />
-
-        <ProFormText
-          name="currentBalance"
-          label={intl.formatMessage({ id: 'currentBalance' })}
-          width="md"
-          disabled
         />
       </ProForm.Group>
 

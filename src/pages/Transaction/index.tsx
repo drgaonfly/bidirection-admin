@@ -131,22 +131,28 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'walletAddress' }),
       dataIndex: ['wallet', 'address'],
       copyable: true,
-      valueType: 'select',
-      valueEnum: {
-        USDT: { text: 'USDT' },
-        PledgeBalance: { text: '质押余额' },
-      },
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: ['wallet', 'network'],
+      valueType: 'select',
+      valueEnum: {
+        TRX: { text: 'TRX' },
+        BSC: { text: 'BSC' },
+        ETH: { text: 'ETH' },
+      },
       copyable: true,
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'walletType' }),
       dataIndex: ['wallet', 'type'],
+      valueType: 'select',
+      valueEnum: {
+        USDT: { text: 'USDT' },
+        PledgeBalance: { text: '质押余额' },
+      },
       copyable: true,
       hideInSearch: true,
     },
