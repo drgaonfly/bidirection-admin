@@ -93,8 +93,10 @@ export default {
   'menu.proxies': '代理',
   'menu.withdraws': '提现',
   'menu.employees': '员工',
-  'menu.customers': '会员',
+  'menu.members': '会员',
+  'menu.customers': '客户',
   'menu.instructions': '常见问题',
   'menu.wallets': '钱包',
   'menu.transactions': '交易账单',
+  'menu.carousels': '轮播图',
 };

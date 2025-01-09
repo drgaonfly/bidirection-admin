@@ -23,7 +23,7 @@ const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
 
   try {
-    await addItem('/customers', { ...fields });
+    await addItem('/members', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -47,7 +47,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/customers/${fields._id}`, fields);
+    await updateItem(`/members/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -73,7 +73,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/customers', {
+    await removeItem('/members', {
       ids,
     });
     hide();
@@ -276,7 +276,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={async (params, sort, filter) =>
-          queryList('/customers', { ...params, isOnline: activeKey }, sort, filter)
+          queryList('/members', { ...params, isOnline: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={

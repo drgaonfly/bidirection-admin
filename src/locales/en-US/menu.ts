@@ -79,7 +79,9 @@ export default {
   'menu.withdraws': 'Withdraws',
   'menu.employees': 'Employees',
   'menu.instructions': 'Common Problems',
+  'menu.members': 'Members',
   'menu.customers': 'Customers',
   'menu.wallets': 'Wallets',
   'menu.transactions': 'Transactions',
+  'menu.carousels': 'Carousels',
 };
