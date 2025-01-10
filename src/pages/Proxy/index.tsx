@@ -11,7 +11,6 @@ import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 // import Recharge from './components/Recharge';
-import { Role } from '@/apiDataStructures/ApiDataStructure';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 
@@ -146,31 +145,129 @@ const TableList: React.FC = () => {
       dataIndex: 'name',
     },
     {
-      title: 'Wallets',
+      title: intl.formatMessage({ id: 'network' }),
       dataIndex: 'wallets',
       key: 'wallets',
       render: (wallets) => {
         if (Array.isArray(wallets)) {
           return wallets.length > 0
-            ? wallets.map((wallet) => (
-                <div key={wallet.address}>{wallet.address}</div> // 每个地址占一行
-              ))
-            : 'No Wallet';
+            ? wallets.map((wallet) =>
+                wallet.type === 'USDT' ? <div key={wallet.network}>{wallet.network}</div> : null,
+              )
+            : null;
         }
-        return 'No Wallet';
+        return null;
       },
     },
     {
-      title: intl.formatMessage({ id: 'inviteCode' }),
-      dataIndex: 'inviteCode',
-      copyable: true,
+      title: intl.formatMessage({ id: 'walletAddress' }),
+      dataIndex: 'wallets',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) =>
+                wallet.type === 'USDT' ? <div key={wallet.address}>{wallet.address}</div> : null,
+              )
+            : null;
+        }
+        return null;
+      },
     },
     {
-      title: intl.formatMessage({ id: 'role' }),
-      dataIndex: 'roles',
-      hideInSearch: true,
-      renderText: (_, record: any) => {
-        return record.roles?.map((role: Role) => role.name)?.join(', ');
+      title: intl.formatMessage({ id: 'usdtBalance' }),
+      dataIndex: 'wallets',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) =>
+                wallet.type === 'USDT' ? <div key={wallet.balance}>{wallet.balance}</div> : null,
+              )
+            : null;
+        }
+        return null;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'memberNum' }),
+      dataIndex: 'memberNum',
+    },
+    {
+      title: intl.formatMessage({ id: 'commissionRate' }),
+      dataIndex: 'commissionRate',
+    },
+    // {
+    //   title: intl.formatMessage({ id: 'inviteCode' }),
+    //   dataIndex: 'inviteCode',
+    //   copyable: true,
+    // },
+    {
+      title: intl.formatMessage({ id: 'isCustomService' }),
+      dataIndex: 'isCustomService',
+      render: (text, record) => {
+        return record.isCustomService
+          ? intl.formatMessage({ id: 'yes' })
+          : intl.formatMessage({ id: 'no' });
+      },
+    },
+    // {
+    //   title: intl.formatMessage({ id: 'role' }),
+    //   dataIndex: 'roles',
+    //   hideInSearch: true,
+    //   renderText: (_, record: any) => {
+    //     return record.roles?.map((role: Role) => role.name)?.join(', ');
+    //   },
+    // },
+    {
+      title: intl.formatMessage({ id: 'aggragedBalance' }),
+      dataIndex: 'aggragedBalance',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) =>
+                wallet.type === 'USDT' ? (
+                  <div key={wallet.aggragedBalance}>{wallet.aggragedBalance}</div>
+                ) : null,
+              )
+            : 0;
+        }
+        return 0;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'stackedBalance' }),
+      dataIndex: 'stackedBalance',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) =>
+                wallet.type === 'USDT' ? (
+                  <div key={wallet.stackedBalance}>{wallet.stackedBalance}</div>
+                ) : null,
+              )
+            : 0;
+        }
+        return 0;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'withdrawalBalance' }),
+      dataIndex: 'withdrawalBalance',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) =>
+                wallet.type === 'USDT' ? (
+                  <div key={wallet.withdrawalBalance}>{wallet.withdrawalBalance}</div>
+                ) : null,
+              )
+            : 0;
+        }
+        return 0;
       },
     },
     {

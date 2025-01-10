@@ -148,7 +148,22 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: 'Wallets',
+      title: intl.formatMessage({ id: 'network' }),
+      dataIndex: 'wallets',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) => (
+                <div key={wallet.network}>{wallet.network}</div> // 每个地址占一行
+              ))
+            : null;
+        }
+        return null;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'walletAddress' }),
       dataIndex: 'wallets',
       key: 'wallets',
       render: (wallets) => {
@@ -157,9 +172,9 @@ const TableList: React.FC = () => {
             ? wallets.map((wallet) => (
                 <div key={wallet.address}>{wallet.address}</div> // 每个地址占一行
               ))
-            : 'No Wallet';
+            : null;
         }
-        return 'No Wallet';
+        return null;
       },
     },
     {

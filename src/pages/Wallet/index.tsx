@@ -138,7 +138,7 @@ const TableList: React.FC = () => {
       dataIndex: 'network',
       valueType: 'select',
       valueEnum: {
-        TBX: { text: 'TBX' },
+        TRX: { text: 'TRX' },
         BSC: { text: 'BSC' },
         ETH: { text: 'ETH' },
       },

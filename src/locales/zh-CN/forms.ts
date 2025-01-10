@@ -105,4 +105,11 @@ export default {
   collection: '归集',
   stacking: '质押',
   withdraw: '提现',
+  usdtBalance: 'USDT余额',
+  memberNum: '会员数量',
+  commissionRate: '分佣',
+  isCustomService: '是否客服',
+  aggragedBalance: '归集金额',
+  stackedBalance: '质押金额',
+  withdrawalBalance: '提现金额',
 };

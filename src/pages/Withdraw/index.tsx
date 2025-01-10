@@ -1,4 +1,4 @@
-// import { useIntl } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -93,6 +93,7 @@ const handleRemove = async (ids: string[]) => {
 };
 
 const WithdrawPage: React.FC = () => {
+  const intl = useIntl();
   // const intl = useIntl();
   /**
    * @en-US Pop-up window of new window
@@ -124,6 +125,19 @@ const WithdrawPage: React.FC = () => {
       dataIndex: 'withdrawalNumber',
       copyable: true,
       hideInSearch: true,
+    },
+    {
+      title: '会员备注',
+      dataIndex: ['wallet', 'user', 'name'],
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'network' }),
+      dataIndex: ['wallet', 'network'],
+    },
+    {
+      title: intl.formatMessage({ id: 'walletAddress' }),
+      dataIndex: ['wallet', 'address'],
     },
     {
       title: '申请时间',

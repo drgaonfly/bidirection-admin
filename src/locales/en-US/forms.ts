@@ -120,4 +120,11 @@ export default {
   collection: 'Collection',
   stacking: 'Stacking',
   widthdraw: 'Withdraw',
+  usdtBalance: 'USDT Balance',
+  memberNum: 'Member Number',
+  commissionRate: 'Commission Rate',
+  isCustomService: 'Is Custom Service',
+  aggragedBalance: 'Aggregated Balance',
+  stackedBalance: 'Stacked Balance',
+  withdrawalBalance: 'Withdraw Balance',
 };
