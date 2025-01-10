@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormCheckbox, ProFormSwitch } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-components';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 
@@ -14,7 +14,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
 
   const { items: roles, loading } = useQueryList('/roles');
-  const filteredRoles = roles?.filter((role: { name: string }) => role.name === '客户'); // 只筛选出名称为客户的角色
+  const filteredRoles = roles?.filter((role: { name: string }) => role.name === '会员'); // 只筛选出名称为代理的角色
+
   const filteredRolesIds = filteredRoles?.map((role: { _id: string }) => role._id);
 
   const [form] = Form.useForm();
@@ -32,7 +33,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       form={form}
       initialValues={{
         ...values,
-        roles: filteredRolesIds,
       }}
       onFinish={async (values) => {
         await onFinish({
@@ -61,7 +61,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'name' })}
           name="name"
         />
-
         <ProFormText
           rules={[{ required: true }]}
           width="md"
@@ -73,16 +72,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'password' })}
           name="password"
-        />
-      </ProForm.Group>
-
-      <ProForm.Group>
-        <ProFormSwitch
-          label={intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' })}
-          name="isOnline"
-          initialValue={true}
-          checkedChildren={intl.formatMessage({ id: 'platform.online' })}
-          unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
         />
 
         {newRecord &&
@@ -100,6 +89,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
               fieldProps={{
                 disabled: true, // 确保在 loading 时禁用复选框
               }}
+              initialValue={filteredRolesIds}
             />
           ))}
       </ProForm.Group>

@@ -146,6 +146,21 @@ const TableList: React.FC = () => {
       dataIndex: 'name',
     },
     {
+      title: 'Wallets',
+      dataIndex: 'wallets',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) => (
+                <div key={wallet.address}>{wallet.address}</div> // 每个地址占一行
+              ))
+            : 'No Wallet';
+        }
+        return 'No Wallet';
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'inviteCode',
       copyable: true,

@@ -125,11 +125,6 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'name' }),
-      dataIndex: 'name',
-      copyable: true,
-    },
-    {
       title: intl.formatMessage({ id: 'email' }),
       dataIndex: 'email',
       copyable: true,
@@ -145,6 +140,26 @@ const TableList: React.FC = () => {
             {dom}
           </a>
         );
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'name' }),
+      dataIndex: 'name',
+      copyable: true,
+    },
+    {
+      title: 'Wallets',
+      dataIndex: 'wallets',
+      key: 'wallets',
+      render: (wallets) => {
+        if (Array.isArray(wallets)) {
+          return wallets.length > 0
+            ? wallets.map((wallet) => (
+                <div key={wallet.address}>{wallet.address}</div> // 每个地址占一行
+              ))
+            : 'No Wallet';
+        }
+        return 'No Wallet';
       },
     },
     {
@@ -201,7 +216,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canUpdateCustomer && (
+        access.canUpdateEmployee && (
           <a
             key="edit"
             onClick={() => {
@@ -213,7 +228,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteCustomer && (
+        access.canDeleteEmployee && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -237,7 +252,7 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateCustomer) && (
+          (access.canSuperAdmin || access.canCreateEmployee) && (
             <Button
               type="primary"
               key="primary"
@@ -297,7 +312,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteCustomer) && (
+          {(access.canSuperAdmin || access.canDeleteEmployee) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -308,7 +323,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateCustomer) && (
+      {(access.canSuperAdmin || access.canCreateEmployee) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -323,7 +338,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateCustomer) && (
+      {(access.canSuperAdmin || access.canUpdateEmployee) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

@@ -21,7 +21,7 @@ const UserSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
       }))}
       width="md"
       name="user"
-      label={intl.formatMessage({ id: 'pages.comment.user' })}
+      label={intl.formatMessage({ id: 'user' })}
       showSearch
       fieldProps={{
         loading,
