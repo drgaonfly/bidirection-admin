@@ -208,7 +208,7 @@ const WithdrawPage: React.FC = () => {
               handleUpdateModalOpen(true);
             }}
           >
-            编辑
+            {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
         access.canSuperAdmin && (
@@ -227,15 +227,15 @@ const WithdrawPage: React.FC = () => {
 
   const handleWithdrawClick = () => {
     Modal.warning({
-      title: '无法申请提现',
-      content: '您的可用余额不足，暂时无法申请提现。',
-      okText: '知道了',
+      title: intl.formatMessage({ id: 'can not apply for withdraw' }),
+      content: intl.formatMessage({ id: 'your available balance is not enough' }),
+      okText: intl.formatMessage({ id: 'got it' }),
     });
   };
 
   return (
     <PageContainer>
-      <Card style={{ marginBottom: 24 }}>
+      <Card className="mb-6">
         <Row gutter={24}>
           <Col span={8}>
             <Statistic
@@ -244,7 +244,7 @@ const WithdrawPage: React.FC = () => {
               precision={2}
               suffix="元"
             />
-            <Button type="primary" style={{ marginTop: 16 }} onClick={handleWithdrawClick}>
+            <Button type="primary" className="mt-4" onClick={handleWithdrawClick}>
               {intl.formatMessage({ id: 'pages.withdraw.applyWithdraw' })}
             </Button>
           </Col>

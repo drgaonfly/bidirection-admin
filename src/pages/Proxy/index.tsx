@@ -197,11 +197,6 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'commissionRate' }),
       dataIndex: 'commissionRate',
     },
-    // {
-    //   title: intl.formatMessage({ id: 'inviteCode' }),
-    //   dataIndex: 'inviteCode',
-    //   copyable: true,
-    // },
     {
       title: intl.formatMessage({ id: 'isCustomService' }),
       dataIndex: 'isCustomService',
@@ -211,14 +206,6 @@ const TableList: React.FC = () => {
           : intl.formatMessage({ id: 'no' });
       },
     },
-    // {
-    //   title: intl.formatMessage({ id: 'role' }),
-    //   dataIndex: 'roles',
-    //   hideInSearch: true,
-    //   renderText: (_, record: any) => {
-    //     return record.roles?.map((role: Role) => role.name)?.join(', ');
-    //   },
-    // },
     {
       title: intl.formatMessage({ id: 'aggragedBalance' }),
       dataIndex: 'aggragedBalance',
@@ -288,7 +275,6 @@ const TableList: React.FC = () => {
           <a
             key="edit"
             onClick={() => {
-              // Replace `handleUpdateModalOpen` and `setCurrentRow` with your actual functions
               handleUpdateModalOpen(true);
               setCurrentRow(record);
             }}

@@ -118,4 +118,7 @@ export default {
   moderatationStatus: '审核状态',
   fundStatus: '打款状态',
   userInfo: '用户信息',
+  'can not apply for withdraw': '无法申请提现',
+  'your available balance is not enough': '您的可用余额不足',
+  'got it': '我知道了',
 };
