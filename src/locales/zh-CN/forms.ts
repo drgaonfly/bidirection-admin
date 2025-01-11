@@ -16,6 +16,7 @@ export default {
   confirm_delete_content: '确定要删除这条记录吗？',
   confirm: '确认',
   cancel: '取消',
+  submit: '提交',
 
   // 操作反馈
   'Added successfully': '添加成功',

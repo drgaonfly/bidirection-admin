@@ -137,4 +137,6 @@ export default {
   'can not apply for withdraw': 'Can not apply for withdraw',
   'your available balance is not enough': 'Your available balance is not enough',
   'got it': 'Got it',
+  ip: 'Ip Address',
+  certification: 'Certification',
 };

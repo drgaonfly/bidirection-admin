@@ -65,7 +65,6 @@ export default {
   'pages.searchTable.batchDeletion': '批量删除',
   'pages.searchTable.batchApproval': '批量审批',
   'password.changed.successfully': '密码修改成功',
-  submit: '提交',
   'current.password': '当前密码',
   'new.password': '新密码',
   'confirm.password': '确认密码',
