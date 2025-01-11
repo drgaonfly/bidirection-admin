@@ -284,7 +284,7 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: <FormattedMessage id="platform.all" defaultMessage="所有" />,
+                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
                 key: '',
               },
               {
