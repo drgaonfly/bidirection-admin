@@ -110,6 +110,7 @@ export default {
   rateOfReturn: 'Rate of Return',
   profit: 'Profit',
   usdt: 'USDT',
+  stackignBalance: 'Stacking Balance',
   beInviteds: 'Be Invited People',
   toInvites: 'To Invite People',
   paymentAddress: 'Payment Address',
@@ -145,4 +146,9 @@ export default {
   please_enter_content: 'Please enter content',
   normal: 'Normal',
   abnormal: 'Abnormal',
+  withdrawalFailed: 'Withdrawal Failed',
+  statciIncome: 'Static Income',
+  LotteryReward: 'Lottery Reward',
+  transferIn: 'transfer In',
+  transferOut: 'Transfer Out',
 };

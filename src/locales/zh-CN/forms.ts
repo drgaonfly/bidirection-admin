@@ -94,6 +94,7 @@ export default {
   rateOfReturn: '回报率',
   profit: '利润',
   usdt: 'USDT',
+  stackignBalance: '质押余额',
   beInviteds: '已邀请人数',
   toInvites: '须邀请人数',
   paymentAddress: '收款地址',
@@ -122,4 +123,9 @@ export default {
   'can not apply for withdraw': '无法申请提现',
   'your available balance is not enough': '您的可用余额不足',
   'got it': '我知道了',
+  withdrawalFailed: '提现失败',
+  statciIncome: '静态收益',
+  LotteryReward: '抽奖奖励',
+  transferIn: '转入',
+  transferOut: '转出',
 };
