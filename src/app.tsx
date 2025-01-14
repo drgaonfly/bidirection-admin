@@ -39,6 +39,7 @@ import {
   NotificationOutlined,
   SwapOutlined,
   PieChartFilled,
+  AppstoreFilled,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -90,6 +91,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   NotificationOutlined: <NotificationOutlined />,
   SwapOutlined: <SwapOutlined />,
   PieChartFilled: <PieChartFilled />,
+  AppstoreFilled: <AppstoreFilled />,
 };
 
 console.log('iconEnum', iconEnum);

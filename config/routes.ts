@@ -252,4 +252,10 @@ export default [
     icon: 'TransactionOutlined',
     component: './Transfer',
   },
+  {
+    path: '/channels',
+    name: 'list.channels',
+    icon: 'AppstoreOutlined',
+    component: './Channel',
+  },
 ];
