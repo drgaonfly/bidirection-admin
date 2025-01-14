@@ -164,4 +164,5 @@ export default {
   'pages.creator': 'Creator',
   'pages.user': 'User',
   'menu.notices': 'Notice Management',
+  todayRegister: 'Today Register',
 };
