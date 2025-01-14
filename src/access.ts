@@ -316,5 +316,16 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers/:id', 'PUT')),
     canGetTransfer:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'GET')),
+
+    // channel 权限
+    canCreateChannel:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/channels', 'POST')),
+    canDeleteChannel:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/channels/:id', 'DELETE')),
+    canUpdateChannel:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/channels/:id', 'PUT')),
+    canGetChannel:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/channels', 'GET')),
   };
 }
