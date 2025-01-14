@@ -157,4 +157,11 @@ export default {
   recentRegistrationsWarning: 'Failed to fetch new user data',
   recentRegistrationsError: 'Failed to fetch new user data',
   todayLogin: 'Today Login',
+  noticeTitle: 'Notice Title',
+  noticeType: 'Notice Type',
+  'pages.searchTable.notice': 'Notice',
+  'pages.searchTable.announcement': 'Announcement',
+  'pages.creator': 'Creator',
+  'pages.user': 'User',
+  'menu.notices': 'Notice Management',
 };
