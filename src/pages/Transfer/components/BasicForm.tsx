@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormSelect, ProFormText } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 import WalletSelect from '@/components/walletCustomerSelect';
@@ -66,21 +66,16 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'paymentAddress' })}
           name="paymentAddress"
         />
-        <ProFormText
-          rules={[{ required: false }]}
+        <ProFormSelect
           width="md"
-          label={intl.formatMessage({ id: 'balance' })}
-          name="balance"
+          label={intl.formatMessage({ id: 'currency' })}
+          name="currency"
+          options={[
+            { label: intl.formatMessage({ id: 'usdt' }), value: 'usdt' },
+            { label: intl.formatMessage({ id: 'pledgeBalance' }), value: 'pledgeBalance' },
+          ]}
         />
-        <ProFormText
-          rules={[{ required: false }]}
-          width="md"
-          label={intl.formatMessage({ id: 'hash' })}
-          name="hash"
-        />
-      </ProForm.Group>
 
-      <ProForm.Group>
         <ProFormSelect
           width="md"
           label={intl.formatMessage({ id: 'walletDealType' })}
@@ -103,12 +98,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           ]}
         />
       </ProForm.Group>
-
-      <ProFormSwitch
-        width="md"
-        label={intl.formatMessage({ id: 'isOperativeOnAdmin' })}
-        name="isOperativeOnAdmin"
-      />
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>
