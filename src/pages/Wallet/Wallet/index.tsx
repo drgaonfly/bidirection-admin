@@ -148,8 +148,8 @@ const TableList: React.FC = () => {
       dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
-        USDT: { text: 'USDT' },
-        PledgeBalance: { text: '质押余额' },
+        USDT: { text: intl.formatMessage({ id: 'usdt' }) },
+        PledgeBalance: { text: intl.formatMessage({ id: 'pledgeBalance' }) },
       },
     },
     {

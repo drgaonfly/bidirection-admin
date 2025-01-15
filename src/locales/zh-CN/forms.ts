@@ -175,4 +175,6 @@ export default {
   'income.flowing': '流动性收益',
   'income.stacking': '质押收益',
   'income.teamworking': '团队收益',
+  questionType: '问题类型',
+  pledgeBalance: '质押余额',
 };
