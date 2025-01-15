@@ -61,18 +61,19 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         <WalletSelect />
 
         <ProFormText
-          rules={[{ required: false }]}
+          rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'paymentAddress' })}
-          name="paymentAddress"
+          name="receivingAddress"
         />
+
         <ProFormSelect
           width="md"
           label={intl.formatMessage({ id: 'currency' })}
           name="currency"
           options={[
-            { label: intl.formatMessage({ id: 'usdt' }), value: 'usdt' },
-            { label: intl.formatMessage({ id: 'pledgeBalance' }), value: 'pledgeBalance' },
+            { label: intl.formatMessage({ id: 'usdt' }), value: 'USDT' },
+            { label: intl.formatMessage({ id: 'pledgeBalance' }), value: 'PledgeBalance' },
           ]}
         />
 
