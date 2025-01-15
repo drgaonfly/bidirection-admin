@@ -1,6 +1,6 @@
-import { useIntl } from '@umijs/max';
+// import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
+import { ProForm } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 import WalletSelect from '@/components/walletCustomerSelect';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
-  const intl = useIntl();
+  // const intl = useIntl();
 
   const { items: roles } = useQueryList('/roles');
   const filteredRoles = roles?.filter((role: { name: string }) => role.name === '客户'); // 只筛选出名称为员工的角色
@@ -60,28 +60,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       <ProForm.Group>
         <WalletSelect />
 
-        <ProFormText
-          rules={[{ required: false }]}
-          width="md"
-          label={intl.formatMessage({ id: 'paymentAddress' })}
-          name="paymentAddress"
-        />
-        <ProFormText
-          rules={[{ required: false }]}
-          width="md"
-          label={intl.formatMessage({ id: 'balance' })}
-          name="balance"
-        />
-        <ProFormText
-          rules={[{ required: false }]}
-          width="md"
-          label={intl.formatMessage({ id: 'hash' })}
-          name="hash"
-        />
-      </ProForm.Group>
-
-      <ProForm.Group>
-        <ProFormSelect
+        {/* <ProFormSelect
           width="md"
           label={intl.formatMessage({ id: 'walletDealType' })}
           name="type"
@@ -101,14 +80,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             { label: intl.formatMessage({ id: 'success' }), value: 'success' },
             { label: intl.formatMessage({ id: 'fail' }), value: 'fail' },
           ]}
-        />
+        /> */}
       </ProForm.Group>
-
-      <ProFormSwitch
-        width="md"
-        label={intl.formatMessage({ id: 'isOperativeOnAdmin' })}
-        name="isOperativeOnAdmin"
-      />
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>
