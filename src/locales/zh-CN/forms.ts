@@ -180,4 +180,6 @@ export default {
   language: '语言',
   QuestionType: '问题类型',
   selectLanguage: '选择语言',
+  customerId: '客户ID',
+  activityId: '活动ID',
 };

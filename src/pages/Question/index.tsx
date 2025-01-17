@@ -122,6 +122,10 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: intl.formatMessage({ id: 'id' }),
+      dataIndex: 'id',
+    },
+    {
       title: intl.formatMessage({ id: 'language' }),
       dataIndex: 'lang',
       valueType: 'select',
