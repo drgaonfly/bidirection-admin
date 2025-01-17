@@ -121,10 +121,8 @@ const WithdrawPage: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'widthdrawalId' }),
-      dataIndex: 'withdrawalNumber',
-      copyable: true,
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'customerId' }),
+      dataIndex: ['wallet', 'user', 'name'],
     },
     {
       title: intl.formatMessage({ id: 'member' }),
