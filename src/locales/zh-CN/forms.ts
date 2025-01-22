@@ -185,4 +185,5 @@ export default {
   costWallets: '燃料费钱包',
   stackingChannel: '质押通道',
   lastLoginAt: '最后登录时间',
+
 };
