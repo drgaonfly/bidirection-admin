@@ -201,4 +201,7 @@ export default {
   size: '文件大小',
   imageType: '文件类型',
   imagePath: '文件路径',
+  applyBalance: '申请数量',
+  fee: '手续费',
+  actualBalance: '实际数量',
 };
