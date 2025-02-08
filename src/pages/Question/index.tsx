@@ -205,6 +205,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
+        scroll={{ x: 2500 }}
         search={{ labelWidth: 100 }}
         toolBarRender={() => [
           access.canSuperAdmin && (

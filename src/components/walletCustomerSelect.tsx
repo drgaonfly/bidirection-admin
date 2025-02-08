@@ -16,7 +16,7 @@ const WalletSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
     <ProFormSelect
       rules={[{ required: true }]}
       options={wallet.map((wallet: any) => ({
-        label: wallet._id, //编号
+        label: wallet.id, //编号
         value: wallet._id,
       }))}
       width="md"

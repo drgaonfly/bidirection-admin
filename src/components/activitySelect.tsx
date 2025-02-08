@@ -11,7 +11,7 @@ const ActivitySelect: React.FC = () => {
     <ProFormSelect
       rules={[{ required: true }]}
       options={activities.map((activity: any) => ({
-        label: activity.name,
+        label: activity.id,
         value: activity._id,
       }))}
       width="md"

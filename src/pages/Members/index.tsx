@@ -137,7 +137,7 @@ const TableList: React.FC = () => {
         if (Array.isArray(wallets)) {
           return wallets.length > 0
             ? wallets.map((wallet) => (
-                <div key={wallet.channel.id}>{wallet.channel.id}</div> // 每个地址占一行
+                <div key={wallet.channel?.id}>{wallet.channel?.id}</div> // 每个地址占一行
               ))
             : null;
         }
