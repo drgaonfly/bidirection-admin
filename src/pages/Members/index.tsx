@@ -5,15 +5,14 @@ import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-desi
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { Button, message, Switch } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
-import { Role } from '@/apiDataStructures/ApiDataStructure';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-
+import useQueryList from '@/hooks/useQueryList';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -26,6 +25,9 @@ const handleAdd = async (fields: API.ItemData) => {
     await addItem('/members', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
+    setTimeout(() => {
+      window.location.reload(); // 直接刷新页面
+    }, 3000); // 延时 2 秒（3000 毫秒）
     return true;
   } catch (error: any) {
     hide();
@@ -51,6 +53,9 @@ const handleUpdate = async (fields: FormValueType) => {
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    setTimeout(() => {
+      window.location.reload(); // 直接刷新页面
+    }, 3000); // 延时 2 秒（3000 毫秒）
     return true;
   } catch (error: any) {
     hide();
@@ -83,6 +88,9 @@ const handleRemove = async (ids: string[]) => {
         defaultMessage="Deleted successfully and will refresh soon"
       />,
     );
+    setTimeout(() => {
+      window.location.reload(); // 直接刷新页面
+    }, 3000); // 延时 2 秒（3000 毫秒）
     return true;
   } catch (error: any) {
     hide();
@@ -93,6 +101,21 @@ const handleRemove = async (ids: string[]) => {
     );
     return false;
   }
+};
+
+const processData = (users: any[]) => {
+  return users.flatMap((user) => {
+    // 如果用户没有钱包，则直接返回一个条目
+    if (!user.wallets || user.wallets.length === 0) {
+      return [{ ...user, wallet: null }];
+    }
+
+    // 如果有钱包，则为每个钱包创建一行数据
+    return user.wallets.map((wallet: any) => ({
+      ...user, // 保留用户的基本信息
+      wallet, // 只保留当前钱包信息
+    }));
+  });
 };
 
 const TableList: React.FC = () => {
@@ -117,6 +140,14 @@ const TableList: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const access = useAccess();
 
+  const { items: users, loading } = useQueryList('/members');
+  const [dataSource, setDataSource] = useState<any[]>([]);
+
+  useEffect(() => {
+    const flattenedData = processData(users);
+    setDataSource(flattenedData);
+  }, [users, loading]);
+
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -128,32 +159,17 @@ const TableList: React.FC = () => {
       // add id column
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'channelId' }),
       dataIndex: ['channel', 'id'],
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'email' }),
-      dataIndex: 'email',
-      copyable: true,
-
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'name' }),
+      title: intl.formatMessage({ id: 'username' }),
       dataIndex: 'name',
+      hideInSearch: true,
       copyable: true,
     },
     {
@@ -166,19 +182,20 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'estateOverview' }),
+      hideInSearch: true,
       render: (_, record) => (
         <React.Fragment>
           <p>
-            {intl.formatMessage({ id: 'usdtOfwallet' })} : {record.wallet?.usdtOfwallet}
+            {intl.formatMessage({ id: 'usdtOfwallet' })} : {record?.wallet?.usdtOfwallet}
           </p>
           <p>
-            {intl.formatMessage({ id: 'usdtOfstake' })} : {record.wallet?.usdtOfstake}
+            {intl.formatMessage({ id: 'usdtOfstake' })} : {record?.wallet?.usdtOfstake}
           </p>
           <p>
-            {intl.formatMessage({ id: 'usdtOfplatform' })} : {record.wallet?.usdtOfplatform}
+            {intl.formatMessage({ id: 'usdtOfplatform' })} : {record?.wallet?.usdtOfplatform}
           </p>
           <p>
-            {intl.formatMessage({ id: 'ethOfplatform' })} : {record.wallet?.ethOfplatform}
+            {intl.formatMessage({ id: 'ethOfplatform' })} : {record?.wallet?.ethOfplatform}
           </p>
         </React.Fragment>
       ),
@@ -186,18 +203,24 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'liquidRate' }), // 投资倍率
       dataIndex: 'liquidRate',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'stakeRate' }), // 投资倍率
       dataIndex: 'stakeRate',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'accountType' }),
-      dataIndex: 'roles',
+      dataIndex: 'isDemo',
       hideInSearch: true,
-      renderText: (_, record: any) => {
-        return record.roles?.map((role: Role) => role.name)?.join(', ');
-      },
+      render: (text) => (
+        <span>
+          {text
+            ? intl.formatMessage({ id: 'demoAccount' })
+            : intl.formatMessage({ id: 'customer' })}
+        </span>
+      ),
     },
     {
       title: intl.formatMessage({ id: 'isSpied' }),
@@ -218,6 +241,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'inviteCode',
+      hideInSearch: true,
       copyable: true,
     },
     {
@@ -236,7 +260,7 @@ const TableList: React.FC = () => {
         <Switch
           checkedChildren={intl.formatMessage({ id: 'platform.online' })}
           unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
-          checked={record.isOnline}
+          checked={record?.isOnline}
           onChange={async () => {
             await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
             if (actionRef.current) {
@@ -254,17 +278,17 @@ const TableList: React.FC = () => {
         <div>
           <div>
             <strong>{intl.formatMessage({ id: 'registeredAt' })} :</strong>{' '}
-            {record.createdAt || '-'}
+            {record?.createdAt || '-'}
           </div>
           <div>
-            <strong>{intl.formatMessage({ id: 'logedinAt' })} :</strong> {record.logedinAt || '-'}
+            <strong>{intl.formatMessage({ id: 'logedinAt' })} :</strong> {record?.logedinAt || '-'}
           </div>
           <div>
             <strong>{intl.formatMessage({ id: 'registeredIP' })} :</strong>{' '}
-            {record.createdIP || '-'}
+            {record?.createdIP || '-'}
           </div>
           <div>
-            <strong>{intl.formatMessage({ id: 'LogedinIP' })} :</strong> {record.LogedinIP || '-'}
+            <strong>{intl.formatMessage({ id: 'LogedinIP' })} :</strong> {record?.LogedinIP || '-'}
           </div>
         </div>
       ),
@@ -362,6 +386,8 @@ const TableList: React.FC = () => {
           queryList('/members', { ...params, isOnline: activeKey }, sort, filter)
         }
         columns={columns}
+        dataSource={dataSource} // 设置处理后的数据
+        loading-={loading}
         rowSelection={
           access.canSuperAdmin && {
             onChange: (_, selectedRows) => {

@@ -214,4 +214,6 @@ export default {
   usdtOfplatform: 'USDT平台',
   ethOfplatform: 'ETH平台',
   altPlaceholder: '请输入文件名',
+  demoAccount: '模拟账户',
+  agent: '代理',
 };

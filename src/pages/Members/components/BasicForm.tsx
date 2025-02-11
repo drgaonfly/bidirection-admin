@@ -1,6 +1,12 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormCheckbox, ProFormDigit } from '@ant-design/pro-components';
+import {
+  ProForm,
+  ProFormText,
+  ProFormCheckbox,
+  ProFormDigit,
+  ProFormRadio,
+} from '@ant-design/pro-components';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 
@@ -91,6 +97,16 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             precision: 2,
           }}
           rules={[{ required: true, message: '请输入投资倍率' }]}
+        />
+
+        <ProFormRadio.Group
+          name="isDemo"
+          label={intl.formatMessage({ id: 'accountType' })}
+          options={[
+            { label: intl.formatMessage({ id: 'demoAccount' }), value: true },
+            { label: intl.formatMessage({ id: 'customer' }), value: false },
+          ]}
+          initialValue={false}
         />
 
         {newRecord &&

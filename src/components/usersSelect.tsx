@@ -14,7 +14,7 @@ const UserSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
 
   // 去除重复的用户，假设用户的唯一标识是 user._id
   const uniqueUsers = user.reduce((acc: any[], current: any) => {
-    const existingUser = acc.find((item) => item._id === current._id);
+    const existingUser = acc.find((item) => item.id === current.id);
     if (!existingUser) {
       acc.push(current);
     }
