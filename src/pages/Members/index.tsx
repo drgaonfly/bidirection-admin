@@ -307,7 +307,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canUpdateEmployee && (
+        access.canUpdateMember && (
           <a
             key="edit"
             onClick={() => {
@@ -319,7 +319,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteEmployee && (
+        access.canDeleteMember && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -344,7 +344,7 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateEmployee) && (
+          (access.canSuperAdmin || access.canCreateMember) && (
             <Button
               type="primary"
               key="primary"
@@ -406,7 +406,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteEmployee) && (
+          {(access.canSuperAdmin || access.canDeleteMember) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -417,7 +417,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateEmployee) && (
+      {(access.canSuperAdmin || access.canCreateMember) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -432,7 +432,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateEmployee) && (
+      {(access.canSuperAdmin || access.canUpdateMember) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

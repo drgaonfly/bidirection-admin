@@ -217,4 +217,5 @@ export default {
   demoAccount: '模拟账户',
   agent: '代理',
   isOnline: '是否在线',
+  lan: '语言',
 };
