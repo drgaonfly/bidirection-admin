@@ -141,7 +141,6 @@ const TableList: React.FC = () => {
         ETH: { text: 'ETH' },
       },
       copyable: true,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),
@@ -151,16 +150,19 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'proxy.employee' }),
       dataIndex: ['activity', 'user', 'proxy', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'applyingAt' }),
       dataIndex: 'applyingAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'operationStatus' }),
       dataIndex: 'status',
       valueType: 'select',
+      hideInSearch: true,
       valueEnum: {
         pending: {
           text: intl.formatMessage({ id: 'pending' }),
@@ -176,14 +178,17 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'stackedUsdtBalance' }),
       dataIndex: 'stackedUsdtBalance',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'rewardingEthBalance' }),
       dataIndex: 'rewardingEthBalance',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'lockDays' }),
       dataIndex: ['activity', 'lockDays'],
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

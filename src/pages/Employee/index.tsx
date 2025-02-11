@@ -194,7 +194,6 @@ const TableList: React.FC = () => {
         true: { text: intl.formatMessage({ id: 'platform.online' }), status: 'Success' },
         false: { text: intl.formatMessage({ id: 'platform.offline' }), status: 'Error' },
       },
-      width: 200,
       render: (_, record: any) => (
         <Switch
           checkedChildren={intl.formatMessage({ id: 'platform.online' })}

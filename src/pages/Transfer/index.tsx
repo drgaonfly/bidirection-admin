@@ -130,10 +130,12 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: ['wallet', 'user', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'proxy.employee' }),
       dataIndex: ['wallet', 'user', 'proxy', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'network' }),
@@ -151,11 +153,11 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'sendingAddress' }),
       dataIndex: ['wallet', 'address'],
       copyable: true,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'paymentAddress' }),
       dataIndex: 'receivingAddress',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'currency' }),

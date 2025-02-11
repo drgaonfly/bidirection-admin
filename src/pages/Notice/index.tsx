@@ -125,6 +125,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'noticeTitle' }),
@@ -134,6 +135,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'noticeType' }),
       dataIndex: 'type',
       valueType: 'select',
+      hideInSearch: true,
       valueEnum: {
         notice: {
           text: intl.formatMessage({ id: 'notice' }),
@@ -163,14 +165,17 @@ const TableList: React.FC = () => {
     {
       title: <FormattedMessage id="pages.creator" />,
       dataIndex: 'creator',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'readAt' }),
       dataIndex: 'readAt',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

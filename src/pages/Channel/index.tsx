@@ -127,10 +127,12 @@ const TableList: React.FC = () => {
       // add id column
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'qrcode' }),
       dataIndex: 'code',
+      hideInSearch: true,
       render: (_, record) => (
         <QRCode value={record.code ? record.code : 'http://2024fc.xyz'} size={72} />
       ),
@@ -138,6 +140,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'agent' }),
       dataIndex: ['user', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'invitingAddress' }),
@@ -170,6 +173,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customerNum' }),
       dataIndex: 'customerNum',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),

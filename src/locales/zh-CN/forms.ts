@@ -157,7 +157,7 @@ export default {
   uniPrice: '单价',
   incomeType: '收益类型',
   remark: '备注',
-  sharedCustomer: '分享客户',
+  sharedCustomerId: '分享客户ID',
   qrcode: '二维码',
   customerNum: '客户数',
   invitingAddress: '邀请地址',

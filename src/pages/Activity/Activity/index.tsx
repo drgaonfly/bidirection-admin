@@ -134,11 +134,13 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: ['user', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'activityType' }),
       dataIndex: 'type',
       valueType: 'select',
+      hideInSearch: true,
       valueEnum: {
         stacking: { text: intl.formatMessage({ id: 'stacking' }) },
         rewards: { text: intl.formatMessage({ id: 'rewardActivity' }) },
@@ -147,29 +149,35 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'usdtBalance' }),
       dataIndex: 'usdtBalance',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'ethEarnings' }),
       dataIndex: 'ethEarnings',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'lockDays' }),
       dataIndex: 'lockDays',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'startAt' }),
       dataIndex: 'startAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'endAt' }),
       dataIndex: 'endAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'joinAt' }),
       dataIndex: 'joinAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'activitySatus' }),

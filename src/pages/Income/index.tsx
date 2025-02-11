@@ -131,12 +131,12 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: ['wallet', 'user', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),
       dataIndex: ['wallet', 'address'],
       copyable: true,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'network' }),
@@ -148,15 +148,16 @@ const TableList: React.FC = () => {
         ETH: { text: 'ETH' },
       },
       copyable: true,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'usdtEarnings' }),
       dataIndex: 'usdtEarnings',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'ethEarnings' }),
       dataIndex: 'ethEarnings',
+      hideInSearch: true,
       render: (_, record) => {
         return <span>{record.wallet?.ethOfwallet || 0}</span>;
       },
@@ -178,8 +179,9 @@ const TableList: React.FC = () => {
       dataIndex: 'remark',
     },
     {
-      title: intl.formatMessage({ id: 'sharedCustomer' }),
-      dataIndex: 'sharedCustomer',
+      title: intl.formatMessage({ id: 'sharedCustomerId' }),
+      dataIndex: ['sharedCustomer', 'id'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),

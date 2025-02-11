@@ -130,6 +130,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: ['wallet', 'user', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'network' }),
@@ -141,44 +142,54 @@ const TableList: React.FC = () => {
         ETH: { text: 'ETH' },
       },
       copyable: true,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),
       dataIndex: ['wallet', 'address'],
       copyable: true,
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'usdtBalanceOnPlatform' }),
       dataIndex: 'usdtBalanceOnPlatform',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'ethBalanceOnPlatform' }),
       dataIndex: 'ethBalanceOnPlatform',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'exchangeBalance' }),
       dataIndex: 'balance',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'targetBalance' }),
       dataIndex: 'targetBalance',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'uniPrice' }),
       dataIndex: 'uniPrice',
+      hideInSearch: true,
     },
     {
       // startAt
       title: intl.formatMessage({ id: 'startAt' }),
       dataIndex: 'startAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       //completedAt
       title: intl.formatMessage({ id: 'completedAt' }),
       dataIndex: 'completedAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'createdAt' }),
+      dataIndex: 'createdAt',
       valueType: 'dateTime',
     },
     {
