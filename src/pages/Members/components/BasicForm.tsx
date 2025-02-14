@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormDigit, ProFormRadio } from '@ant-design/pro-components';
+import { ProForm, ProFormDigit, ProFormRadio } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 
 interface Props {
@@ -39,49 +39,95 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
-        <ProFormText
-          rules={[{ required: true }]}
-          width="md"
-          label={intl.formatMessage({ id: 'name' })}
-          name="name"
-        />
-        <ProFormText
-          rules={[{ required: true }]}
-          width="md"
-          label={intl.formatMessage({ id: 'email' })}
-          name="email"
-        />
-        <ProFormText
-          rules={[{ required: newRecord }]}
-          width="md"
-          label={intl.formatMessage({ id: 'password' })}
-          name="password"
-        />
         <ProFormDigit
-          label={intl.formatMessage({ id: 'liquidRate' })} // 投资倍率
+          label={intl.formatMessage({ id: 'liquidRate' })}
           name="liquidRate"
-          min={0} // 最小值
+          min={0}
           fieldProps={{
-            precision: 2, // 保留两位小数
+            precision: 2,
           }}
-          rules={[{ required: true, message: '请输入投资倍率' }]}
+          rules={[{ required: true, message: '请输入流动倍率' }]}
         />
         <ProFormDigit
-          label={intl.formatMessage({ id: 'stakeRate' })} // 投资倍率
+          label={intl.formatMessage({ id: 'stakeRate' })}
           name="stakeRate"
           min={0}
           fieldProps={{
             precision: 2,
           }}
-          rules={[{ required: true, message: '请输入投资倍率' }]}
+          rules={[{ required: true, message: '请输入质押倍率' }]}
         />
+      </ProForm.Group>
 
+      <ProForm.Group title="资产信息">
+        <ProFormDigit
+          label={intl.formatMessage({ id: 'usdtBalance', defaultMessage: 'USDT余额' })}
+          name="usdtBalance"
+          min={0}
+          fieldProps={{
+            precision: 2,
+          }}
+        />
+        <ProFormDigit
+          label={intl.formatMessage({ id: 'usdtStaking', defaultMessage: 'USDT质押' })}
+          name="usdtStaking"
+          min={0}
+          fieldProps={{
+            precision: 2,
+          }}
+        />
+        <ProFormDigit
+          label={intl.formatMessage({ id: 'usdtPlatform', defaultMessage: 'USDT平台' })}
+          name="usdtPlatform"
+          min={0}
+          fieldProps={{
+            precision: 2,
+          }}
+        />
+        <ProFormDigit
+          label={intl.formatMessage({ id: 'ethPlatform', defaultMessage: 'ETH平台' })}
+          name="ethPlatform"
+          min={0}
+          fieldProps={{
+            precision: 8,
+          }}
+        />
+      </ProForm.Group>
+
+      <ProForm.Group title="账户状态">
         <ProFormRadio.Group
           name="isDemo"
-          label={intl.formatMessage({ id: 'accountType' })}
+          label={intl.formatMessage({ id: 'accountType', defaultMessage: '账户类型' })}
           options={[
             { label: intl.formatMessage({ id: 'demoAccount' }), value: true },
             { label: intl.formatMessage({ id: 'customer' }), value: false },
+          ]}
+          initialValue={false}
+        />
+        <ProFormRadio.Group
+          name="isSpied"
+          label={intl.formatMessage({ id: 'monitorStatus', defaultMessage: '监控状态' })}
+          options={[
+            { label: intl.formatMessage({ id: 'monitored', defaultMessage: '监控' }), value: true },
+            {
+              label: intl.formatMessage({ id: 'unmonitored', defaultMessage: '未监控' }),
+              value: false,
+            },
+          ]}
+          initialValue={false}
+        />
+        <ProFormRadio.Group
+          name="isAuthorized"
+          label={intl.formatMessage({ id: 'authStatus', defaultMessage: '授权状态' })}
+          options={[
+            {
+              label: intl.formatMessage({ id: 'authorized', defaultMessage: '授权' }),
+              value: true,
+            },
+            {
+              label: intl.formatMessage({ id: 'unauthorized', defaultMessage: '未授权' }),
+              value: false,
+            },
           ]}
           initialValue={false}
         />

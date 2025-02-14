@@ -168,11 +168,12 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'network' }),
-      dataIndex: ['wallet', 'network'],
+      dataIndex: 'network',
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),
-      dataIndex: ['wallet', 'address'],
+      dataIndex: 'address',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'estateOverview' }),
@@ -180,33 +181,61 @@ const TableList: React.FC = () => {
       render: (_, record) => (
         <React.Fragment>
           <p>
-            {intl.formatMessage({ id: 'usdtOfwallet' })} : {record?.wallet?.usdtOfwallet}
+            {intl.formatMessage({ id: 'liquidRate', defaultMessage: '流动倍率' })} :{' '}
+            {record?.liquidRate}
           </p>
           <p>
-            {intl.formatMessage({ id: 'usdtOfstake' })} : {record?.wallet?.usdtOfstake}
-          </p>
-          <p>
-            {intl.formatMessage({ id: 'usdtOfplatform' })} : {record?.wallet?.usdtOfplatform}
-          </p>
-          <p>
-            {intl.formatMessage({ id: 'ethOfplatform' })} : {record?.wallet?.ethOfplatform}
+            {intl.formatMessage({ id: 'stakeRate', defaultMessage: '质押倍率' })} :{' '}
+            {record?.stakeRate}
           </p>
         </React.Fragment>
       ),
     },
     {
-      title: intl.formatMessage({ id: 'liquidRate' }), // 投资倍率
-      dataIndex: 'liquidRate',
+      title: intl.formatMessage({ id: 'estateOverview' }),
       hideInSearch: true,
+      render: (_, record) => (
+        <React.Fragment>
+          <p>
+            {intl.formatMessage({ id: 'usdtOfwallet' })} : {record?.usdtBalance}
+          </p>
+          <p>
+            {intl.formatMessage({ id: 'usdtOfstake' })} : {record?.usdtStaking}
+          </p>
+          <p>
+            {intl.formatMessage({ id: 'usdtOfplatform' })} : {record?.usdtPlatform}
+          </p>
+          <p>
+            {intl.formatMessage({ id: 'ethOfplatform' })} : {record?.ethPlatform}
+          </p>
+        </React.Fragment>
+      ),
     },
     {
-      title: intl.formatMessage({ id: 'stakeRate' }), // 投资倍率
-      dataIndex: 'stakeRate',
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'customerOverview' }),
+      dataIndex: 'overview',
+      render: (_, record) => (
+        <div>
+          <div>
+            <strong>{intl.formatMessage({ id: 'registeredAt' })} :</strong>{' '}
+            {record?.createdAt || '-'}
+          </div>
+          <div>
+            <strong>{intl.formatMessage({ id: 'logedinAt' })} :</strong> {record?.logedinAt || '-'}
+          </div>
+          <div>
+            <strong>{intl.formatMessage({ id: 'registeredIP' })} :</strong>{' '}
+            {record?.createdIP || '-'}
+          </div>
+          <div>
+            <strong>{intl.formatMessage({ id: 'LogedinIP' })} :</strong> {record?.LogedinIP || '-'}
+          </div>
+        </div>
+      ),
     },
     {
       title: intl.formatMessage({ id: 'accountType' }),
-      dataIndex: 'isDemo',
+      dataIndex: 'isDemo', //账户类型
       hideInSearch: true,
       render: (text) => (
         <span>
@@ -235,28 +264,6 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'proxy.employee' }),
       dataIndex: ['proxy', 'name'],
-    },
-    {
-      title: intl.formatMessage({ id: 'customerOverview' }),
-      dataIndex: 'overview',
-      render: (_, record) => (
-        <div>
-          <div>
-            <strong>{intl.formatMessage({ id: 'registeredAt' })} :</strong>{' '}
-            {record?.createdAt || '-'}
-          </div>
-          <div>
-            <strong>{intl.formatMessage({ id: 'logedinAt' })} :</strong> {record?.logedinAt || '-'}
-          </div>
-          <div>
-            <strong>{intl.formatMessage({ id: 'registeredIP' })} :</strong>{' '}
-            {record?.createdIP || '-'}
-          </div>
-          <div>
-            <strong>{intl.formatMessage({ id: 'LogedinIP' })} :</strong> {record?.LogedinIP || '-'}
-          </div>
-        </div>
-      ),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -302,7 +309,7 @@ const TableList: React.FC = () => {
       <ProTable<API.ItemData, API.PageParams>
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
-        scroll={{ x: 2500 }}
+        scroll={{ x: 2300 }}
         rowKey="_id"
         search={{
           labelWidth: 120,
