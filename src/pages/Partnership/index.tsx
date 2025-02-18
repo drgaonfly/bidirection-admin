@@ -132,10 +132,6 @@ const TableList: React.FC = () => {
       ),
     },
     {
-      title: intl.formatMessage({ id: 'description', defaultMessage: '描述' }),
-      dataIndex: 'description',
-    },
-    {
       title: intl.formatMessage({ id: 'website', defaultMessage: '官网' }),
       dataIndex: 'website',
       render: (_, record) => (
