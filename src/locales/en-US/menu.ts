@@ -95,7 +95,9 @@ export default {
   'menu.transfer': 'Transfer',
   'menu.channel': 'Channel',
   'menu.mining-data': 'Mining Data Management',
+  'menu.partnerships': 'Partnerships',
   'list.mining-data': 'Mining Data Management',
   'list.mining-output': 'Mining Output Management',
   'menu.mining-output': 'Mining Output Management',
+
 };

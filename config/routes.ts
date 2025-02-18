@@ -265,9 +265,16 @@ export default [
     component: './MiningData',
   },
   {
+    path: '/partnerships',
+    name: 'list.partnerships',
+    icon: 'TeamOutlined',
+    component: './Partnership'
+  },
+    {
     path: '/mining-output',
     name: 'list.mining-output',
     icon: 'LineChartOutlined',
     component: './MiningOutput',
+
   },
 ];

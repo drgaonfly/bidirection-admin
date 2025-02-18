@@ -341,5 +341,17 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/notices/:id', 'PUT')),
     canGetNotice:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/notices', 'GET')),
+
+    // partnership 权限
+    canCreatePartnership:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/partnerships', 'POST')),
+    canDeletePartnership:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/partnerships', 'DELETE')),
+    canUpdatePartnership:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/partnerships/:id', 'PUT')),
+    canGetPartnership:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/partnerships', 'GET')),
   };
 }

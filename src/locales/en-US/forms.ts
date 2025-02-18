@@ -110,6 +110,7 @@ export default {
   'menu.渠道管理': 'Channel Management',
   'menu.钱包管理.分润钱包管理': 'Profit Share Wallet',
   'menu.钱包管理.手续钱包管理': 'Fee Wallet ',
+  'menu.合作伙伴管理': 'Partnerships',
   'tabs.close.left': 'Close Tabs to the Left',
   'tabs.close.right': 'Close Tabs to the Right',
   'tabs.close.others': 'Close Other Tabs',
@@ -194,4 +195,10 @@ export default {
   usdtOfstake: 'USDT of Staking',
   usdtOfplatform: 'USDT of Platform',
   ethOfplatform: 'ETH of Platform',
+  description: 'Description',
+  website: 'Website',
+  logoUrl: 'Logo',
+  name: 'Name',
+  'logoUrl.required': 'Please upload logo',
+  createdAt: 'Created At',
 };
