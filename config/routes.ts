@@ -264,4 +264,10 @@ export default [
     icon: 'FundOutlined',
     component: './MiningData',
   },
+  {
+    path: '/partnerships',
+    name: 'list.partnerships',
+    icon: 'TeamOutlined',
+    component: './Partnership',
+  },
 ];

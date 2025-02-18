@@ -114,5 +114,5 @@ export default {
   'menu.transfers': '划转',
   'menu.incomes': '收益',
   'menu.mining-data': '采矿数据管理',
-  'list.mining-data': '采矿数据管理',
+  'menu.partnerships': '合作伙伴',
 };
