@@ -135,15 +135,6 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'questionType' }),
-      dataIndex: 'type',
-      valueType: 'select',
-      valueEnum: {
-        serve: { text: 'serve' },
-        exchange: { text: 'exchange' },
-      },
-    },
-    {
       title: intl.formatMessage({ id: 'title' }),
       dataIndex: 'title',
       copyable: true,

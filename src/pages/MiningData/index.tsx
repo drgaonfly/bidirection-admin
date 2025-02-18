@@ -11,7 +11,7 @@ import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
-import DeleteLink from '@/components/DeleteLink';
+// import DeleteLink from '@/components/DeleteLink';
 import useQueryList from '@/hooks/useQueryList';
 /**
  * @en-US Add node
@@ -201,15 +201,15 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteMember && (
-          <DeleteLink
-            onOk={async () => {
-              await handleRemove([record._id!]);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          />
-        ),
+        // access.canDeleteMember && (
+        //   <DeleteLink
+        //     onOk={async () => {
+        //       await handleRemove([record._id!]);
+        //       setSelectedRows([]);
+        //       actionRef.current?.reloadAndRest?.();
+        //     }}
+        //   />
+        // ),
       ],
     },
   ];
