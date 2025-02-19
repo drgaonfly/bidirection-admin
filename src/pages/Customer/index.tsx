@@ -21,7 +21,7 @@ const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
 
   try {
-    await addItem('/members', { ...fields });
+    await addItem('/customers', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     setTimeout(() => {
@@ -48,7 +48,7 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/members/${fields._id}`, fields);
+    await updateItem(`/customers/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -77,7 +77,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/members', {
+    await removeItem('/customers', {
       ids,
     });
     hide();
@@ -139,7 +139,7 @@ const TableList: React.FC = () => {
   // const [activeKey, setActiveKey] = useState<string | undefined>('');
   const access = useAccess();
 
-  const { items: users, loading } = useQueryList('/members');
+  const { items: users, loading } = useQueryList('/customers');
   const [dataSource, setDataSource] = useState<any[]>([]);
 
   useEffect(() => {
@@ -340,7 +340,9 @@ const TableList: React.FC = () => {
         //     },
         //   },
         // }}
-        request={async (params, sort, filter) => queryList('/members', { ...params }, sort, filter)}
+        request={async (params, sort, filter) =>
+          queryList('/customers', { ...params }, sort, filter)
+        }
         columns={columns}
         dataSource={dataSource} // 设置处理后的数据
         loading-={loading}
