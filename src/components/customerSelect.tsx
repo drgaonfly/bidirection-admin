@@ -3,29 +3,38 @@ import React from 'react';
 import { useIntl } from '@umijs/max';
 import useQueryList from '@/hooks/useQueryList';
 
-const MemberSelect: React.FC = () => {
-  const intl = useIntl();
-  const { items: users, loading } = useQueryList('/members');
+interface Props {
+  newRecord?: boolean;
+  onChange?: (value: string) => void;
+}
 
-  const filteredUsers = users.filter(
-    (user: any) =>
-      user.role !== 'ADMIN' && user.role !== 'ORDER_PLACER' && user.role !== 'REVIEWER',
-  );
+const CustomerSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
+  const intl = useIntl();
+  const { items: customers, loading } = useQueryList('/customers');
 
   return (
     <ProFormSelect
       rules={[{ required: true }]}
-      options={filteredUsers.map((user: any) => ({
-        label: user.name,
-        value: user._id,
+      options={customers.map((customer: any) => ({
+        label: customer.id,
+        value: customer._id,
       }))}
       width="md"
-      name="user"
+      name="customer"
       label={intl.formatMessage({ id: 'user' })}
       showSearch
-      fieldProps={{ loading }}
+      fieldProps={{
+        loading,
+        onChange: (value: string) => {
+          console.log('Selected user value:', value);
+          if (onChange) {
+            onChange(value);
+          }
+        },
+      }}
+      disabled={!newRecord}
     />
   );
 };
 
-export default MemberSelect;
+export default CustomerSelect;

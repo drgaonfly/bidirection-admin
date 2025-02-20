@@ -2,8 +2,7 @@ import { FormattedMessage, useIntl } from '@umijs/max';
 import React from 'react';
 import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
-import UserSelect from '@/components/UserSelectWithName';
-import useQueryList from '@/hooks/useQueryList';
+import CustomerSelect from '@/components/customerSelect';
 
 interface Props {
   newRecord?: boolean;
@@ -13,7 +12,6 @@ interface Props {
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
-  const { loading } = useQueryList('/users');
 
   return (
     <ProForm
@@ -40,12 +38,9 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           );
         },
       }}
-      loading={loading}
     >
       <ProForm.Group>
-        <UserSelect name="sender" labelId="sender" />
-
-        <UserSelect name="receiver" labelId="receiver" />
+        <CustomerSelect />
 
         <ProFormText name="title" width="md" label={intl.formatMessage({ id: 'title' })} />
 

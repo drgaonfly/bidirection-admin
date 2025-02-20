@@ -136,13 +136,13 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'sender' }),
-      dataIndex: ['sender', 'name'],
+      title: intl.formatMessage({ id: 'user' }),
+      dataIndex: ['user', 'name'],
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'receiver' }),
-      dataIndex: ['receiver', 'name'],
+      title: intl.formatMessage({ id: 'customer', defaultMessage: '接收者Id' }),
+      dataIndex: ['customer', 'id'],
       hideInSearch: true,
     },
     {
