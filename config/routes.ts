@@ -168,12 +168,6 @@ export default [
     component: './Transaction',
   },
   {
-    path: '/carousels',
-    name: 'list.carousels',
-    icon: 'PictureOutlined',
-    component: './Carousel',
-  },
-  {
     path: '/stacking-configurations',
     name: 'list.stacking-configurations',
     icon: 'MoneyCollectOutlined',
@@ -190,12 +184,6 @@ export default [
     name: 'list.proxy-commission-records',
     icon: 'PieChartOutlined',
     component: './ProxyCommissionRecord',
-  },
-  {
-    path: '/questions',
-    name: 'list.questions',
-    icon: 'WechatOutlined',
-    component: './Question',
   },
   {
     path: '/activities',
@@ -215,12 +203,6 @@ export default [
         icon: 'TranslationOutlined',
       },
     ],
-  },
-  {
-    path: '/notices',
-    name: 'list.notices',
-    icon: 'NotificationOutlined',
-    component: './Notice',
   },
   {
     path: '/exchanges',
@@ -253,22 +235,10 @@ export default [
     component: './MiningData',
   },
   {
-    path: '/partnerships',
-    name: 'list.partnerships',
-    icon: 'TeamOutlined',
-    component: './Partnership',
-  },
-  {
     path: '/mining-output',
     name: 'list.mining-output',
     icon: 'LineChartOutlined',
     component: './MiningOutput',
-  },
-  {
-    path: '/regulation-agencies',
-    name: 'list.regulation-agencies',
-    icon: 'TeamOutlined',
-    component: './RegulationAgency',
   },
   {
     path: '/settings',
@@ -276,10 +246,49 @@ export default [
     icon: 'SettingOutlined',
     component: './Setting',
   },
+
+  // 内容管理
   {
-    path: '/notifications',
-    name: 'list.notifications',
-    icon: 'BellOutlined',
-    component: './Notification',
+    path: '/content',
+    name: 'list.content',
+    icon: 'FileOutlined',
+    routes: [
+      {
+        path: '/content/carousels',
+        name: 'list.carousels',
+        icon: 'PictureOutlined',
+        component: './Content/Carousel',
+      },
+      {
+        path: '/content/questions',
+        name: 'list.questions',
+        icon: 'WechatOutlined',
+        component: './Content/Question',
+      },
+      {
+        path: '/content/notices',
+        name: 'list.notices',
+        icon: 'NotificationOutlined',
+        component: './Content/Notice',
+      },
+      {
+        path: '/content/notifications',
+        name: 'list.notifications',
+        icon: 'BellOutlined',
+        component: './Content/Notification',
+      },
+      {
+        path: '/content/partnerships',
+        name: 'list.partnerships',
+        icon: 'TeamOutlined',
+        component: './Content/Partnership',
+      },
+      {
+        path: '/content/regulation-agencies',
+        name: 'list.regulation-agencies',
+        icon: 'TeamOutlined',
+        component: './Content/RegulationAgency',
+      },
+    ],
   },
 ];
