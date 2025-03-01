@@ -156,13 +156,6 @@ const TableList: React.FC = () => {
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       sorter: true,
-      renderFormItem: () => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button type="link">近3天</Button>
-          <Button type="link">近7天</Button>
-          <Button type="link">近30天</Button>
-        </div>
-      ),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -214,104 +207,168 @@ const TableList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
-      <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list' })}
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          labelWidth: 120,
-          collapsed: false,
-        }}
-        toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateWallet) && (
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                handleModalOpen(true);
-              }}
-            >
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            </Button>
-          ),
-        ]}
-        request={async (params, sort, filter) => {
-          return queryList('/wallets', { ...params, isOnline: activeKey }, sort, filter);
-        }}
-        columns={columns}
-        rowSelection={
-          access.canSuperAdmin && {
-            onChange: (_, selectedRows) => {
-              setSelectedRows(selectedRows);
-            },
-          }
-        }
-      />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-            </div>
-          }
-        >
-          {(access.canSuperAdmin || access.canDeleteWallet) && (
-            <DeleteButton
-              onOk={async () => {
-                await handleRemove(selectedRowsState?.map((item: any) => item._id!));
-                setSelectedRows([]);
-                actionRef.current?.reloadAndRest?.();
+    <div>
+      <div className="flex justify-center items-center gap-8 p-6 bg-white rounded-lg shadow-sm mb-6">
+        {/* ETH Wallet */}
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+            <img
+              src="/ethereum-logo.svg"
+              alt="Ethereum"
+              className="w-10 h-10"
+              onError={(e) => {
+                e.currentTarget.src = 'https://cryptologos.cc/logos/ethereum-eth-logo.svg';
               }}
             />
-          )}
-        </FooterToolbar>
-      )}
-      {(access.canSuperAdmin || access.canCreateWallet) && (
-        <Create
-          open={createModalOpen}
-          onOpenChange={handleModalOpen}
-          onFinish={async (value) => {
-            const success = await handleAdd(value as API.ItemData);
-            if (success) {
-              handleModalOpen(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-        />
-      )}
-      {(access.canSuperAdmin || access.canUpdateWallet) && (
-        <Update
-          onSubmit={async (value) => {
-            const success = await handleUpdate(value);
-            if (success) {
-              handleUpdateModalOpen(false);
-              setCurrentRow(undefined);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={handleUpdateModalOpen}
-          updateModalOpen={updateModalOpen}
-          values={currentRow || {}}
-        />
-      )}
+          </div>
+          <div className="text-xs text-blue-500 break-all text-center max-w-xs">
+            0x565b2e29e47864a132693e4ed88a2a5b58542434
+          </div>
+          <div className="mt-2 px-3 py-1 bg-green-50 text-green-600 text-xs rounded-full">
+            ETH: 0
+          </div>
+        </div>
 
-      <Show
-        open={showDetail}
-        currentRow={currentRow as API.ItemData}
-        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        }}
-      />
-    </PageContainer>
+        {/* BNB Wallet */}
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 bg-yellow-50 rounded-full flex items-center justify-center mb-3">
+            <img
+              src="/binance-logo.svg"
+              alt="Binance"
+              className="w-10 h-10"
+              onError={(e) => {
+                e.currentTarget.src = 'https://cryptologos.cc/logos/bnb-bnb-logo.svg';
+              }}
+            />
+          </div>
+          <div className="text-xs text-yellow-700 break-all text-center max-w-xs">
+            0x104ebc25d87d6b4ab48f588e1e74479c07c3ab3
+          </div>
+          <div className="mt-2 px-3 py-1 bg-green-50 text-green-600 text-xs rounded-full">
+            BNB: 获取余额中
+          </div>
+        </div>
+
+        {/* TRX Wallet */}
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-3">
+            <img
+              src="/tron-logo.svg"
+              alt="Tron"
+              className="w-10 h-10"
+              onError={(e) => {
+                e.currentTarget.src = 'https://cryptologos.cc/logos/tron-trx-logo.svg';
+              }}
+            />
+          </div>
+          <div className="text-xs text-red-500 break-all text-center max-w-xs">
+            TMQ8QsUEvaT2KgiE2da3NDsYYCk6FzCgkZ
+          </div>
+          <div className="mt-2 px-3 py-1 bg-green-50 text-green-600 text-xs rounded-full">
+            TRX: 0
+          </div>
+        </div>
+      </div>
+      <PageContainer>
+        <ProTable<API.ItemData, API.PageParams>
+          headerTitle={intl.formatMessage({ id: 'list' })}
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            labelWidth: 120,
+            collapsed: false,
+          }}
+          toolBarRender={() => [
+            (access.canSuperAdmin || access.canCreateWallet) && (
+              <Button
+                type="primary"
+                key="primary"
+                onClick={() => {
+                  handleModalOpen(true);
+                }}
+              >
+                <PlusOutlined />{' '}
+                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              </Button>
+            ),
+          ]}
+          request={async (params, sort, filter) => {
+            return queryList('/wallets', { ...params, isOnline: activeKey }, sort, filter);
+          }}
+          columns={columns}
+          rowSelection={
+            access.canSuperAdmin && {
+              onChange: (_, selectedRows) => {
+                setSelectedRows(selectedRows);
+              },
+            }
+          }
+        />
+        {selectedRowsState?.length > 0 && (
+          <FooterToolbar
+            extra={
+              <div>
+                <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+                <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
+                <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
+              </div>
+            }
+          >
+            {(access.canSuperAdmin || access.canDeleteWallet) && (
+              <DeleteButton
+                onOk={async () => {
+                  await handleRemove(selectedRowsState?.map((item: any) => item._id!));
+                  setSelectedRows([]);
+                  actionRef.current?.reloadAndRest?.();
+                }}
+              />
+            )}
+          </FooterToolbar>
+        )}
+        {(access.canSuperAdmin || access.canCreateWallet) && (
+          <Create
+            open={createModalOpen}
+            onOpenChange={handleModalOpen}
+            onFinish={async (value) => {
+              const success = await handleAdd(value as API.ItemData);
+              if (success) {
+                handleModalOpen(false);
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }
+            }}
+          />
+        )}
+        {(access.canSuperAdmin || access.canUpdateWallet) && (
+          <Update
+            onSubmit={async (value) => {
+              const success = await handleUpdate(value);
+              if (success) {
+                handleUpdateModalOpen(false);
+                setCurrentRow(undefined);
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }
+            }}
+            onCancel={handleUpdateModalOpen}
+            updateModalOpen={updateModalOpen}
+            values={currentRow || {}}
+          />
+        )}
+
+        <Show
+          open={showDetail}
+          currentRow={currentRow as API.ItemData}
+          columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
+          onClose={() => {
+            setCurrentRow(undefined);
+            setShowDetail(false);
+          }}
+        />
+      </PageContainer>
+    </div>
   );
 };
 
