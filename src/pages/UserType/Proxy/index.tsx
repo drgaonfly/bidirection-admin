@@ -145,62 +145,6 @@ const TableList: React.FC = () => {
       dataIndex: 'name',
     },
     {
-      title: intl.formatMessage({ id: 'costWallets' }),
-      dataIndex: 'wallets',
-      key: 'wallets',
-      render: (wallets) => {
-        if (Array.isArray(wallets)) {
-          return wallets.length > 0
-            ? wallets.map((wallet) => {
-                return (
-                  <div key={wallet.address}>
-                    <div>
-                      {wallet.network}: {wallet.address}
-                    </div>
-                  </div>
-                );
-              })
-            : null;
-        }
-        return null;
-      },
-    },
-
-    {
-      title: intl.formatMessage({ id: 'usdtBalance' }),
-      dataIndex: 'wallets',
-      key: 'wallets',
-      render: (wallets) => {
-        if (Array.isArray(wallets)) {
-          return wallets.length > 0
-            ? wallets.map((wallet) =>
-                wallet.type === 'USDT' ? <div key={wallet.balance}>{wallet.balance}</div> : null,
-              )
-            : null;
-        }
-        return null;
-      },
-    },
-    // {
-    //   title: intl.formatMessage({ id: 'memberNum' }),
-    //   dataIndex: 'memberNum',
-    // },
-    {
-      title: intl.formatMessage({ id: 'commissionRate' }),
-      dataIndex: 'commissionRate',
-    },
-    {
-      title: intl.formatMessage({ id: 'stackingChannel' }),
-      dataIndex: 'stackingChannel',
-      valueType: 'select',
-      valueEnum: {
-        platform: { text: 'platform' },
-        broker: { text: 'broker' },
-      },
-      copyable: true,
-      hideInSearch: true,
-    },
-    {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'isOnline',
       hideInSearch: false,
@@ -238,58 +182,6 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       hideInForm: true,
     },
-
-    // {
-    //   title: intl.formatMessage({ id: 'aggragedBalance' }),
-    //   dataIndex: 'aggragedBalance',
-    //   key: 'wallets',
-    //   render: (wallets) => {
-    //     if (Array.isArray(wallets)) {
-    //       return wallets.length > 0
-    //         ? wallets.map((wallet) =>
-    //             wallet.type === 'USDT' ? (
-    //               <div key={wallet.aggragedBalance}>{wallet.aggragedBalance}</div>
-    //             ) : null,
-    //           )
-    //         : 0;
-    //     }
-    //     return 0;
-    //   },
-    // },
-    // {
-    //   title: intl.formatMessage({ id: 'stackedBalance' }),
-    //   dataIndex: 'stackedBalance',
-    //   key: 'wallets',
-    //   render: (wallets) => {
-    //     if (Array.isArray(wallets)) {
-    //       return wallets.length > 0
-    //         ? wallets.map((wallet) =>
-    //             wallet.type === 'USDT' ? (
-    //               <div key={wallet.stackedBalance}>{wallet.stackedBalance}</div>
-    //             ) : null,
-    //           )
-    //         : 0;
-    //     }
-    //     return 0;
-    //   },
-    // },
-    // {
-    //   title: intl.formatMessage({ id: 'withdrawalBalance' }),
-    //   dataIndex: 'withdrawalBalance',
-    //   key: 'wallets',
-    //   render: (wallets) => {
-    //     if (Array.isArray(wallets)) {
-    //       return wallets.length > 0
-    //         ? wallets.map((wallet) =>
-    //             wallet.type === 'USDT' ? (
-    //               <div key={wallet.withdrawalBalance}>{wallet.withdrawalBalance}</div>
-    //             ) : null,
-    //           )
-    //         : 0;
-    //     }
-    //     return 0;
-    //   },
-    // },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
