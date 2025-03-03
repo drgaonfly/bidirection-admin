@@ -94,6 +94,24 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+/**
+ * @en-US Generate ETH wallet
+ * @zh-CN 生成ETH钱包
+ */
+const handleGenerateEthWallet = async () => {
+  const hide = message.loading('生成中...');
+  try {
+    await addItem('/wallets/generate-eth-wallet', {});
+    hide();
+    message.success('生成成功');
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(error?.response?.data?.message ?? '生成失败');
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   /**
@@ -208,63 +226,67 @@ const TableList: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center items-center gap-8 p-6 bg-white rounded-lg shadow-sm mb-6">
+      <div className="flex justify-center items-center gap-16 p-6 bg-white rounded-lg shadow-sm mb-6">
         {/* ETH Wallet */}
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+          <div className="w-30 h-30 bg-blue-100 rounded-full flex items-center justify-center mb-8">
             <img
               src="/ethereum-logo.svg"
               alt="Ethereum"
-              className="w-10 h-10"
+              className="w-28 h-28"
               onError={(e) => {
-                e.currentTarget.src = 'https://cryptologos.cc/logos/ethereum-eth-logo.svg';
+                e.currentTarget.src = '/image/eth.79abb487.png';
               }}
             />
           </div>
-          <div className="text-xs text-blue-500 break-all text-center max-w-xs">
+          <div className="text-xs text-blue-500 break-all text-center max-w-xs mb-4">
             0x565b2e29e47864a132693e4ed88a2a5b58542434
           </div>
-          <div className="mt-2 px-3 py-1 bg-green-50 text-green-600 text-xs rounded-full">
-            ETH: 0
-          </div>
+          <button
+            type="button"
+            className="mt-4 px-6 py-2 bg-green-50 text-green-600 text-sm border-0 hover:bg-green-100 transition-colors duration-200 cursor-pointer"
+            onClick={handleGenerateEthWallet}
+          >
+            生成
+          </button>
         </div>
 
         {/* BNB Wallet */}
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-yellow-50 rounded-full flex items-center justify-center mb-3">
+          <div className="w-30 h-30 bg-yellow-50 rounded-full flex items-center justify-center mb-8">
             <img
               src="/binance-logo.svg"
               alt="Binance"
-              className="w-10 h-10"
+              className="w-28 h-28"
               onError={(e) => {
-                e.currentTarget.src = 'https://cryptologos.cc/logos/bnb-bnb-logo.svg';
+                e.currentTarget.src = '/image/bsc.329cced7.png';
               }}
             />
           </div>
-          <div className="text-xs text-yellow-700 break-all text-center max-w-xs">
+          <div className="text-xs text-yellow-700 break-all text-center max-w-xs mb-4">
             0x104ebc25d87d6b4ab48f588e1e74479c07c3ab3
           </div>
-          <div className="mt-2 px-3 py-1 bg-green-50 text-green-600 text-xs rounded-full">
+          <div className="mt-4 px-5 py-1 bg-green-50 text-green-600 text-xs rounded-full">
             BNB: 获取余额中
           </div>
         </div>
 
         {/* TRX Wallet */}
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-3">
+          <div className="w-30 h-30 bg-red-100 rounded-full flex items-center justify-center mb-8">
             <img
               src="/tron-logo.svg"
               alt="Tron"
-              className="w-10 h-10"
+              className="w-28 h-28"
               onError={(e) => {
-                e.currentTarget.src = 'https://cryptologos.cc/logos/tron-trx-logo.svg';
+                e.currentTarget.src = '/image/tron.a74ebfd1.png';
               }}
             />
           </div>
-          <div className="text-xs text-red-500 break-all text-center max-w-xs">
+          <div className="text-xs text-red-500 break-all text-center max-w-xs mb-4">
             TMQ8QsUEvaT2KgiE2da3NDsYYCk6FzCgkZ
           </div>
-          <div className="mt-2 px-3 py-1 bg-green-50 text-green-600 text-xs rounded-full">
+          <div className="mt-4 px-5 py-1 bg-green-50 text-green-600 text-xs rounded-full">
             TRX: 0
           </div>
         </div>
