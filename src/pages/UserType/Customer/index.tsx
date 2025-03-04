@@ -274,7 +274,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'accountType' }),
-      dataIndex: 'isDemo',
+      dataIndex: 'isVerified',
       hideInSearch: true,
       render: (_, record) => (
         <Switch
