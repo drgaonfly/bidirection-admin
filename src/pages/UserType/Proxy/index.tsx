@@ -145,6 +145,11 @@ const TableList: React.FC = () => {
       dataIndex: 'name',
     },
     {
+      title: intl.formatMessage({ id: 'inviteCode' }),
+      dataIndex: 'inviteCode',
+      copyable: true,
+    },
+    {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'isOnline',
       hideInSearch: false,
