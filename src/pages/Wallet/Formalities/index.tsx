@@ -210,17 +210,17 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.showSecretKey" defaultMessage="platforms.showSecretKey" />
         </a>,
-        access.canUpdateWallet && (
-          <a
-            key="edit"
-            onClick={() => {
-              handleUpdateModalOpen(true);
-              setCurrentRow(record);
-            }}
-          >
-            {intl.formatMessage({ id: 'edit' })}
-          </a>
-        ),
+        // access.canUpdateWallet && (
+        //   <a
+        //     key="edit"
+        //     onClick={() => {
+        //       handleUpdateModalOpen(true);
+        //       setCurrentRow(record);
+        //     }}
+        //   >
+        //     {intl.formatMessage({ id: 'edit' })}
+        //   </a>
+        // ),
         access.canDeleteWallet && (
           <DeleteLink
             onOk={async () => {
