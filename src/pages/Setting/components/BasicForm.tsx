@@ -55,43 +55,32 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         )}
         <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'revenuePool', defaultMessage: '收益池' })}
-          name="revenuePool"
+          label={intl.formatMessage({ id: 'parameter', defaultMessage: '设置参数' })}
+          name="parameter"
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({
+                id: 'please_enter_parameter',
+                defaultMessage: '请输入设置参数',
+              }),
+            },
+          ]}
         />
         <ProFormText
           width="md"
-          label={intl.formatMessage({ id: 'incomePool', defaultMessage: '玩家收入' })}
-          name="incomePool"
+          label={intl.formatMessage({ id: 'value', defaultMessage: '值' })}
+          name="value"
+          rules={[
+            {
+              required: true,
+              message: intl.formatMessage({
+                id: 'please_enter_value',
+                defaultMessage: '请输入值',
+              }),
+            },
+          ]}
         />
-        <ProFormText
-          width="md"
-          label={intl.formatMessage({ id: 'StakingApy', defaultMessage: '质押APY' })}
-          name="StakingApy"
-        />
-
-        <ProForm.Group>
-          <ProFormText
-            width="md"
-            label={intl.formatMessage({ id: 'totalOutput', defaultMessage: '总产量' })}
-            name="totalOutput"
-          />
-          <ProFormText
-            width="md"
-            label={intl.formatMessage({ id: 'validNodes', defaultMessage: '有效节点' })}
-            name="validNodes"
-          />
-          <ProFormText
-            width="md"
-            label={intl.formatMessage({ id: 'participants', defaultMessage: '参加人数' })}
-            name="participants"
-          />
-          <ProFormText
-            width="md"
-            label={intl.formatMessage({ id: 'userEarnings', defaultMessage: '用户收益' })}
-            name="userEarnings"
-          />
-        </ProForm.Group>
-
         <ProFormTextArea
           width="md"
           label={intl.formatMessage({ id: 'remark', defaultMessage: '备注' })}

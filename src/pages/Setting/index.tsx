@@ -11,7 +11,7 @@ import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
-// import DeleteLink from '@/components/DeleteLink';
+import DeleteLink from '@/components/DeleteLink';
 
 /**
  * @en-US Add node
@@ -112,36 +112,17 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'key', defaultMessage: '键' }),
       dataIndex: 'key',
+      copyable: true,
       hideInTable: true,
       search: false,
     },
     {
-      title: intl.formatMessage({ id: 'revenuePool', defaultMessage: '收益池' }),
-      dataIndex: 'revenuePool',
+      title: intl.formatMessage({ id: 'parameter', defaultMessage: '设置参数' }),
+      dataIndex: 'parameter',
     },
     {
-      title: intl.formatMessage({ id: 'incomePool', defaultMessage: '玩家收入' }),
-      dataIndex: 'incomePool',
-    },
-    {
-      title: intl.formatMessage({ id: 'StakingApy', defaultMessage: '质押APY' }),
-      dataIndex: 'StakingApy',
-    },
-    {
-      title: intl.formatMessage({ id: 'totalOutput', defaultMessage: '总产量' }),
-      dataIndex: 'totalOutput',
-    },
-    {
-      title: intl.formatMessage({ id: 'validNodes', defaultMessage: '有效节点' }),
-      dataIndex: 'validNodes',
-    },
-    {
-      title: intl.formatMessage({ id: 'participants', defaultMessage: '参加人数' }),
-      dataIndex: 'participants',
-    },
-    {
-      title: intl.formatMessage({ id: 'userEarnings', defaultMessage: '用户收益' }),
-      dataIndex: 'userEarnings',
+      title: intl.formatMessage({ id: 'value', defaultMessage: '值' }),
+      dataIndex: 'value',
     },
     {
       title: intl.formatMessage({ id: 'remark', defaultMessage: '备注' }),
@@ -149,8 +130,8 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'updatedAt', defaultMessage: '更新时间' }),
-      dataIndex: 'updatedAt',
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
+      dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInForm: true,
       hideInSearch: true,
@@ -178,6 +159,15 @@ const TableList: React.FC = () => {
         >
           {intl.formatMessage({ id: 'edit' })}
         </a>,
+        access.canSuperAdmin && (
+          <DeleteLink
+            key="delete"
+            onOk={async () => {
+              await handleRemove([record._id!]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          />
+        ),
       ],
     },
   ];
