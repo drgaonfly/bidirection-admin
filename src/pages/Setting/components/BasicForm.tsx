@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
+import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 
 interface Props {
@@ -69,22 +69,18 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         />
         <ProFormText
           width="md"
+          label={intl.formatMessage({ id: 'minValue', defaultMessage: '最小值' })}
+          name="minValue"
+        />
+        <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'maxValue', defaultMessage: '最大值' })}
+          name="maxValue"
+        />
+        <ProFormText
+          width="md"
           label={intl.formatMessage({ id: 'value', defaultMessage: '值' })}
           name="value"
-          rules={[
-            {
-              required: true,
-              message: intl.formatMessage({
-                id: 'please_enter_value',
-                defaultMessage: '请输入值',
-              }),
-            },
-          ]}
-        />
-        <ProFormTextArea
-          width="md"
-          label={intl.formatMessage({ id: 'remark', defaultMessage: '备注' })}
-          name="remark"
         />
       </ProForm.Group>
 

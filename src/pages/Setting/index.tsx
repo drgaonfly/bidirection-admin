@@ -125,13 +125,17 @@ const TableList: React.FC = () => {
       dataIndex: 'value',
     },
     {
-      title: intl.formatMessage({ id: 'remark', defaultMessage: '备注' }),
-      dataIndex: 'remark',
+      title: intl.formatMessage({ id: 'valueRange', defaultMessage: '范围' }),
+      dataIndex: 'maxValue',
+      hideInForm: true,
       hideInSearch: true,
+      render: (_, record) => {
+        return `${record.minValue || '0'} - ${record.maxValue || '0'}`;
+      },
     },
     {
-      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
-      dataIndex: 'createdAt',
+      title: intl.formatMessage({ id: 'updatedAt', defaultMessage: '更新时间' }),
+      dataIndex: 'updatedAt',
       valueType: 'dateTime',
       hideInForm: true,
       hideInSearch: true,
