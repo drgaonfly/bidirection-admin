@@ -2,7 +2,6 @@ import { useIntl } from '@umijs/max';
 import React from 'react';
 import { ProForm, ProFormText, ProFormSelect } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
-import UserSelect from '@/components/usersSelect';
 
 interface Props {
   newRecord?: boolean;
@@ -42,8 +41,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
-        <UserSelect />
-
         <ProFormText
           rules={[{ required: true }]}
           width="md"
