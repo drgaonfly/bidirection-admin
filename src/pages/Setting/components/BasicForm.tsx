@@ -79,6 +79,21 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             },
           ]}
         />
+        <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'revenuePool', defaultMessage: '收益池' })}
+          name="revenuePool"
+        />
+        <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'incomePool', defaultMessage: '玩家收入' })}
+          name="incomePool"
+        />
+        <ProFormText
+          width="md"
+          label={intl.formatMessage({ id: 'StakingApy', defaultMessage: '质押APY' })}
+          name="StakingApy"
+        />
         <ProFormSwitch
           width="md"
           label={intl.formatMessage({ id: 'isVisible', defaultMessage: '是否可见' })}

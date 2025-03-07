@@ -122,6 +122,18 @@ const TableList: React.FC = () => {
       dataIndex: 'value',
     },
     {
+      title: intl.formatMessage({ id: 'revenuePool', defaultMessage: '收益池' }),
+      dataIndex: 'revenuePool',
+    },
+    {
+      title: intl.formatMessage({ id: 'incomePool', defaultMessage: '玩家收入' }),
+      dataIndex: 'incomePool',
+    },
+    {
+      title: intl.formatMessage({ id: 'StakingApy', defaultMessage: '质押APY' }),
+      dataIndex: 'StakingApy',
+    },
+    {
       title: intl.formatMessage({ id: 'isVisible', defaultMessage: '是否可见' }),
       dataIndex: 'isVisible',
       render: (_, record: any) => (
