@@ -164,12 +164,6 @@ export default [
     component: './Channel',
   },
   {
-    path: '/mining-data',
-    name: 'list.mining-data',
-    icon: 'FundOutlined',
-    component: './MiningData',
-  },
-  {
     path: '/mining-output',
     name: 'list.mining-output',
     icon: 'LineChartOutlined',
