@@ -126,11 +126,10 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'valueRange', defaultMessage: '范围' }),
-      dataIndex: 'maxValue',
       hideInForm: true,
       hideInSearch: true,
       render: (_, record) => {
-        return `${record.minValue || '0'} - ${record.maxValue || '0'}`;
+        return `${record.min || '0'} - ${record.max || '0'}`;
       },
     },
     {

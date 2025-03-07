@@ -70,12 +70,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'minValue', defaultMessage: '最小值' })}
-          name="minValue"
+          name="min"
         />
         <ProFormText
           width="md"
           label={intl.formatMessage({ id: 'maxValue', defaultMessage: '最大值' })}
-          name="maxValue"
+          name="max"
         />
         <ProFormText
           width="md"
