@@ -150,7 +150,7 @@ const TableList: React.FC = () => {
           return intl.formatMessage({ id: 'isAuthorized', defaultMessage: '授权收益' });
         }
         if (record.isVerified) {
-          return intl.formatMessage({ id: 'isVerified', defaultMessage: '验证收益' });
+          return intl.formatMessage({ id: 'isVerified', defaultMessage: '模拟账号' });
         }
         return '-';
       },
