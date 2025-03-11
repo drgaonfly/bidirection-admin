@@ -297,4 +297,11 @@ export default [
       },
     ],
   },
+
+  {
+    path: '/records',
+    name: 'list.records',
+    icon: 'FileOutlined',
+    component: './Record',
+  },
 ];

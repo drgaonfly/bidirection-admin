@@ -158,18 +158,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetAnswer:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/answers', 'GET')),
 
-    // Instructions权限
-    canCreateInstruction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'POST')),
-    canDeleteInstruction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'DELETE')),
-    canUpdateInstruction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/instructions/:id', 'PUT')),
-    canGetInstruction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/instructions', 'GET')),
-
     canCreateWallet:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'POST')),
     canDeleteWallet:
