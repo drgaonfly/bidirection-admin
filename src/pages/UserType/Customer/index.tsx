@@ -144,11 +144,6 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'channelId' }),
-      dataIndex: ['channel', 'id'],
-      hideInSearch: true,
-    },
-    {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: 'network',
       valueEnum: NetworkEnum,
