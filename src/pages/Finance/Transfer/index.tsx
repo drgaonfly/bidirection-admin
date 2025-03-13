@@ -124,12 +124,8 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'customerId' }),
+      title: intl.formatMessage({ id: 'id' }),
       dataIndex: ['wallet', 'user', 'id'],
-    },
-    {
-      title: intl.formatMessage({ id: 'customer' }),
-      dataIndex: ['wallet', 'user', 'name'],
       hideInSearch: true,
     },
     {
@@ -190,10 +186,12 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'remark' }),
       dataIndex: 'remark',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

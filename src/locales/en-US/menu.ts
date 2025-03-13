@@ -20,6 +20,7 @@ export default {
   'menu.mining-data': 'Mining Data',
   'menu.mining-output': 'Mining Output',
   'menu.settings': 'Settings',
+  'menu.records': 'Records',
 
   'menu.user-type': 'User Type',
   'menu.user-type.proxies': 'Proxies',
@@ -63,6 +64,7 @@ export default {
   'menu.设置管理': 'Settings',
   'menu.采矿数据管理': 'Mining Data Management',
   'menu.采矿产出管理': 'Mining Output Management',
+  'menu.兑换记录': 'Exchange Record',
 
   'menu.用户管理': 'User Management',
   'menu.用户管理.代理管理': 'Proxy Management',

@@ -12,6 +12,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import { NetworkEnum } from '@/enums/networkEnum';
 
 /**
  * @en-US Add node
@@ -152,13 +153,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: 'network',
-      valueType: 'select',
-      hideInSearch: true,
-      valueEnum: {
-        TRX: { text: 'TRX' },
-        BSC: { text: 'BSC' },
-        ETH: { text: 'ETH' },
-      },
+      valueEnum: NetworkEnum,
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),
@@ -183,7 +178,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
-      sorter: true,
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

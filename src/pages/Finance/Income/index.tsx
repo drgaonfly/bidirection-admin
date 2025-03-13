@@ -12,6 +12,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import { NetworkEnum } from '@/enums/networkEnum';
 
 /**
  * @en-US Add node
@@ -127,24 +128,21 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'usdtIncome', defaultMessage: 'USDT收益' }),
       dataIndex: 'usdtIncome',
       hideInSearch: true,
-      width: '10%',
     },
     {
-      title: intl.formatMessage({ id: 'customer.address', defaultMessage: '钱包地址' }),
+      title: intl.formatMessage({ id: 'network', defaultMessage: '网络' }),
+      dataIndex: ['customer', 'network'],
+      valueEnum: NetworkEnum,
+    },
+    {
+      title: intl.formatMessage({ id: 'walletAddress', defaultMessage: '地址' }),
       dataIndex: ['customer', 'address'],
       hideInSearch: true,
-      width: '25%',
-    },
-    {
-      title: intl.formatMessage({ id: 'customer.network', defaultMessage: '钱包网络' }),
-      dataIndex: ['customer', 'network'],
-      hideInSearch: true,
-      width: '10%',
     },
     {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
-      width: '15%',
+      hideInSearch: true,
       render: (_, record) => {
         if (record.isAuthorized) {
           return intl.formatMessage({ id: 'isAuthorized', defaultMessage: '授权收益' });
@@ -158,13 +156,12 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'remarks', defaultMessage: '备注' }),
       dataIndex: 'remarks',
-      width: '25%',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
-      width: '15%',
       render: (_, record) => [
         <a
           key="detail"
@@ -204,9 +201,9 @@ const TableList: React.FC = () => {
       <ProTable<API.ItemData, API.PageParams>
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
+        scroll={{ x: 'max-content' }}
         rowKey="_id"
         search={{
-          labelWidth: 120,
           collapsed: false,
         }}
         // toolBarRender={() => [

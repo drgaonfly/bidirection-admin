@@ -148,6 +148,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'size' }),
       dataIndex: 'size',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'imageType' }),
@@ -158,7 +159,6 @@ const TableList: React.FC = () => {
         png: { text: 'png' },
         jpeg: { text: 'jpeg' },
       },
-      copyable: true,
       hideInSearch: true,
     },
     // {

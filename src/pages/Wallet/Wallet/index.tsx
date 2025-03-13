@@ -126,10 +126,12 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customerId' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'customer' }),
       dataIndex: ['user', 'name'],
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),

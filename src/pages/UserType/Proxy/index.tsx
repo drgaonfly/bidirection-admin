@@ -126,6 +126,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'email' }),
       dataIndex: 'email',
+      hideInSearch: true,
       copyable: true,
       render: (dom, entity) => {
         return (
@@ -147,20 +148,14 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'inviteCode',
+      hideInSearch: true,
       render: (inviteCode, record) => {
         if (!inviteCode) return '-';
         const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.inviteCode}`;
         return <Typography.Text copyable>{fullUrl}</Typography.Text>;
       },
     },
-    // add createAt
-    {
-      title: intl.formatMessage({ id: 'createdAt' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      hideInForm: true,
-    },
+
     {
       title: intl.formatMessage({ id: 'proxy.user' }),
       dataIndex: ['proxy', 'name'],

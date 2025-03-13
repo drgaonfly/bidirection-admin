@@ -134,7 +134,6 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'noticeType' }),
       dataIndex: 'type',
       valueType: 'select',
-      hideInSearch: true,
       valueEnum: {
         notice: {
           text: intl.formatMessage({ id: 'notice' }),

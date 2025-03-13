@@ -124,6 +124,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'language' }),
@@ -159,6 +160,7 @@ const TableList: React.FC = () => {
       // add createdAt column
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

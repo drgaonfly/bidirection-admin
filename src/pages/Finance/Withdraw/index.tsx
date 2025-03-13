@@ -12,6 +12,8 @@ import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import { Card, Row, Col, Button, Statistic } from 'antd';
+import { NetworkEnum } from '@/enums/networkEnum';
+import StatusEnum from '@/enums/statusEnum';
 
 /**
  * @en-US Add node
@@ -121,7 +123,7 @@ const WithdrawPage: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: ['customer', 'network'],
-      hideInSearch: true,
+      valueEnum: NetworkEnum,
     },
     {
       title: intl.formatMessage({ id: 'address' }),
@@ -133,7 +135,6 @@ const WithdrawPage: React.FC = () => {
       dataIndex: 'amount',
       valueType: 'money',
       hideInSearch: true,
-      // show as dollar
       render: (_, record) => {
         return `$${record.amount}`;
       },
@@ -142,25 +143,13 @@ const WithdrawPage: React.FC = () => {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
       valueType: 'select',
-      valueEnum: {
-        pending: { text: '待审核', status: 'default' },
-        approved: { text: '已通过', status: 'success' },
-        rejected: { text: '已拒绝', status: 'error' },
-      },
+      valueEnum: StatusEnum(),
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
-      hideInSearch: false,
-      search: {
-        transform: (value) => {
-          return {
-            startTime: value[0],
-            endTime: value[1],
-          };
-        },
-      },
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

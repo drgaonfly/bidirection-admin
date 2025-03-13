@@ -107,6 +107,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'logoUrl' }),

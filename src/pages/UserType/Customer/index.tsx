@@ -4,17 +4,16 @@ import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-desi
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { message, Typography } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import useQueryList from '@/hooks/useQueryList';
 import { Switch } from 'antd';
 import Withdraw from './components/Withdraw';
-
+import { NetworkEnum } from '@/enums/networkEnum';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -106,21 +105,6 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
-const processData = (users: any[]) => {
-  return users.flatMap((user) => {
-    // 如果用户没有钱包，则直接返回一个条目
-    if (!user.wallets || user.wallets.length === 0) {
-      return [{ ...user, wallet: null }];
-    }
-
-    // 如果有钱包，则为每个钱包创建一行数据
-    return user.wallets.map((wallet: any) => ({
-      ...user, // 保留用户的基本信息
-      wallet, // 只保留当前钱包信息
-    }));
-  });
-};
-
 const TableList: React.FC = () => {
   const intl = useIntl();
   /**
@@ -143,16 +127,8 @@ const TableList: React.FC = () => {
   // const [activeKey, setActiveKey] = useState<string | undefined>('');
   const access = useAccess();
 
-  const { items: users, loading } = useQueryList('/customers');
-  const [dataSource, setDataSource] = useState<any[]>([]);
-
   // Add state for withdraw modal
   const [withdrawModalOpen, setWithdrawModalOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    const flattenedData = processData(users);
-    setDataSource(flattenedData);
-  }, [users, loading]);
 
   /**
    * @en-US International configuration
@@ -175,6 +151,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: 'network',
+      valueEnum: NetworkEnum,
     },
     {
       title: intl.formatMessage({ id: 'walletAddress' }),
@@ -182,7 +159,7 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'estateOverview' }),
+      title: intl.formatMessage({ id: 'interestRate', defaultMessage: '收益倍率' }),
       hideInSearch: true,
       render: (_, record) => (
         <React.Fragment>
@@ -231,6 +208,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'customerOverview' }),
       dataIndex: 'overview',
+      hideInSearch: true,
       render: (_, record) => (
         <div>
           <div>
@@ -275,6 +253,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'ownInviteCode',
+      hideInSearch: true,
       render: (ownInviteCode, record) => {
         if (!ownInviteCode) return '-';
         const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.ownInviteCode}`;
@@ -326,6 +305,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'proxy.employee' }),
       dataIndex: ['proxy', 'name'],
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -390,8 +370,6 @@ const TableList: React.FC = () => {
           queryList('/customers', { ...params }, sort, filter)
         }
         columns={columns}
-        dataSource={dataSource} // 设置处理后的数据
-        loading-={loading}
         rowSelection={
           access.canSuperAdmin && {
             onChange: (_, selectedRows) => {

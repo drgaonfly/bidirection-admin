@@ -149,6 +149,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'inviteCode',
+      hideInSearch: true,
       render: (inviteCode, record) => {
         if (!inviteCode) return '-';
         const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.inviteCode}`;
@@ -157,12 +158,13 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'proxy.employee' }),
+      hideInSearch: true,
       dataIndex: ['proxy', 'name'],
     },
     {
       title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
       dataIndex: 'isOnline',
-      hideInSearch: false,
+      hideInSearch: true,
       valueEnum: {
         true: { text: intl.formatMessage({ id: 'platform.online' }), status: 'Success' },
         false: { text: intl.formatMessage({ id: 'platform.offline' }), status: 'Error' },

@@ -107,6 +107,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
       dataIndex: 'id',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'name', defaultMessage: '名称' }),
@@ -134,6 +135,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'website', defaultMessage: '官网' }),
       dataIndex: 'website',
+      hideInSearch: true,
       render: (_, record) => (
         <a href={record.website} target="_blank" rel="noopener noreferrer">
           {record.website}
@@ -144,13 +146,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
       valueType: 'date',
-      render: (_, record) => new Date(record.createdAt).toLocaleDateString(),
-    },
-    {
-      title: intl.formatMessage({ id: 'updatedAt', defaultMessage: '更新时间' }),
-      dataIndex: 'updatedAt',
-      valueType: 'date',
-      render: (_, record) => new Date(record.updatedAt).toLocaleDateString(),
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,

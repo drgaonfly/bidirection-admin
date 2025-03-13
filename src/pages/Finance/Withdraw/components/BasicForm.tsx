@@ -5,6 +5,7 @@ import TopicSelect from '@/components/topicSelect';
 import AnswerSelect from '@/components/AnswerSelect';
 import UserSelect from '@/components/usersSelect';
 import { useIntl } from '@umijs/max';
+
 interface Props {
   newRecord?: boolean;
   onFinish: (formData: any) => Promise<void>;

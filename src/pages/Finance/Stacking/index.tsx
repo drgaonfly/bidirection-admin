@@ -12,6 +12,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import { NetworkEnum } from '@/enums/networkEnum';
 
 /**
  * @en-US Add node
@@ -124,24 +125,29 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: intl.formatMessage({ id: 'fromNetwork', defaultMessage: '来源网络' }),
+      dataIndex: 'fromNetwork',
+      valueEnum: NetworkEnum,
+    },
+    {
       title: intl.formatMessage({ id: 'fromAddress', defaultMessage: '来源地址' }),
       dataIndex: 'fromAddress',
-    },
-    {
-      title: intl.formatMessage({ id: 'fromNetwork', defaultMessage: '网络' }),
-      dataIndex: 'fromNetwork',
-    },
-    {
-      title: intl.formatMessage({ id: 'toAddress', defaultMessage: '转入地址' }),
-      dataIndex: 'toAddress',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'toNetwork', defaultMessage: '转入网络' }),
       dataIndex: 'toNetwork',
+      valueEnum: NetworkEnum,
+    },
+    {
+      title: intl.formatMessage({ id: 'toAddress', defaultMessage: '转入地址' }),
+      dataIndex: 'toAddress',
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'amount', defaultMessage: '质押金额' }),
       dataIndex: 'amount',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

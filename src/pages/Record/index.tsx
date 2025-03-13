@@ -46,6 +46,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
   ];
 
