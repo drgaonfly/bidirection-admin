@@ -12,7 +12,7 @@ import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import { Switch } from 'antd';
-import Withdraw from './components/Withdraw';
+import Withdraw from './components/Collection';
 import { NetworkEnum } from '@/enums/networkEnum';
 /**
  * @en-US Add node
@@ -302,6 +302,15 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        <a
+          key="withdraw"
+          onClick={() => {
+            setCurrentRow(record);
+            setWithdrawModalOpen(true);
+          }}
+        >
+          {intl.formatMessage({ id: 'Collection', defaultMessage: '一键归集' })}
+        </a>,
         <a
           key="detail"
           onClick={() => {

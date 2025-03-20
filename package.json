@@ -70,7 +70,9 @@
     "react-icons": "^5.4.0",
     "react-quill": "^2.0.0",
     "socket.io-client": "^4.8.1",
-    "use-sound": "^4.0.3"
+    "use-sound": "^4.0.3",
+    "viem": "^2.23.13",
+    "web3": "^4.16.0"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^3.3.0",
