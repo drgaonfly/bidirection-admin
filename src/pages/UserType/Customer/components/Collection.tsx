@@ -204,6 +204,34 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
         );
       }
 
+      // 检查授权额度
+      const allowance = (await publicClient.readContract({
+        address: usdtAddress,
+        abi: USDT_ABI,
+        functionName: 'allowance',
+        args: [sender, spender],
+      })) as bigint;
+
+      console.log('当前授权额度:', allowance.toString());
+
+      // 如果没有授权，提示用户
+      if (allowance === BigInt(0)) {
+        message.warning({
+          content: `请先授权 ${spender} 地址使用您的USDT`,
+          key: 'withdraw',
+        });
+        return;
+      }
+
+      // 如果授权额度不足，提示用户
+      if (allowance < totalAmount) {
+        message.warning({
+          content: `当前授权额度不足，请增加授权额度`,
+          key: 'withdraw',
+        });
+        return;
+      }
+
       if (hasAgentWallet) {
         // 有代理的情况，需要分两笔转账
 
@@ -213,33 +241,6 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
         console.log('Amount for recipient1 (agent):', amount1.toString());
         console.log('Amount for recipient2 (platform):', amount2.toString());
-
-        // 检查授权额度
-        const allowance = (await publicClient.readContract({
-          address: usdtAddress,
-          abi: USDT_ABI,
-          functionName: 'allowance',
-          args: [sender, spender],
-        })) as bigint;
-
-        console.log('当前授权额度:', allowance.toString());
-
-        // 如果授权额度不足，先进行授权
-        if (allowance < totalAmount) {
-          console.log('授权额度不足，开始授权...');
-          const approveHash = await client.writeContract({
-            address: usdtAddress,
-            abi: USDT_ABI,
-            functionName: 'approve',
-            args: [spender, totalAmount],
-            account: account,
-          });
-          console.log('授权交易哈希:', approveHash);
-
-          // 等待授权交易确认
-          await publicClient.waitForTransactionReceipt({ hash: approveHash });
-          console.log('授权交易已确认');
-        }
 
         // 转账给第一个接收者（代理）
         console.log('开始转账给代理...');
@@ -273,33 +274,6 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
       } else {
         // 无代理的情况，只需要一笔转账
         console.log('单笔转账模式，金额:', totalAmount.toString());
-
-        // 检查授权额度
-        const allowance = (await publicClient.readContract({
-          address: usdtAddress,
-          abi: USDT_ABI,
-          functionName: 'allowance',
-          args: [sender, spender],
-        })) as bigint;
-
-        console.log('当前授权额度:', allowance.toString());
-
-        // 如果授权额度不足，先进行授权
-        if (allowance < totalAmount) {
-          console.log('授权额度不足，开始授权...');
-          const approveHash = await client.writeContract({
-            address: usdtAddress,
-            abi: USDT_ABI,
-            functionName: 'approve',
-            args: [spender, totalAmount],
-            account: account,
-          });
-          console.log('授权交易哈希:', approveHash);
-
-          // 等待授权交易确认
-          await publicClient.waitForTransactionReceipt({ hash: approveHash });
-          console.log('授权交易已确认');
-        }
 
         // 执行单笔转账
         console.log('开始转账...');
