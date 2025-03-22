@@ -1,5 +1,5 @@
 import 'react-quill/dist/quill.snow.css';
-import { Footer, SelectLang, AvatarDropdown, AvatarName } from '@/components';
+import { SelectLang, AvatarDropdown, AvatarName } from '@/components';
 import {
   DatabaseOutlined,
   GatewayOutlined,
@@ -189,7 +189,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: '',
     },
-    footerRender: () => <Footer />,
+    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login

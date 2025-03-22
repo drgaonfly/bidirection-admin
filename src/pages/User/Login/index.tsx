@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { Footer } from '@/components';
+// import { Footer } from '@/components';
 import { login } from '@/services/ant-design-pro/api';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
@@ -178,7 +178,7 @@ const Login: React.FC = () => {
           </>
         </LoginForm>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
