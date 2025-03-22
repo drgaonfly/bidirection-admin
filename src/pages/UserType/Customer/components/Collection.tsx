@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, InputNumber, message } from 'antd';
-import { useIntl } from '@umijs/max';
 import { createWalletClient, http, parseUnits, createPublicClient } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { bsc, mainnet } from 'viem/chains';
@@ -64,7 +63,6 @@ interface WithdrawProps {
 
 const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
   const [form] = Form.useForm();
-  const intl = useIntl();
   const [loading, setLoading] = useState(false);
 
   // State for wallet data and loading status
@@ -173,13 +171,13 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
       const client = createWalletClient({
         account,
         chain: currentRow.network === 'ETH' ? mainnet : bsc,
-        transport: http('https://bsc-dataseed.binance.org/'), // 使用 BSC 官方节点
+        transport: http('https://bsc-dataseed1.binance.org/'), // 使用 BSC 官方节点
       });
 
       // 创建公共客户端用于读取操作
       const publicClient = createPublicClient({
         chain: currentRow.network === 'ETH' ? mainnet : bsc,
-        transport: http('https://bsc-mainnet.nodereal.io'),
+        transport: http('https://bsc-dataseed1.binance.org/'), // 使用相同的 BSC 官方节点
       });
 
       // 获取对应网络的USDT合约地址
@@ -278,8 +276,8 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
           sender, // 发送者地址
           proxyWallet: recipient1, // 第一个接收者地址（代理）
           adminWallet: recipient2, // 第二个接收者地址（平台）
-          proxyAmount: amount1, // 第一个接收者的金额
-          adminAmount: amount2, // 第二个接收者的金额
+          proxyAmount: amount1.toString(), // 转换为字符串
+          adminAmount: amount2.toString(), // 转换为字符串
           proxyHash: hash1, // 第一个交易哈希
           adminHash: hash2, // 第二个交易哈希
           type: 'agent', // 转账类型
@@ -309,7 +307,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
           network: currentRow.network, // 网络类型
           sender, // 发送者地址
           adminWallet: recipient1, // 接收者地址
-          adminAmount: values.amount, // 转账金额
+          adminAmount: totalAmount.toString(), // 转换为字符串
           adminHash: hash, // 交易哈希
           type: 'direct', // 转账类型
           status: 'success', // 转账状态
@@ -331,7 +329,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
   return (
     <Modal
-      title={intl.formatMessage({ id: 'withdraw.title', defaultMessage: '提现' })}
+      title="归集"
       open={open}
       onOk={handleOk}
       onCancel={onClose}
@@ -341,11 +339,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
         <div>正在加载钱包数据...</div>
       ) : (
         <Form form={form} layout="vertical">
-          <Form.Item
-            name="amount"
-            label={intl.formatMessage({ id: 'withdraw.amount', defaultMessage: '归集金额' })}
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="amount" label="归集金额" rules={[{ required: true }]}>
             <InputNumber style={{ width: '100%' }} placeholder="输入归集金额" />
           </Form.Item>
         </Form>
