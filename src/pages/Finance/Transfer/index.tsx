@@ -124,16 +124,6 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'id' }),
-      dataIndex: ['wallet', 'user', 'id'],
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'proxy.employee' }),
-      dataIndex: ['wallet', 'user', 'proxy', 'name'],
-      hideInSearch: true,
-    },
-    {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: 'network',
       valueType: 'select',
@@ -143,73 +133,60 @@ const TableList: React.FC = () => {
         ETH: { text: 'ETH' },
       },
       copyable: true,
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'sender' }),
       dataIndex: 'sender',
       copyable: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'adminWallet' }),
+      title: intl.formatMessage({ id: 'adminWallet', defaultMessage: '平台接收钱包' }),
       dataIndex: 'adminWallet',
       copyable: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'adminAmount' }),
+      title: intl.formatMessage({ id: 'adminAmount', defaultMessage: '平台接收金额' }),
       dataIndex: 'adminAmount',
       valueType: 'digit',
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'adminHash' }),
+      title: intl.formatMessage({ id: 'adminHash', defaultMessage: '平台接收哈希' }),
       dataIndex: 'adminHash',
       copyable: true,
       ellipsis: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'proxyWallet' }),
+      title: intl.formatMessage({ id: 'proxyWallet', defaultMessage: '代理接收钱包' }),
       dataIndex: 'proxyWallet',
       copyable: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'proxyAmount' }),
+      title: intl.formatMessage({ id: 'proxyAmount', defaultMessage: '代理接收金额' }),
       dataIndex: 'proxyAmount',
       valueType: 'digit',
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'proxyHash' }),
+      title: intl.formatMessage({ id: 'proxyHash', defaultMessage: '代理接收哈希' }),
       dataIndex: 'proxyHash',
       copyable: true,
       ellipsis: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'transferType' }),
+      title: intl.formatMessage({ id: 'transferType', defaultMessage: '转账类型' }),
       dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
-        direct: { text: intl.formatMessage({ id: 'direct' }) },
-        agent: { text: intl.formatMessage({ id: 'agent' }) },
+        direct: { text: intl.formatMessage({ id: 'direct', defaultMessage: '直接转账' }) },
+        agent: { text: intl.formatMessage({ id: 'agent', defaultMessage: '代理分润' }) },
       },
-    },
-    {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
-      valueType: 'select',
-      valueEnum: {
-        pending: { text: intl.formatMessage({ id: 'pending' }) },
-        completed: { text: intl.formatMessage({ id: 'completed' }) },
-        failed: { text: intl.formatMessage({ id: 'failed' }) },
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'createdAt' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'remark' }),
-      dataIndex: 'remark',
-      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
