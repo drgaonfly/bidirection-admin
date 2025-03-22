@@ -304,15 +304,17 @@ const TableList: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record) => [
-        <a
-          key="withdraw"
-          onClick={() => {
-            setCurrentRow(record);
-            setWithdrawModalOpen(true);
-          }}
-        >
-          {intl.formatMessage({ id: 'Collection', defaultMessage: '一键归集' })}
-        </a>,
+        access.canCollection && (
+          <a
+            key="withdraw"
+            onClick={() => {
+              setCurrentRow(record);
+              setWithdrawModalOpen(true);
+            }}
+          >
+            {intl.formatMessage({ id: 'Collection', defaultMessage: '一键归集' })}
+          </a>
+        ),
         <a
           key="detail"
           onClick={() => {
