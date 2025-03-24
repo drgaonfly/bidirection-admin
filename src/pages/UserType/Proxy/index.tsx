@@ -145,16 +145,6 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
     },
-    // {
-    //   title: intl.formatMessage({ id: 'inviteCode' }),
-    //   dataIndex: 'inviteCode',
-    //   hideInSearch: true,
-    //   render: (inviteCode, record) => {
-    //     if (!inviteCode) return '-';
-    //     const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.inviteCode}`;
-    //     return <Typography.Text copyable>{fullUrl}</Typography.Text>;
-    //   },
-    // },
     {
       title: intl.formatMessage({ id: 'profitSharingRate' }),
       dataIndex: 'proxySharingRate',
@@ -194,15 +184,17 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="detail"
-          onClick={() => {
-            setCurrentRow(record);
-            setShowDetail(true);
-          }}
-        >
-          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
-        </a>,
+        (access.canSuperAdmin || access.canGetProxyDetail) && (
+          <a
+            key="detail"
+            onClick={() => {
+              setCurrentRow(record);
+              setShowDetail(true);
+            }}
+          >
+            <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+          </a>
+        ),
         access.canUpdateProxy && (
           <a
             key="edit"

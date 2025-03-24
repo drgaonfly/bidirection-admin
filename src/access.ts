@@ -97,6 +97,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies/:id', 'PUT')),
     canGetProxy:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'GET')),
+    canGetProxyDetail:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id', 'GET')),
 
     // employee权限
     canCreateEmployee:
@@ -107,6 +109,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees/:id', 'PUT')),
     canGetEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'GET')),
+    canGetEmployeeDetail:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id', 'GET')),
 
     // customer权限
     canCreateCustomer:
