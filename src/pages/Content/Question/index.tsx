@@ -167,7 +167,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canSuperAdmin && (
+        (access.canSuperAdmin || access.canUpdateQuestion) && (
           <a
             key="edit"
             onClick={() => {
@@ -179,7 +179,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canSuperAdmin && (
+        (access.canSuperAdmin || access.canDeleteQuestion) && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -201,7 +201,7 @@ const TableList: React.FC = () => {
         scroll={{ x: 2500 }}
         search={{ labelWidth: 100 }}
         toolBarRender={() => [
-          access.canSuperAdmin && (
+          (access.canSuperAdmin || access.canCreateQuestion) && (
             <Button
               type="primary"
               key="primary"
@@ -216,7 +216,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('questions', params, sort, filter)}
         columns={columns}
         rowSelection={
-          access.canSuperAdmin && {
+          (access.canSuperAdmin || access.canDeleteQuestion) && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },

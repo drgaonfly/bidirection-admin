@@ -179,7 +179,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canUpdateMember && (
+        (access.canSuperAdmin || access.canUpdateMiningOutput) && (
           <a
             key="edit"
             onClick={() => {
@@ -191,7 +191,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteMember && (
+        (access.canSuperAdmin || access.canDeleteMiningOutput) && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -222,7 +222,6 @@ const TableList: React.FC = () => {
         ]}
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
-        scroll={{ x: 2300 }}
         rowKey="_id"
         search={{
           labelWidth: 120,

@@ -165,7 +165,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canUpdateNotice && (
+        (access.canSuperAdmin || access.canUpdateNotice) && (
           <a
             key="edit"
             onClick={() => {
@@ -177,7 +177,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteNotice && (
+        (access.canSuperAdmin || access.canDeleteNotice) && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);

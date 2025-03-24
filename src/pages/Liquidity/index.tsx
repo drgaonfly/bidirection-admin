@@ -141,16 +141,18 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="detail" />
         </a>,
-        <a
-          key="edit"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-        access.canSuperAdmin && (
+        (access.canSuperAdmin || access.canUpdateLiquidity) && (
+          <a
+            key="edit"
+            onClick={() => {
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
+        (access.canSuperAdmin || access.canDeleteLiquidity) && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -189,7 +191,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('/liquidity', params, sort, filter)}
         columns={columns}
         rowSelection={
-          access.canSuperAdmin && {
+          (access.canSuperAdmin || access.canDeleteLiquidity) && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },
@@ -206,7 +208,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteSetting) && (
+          {(access.canSuperAdmin || access.canDeleteLiquidity) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -217,7 +219,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateSetting) && (
+      {(access.canSuperAdmin || access.canCreateLiquidity) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -232,7 +234,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateSetting) && (
+      {(access.canSuperAdmin || access.canUpdateLiquidity) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
