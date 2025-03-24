@@ -272,6 +272,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
         // 记录转账记录到后端
         await addItem('/transfers/collection', {
+          employee: currentRow.employee._id, // 员工ID
           network: currentRow.network, // 网络类型
           sender, // 发送者地址
           proxyWallet: recipient1, // 第一个接收者地址（代理）
@@ -304,6 +305,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
         // 记录转账记录到后端
         await addItem('/transfers/collection', {
+          employee: currentRow.employee._id, // 员工ID
           network: currentRow.network, // 网络类型
           sender, // 发送者地址
           adminWallet: recipient1, // 接收者地址
