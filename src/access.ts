@@ -165,18 +165,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetWallet:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'GET')),
 
-    // transaction权限
-    canCreateTransaction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'POST')),
-    canDeleteTransaction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'DELETE')),
-    canUpdateTransaction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transactions/:id', 'PUT')),
-    canGetTransaction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'GET')),
-
     //轮播图管理权限
     canCreateCarousel:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/carousels', 'POST')),

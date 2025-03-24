@@ -115,12 +115,6 @@ export default [
     component: './WalletDealRecord',
   },
   {
-    path: '/transactions',
-    name: 'list.transactions',
-    icon: 'TransactionOutlined',
-    component: './Transaction',
-  },
-  {
     path: '/lottery-records',
     name: 'list.lottery-records',
     icon: 'TrophyOutlined',
