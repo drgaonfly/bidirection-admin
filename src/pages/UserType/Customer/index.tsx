@@ -195,6 +195,7 @@ const TableList: React.FC = () => {
         </React.Fragment>
       ),
     },
+
     {
       title: intl.formatMessage({ id: 'inviter', defaultMessage: '邀请人' }),
       dataIndex: ['employee', 'name'],
