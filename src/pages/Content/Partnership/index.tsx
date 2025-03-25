@@ -162,16 +162,18 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="detail" />
         </a>,
-        <a
-          key="edit"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-        access.canSuperAdmin && (
+        (access.canSuperAdmin || access.canUpdatePartnership) && (
+          <a
+            key="edit"
+            onClick={() => {
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
+        (access.canSuperAdmin || access.canDeletePartnership) && (
           <DeleteLink
             key="delete"
             onOk={async () => {

@@ -151,7 +151,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="detail" />
         </a>,
-        access.canSuperAdmin && (
+        (access.canSuperAdmin || access.canUpdateVideo) && (
           <a
             key="edit"
             onClick={() => {
@@ -162,7 +162,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canSuperAdmin && (
+        (access.canSuperAdmin || access.canDeleteVideo) && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -189,7 +189,7 @@ const TableList: React.FC = () => {
         }}
         size="large"
         toolBarRender={() => [
-          access.canSuperAdmin && (
+          (access.canSuperAdmin || access.canCreateVideo) && (
             <Button
               type="primary"
               key="primary"
@@ -204,7 +204,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('/videos', params, sort, filter)}
         columns={columns}
         rowSelection={
-          access.canSuperAdmin && {
+          (access.canSuperAdmin || access.canDeleteVideo) && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },

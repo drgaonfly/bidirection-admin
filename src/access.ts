@@ -97,6 +97,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies/:id', 'PUT')),
     canGetProxy:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/proxies', 'GET')),
+    canGetProxyDetail:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id', 'GET')),
 
     // employee权限
     canCreateEmployee:
@@ -107,6 +109,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees/:id', 'PUT')),
     canGetEmployee:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/employees', 'GET')),
+    canGetEmployeeDetail:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/users/:id', 'GET')),
 
     // customer权限
     canCreateCustomer:
@@ -117,6 +121,10 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/customers/:id', 'PUT')),
     canGetCustomer:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/customers', 'GET')),
+    // 一键归集权限
+    canCollection:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/customers/wallet', 'GET')),
 
     // member权限
     canCreateMember:
@@ -127,16 +135,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/members/:id', 'PUT')),
     canGetMember:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/members', 'GET')),
-
-    //Topic权限
-    canCreateTopic:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics', 'POST')),
-    canDeleteTopic:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics', 'DELETE')),
-    canUpdateTopic:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics/:id', 'PUT')),
-    canGetTopic:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/topics', 'GET')),
 
     //Record权限
     canCreateRecord:
@@ -167,19 +165,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetWallet:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'GET')),
 
-    // transaction权限
-    canCreateTransaction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'POST')),
-    canDeleteTransaction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'DELETE')),
-    canUpdateTransaction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transactions/:id', 'PUT')),
-    canGetTransaction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'GET')),
-
-    //轮播图权限
+    //轮播图管理权限
     canCreateCarousel:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/carousels', 'POST')),
     canDeleteCarousel:
@@ -409,5 +395,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/videos/:id', 'PUT')),
     canGetVideo:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/videos', 'GET')),
+
+    // liquidity 权限
+    canCreateLiquidity:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/liquidity', 'POST')),
+    canDeleteLiquidity:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/liquidity', 'DELETE')),
+    canUpdateLiquidity:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/liquidity/:id', 'PUT')),
+    canGetLiquidity:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/liquidity', 'GET')),
   };
 }

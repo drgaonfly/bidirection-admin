@@ -1,10 +1,10 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
-import { PlusOutlined } from '@ant-design/icons';
+// import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -124,18 +124,8 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'id' }),
-      dataIndex: ['wallet', 'user', 'id'],
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'proxy.employee' }),
-      dataIndex: ['wallet', 'user', 'proxy', 'name'],
-      hideInSearch: true,
-    },
-    {
       title: intl.formatMessage({ id: 'network' }),
-      dataIndex: ['wallet', 'network'],
+      dataIndex: 'network',
       valueType: 'select',
       valueEnum: {
         TRX: { text: 'TRX' },
@@ -144,54 +134,70 @@ const TableList: React.FC = () => {
       },
       copyable: true,
       hideInSearch: true,
+      width: 100,
     },
     {
-      title: intl.formatMessage({ id: 'sendingAddress' }),
-      dataIndex: ['wallet', 'address'],
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'paymentAddress' }),
-      dataIndex: 'receivingAddress',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'currency' }),
-      dataIndex: 'currency',
-      valueType: 'select',
-      valueEnum: {
-        USDT: { text: intl.formatMessage({ id: 'usdt' }) },
-        PledgeBalance: { text: intl.formatMessage({ id: 'pledgeBalance' }) },
-      },
+      title: intl.formatMessage({ id: 'sender' }),
+      dataIndex: 'sender',
       copyable: true,
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'transferBalance' }),
-      dataIndex: 'balance',
+      title: intl.formatMessage({ id: 'adminWallet', defaultMessage: '平台接收钱包' }),
+      dataIndex: 'adminWallet',
+      copyable: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'transferType' }),
+      title: intl.formatMessage({
+        id: 'adminAmount',
+        defaultMessage: '平台接收金额/1000000(USDT)',
+      }),
+      dataIndex: 'adminAmount',
+      valueType: 'digit',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'adminHash', defaultMessage: '平台接收哈希' }),
+      dataIndex: 'adminHash',
+      copyable: true,
+      ellipsis: true,
+      hideInSearch: true,
+      hideInTable: true,
+      search: false,
+    },
+    {
+      title: intl.formatMessage({ id: 'proxyWallet', defaultMessage: '代理接收钱包' }),
+      dataIndex: 'proxyWallet',
+      copyable: true,
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({
+        id: 'proxyAmount',
+        defaultMessage: '代理接收金额/1000000(USDT)',
+      }),
+      dataIndex: 'proxyAmount',
+      valueType: 'digit',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'proxyHash', defaultMessage: '代理接收哈希' }),
+      dataIndex: 'proxyHash',
+      copyable: true,
+      ellipsis: true,
+      hideInSearch: true,
+      hideInTable: true,
+      search: false,
+    },
+    {
+      title: intl.formatMessage({ id: 'transferType', defaultMessage: '转账类型' }),
       dataIndex: 'type',
       valueType: 'select',
       valueEnum: {
-        collection: { text: intl.formatMessage({ id: 'collection' }) },
-        staking: { text: intl.formatMessage({ id: 'stacking' }) },
-        profitSharing: { text: intl.formatMessage({ id: 'profitSharing' }) },
+        direct: { text: intl.formatMessage({ id: 'direct', defaultMessage: '直接转账' }) },
+        agent: { text: intl.formatMessage({ id: 'proxy.agent', defaultMessage: '代理分润' }) },
       },
-      copyable: true,
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'createdAt' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'remark' }),
-      dataIndex: 'remark',
-      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
@@ -243,17 +249,17 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateTransfer) && (
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                handleModalOpen(true);
-              }}
-            >
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            </Button>
-          ),
+          // (access.canSuperAdmin || access.canCreateTransfer) && (
+          //   <Button
+          //     type="primary"
+          //     key="primary"
+          //     onClick={() => {
+          //       handleModalOpen(true);
+          //     }}
+          //   >
+          //     <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+          //   </Button>
+          // ),
         ]}
         request={async (params, sort, filter) =>
           queryList('/transfers', { ...params, isOnline: activeKey }, sort, filter)

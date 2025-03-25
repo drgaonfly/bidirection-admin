@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Switch, Typography } from 'antd';
+import { Button, message, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -162,28 +162,6 @@ const TableList: React.FC = () => {
       dataIndex: ['proxy', 'name'],
     },
     {
-      title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
-      dataIndex: 'isOnline',
-      hideInSearch: true,
-      valueEnum: {
-        true: { text: intl.formatMessage({ id: 'platform.online' }), status: 'Success' },
-        false: { text: intl.formatMessage({ id: 'platform.offline' }), status: 'Error' },
-      },
-      render: (_, record: any) => (
-        <Switch
-          checkedChildren={intl.formatMessage({ id: 'platform.online' })}
-          unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
-          checked={record.isOnline}
-          onChange={async () => {
-            await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }}
-        />
-      ),
-    },
-    {
       title: intl.formatMessage({ id: 'role' }),
       dataIndex: 'roles',
       hideInSearch: true,
@@ -196,15 +174,17 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="detail"
-          onClick={() => {
-            setCurrentRow(record);
-            setShowDetail(true);
-          }}
-        >
-          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
-        </a>,
+        (access.canSuperAdmin || access.canGetEmployeeDetail) && (
+          <a
+            key="detail"
+            onClick={() => {
+              setCurrentRow(record);
+              setShowDetail(true);
+            }}
+          >
+            <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+          </a>
+        ),
         access.canUpdateEmployee && (
           <a
             key="edit"

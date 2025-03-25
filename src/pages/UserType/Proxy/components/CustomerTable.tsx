@@ -33,7 +33,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
   return (
     <EditableProTable<API.ItemData>
       rowKey="_id"
-      headerTitle={<FormattedMessage id="show.wallets" defaultMessage="钱包" />}
+      headerTitle={<FormattedMessage id="show.wallets" defaultMessage="客户" />}
       columns={tableColumns}
       value={customers}
       loading={loading}

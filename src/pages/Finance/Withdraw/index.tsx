@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Modal } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -11,7 +11,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import { Card, Row, Col, Button, Statistic } from 'antd';
+// import { Card, Row, Col, Button, Statistic } from 'antd';
 import { NetworkEnum } from '@/enums/networkEnum';
 import StatusEnum from '@/enums/statusEnum';
 
@@ -181,40 +181,8 @@ const WithdrawPage: React.FC = () => {
     },
   ];
 
-  const handleWithdrawClick = () => {
-    Modal.warning({
-      title: intl.formatMessage({ id: 'can not apply for withdraw' }),
-      content: intl.formatMessage({ id: 'your available balance is not enough' }),
-      okText: intl.formatMessage({ id: 'got it' }),
-    });
-  };
-
   return (
     <PageContainer>
-      <Card className="mb-6">
-        <Row gutter={24}>
-          <Col span={8}>
-            <Statistic
-              title={intl.formatMessage({ id: 'pages.withdraw.availableBalance' })}
-              value={0.0}
-              precision={2}
-              suffix="元"
-            />
-            <Button type="primary" className="mt-4" onClick={handleWithdrawClick}>
-              {intl.formatMessage({ id: 'pages.withdraw.applyWithdraw' })}
-            </Button>
-          </Col>
-          <Col span={8}>
-            <Statistic
-              title={intl.formatMessage({ id: 'pages.withdraw.unavailableBalance' })}
-              value={0.0}
-              precision={2}
-              suffix="元"
-            />
-          </Col>
-        </Row>
-      </Card>
-
       <ProTable<API.ItemData, API.PageParams>
         headerTitle={intl.formatMessage({ id: 'pages.withdraw.withdrawList' })}
         actionRef={actionRef}

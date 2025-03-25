@@ -142,21 +142,25 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
       hideInSearch: true,
+      width: '5%',
+    },
+    {
+      title: intl.formatMessage({ id: 'walletAddress' }),
+      dataIndex: 'address',
+      copyable: true,
+      hideInSearch: false,
+      width: '15%',
     },
     {
       title: intl.formatMessage({ id: 'network' }),
       dataIndex: 'network',
       valueEnum: NetworkEnum,
-    },
-    {
-      title: intl.formatMessage({ id: 'walletAddress' }),
-      dataIndex: 'address',
-      hideInSearch: true,
-      width: 400,
+      width: '8%',
     },
     {
       title: intl.formatMessage({ id: 'interestRate', defaultMessage: '收益倍率' }),
       hideInSearch: true,
+      width: '10%',
       render: (_, record) => (
         <React.Fragment>
           <p>
@@ -173,6 +177,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'estateOverview' }),
       hideInSearch: true,
+      width: '15%',
       render: (_, record) => (
         <React.Fragment>
           <p>
@@ -190,21 +195,18 @@ const TableList: React.FC = () => {
         </React.Fragment>
       ),
     },
+
     {
       title: intl.formatMessage({ id: 'inviter', defaultMessage: '邀请人' }),
-      dataIndex: ['inviter', 'email'],
+      dataIndex: ['employee', 'name'],
       hideInSearch: true,
-      render: (_, record) => {
-        if (record.inviter) {
-          return `${record.inviter.email}`;
-        }
-        return '-';
-      },
+      width: '8%',
     },
     {
       title: intl.formatMessage({ id: 'customerOverview' }),
       dataIndex: 'overview',
       hideInSearch: true,
+      width: '15%',
       render: (_, record) => (
         <div>
           <div>
@@ -228,6 +230,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'accountType' }),
       dataIndex: 'isVerified',
       hideInSearch: false,
+      width: '8%',
       valueEnum: {
         true: { text: intl.formatMessage({ id: 'demoAccount' }), status: 'Success' },
         false: { text: intl.formatMessage({ id: 'customer' }), status: 'Error' },
@@ -250,6 +253,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'ownInviteCode',
       hideInSearch: true,
+      width: '12%',
       render: (ownInviteCode, record) => {
         if (!ownInviteCode) return '-';
         const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.ownInviteCode}`;
@@ -260,6 +264,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'isSpied' }),
       dataIndex: 'isSpied',
       hideInSearch: true,
+      width: '6%',
       render: (text) => (
         <span>{text ? intl.formatMessage({ id: 'yes' }) : intl.formatMessage({ id: 'no' })}</span>
       ),
@@ -268,6 +273,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'isAuthorized' }),
       dataIndex: 'isAuthorized',
       hideInSearch: false,
+      width: '8%',
       valueEnum: {
         true: {
           text: intl.formatMessage({ id: 'isAuthorized.authorized', defaultMessage: '已授权' }),
@@ -304,15 +310,17 @@ const TableList: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record) => [
-        <a
-          key="withdraw"
-          onClick={() => {
-            setCurrentRow(record);
-            setWithdrawModalOpen(true);
-          }}
-        >
-          {intl.formatMessage({ id: 'Collection', defaultMessage: '一键归集' })}
-        </a>,
+        access.canCollection && (
+          <a
+            key="withdraw"
+            onClick={() => {
+              setCurrentRow(record);
+              setWithdrawModalOpen(true);
+            }}
+          >
+            {intl.formatMessage({ id: 'Collection', defaultMessage: '一键归集' })}
+          </a>
+        ),
         <a
           key="detail"
           onClick={() => {
@@ -322,7 +330,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        access.canUpdateMember && (
+        access.canUpdateCustomer && (
           <a
             key="edit"
             onClick={() => {
@@ -333,7 +341,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteMember && (
+        access.canDeleteCustomer && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -379,7 +387,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteMember) && (
+          {(access.canSuperAdmin || access.canDeleteCustomer) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -390,7 +398,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateMember) && (
+      {(access.canSuperAdmin || access.canCreateCustomer) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -405,7 +413,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateMember) && (
+      {(access.canSuperAdmin || access.canUpdateCustomer) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

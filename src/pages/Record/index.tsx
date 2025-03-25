@@ -24,7 +24,7 @@ const TableList: React.FC = () => {
       render: (text, record) => {
         return (
           <span>
-            {record.customer.network} - {record.customer.address}
+            {record?.customer?.network} - {record?.customer?.address}
           </span>
         );
       },

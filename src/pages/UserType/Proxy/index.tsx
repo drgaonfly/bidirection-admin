@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Switch, Typography } from 'antd';
+import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -146,19 +146,18 @@ const TableList: React.FC = () => {
       dataIndex: 'name',
     },
     {
-      title: intl.formatMessage({ id: 'inviteCode' }),
-      dataIndex: 'inviteCode',
-      hideInSearch: true,
-      render: (inviteCode, record) => {
-        if (!inviteCode) return '-';
-        const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.inviteCode}`;
-        return <Typography.Text copyable>{fullUrl}</Typography.Text>;
-      },
-    },
-    {
       title: intl.formatMessage({ id: 'profitSharingRate' }),
       dataIndex: 'proxySharingRate',
       hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'stackingChannel' }),
+      dataIndex: 'stackingChannel',
+      hideInSearch: true,
+      valueEnum: {
+        platform: { text: intl.formatMessage({ id: 'platform', defaultMessage: '平台' }) },
+        broker: { text: intl.formatMessage({ id: 'broker', defaultMessage: '代理' }) },
+      },
     },
     {
       title: intl.formatMessage({ id: 'proxy.user' }),
@@ -167,42 +166,21 @@ const TableList: React.FC = () => {
       hideInForm: true,
     },
     {
-      title: intl.formatMessage({ id: 'live', defaultMessage: '是否允许登录' }),
-      dataIndex: 'live',
-      hideInSearch: true,
-      render: (_, record: any) => (
-        <Switch
-          checked={record.live}
-          onChange={async () => {
-            await handleUpdate({ _id: record._id, live: !record.live });
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }}
-        />
-      ),
-    },
-    {
-      title: intl.formatMessage({ id: 'lastLoginAt' }),
-      dataIndex: 'lastLoginAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      hideInForm: true,
-    },
-    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="detail"
-          onClick={() => {
-            setCurrentRow(record);
-            setShowDetail(true);
-          }}
-        >
-          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
-        </a>,
+        (access.canSuperAdmin || access.canGetProxyDetail) && (
+          <a
+            key="detail"
+            onClick={() => {
+              setCurrentRow(record);
+              setShowDetail(true);
+            }}
+          >
+            <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+          </a>
+        ),
         access.canUpdateProxy && (
           <a
             key="edit"
@@ -233,7 +211,6 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 2500 }}
         search={{
           labelWidth: 120,
           collapsed: false,
