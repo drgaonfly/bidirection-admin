@@ -228,7 +228,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'accountType' }),
-      dataIndex: 'isVerified',
+      dataIndex: 'isAuthorized',
       hideInSearch: false,
       width: '8%',
       valueEnum: {
@@ -256,7 +256,7 @@ const TableList: React.FC = () => {
       width: '12%',
       render: (ownInviteCode, record) => {
         if (!ownInviteCode) return '-';
-        const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?${record.ownInviteCode}`;
+        const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?key=${record.ownInviteCode}`;
         return <Typography.Text copyable>{fullUrl}</Typography.Text>;
       },
     },
@@ -271,7 +271,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'isAuthorized' }),
-      dataIndex: 'isAuthorized',
+      dataIndex: 'isVerified',
       hideInSearch: false,
       width: '8%',
       valueEnum: {
