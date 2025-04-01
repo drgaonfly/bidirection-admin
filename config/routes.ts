@@ -56,6 +56,13 @@ export default [
     component: './account/service-link',
   },
   {
+    path: '/account/two-factor-auth',
+    hideInMenu: true,
+    name: 'list.two-factor',
+    icon: 'SecurityScanOutlined',
+    component: './account/two-factor',
+  },
+  {
     path: '/auth',
     name: 'list.auth',
     icon: 'table',

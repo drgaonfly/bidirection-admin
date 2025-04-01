@@ -142,4 +142,5 @@ export default {
   'menu.change-password': '修改密码',
   'menu.list.change-password': '修改密码',
   'list.change-password': '修改密码',
+  'menu.account.two-factor-auth': '二步认证',
 };

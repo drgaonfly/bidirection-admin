@@ -25,6 +25,7 @@ declare namespace API {
       province?: { label?: string; key?: string };
       city?: { label?: string; key?: string };
     };
+    twoFAEnabled?: boolean;
     address?: string;
     phone?: string;
   };
@@ -109,6 +110,8 @@ declare namespace API {
     refreshToken?: string;
     success?: boolean;
     token?: string;
+    requires2FA?: boolean;
+    sessionId?: string;
   };
 
   type RefreshResult = {
@@ -120,6 +123,7 @@ declare namespace API {
   type PageParams = {
     current?: number;
     pageSize?: number;
+    token?: string;
   };
 
   type RuleList = {
@@ -137,6 +141,7 @@ declare namespace API {
   type LoginParams = {
     email?: string;
     password?: string;
+    token?: string;
   };
 
   type refreshParams = {

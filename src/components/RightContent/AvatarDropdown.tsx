@@ -135,6 +135,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
       icon: <CustomerServiceOutlined />,
       label: <FormattedMessage id="menu.account.serviceLink" defaultMessage="服务链接" />,
     },
+    {
+      key: 'two-factor-auth',
+      icon: <SettingOutlined />,
+      label: <FormattedMessage id="menu.account.two-factor-auth" defaultMessage="二步认证" />,
+    },
   ];
 
   return (

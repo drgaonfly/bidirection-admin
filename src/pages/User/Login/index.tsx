@@ -1,12 +1,12 @@
 import { useIntl } from '@umijs/max';
 // import { Footer } from '@/components';
-import { login } from '@/services/ant-design-pro/api';
+import { addItem, login } from '@/services/ant-design-pro/api';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { FormattedMessage, history, SelectLang, useModel, Helmet } from '@umijs/max';
 import { message } from 'antd';
 import Settings from '../../../../config/defaultSettings';
-import React from 'react';
+import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createStyles } from 'antd-style';
 
@@ -60,6 +60,8 @@ const Login: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
   const intl = useIntl();
+  const [requires2FA, setRequires2FA] = useState(false);
+  const [sessionId, setSessionId] = useState('');
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -75,20 +77,44 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: API.LoginParams) => {
     try {
-      // 登录
-      const response = await login({ ...values });
-      if (response && response.success) {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
+      if (requires2FA) {
+        // 2FA verification phase
+        const response = await addItem('/auth/login/verify-2fa', {
+          sessionId,
+          token: values.token,
         });
-        message.success(defaultLoginSuccessMessage);
-        localStorage.setItem('token', response.token!);
-        localStorage.setItem('refreshToken', response.refreshToken!);
-        await fetchUserInfo();
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
-        return;
+
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          await fetchUserInfo();
+          const urlParams = new URL(window.location.href).searchParams;
+          history.push(urlParams.get('redirect') || '/');
+        } else {
+          message.error(
+            intl.formatMessage({
+              id: 'pages.login.2fa.failure',
+              defaultMessage: '验证码错误',
+            }),
+          );
+        }
+      } else {
+        // Initial login phase
+        const response = await login({ ...values });
+        if (response.requires2FA) {
+          setRequires2FA(true);
+          setSessionId(response.sessionId!);
+        } else if (response && response.success) {
+          const defaultLoginSuccessMessage = intl.formatMessage({
+            id: 'pages.login.success',
+            defaultMessage: '登录成功！',
+          });
+          message.success(defaultLoginSuccessMessage);
+          localStorage.setItem('token', response.token!);
+          localStorage.setItem('refreshToken', response.refreshToken!);
+          await fetchUserInfo();
+          const urlParams = new URL(window.location.href).searchParams;
+          history.push(urlParams.get('redirect') || '/');
+        }
       }
     } catch (error: any) {
       const defaultLoginFailureMessage = intl.formatMessage({
@@ -175,6 +201,30 @@ const Login: React.FC = () => {
                 },
               ]}
             />
+            {requires2FA && (
+              <ProFormText
+                name="token"
+                fieldProps={{
+                  size: 'large',
+                  maxLength: 6,
+                }}
+                placeholder={intl.formatMessage({
+                  id: 'pages.login.2fa.placeholder',
+                  defaultMessage: '6位验证码',
+                })}
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.2fa.required"
+                        defaultMessage="请输入验证码！"
+                      />
+                    ),
+                  },
+                ]}
+              />
+            )}
           </>
         </LoginForm>
       </div>

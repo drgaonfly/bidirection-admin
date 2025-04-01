@@ -347,4 +347,12 @@ export default {
   'upload.hint': '只能上传.jpg,.jpeg,.png,.pdf文件,且不超过500kb',
   'menu.liquidity': '流动收益率管理',
   'tabs.refresh': '刷新',
+  'verification.code.error': '验证码错误',
+  '2fa.activated': '双因素认证已激活',
+  'enable.2fa': '启用双因素认证',
+  'enter.6.digit.code': '输入6位验证码',
+  '2fa.already.enabled': '双因素认证已启用',
+  'invalid.2fa.token': '无效的双因素认证令牌',
+  '2fa.not.setup': '未设置双因素认证',
+  '2fa.enabled.message': '双因素认证已启用',
 };

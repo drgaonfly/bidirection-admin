@@ -109,4 +109,13 @@ export default {
   'menu.account.service-link': 'Service Link',
   'menu.list.service-link': 'Service Link',
   'menu.account.change-password': 'Change Password',
+  'verification.code.error': 'Invalid verification code',
+  '2fa.activated': 'Two-Factor Authentication activated successfully',
+  'enable.2fa': 'Enable Two-Factor Authentication',
+  'enter.6.digit.code': 'Enter 6-digit code',
+  '2fa.already.enabled': 'Two-Factor Authentication is already enabled',
+  'invalid.2fa.token': 'Invalid 2FA token',
+  '2fa.not.setup': '2FA not set up',
+  '2fa.enabled.message': 'Two-Factor Authentication is enabled',
+  'menu.account.two-factor-auth': 'Two Factor Auth',
 };
