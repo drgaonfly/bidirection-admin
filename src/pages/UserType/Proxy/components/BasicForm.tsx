@@ -81,8 +81,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'profitSharingRate' })}
           name="proxySharingRate"
           fieldProps={{
-            defaultValue: 0,
             addonAfter: '%',
+            type: 'number',
             min: 0,
             max: 100,
           }}
