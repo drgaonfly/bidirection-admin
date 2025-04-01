@@ -107,7 +107,7 @@ export default {
   'menu.活动管理': '活动管理',
   'menu.活动管理.活动管理': '活动管理',
   'menu.活动管理.解押记录管理': '解押记录管理',
-  'menu.渠道管理': '渠道管理',
+  // 'menu.渠道管理': '渠道管理',
   'menu.设置管理': '设置管理',
   'menu.采矿数据管理': '采矿数据管理',
   'menu.采矿产出管理': '采矿产出管理',
@@ -139,4 +139,7 @@ export default {
   'menu.财务管理.划转管理': '划转管理',
   'menu.财务管理.收益管理': '收益管理',
   'menu.财务管理.质押管理': '质押管理',
+  'menu.change-password': '修改密码',
+  'menu.list.change-password': '修改密码',
+  'list.change-password': '修改密码',
 };

@@ -107,4 +107,6 @@ export default {
   'amount(USDT)': 'Amount(USDT)',
   'list.service-link': 'Service Link',
   'menu.account.service-link': 'Service Link',
+  'menu.list.service-link': 'Service Link',
+  'menu.account.change-password': 'Change Password',
 };

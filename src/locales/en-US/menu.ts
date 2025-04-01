@@ -50,7 +50,7 @@ export default {
   'menu.认证管理.权限组管理': 'Permission Groups',
   'menu.认证管理.数据权限管理': 'Data Permissions',
   'menu.代理管理': 'Proxy Management',
-  'menu.渠道管理': 'Employee Management',
+  'menu.渠道管理': 'Channel Management',
   'menu.常见问题管理': 'Common Problem Management',
   'menu.交易账单管理': 'Transaction Bill Management',
   'menu.客户管理': 'Customer Management',
@@ -60,7 +60,6 @@ export default {
   'menu.活动管理': 'Activity Management',
   'menu.活动管理.活动管理': 'Activity Management',
   'menu.活动管理.解押记录管理': 'Release Record Management',
-  'menu.渠道管理': 'Channel Management',
   'menu.设置管理': 'Settings',
   'menu.采矿数据管理': 'Mining Data Management',
   'menu.采矿产出管理': 'Mining Output Management',
@@ -68,7 +67,7 @@ export default {
 
   'menu.用户管理': 'User Management',
   'menu.用户管理.代理管理': 'Proxy Management',
-  'menu.用户管理.渠道管理': 'Employee Management',
+  'menu.用户管理.渠道管理': 'Channel Management',
   'menu.用户管理.客户管理': 'Customer Management',
 
   'menu.内容管理': 'Content Management',
@@ -85,5 +84,5 @@ export default {
   'menu.财务管理.划转管理': 'Transfers',
   'menu.财务管理.收益管理': 'Incomes',
   'menu.财务管理.质押管理': 'Stacking',
-  refused: 'Refused',
+  'menu.change-password': 'Change Password',
 };

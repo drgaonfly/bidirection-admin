@@ -83,7 +83,7 @@ export default {
   'platform.online': 'Online',
   'platform.offline': 'Offline',
   'platforms.showSecretKey': 'Show Secret Key',
-  'proxy.employee': 'Proxied Employee',
+  'proxy.employee': 'Proxied Channel',
   content: 'Content',
   customer: 'Customer',
   investBalance: 'Invest Balance',

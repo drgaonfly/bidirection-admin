@@ -106,4 +106,6 @@ export default {
   'amount(USDT)': '金额(USDT)',
   'list.service-link': '服务链接',
   'menu.account.service-link': '服务链接',
+  'menu.list.service-link': '服务链接',
+  'menu.account.change-password': '修改密码',
 };
