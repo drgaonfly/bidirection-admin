@@ -213,18 +213,18 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" />
         </a>,
-        access.canSuperAdmin && (
-          <a
-            key="edit"
-            onClick={() => {
-              handleUpdateModalOpen(true);
-              setCurrentRow(record);
-            }}
-          >
-            {intl.formatMessage({ id: 'edit' })}
-          </a>
-        ),
-        access.canSuperAdmin && (
+        // access.canSuperAdmin && (
+        //   <a
+        //     key="edit"
+        //     onClick={() => {
+        //       handleUpdateModalOpen(true);
+        //       setCurrentRow(record);
+        //     }}
+        //   >
+        //     {intl.formatMessage({ id: 'edit' })}
+        //   </a>
+        // ),
+        access.canUpdateTransfer && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
