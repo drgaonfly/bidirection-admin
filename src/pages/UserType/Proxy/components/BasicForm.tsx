@@ -14,20 +14,19 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
   console.log('newRecord', newRecord);
 
-  const { items: roles, loading } = useQueryList('/roles');
-  const filteredRoles = roles?.filter((role: { name: string }) => role.name === '代理'); // 只筛选出名称为代理的角色
+  const { items: roles, loading } = useQueryList('/roles/filter/?type=proxy');
 
-  const filteredRolesIds = filteredRoles?.map((role: { _id: string }) => role._id);
+  const filteredRolesIds = roles?.map((role: { _id: string }) => role._id);
 
   const [form] = Form.useForm();
   //表单初始化filteredRoles数据更新时，确保表单中的角色选择能加载出来
   React.useEffect(() => {
-    if (filteredRoles) {
+    if (roles) {
       form.setFieldsValue({
         roles: filteredRolesIds,
       });
     }
-  }, [filteredRoles]);
+  }, [roles]);
 
   return (
     <ProForm
@@ -112,7 +111,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
               name="roles"
               layout="horizontal"
               label={intl.formatMessage({ id: 'role_choose' })}
-              options={filteredRoles?.map((role: { name: string; _id: string }) => ({
+              options={roles?.map((role: { name: string; _id: string }) => ({
                 label: role.name,
                 value: role._id,
               }))}
