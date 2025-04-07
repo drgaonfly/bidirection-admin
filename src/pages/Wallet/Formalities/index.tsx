@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
-import { PlusOutlined, SyncOutlined } from '@ant-design/icons';
+import { SyncOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -465,18 +465,18 @@ const TableList: React.FC = () => {
             collapsed: false,
           }}
           toolBarRender={() => [
-            (access.canSuperAdmin || access.canCreateWallet) && (
-              <Button
-                type="primary"
-                key="primary"
-                onClick={() => {
-                  handleModalOpen(true);
-                }}
-              >
-                <PlusOutlined />{' '}
-                <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-              </Button>
-            ),
+            // (access.canSuperAdmin || access.canCreateWallet) && (
+            //   <Button
+            //     type="primary"
+            //     key="primary"
+            //     onClick={() => {
+            //       handleModalOpen(true);
+            //     }}
+            //   >
+            //     <PlusOutlined />{' '}
+            //     <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            //   </Button>
+            // ),
           ]}
           request={async (params, sort, filter) => {
             return queryList('/wallets', { ...params, isOnline: activeKey }, sort, filter);
