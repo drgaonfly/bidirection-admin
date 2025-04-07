@@ -2,7 +2,6 @@
 import React from 'react';
 import { ProForm } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
-import useQueryList from '@/hooks/useQueryList';
 import WalletSelect from '@/components/walletCustomerSelect';
 
 interface Props {
@@ -12,37 +11,12 @@ interface Props {
 }
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
-  // const intl = useIntl();
-
-  const { items: roles } = useQueryList('/roles');
-  const filteredRoles = roles?.filter((role: { name: string }) => role.name === '客户'); // 只筛选出名称为员工的角色
-
-  const filteredRolesIds = filteredRoles?.map((role: { _id: string }) => role._id);
-
-  const [form] = Form.useForm();
-
-  //表单初始化filteredRoles数据更新时，确保表单中的角色选择能加载出来
-  React.useEffect(() => {
-    if (filteredRoles) {
-      form.setFieldsValue({
-        roles: filteredRolesIds,
-      });
-    }
-  }, [filteredRoles]);
-
   return (
     <ProForm
-      form={form}
       initialValues={{
         ...values,
-        roles: filteredRolesIds,
       }}
-      onFinish={async (values) => {
-        await onFinish({
-          ...values,
-          roles: filteredRolesIds,
-        });
-      }}
+      onFinish={onFinish}
       submitter={{
         render: (props, dom) => {
           return (
@@ -59,28 +33,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     >
       <ProForm.Group>
         <WalletSelect />
-
-        {/* <ProFormSelect
-          width="md"
-          label={intl.formatMessage({ id: 'walletDealType' })}
-          name="type"
-          options={[
-            { label: intl.formatMessage({ id: 'collection' }), value: 'collection' },
-            { label: intl.formatMessage({ id: 'stacking' }), value: 'staking' },
-            { label: intl.formatMessage({ id: 'withdraw' }), value: 'withdrawal' },
-          ]}
-        />
-
-        <ProFormSelect
-          width="md"
-          label={intl.formatMessage({ id: 'status' })}
-          name="status"
-          options={[
-            { label: intl.formatMessage({ id: 'pending' }), value: 'pending' },
-            { label: intl.formatMessage({ id: 'success' }), value: 'success' },
-            { label: intl.formatMessage({ id: 'fail' }), value: 'fail' },
-          ]}
-        /> */}
       </ProForm.Group>
 
       {!newRecord && (
