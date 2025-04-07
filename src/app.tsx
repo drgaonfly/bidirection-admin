@@ -110,8 +110,6 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   CustomerServiceOutlined: <CustomerServiceOutlined />,
 };
 
-console.log('iconEnum', iconEnum);
-
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
   menus.map(({ icon, children, ...item }) => {
     return {
@@ -179,9 +177,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       request: async () => {
         // initialState.currentUser 中包含了所有用户信息
         const { data, success } = await fetchMenuData();
-        console.log('data', data);
         if (success) {
-          console.log('loopMenuItem(data)', loopMenuItem(data));
           return loopMenuItem(data);
         } else {
           return [];

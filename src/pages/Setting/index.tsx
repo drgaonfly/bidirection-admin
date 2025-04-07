@@ -22,7 +22,6 @@ const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading('Adding...');
   try {
     await addItem('/settings', { ...fields });
-    // console.log('_________________', fields);
     hide();
     message.success('Added successfully');
     return true;
@@ -64,11 +63,9 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading('Removing...');
   if (!ids) return true;
   try {
-    console.log('Attempting to delete:', ids);
-    const response = await removeItem('/settings', {
+    await removeItem('/settings', {
       ids,
     });
-    console.log('zhel', 'Delete response:', response);
     hide();
     message.success('Deleted successfully and will refresh soon');
     return true;

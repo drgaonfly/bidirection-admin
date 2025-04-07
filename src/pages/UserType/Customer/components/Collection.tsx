@@ -142,7 +142,6 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
     try {
       console.log('Validating form fields...');
       const values = await form.validateFields();
-      console.log('Form values:', values);
 
       // 检查钱包数据是否已加载
       if (!walletData) {

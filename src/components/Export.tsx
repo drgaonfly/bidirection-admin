@@ -21,7 +21,6 @@ const ExportButton: React.FC<ExportButtonProps> = ({ form, key, exportUrl }) => 
 
     try {
       // Perform the export operation
-      console.log('Export button clicked', form.getFieldsValue());
       const response = await queryList(exportUrl, {
         ...form.getFieldsValue(),
       });

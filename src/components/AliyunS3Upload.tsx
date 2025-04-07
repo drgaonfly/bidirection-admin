@@ -38,7 +38,6 @@ const S3Upload = ({ value, onChange, accept, defaultFileList, onFileUpload }: S3
   };
 
   const handleChange: UploadProps['onChange'] = ({ fileList }) => {
-    console.log('S3:', fileList);
     if (fileList?.length > 0) {
       const lastFile = fileList[fileList.length - 1]; // Get the last file object
       const lastFileUrl = lastFile.url;
@@ -49,7 +48,6 @@ const S3Upload = ({ value, onChange, accept, defaultFileList, onFileUpload }: S3
 
   const onRemove = (file: UploadFile) => {
     const files = (value || []).filter((v) => v.url !== file.url);
-    console.log(files);
     onChange?.(files);
   };
 

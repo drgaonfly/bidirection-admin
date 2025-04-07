@@ -85,7 +85,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values, setImageUrl, 
         <Form.Item label={intl.formatMessage({ id: 'logoUrl' })} name="logoUrl">
           <AliyunOSSUpload
             onFileUpload={(url: string) => {
-              console.log('Uploaded file URL:', url);
               setImageUrl!(url);
             }}
             accept=".jpg,.jpeg,.png,.pdf"

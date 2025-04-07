@@ -312,8 +312,6 @@ const TableList: React.FC = () => {
             // 如果获取到余额，更新数据库
             const currentBalance = wallet.balance || '0';
 
-            console.log(`${network} 钱包余额 - 当前: ${currentBalance}, 新: ${balance}`);
-
             // 只有当新余额与当前余额不同时才更新
             if (balance !== currentBalance) {
               await updateItem(`/wallets/${wallet._id}`, { ...wallet, balance });

@@ -35,7 +35,6 @@ const UserSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
       fieldProps={{
         loading,
         onChange: (value: string) => {
-          console.log('Selected user value:', value);
           if (onChange) {
             onChange(value);
           }

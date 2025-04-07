@@ -47,7 +47,6 @@ const AliyunOSSUpload = ({
   }, []);
 
   const handleChange: UploadProps['onChange'] = ({ fileList }) => {
-    console.log('Aliyun OSS:', fileList[0]);
     if (fileList?.length > 0) {
       const lastFile = fileList[fileList.length - 1]; // 获取最后一个文件对象
       const lastFileUrl = lastFile.url;

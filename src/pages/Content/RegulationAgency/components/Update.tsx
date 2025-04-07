@@ -19,8 +19,6 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
 
-  console.log('Initial values:', values);
-
   const [imageUrl, setImageUrl] = useState<string | undefined>(values.logoUrl || '');
 
   const defaultFileList: UploadFile[] = values.logoUrl

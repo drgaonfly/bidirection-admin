@@ -26,7 +26,6 @@ const EmployeeSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
       fieldProps={{
         loading,
         onChange: (value: string) => {
-          console.log('Selected employee value:', value);
           if (onChange) {
             onChange(value);
           }

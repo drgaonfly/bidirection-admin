@@ -26,7 +26,6 @@ const AnswerSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
       fieldProps={{
         loading,
         onChange: (value: string) => {
-          console.log('Selected answer value:', value);
           if (onChange) {
             onChange(value);
           }

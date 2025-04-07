@@ -26,9 +26,6 @@ const BatchDeleteButton: React.FC<BatchDeleteButtonProps> = ({
     );
 
     try {
-      // Perform the delete operation
-      console.log('Delete button clicked', form.getFieldsValue());
-
       await removeItem(deleteUrl, {
         ...form.getFieldsValue(),
       });

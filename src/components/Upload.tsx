@@ -35,8 +35,6 @@ const MyUpload: React.FC<MyUploadProps> = ({ onFileUpload, accept, defaultFileLi
         requestType: 'form',
       });
 
-      console.log('response:', response);
-
       if (response.success) {
         message.success('上传成功');
         if (onSuccess) {

@@ -26,7 +26,6 @@ const CustomerSelect: React.FC<Props> = ({ newRecord = true, onChange }) => {
       fieldProps={{
         loading,
         onChange: (value: string) => {
-          console.log('Selected customer value:', value);
           if (onChange) {
             onChange(value);
           }
