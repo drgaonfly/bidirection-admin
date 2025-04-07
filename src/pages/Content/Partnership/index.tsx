@@ -162,7 +162,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="detail" />
         </a>,
-        (access.canSuperAdmin || access.canUpdatePartnership) && (
+        access.canUpdatePartnership && (
           <a
             key="edit"
             onClick={() => {
@@ -173,7 +173,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeletePartnership) && (
+        access.canDeletePartnership && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -229,7 +229,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeletePartnership) && (
+          {access.canDeletePartnership && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -240,7 +240,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreatePartnership) && (
+      {access.canCreatePartnership && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -255,7 +255,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdatePartnership) && (
+      {access.canUpdatePartnership && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

@@ -179,7 +179,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        (access.canSuperAdmin || access.canUpdateMiningOutput) && (
+        access.canUpdateMiningOutput && (
           <a
             key="edit"
             onClick={() => {
@@ -191,7 +191,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeleteMiningOutput) && (
+        access.canDeleteMiningOutput && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -208,7 +208,7 @@ const TableList: React.FC = () => {
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateIncome) && (
+          access.canCreateIncome && (
             <Button
               type="primary"
               key="primary"
@@ -251,7 +251,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteMiningOutput) && (
+          {access.canDeleteMiningOutput && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -262,7 +262,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateMiningOutput) && (
+      {access.canCreateMiningOutput && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -277,7 +277,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateMiningOutput) && (
+      {access.canUpdateMiningOutput && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

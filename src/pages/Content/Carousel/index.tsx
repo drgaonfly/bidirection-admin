@@ -184,7 +184,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" />
         </a>,
-        (access.canSuperAdmin || access.canUpdateCarousel) && (
+        access.canUpdateCarousel && (
           <a
             key="edit"
             onClick={() => {
@@ -195,7 +195,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeleteCarousel) && (
+        access.canDeleteCarousel && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -217,7 +217,7 @@ const TableList: React.FC = () => {
         rowKey="_id"
         search={{ labelWidth: 120 }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateCarousel) && (
+          access.canCreateCarousel && (
             <Button
               type="primary"
               key="primary"
@@ -249,7 +249,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteCarousel) && (
+          {access.canDeleteCarousel && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -260,7 +260,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateCarousel) && (
+      {access.canCreateCarousel && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -275,7 +275,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateCarousel) && (
+      {access.canUpdateCarousel && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

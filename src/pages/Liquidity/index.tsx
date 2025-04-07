@@ -141,7 +141,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="detail" />
         </a>,
-        (access.canSuperAdmin || access.canUpdateLiquidity) && (
+        access.canUpdateLiquidity && (
           <a
             key="edit"
             onClick={() => {
@@ -152,7 +152,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeleteLiquidity) && (
+        access.canDeleteLiquidity && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -191,7 +191,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('/liquidity', params, sort, filter)}
         columns={columns}
         rowSelection={
-          (access.canSuperAdmin || access.canDeleteLiquidity) && {
+          access.canDeleteLiquidity && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },
@@ -208,7 +208,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteLiquidity) && (
+          {access.canDeleteLiquidity && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -219,7 +219,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateLiquidity) && (
+      {access.canCreateLiquidity && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -234,7 +234,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateLiquidity) && (
+      {access.canUpdateLiquidity && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

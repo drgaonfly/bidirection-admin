@@ -22,7 +22,6 @@ import VideoPlayer from '@/components/VideoPlayer';
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    console.log('fields===========================', fields);
     await addItem('/videos', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
@@ -48,7 +47,6 @@ const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
     await updateItem(`/videos/${fields._id}`, fields);
-    console.log('Update Form Data:', fields);
     hide();
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
     return true;
@@ -151,7 +149,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="detail" />
         </a>,
-        (access.canSuperAdmin || access.canUpdateVideo) && (
+        access.canUpdateVideo && (
           <a
             key="edit"
             onClick={() => {
@@ -162,7 +160,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeleteVideo) && (
+        access.canDeleteVideo && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -189,7 +187,7 @@ const TableList: React.FC = () => {
         }}
         size="large"
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateVideo) && (
+          access.canCreateVideo && (
             <Button
               type="primary"
               key="primary"
@@ -204,7 +202,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('/videos', params, sort, filter)}
         columns={columns}
         rowSelection={
-          (access.canSuperAdmin || access.canDeleteVideo) && {
+          access.canDeleteVideo && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },
@@ -221,7 +219,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteVideo) && (
+          {access.canDeleteVideo && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -232,7 +230,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateVideo) && (
+      {access.canCreateVideo && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -247,7 +245,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateVideo) && (
+      {access.canUpdateVideo && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

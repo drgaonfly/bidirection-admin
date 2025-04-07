@@ -245,7 +245,7 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateWalletDealRecord) && (
+          access.canCreateWalletDealRecord && (
             <Button
               type="primary"
               key="primary"
@@ -279,7 +279,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteWalletDealRecord) && (
+          {access.canDeleteWalletDealRecord && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -290,7 +290,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateWalletDealRecord) && (
+      {access.canCreateWalletDealRecord && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -305,7 +305,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateWalletDealRecord) && (
+      {access.canUpdateWalletDealRecord && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

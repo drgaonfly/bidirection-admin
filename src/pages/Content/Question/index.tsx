@@ -167,7 +167,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        (access.canSuperAdmin || access.canUpdateQuestion) && (
+        access.canUpdateQuestion && (
           <a
             key="edit"
             onClick={() => {
@@ -179,7 +179,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeleteQuestion) && (
+        access.canDeleteQuestion && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -201,7 +201,7 @@ const TableList: React.FC = () => {
         scroll={{ x: 2500 }}
         search={{ labelWidth: 100 }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateQuestion) && (
+          access.canCreateQuestion && (
             <Button
               type="primary"
               key="primary"
@@ -216,7 +216,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('questions', params, sort, filter)}
         columns={columns}
         rowSelection={
-          (access.canSuperAdmin || access.canDeleteQuestion) && {
+          access.canDeleteQuestion && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },
@@ -233,7 +233,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteQuestion) && (
+          {access.canDeleteQuestion && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -245,7 +245,7 @@ const TableList: React.FC = () => {
         </FooterToolbar>
       )}
 
-      {(access.canSuperAdmin || access.canCreateQuestion) && (
+      {access.canCreateQuestion && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -260,7 +260,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateQuestion) && (
+      {access.canUpdateQuestion && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

@@ -182,7 +182,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        (access.canSuperAdmin || access.canGetProxyDetail) && (
+        access.canGetProxyDetail && (
           <a
             key="detail"
             onClick={() => {
@@ -228,7 +228,7 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateProxy) && (
+          access.canCreateProxy && (
             <Button
               type="primary"
               key="primary"
@@ -260,7 +260,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteProxy) && (
+          {access.canDeleteProxy && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -271,7 +271,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateProxy) && (
+      {access.canCreateProxy && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -286,7 +286,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateProxy) && (
+      {access.canUpdateProxy && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

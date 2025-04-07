@@ -165,7 +165,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        (access.canSuperAdmin || access.canUpdateNotification) && (
+        access.canUpdateNotification && (
           <a
             key="edit"
             onClick={() => {
@@ -177,7 +177,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        (access.canSuperAdmin || access.canDeleteNotification) && (
+        access.canDeleteNotification && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -201,7 +201,7 @@ const TableList: React.FC = () => {
           collapsed: false,
         }}
         toolBarRender={() => [
-          (access.canSuperAdmin || access.canCreateNotification) && (
+          access.canCreateNotification && (
             <Button
               type="primary"
               key="primary"
@@ -218,7 +218,7 @@ const TableList: React.FC = () => {
         request={async (params, sort, filter) => queryList('/notifications', params, sort, filter)}
         columns={columns}
         rowSelection={
-          (access.canSuperAdmin || access.canGetNotification) && {
+          access.canGetNotification && {
             onChange: (_, selectedRows) => {
               setSelectedRows(selectedRows);
             },
@@ -235,7 +235,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteNotification) && (
+          {access.canDeleteNotification && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -246,7 +246,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateNotification) && (
+      {access.canCreateNotification && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -261,7 +261,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateNotification) && (
+      {access.canUpdateNotification && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);

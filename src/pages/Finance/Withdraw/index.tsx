@@ -206,7 +206,7 @@ const WithdrawPage: React.FC = () => {
         //     {intl.formatMessage({ id: 'edit' })}
         //   </a>
         // ),
-        (access.canSuperAdmin || access.canUpdateWithdraw) && (
+        access.canUpdateWithdraw && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -247,7 +247,7 @@ const WithdrawPage: React.FC = () => {
             </div>
           }
         >
-          {(access.canSuperAdmin || access.canDeleteWithdraw) && (
+          {access.canDeleteWithdraw && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -258,7 +258,7 @@ const WithdrawPage: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {(access.canSuperAdmin || access.canCreateWithdraw) && (
+      {access.canCreateWithdraw && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
@@ -273,7 +273,7 @@ const WithdrawPage: React.FC = () => {
           }}
         />
       )}
-      {(access.canSuperAdmin || access.canUpdateWithdraw) && (
+      {access.canUpdateWithdraw && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
