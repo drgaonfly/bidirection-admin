@@ -110,12 +110,6 @@ export default [
     component: './WalletDealRecord',
   },
   {
-    path: '/lottery-records',
-    name: 'list.lottery-records',
-    icon: 'TrophyOutlined',
-    component: './LotteryRecord',
-  },
-  {
     path: '/proxy-commission-records',
     name: 'list.proxy-commission-records',
     icon: 'PieChartOutlined',

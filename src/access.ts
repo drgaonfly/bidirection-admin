@@ -185,20 +185,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetStacking:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/stackings', 'GET')),
 
-    // lottery records权限
-    canCreateLotteryRecord:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/lottery-records', 'POST')),
-    canDeleteLotteryRecord:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/lottery-records', 'DELETE')),
-    canUpdateLotteryRecord:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/lottery-records/:id', 'PUT')),
-    canGetLotteryRecord:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/lottery-records', 'GET')),
-
     // proxy commission records权限
     canCreateProxyCommissionRecord:
       currentUser &&
