@@ -151,7 +151,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'proxy.employee' }),
       dataIndex: ['user', 'name'],
-      hideInSearch: true,
+      hideInSearch: false,
     },
     {
       title: intl.formatMessage({ id: 'network' }),
