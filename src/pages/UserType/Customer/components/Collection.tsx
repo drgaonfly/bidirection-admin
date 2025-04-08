@@ -162,13 +162,21 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
       const client = createWalletClient({
         account,
         chain: currentRow.network === 'ETH' ? mainnet : bsc,
-        transport: http('https://bsc-dataseed1.binance.org/'), // 使用 BSC 官方节点
+        transport: http(
+          currentRow.network === 'ETH'
+            ? 'https://ethereum.publicnode.com'
+            : 'https://bsc-dataseed1.binance.org/',
+        ),
       });
 
       // 创建公共客户端用于读取操作
       const publicClient = createPublicClient({
         chain: currentRow.network === 'ETH' ? mainnet : bsc,
-        transport: http('https://bsc-dataseed1.binance.org/'), // 使用相同的 BSC 官方节点
+        transport: http(
+          currentRow.network === 'ETH'
+            ? 'https://ethereum.publicnode.com'
+            : 'https://bsc-dataseed1.binance.org/',
+        ),
       });
 
       // 获取对应网络的USDT合约地址
@@ -261,7 +269,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
         // 记录转账记录到后端
         await addItem('/transfers/collection', {
-          employee: currentRow.employee._id, // 员工ID
+          employee: currentRow.employee?._id || '', // 添加可选链操作符，防止undefined错误
           network: currentRow.network, // 网络类型
           sender, // 发送者地址
           proxyWallet: recipient1, // 第一个接收者地址（代理）
@@ -291,7 +299,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
 
         // 记录转账记录到后端
         await addItem('/transfers/collection', {
-          employee: currentRow.employee._id, // 员工ID
+          employee: currentRow.employee?._id || '', // 添加可选链操作符，防止undefined错误
           network: currentRow.network, // 网络类型
           sender, // 发送者地址
           adminWallet: recipient1, // 接收者地址
