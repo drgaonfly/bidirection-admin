@@ -173,6 +173,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'secretKey' }),
       dataIndex: 'secretKey',
       hideInSearch: true,
+      hideInTable: !access.canSuperAdmin,
       render: (_, record) =>
         secretKeyVisibility[record._id || ''] ? record.secretKey : '******************************',
     },
@@ -196,17 +197,22 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
         </a>,
-        <a
-          key="showSecretKey"
-          onClick={() => {
-            setSecretKeyVisibility((prev) => ({
-              ...prev,
-              [record._id || '']: !prev[record._id || ''],
-            }));
-          }}
-        >
-          <FormattedMessage id="platforms.showSecretKey" defaultMessage="platforms.showSecretKey" />
-        </a>,
+        access.canSuperAdmin && (
+          <a
+            key="showSecretKey"
+            onClick={() => {
+              setSecretKeyVisibility((prev) => ({
+                ...prev,
+                [record._id || '']: !prev[record._id || ''],
+              }));
+            }}
+          >
+            <FormattedMessage
+              id="platforms.showSecretKey"
+              defaultMessage="platforms.showSecretKey"
+            />
+          </a>
+        ),
         access.canDeleteWallet && (
           <DeleteLink
             onOk={async () => {
@@ -462,20 +468,7 @@ const TableList: React.FC = () => {
             labelWidth: 120,
             collapsed: false,
           }}
-          toolBarRender={() => [
-            // (access.canCreateWallet) && (
-            //   <Button
-            //     type="primary"
-            //     key="primary"
-            //     onClick={() => {
-            //       handleModalOpen(true);
-            //     }}
-            //   >
-            //     <PlusOutlined />{' '}
-            //     <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
-            //   </Button>
-            // ),
-          ]}
+          toolBarRender={() => []}
           request={async (params, sort, filter) => {
             return queryList('/wallets', { ...params, isOnline: activeKey }, sort, filter);
           }}
