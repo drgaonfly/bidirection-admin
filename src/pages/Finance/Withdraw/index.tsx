@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Switch } from 'antd';
+import { message, Switch, Button } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -11,6 +11,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import Reject from './components/withdraw';
 // import { Card, Row, Col, Button, Statistic } from 'antd';
 import { NetworkEnum } from '@/enums/networkEnum';
 import StatusEnum from '@/enums/statusEnum';
@@ -107,6 +108,7 @@ const WithdrawPage: React.FC = () => {
    * @zh-CN 分布更新窗口的弹窗
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [rejectModalOpen, setRejectModalOpen] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
@@ -210,6 +212,19 @@ const WithdrawPage: React.FC = () => {
             }}
           />
         ),
+        access.canUpdateWithdraw && record.status !== 'rejected' && (
+          <Button
+            key="reject"
+            type="link"
+            danger
+            onClick={() => {
+              setCurrentRow(record);
+              setRejectModalOpen(true);
+            }}
+          >
+            <FormattedMessage id="pages.reject" defaultMessage="拒绝提现" />
+          </Button>
+        ),
       ],
     },
   ];
@@ -285,6 +300,23 @@ const WithdrawPage: React.FC = () => {
           onCancel={handleUpdateModalOpen}
           updateModalOpen={updateModalOpen}
           values={currentRow || {}}
+        />
+      )}
+      {access.canUpdateWithdraw && (
+        <Reject
+          open={rejectModalOpen}
+          onCancel={setRejectModalOpen}
+          onSubmit={async (value) => {
+            const success = await handleUpdate(value);
+            if (success) {
+              setRejectModalOpen(false);
+              setCurrentRow(undefined);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          values={{ _id: currentRow?._id || '' }}
         />
       )}
       <Show
