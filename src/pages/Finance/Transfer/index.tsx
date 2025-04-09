@@ -157,9 +157,9 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'adminHash', defaultMessage: '平台接收哈希' }),
       dataIndex: 'adminHash',
-      copyable: true,
-      ellipsis: true,
+      hideInSearch: true,
       hideInTable: true,
+      ellipsis: true,
     },
     {
       title: intl.formatMessage({ id: 'proxyWallet', defaultMessage: '代理接收钱包' }),
@@ -181,6 +181,7 @@ const TableList: React.FC = () => {
       copyable: true,
       ellipsis: true,
       hideInTable: true,
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'transferType', defaultMessage: '转账类型' }),

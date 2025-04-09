@@ -129,6 +129,7 @@ const WithdrawPage: React.FC = () => {
       title: intl.formatMessage({ id: 'address' }),
       dataIndex: ['customer', 'address'],
       copyable: true,
+      hideInSearch: false,
     },
     {
       title: intl.formatMessage({ id: 'amount(USDT)' }),
@@ -199,17 +200,6 @@ const WithdrawPage: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        // access.canSuperAdmin && (
-        //   <a
-        //     key="edit"
-        //     onClick={() => {
-        //       setCurrentRow(record);
-        //       handleUpdateModalOpen(true);
-        //     }}
-        //   >
-        //     {intl.formatMessage({ id: 'edit' })}
-        //   </a>
-        // ),
         access.canUpdateWithdraw && (
           <DeleteLink
             key="delete"
