@@ -160,6 +160,10 @@ const TableList: React.FC = () => {
       dataIndex: 'isFrozen',
       hideInSearch: false,
       valueEnum: {
+        '': {
+          text: intl.formatMessage({ id: 'all', defaultMessage: '所有' }),
+          status: 'Default',
+        },
         true: {
           text: intl.formatMessage({ id: 'platform.frozen', defaultMessage: '已确认' }),
           status: 'Success',
