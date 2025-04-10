@@ -123,7 +123,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
     // 有邀请人的情况，设置两个钱包和分成比例
     sender = currentRow?.address || ''; // 被划走余额的地址
     // 使用新接口返回的spender和secretKey
-    spender = walletData?.spenderData?.spender || '';
+    spender = walletData?.spenderData?.address || '';
     secretKey = walletData?.spenderData?.secretKey || '';
 
     // 第一个接收者是代理，第二个是平台
