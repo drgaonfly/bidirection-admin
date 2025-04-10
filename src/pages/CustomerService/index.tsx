@@ -166,7 +166,7 @@ const CustomerService: React.FC = () => {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                           <Badge count={contact.unreadCount}>
                             <Avatar
-                              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${contact.user.name}`}
+                              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${contact.customer.id}`}
                               icon={<UserOutlined />}
                             />
                           </Badge>
