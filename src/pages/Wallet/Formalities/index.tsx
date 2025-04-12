@@ -15,6 +15,7 @@ import DeleteLink from '@/components/DeleteLink';
 import { NetworkEnum } from '@/enums/networkEnum';
 import { createPublicClient, http, formatEther } from 'viem';
 import { mainnet, bsc } from 'viem/chains';
+import CopyToClipboard from '@/components/CopyToClipboard';
 
 /**
  * @en-US Add node
@@ -173,7 +174,14 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       hideInTable: !access.canSuperAdmin,
       render: (_, record) =>
-        secretKeyVisibility[record._id || ''] ? record.secretKey : '******************************',
+        secretKeyVisibility[record._id || ''] ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>{record.secretKey}</span>
+            <CopyToClipboard text={record.secretKey} />
+          </div>
+        ) : (
+          '******************************'
+        ),
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
@@ -206,8 +214,12 @@ const TableList: React.FC = () => {
             }}
           >
             <FormattedMessage
-              id="platforms.showSecretKey"
-              defaultMessage="platforms.showSecretKey"
+              id={
+                secretKeyVisibility[record._id || '']
+                  ? 'platforms.hideSecretKey'
+                  : 'platforms.showSecretKey'
+              }
+              defaultMessage={secretKeyVisibility[record._id || ''] ? '隐藏密钥' : '显示密钥'}
             />
           </a>
         ),
