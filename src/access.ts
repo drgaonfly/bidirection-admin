@@ -132,6 +132,11 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin ||
         checkPermission(currentUser, '/customers/:id/refresh-usdt-balance', 'PUT')),
 
+    //更新是模拟账户还是客户
+    canUpdateCustomerData:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/customers/:id/updateData', 'PUT')),
+
     // member权限
     canCreateMember:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/members', 'POST')),

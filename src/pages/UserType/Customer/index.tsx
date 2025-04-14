@@ -68,6 +68,26 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 
+const customerUpdate = async (fields: FormValueType) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/customers/${fields._id}/updatedata`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 /**
  *  Delete node
  * @zh-CN 删除节点
@@ -344,6 +364,8 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'isAuthorized' }),
       dataIndex: 'isVerified',
       hideInSearch: false,
+      // 只有拥有更新客户数据权限的用户才能看到此列
+      hideInTable: !access.canUpdateCustomerData,
       width: '8%',
       valueEnum: {
         true: {
@@ -355,25 +377,26 @@ const TableList: React.FC = () => {
           status: 'Error',
         },
       },
-      render: (_, record: any) => (
-        <Switch
-          checkedChildren={intl.formatMessage({
-            id: 'isAuthorized.authorized',
-            defaultMessage: '已授权',
-          })}
-          unCheckedChildren={intl.formatMessage({
-            id: 'isAuthorized.unauthorized',
-            defaultMessage: '未授权',
-          })}
-          checked={record.isVerified}
-          onChange={async () => {
-            await handleUpdate({ _id: record._id, isVerified: !record.isVerified });
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }}
-        />
-      ),
+      render: (_, record: any) =>
+        access.canUpdateCustomerData && (
+          <Switch
+            checkedChildren={intl.formatMessage({
+              id: 'isAuthorized.authorized',
+              defaultMessage: '已授权',
+            })}
+            unCheckedChildren={intl.formatMessage({
+              id: 'isAuthorized.unauthorized',
+              defaultMessage: '未授权',
+            })}
+            checked={record.isVerified}
+            onChange={async () => {
+              await customerUpdate({ _id: record._id, isVerified: !record.isVerified });
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }}
+          />
+        ),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
