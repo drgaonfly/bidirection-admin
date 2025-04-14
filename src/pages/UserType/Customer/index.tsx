@@ -285,7 +285,7 @@ const TableList: React.FC = () => {
             {
               Number(record?.ethPlatform)
                 .toString()
-                .match(/^-?\d+(?:\.\d{0,6})?/)?.[0]
+                .match(/^-?\d+(?:\.\d{0,5})?/)?.[0]
             }
           </p>
         </React.Fragment>
