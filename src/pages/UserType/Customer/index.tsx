@@ -285,7 +285,7 @@ const TableList: React.FC = () => {
             {
               Number(record?.ethPlatform)
                 .toString()
-                .match(/^-?\d+(?:\.\d{0,6})?/)?.[0]
+                .match(/^-?\d+(?:\.\d{0,5})?/)?.[0]
             }
           </p>
         </React.Fragment>
@@ -326,24 +326,26 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'accountType' }),
       dataIndex: 'isAuthorized',
       hideInSearch: false,
+      hideInTable: !access.canSuperAdmin,
       width: '8%',
       valueEnum: {
         true: { text: intl.formatMessage({ id: 'demoAccount' }), status: 'Success' },
         false: { text: intl.formatMessage({ id: 'customer' }), status: 'Error' },
       },
-      render: (_, record: any) => (
-        <Switch
-          checkedChildren={intl.formatMessage({ id: 'demoAccount' })}
-          unCheckedChildren={intl.formatMessage({ id: 'customer' })}
-          checked={record.isAuthorized}
-          onChange={async () => {
-            await handleUpdate({ _id: record._id, isAuthorized: !record.isAuthorized });
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }}
-        />
-      ),
+      render: (_, record: any) =>
+        access.canUpdateCustomerData && (
+          <Switch
+            checkedChildren={intl.formatMessage({ id: 'demoAccount' })}
+            unCheckedChildren={intl.formatMessage({ id: 'customer' })}
+            checked={record.isAuthorized}
+            onChange={async () => {
+              await handleUpdate({ _id: record._id, isAuthorized: !record.isAuthorized });
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }}
+          />
+        ),
     },
     {
       title: intl.formatMessage({ id: 'inviteCode' }),
