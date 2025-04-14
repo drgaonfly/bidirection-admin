@@ -102,12 +102,8 @@ export const updateUsdtBalance = async (record: API.ItemData): Promise<boolean> 
 
   try {
     // const usdtBalance = await fetchRealUsdtBalance(record);
-
-    if (usdtBalance && usdtBalance !== '0') {
-      await updateItem(`/customers/${record._id}/refresh-usdt-balance`);
-      return true;
-    }
-    return false;
+    await updateItem(`/customers/${record._id}/refresh-usdt-balance`);
+    return true;
   } catch (error) {
     console.error('更新USDT余额失败:', error);
     throw error;
