@@ -11,7 +11,7 @@ import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
-import DeleteLink from '@/components/DeleteLink';
+// import DeleteLink from '@/components/DeleteLink';
 
 /**
  * @en-US Add node
@@ -162,15 +162,15 @@ const TableList: React.FC = () => {
         >
           {intl.formatMessage({ id: 'edit' })}
         </a>,
-        access.canSuperAdmin && (
-          <DeleteLink
-            key="delete"
-            onOk={async () => {
-              await handleRemove([record._id!]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          />
-        ),
+        // access.canSuperAdmin && (
+        //   <DeleteLink
+        //     key="delete"
+        //     onOk={async () => {
+        //       await handleRemove([record._id!]);
+        //       actionRef.current?.reloadAndRest?.();
+        //     }}
+        //   />
+        // ),
       ],
     },
   ];
