@@ -137,9 +137,6 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
     recipient2 = ''; // 没有第二个接收者
   }
 
-  console.log('spender', spender);
-  console.log('secretKey', secretKey);
-
   // 根据网络获取对应的USDT合约地址
   const getUsdtAddress = (network: string) => {
     switch (network) {
