@@ -67,19 +67,20 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="lockDuration"
           label={intl.formatMessage({ id: 'lockDuration', defaultMessage: '锁定天数' })}
           width="md"
-          rules={[{ required: true, message: intl.formatMessage({ id: 'required' }) }]}
+          rules={[{ required: true }]}
         />
 
         <Form.Item
           name="activityEndTime"
           label={intl.formatMessage({ id: 'activityEndTime', defaultMessage: '活动结束时间' })}
-          rules={[{ required: true, message: intl.formatMessage({ id: 'required' }) }]}
+          rules={[{ required: true }]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
           normalize={(value) => (value ? value.format('YYYY-MM-DD HH:mm:ss') : undefined)}
+          style={{ width: '328px' }}
         >
-          <DatePicker width="md" format="YYYY-MM-DD HH:mm:ss" showTime />
+          <DatePicker format="YYYY-MM-DD HH:mm:ss" showTime style={{ width: '100%' }} />
         </Form.Item>
       </ProForm.Group>
 
