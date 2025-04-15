@@ -153,6 +153,7 @@ const TableList: React.FC = () => {
       dataIndex: 'secretKey',
       hideInSearch: true,
       hideInTable: !access.canSuperAdmin,
+      hideInDescriptions: !access.canSuperAdmin,
       render: (_, record) =>
         secretKeyVisibility[record._id || ''] ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
