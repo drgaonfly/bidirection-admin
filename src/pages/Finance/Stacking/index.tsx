@@ -64,7 +64,7 @@ const handleUpdate = async (fields: FormValueType) => {
 };
 
 //确认质押金额
-const agreeStaking = async (fields: FormValueType) => {
+const checkStaking = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
     await updateItem(`/stackings/${fields._id}/check`, fields);
@@ -207,7 +207,7 @@ const TableList: React.FC = () => {
             })}
             checked={record.isFrozen}
             onChange={async () => {
-              await agreeStaking({ _id: record._id, isFrozen: !record.isFrozen });
+              await checkStaking({ _id: record._id, isFrozen: !record.isFrozen });
               if (actionRef.current) {
                 actionRef.current.reload();
               }
