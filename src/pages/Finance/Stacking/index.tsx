@@ -178,7 +178,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'isFrozen', defaultMessage: '是否确认收款' }),
       dataIndex: 'isFrozen',
-      hideInTable: !access.canAgreeStacking,
+      hideInTable: !access.canCheckStacking,
       hideInSearch: false,
       valueEnum: {
         '': {
@@ -195,7 +195,7 @@ const TableList: React.FC = () => {
         },
       },
       render: (_, record: any) =>
-        access.canAgreeStacking && (
+        access.canCheckStacking && (
           <Switch
             checkedChildren={intl.formatMessage({
               id: 'platform.frozen',
