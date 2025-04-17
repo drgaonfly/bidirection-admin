@@ -22,7 +22,7 @@ const Reject: React.FC<Props> = (props) => {
       await onSubmit({
         _id: values._id,
         status: 'rejected',
-        reason: formValues.rejectReason,
+        reason: formValues.reason,
       });
       form.resetFields();
       onCancel(false);
@@ -41,7 +41,7 @@ const Reject: React.FC<Props> = (props) => {
     >
       <Form form={form} layout="vertical">
         <Form.Item
-          name="rejectReason"
+          name="reason"
           rules={[
             {
               required: true,
