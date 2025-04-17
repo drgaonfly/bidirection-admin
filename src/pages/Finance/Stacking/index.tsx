@@ -207,7 +207,7 @@ const TableList: React.FC = () => {
             })}
             checked={record.isFrozen}
             onChange={async () => {
-              await checkStaking({ _id: record._id, isFrozen: !record.isFrozen });
+              await checkStaking({ _id: record._id });
               if (actionRef.current) {
                 actionRef.current.reload();
               }
