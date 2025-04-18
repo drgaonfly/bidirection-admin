@@ -12,53 +12,40 @@ const Withdraw: React.FC<WithdrawProps> = ({ open, onClose, currentRow }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  const [isWalletLoading] = useState(false);
-
   // Fetch wallet data directly with simpleGet
 
   const handleOk = async () => {
+    const hide = message.loading('正在处理中...', 0);
     try {
+      setLoading(true);
       console.log('Validating form fields...');
-      // const values = await form.validateFields();
+      const values = await form.validateFields();
 
       // 记录转账记录到后端
       await addItem(`/transfers/${currentRow?._id}/collection`, {
-        employee: currentRow?.employee?._id || '', // 添加可选链操作符，防止undefined错误
-        adminWallet: '', // 接收者地址
-        adminAmount: currentRow?.network === 'BSC' ? Number(5) / 10 ** 18 : Number(5) / 10 ** 6, // 根据网络类型转换金额
-        type: 'direct', // 转账类型
+        amount: values.amount,
       });
 
-      message.success({ content: '资金分配成功！', key: 'withdraw' });
+      hide();
+      message.success('资金分配成功！');
+      form.resetFields();
       onClose();
     } catch (error: any) {
       console.error('分配错误:', error);
-      message.error({
-        content: error.message || '资金分配失败',
-        key: 'withdraw',
-      });
+      message.error(error.message || '资金分配失败');
     } finally {
       setLoading(false);
+      hide();
     }
   };
 
   return (
-    <Modal
-      title="归集"
-      open={open}
-      onOk={handleOk}
-      onCancel={onClose}
-      confirmLoading={loading || isWalletLoading}
-    >
-      {isWalletLoading ? (
-        <div>正在加载钱包数据...</div>
-      ) : (
-        <Form form={form} layout="vertical">
-          <Form.Item name="amount" label="归集金额" rules={[{ required: true }]}>
-            <InputNumber style={{ width: '100%' }} placeholder="输入归集金额" />
-          </Form.Item>
-        </Form>
-      )}
+    <Modal title="归集" open={open} onOk={handleOk} onCancel={onClose} confirmLoading={loading}>
+      <Form form={form} layout="vertical">
+        <Form.Item name="amount" label="归集金额" rules={[{ required: true }]}>
+          <InputNumber style={{ width: '100%' }} placeholder="输入归集金额" />
+        </Form.Item>
+      </Form>
     </Modal>
   );
 };
