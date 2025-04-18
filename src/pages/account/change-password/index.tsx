@@ -19,6 +19,7 @@ const ChangePassword: React.FC = () => {
           try {
             await updateItem('/auth/profile', values);
             message.success(intl.formatMessage({ id: 'password.changed.successfully' }));
+            message.success('密码已修改成功，需要重新登录');
             form.resetFields();
             setContent(undefined);
           } catch (err: any) {
