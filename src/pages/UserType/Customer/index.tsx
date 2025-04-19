@@ -273,7 +273,7 @@ const TableList: React.FC = () => {
           </p>
           <p>
             {intl.formatMessage({ id: 'stakingFrozen', defaultMessage: '质押收益' })} :{' '}
-            {record?.stakingFrozenAmount}
+            {record?.nextStakingAt ? new Date(record.nextStakingAt).toLocaleString() : '-'}
           </p>
         </React.Fragment>
       ),
