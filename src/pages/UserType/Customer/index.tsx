@@ -67,6 +67,28 @@ const handleUpdate = async (fields: FormValueType) => {
   }
 };
 
+//暂停收益
+const handlePauseEarnings = async (fields: FormValueType) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    // 调用暂停/恢复收益的接口
+    await updateItem(`/customers/${fields._id}/pause-income`, {});
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 const handleVerified = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
@@ -476,8 +498,25 @@ const TableList: React.FC = () => {
             </a>
           )}
           {access.canUpdateCustomer && (
-            <a key="pause" onClick={() => {}} style={{ width: '100%', textAlign: 'center' }}>
-              <FormattedMessage id="pause" defaultMessage="暂停收益" />
+            <a
+              key="pause"
+              onClick={async () => {
+                // 切换暂停状态
+                const success = await handlePauseEarnings({
+                  _id: record._id,
+                  isPausedIncome: !record.isPausedIncome,
+                });
+                if (success && actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }}
+              style={{ width: '100%', textAlign: 'center' }}
+            >
+              {record.isPausedIncome ? (
+                <FormattedMessage id="resume" defaultMessage="恢复收益" />
+              ) : (
+                <FormattedMessage id="pause" defaultMessage="暂停收益" />
+              )}
             </a>
           )}
           <a
