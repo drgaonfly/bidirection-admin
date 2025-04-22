@@ -2,6 +2,7 @@ import React from 'react';
 import { EditableProTable, ProColumns } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
 import { useIntl } from '@umijs/max';
+import { Typography } from 'antd';
 
 interface EmployeeTableProps {
   employees: API.ItemData[];
@@ -29,10 +30,14 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'role' }),
+      title: intl.formatMessage({ id: 'inviteCode' }),
       dataIndex: 'roles',
       hideInSearch: true,
-      render: (roles: any) => roles.map((role: any) => role.name).join(', '), // 新增：显示角色名称
+      render: (inviteCode, record) => {
+        if (!inviteCode) return '-';
+        const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?key=${record.inviteCode}`;
+        return <Typography.Text copyable>{fullUrl}</Typography.Text>;
+      },
     },
   ];
 
