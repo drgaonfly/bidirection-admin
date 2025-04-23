@@ -1,8 +1,14 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormDigit, ProFormSwitch } from '@ant-design/pro-components';
+import {
+  ProForm,
+  ProFormDigit,
+  ProFormSwitch,
+  ProFormTreeSelect,
+} from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import EmployeeSelect from '@/components/employeeSelect';
+import useQueryList from '@/hooks/useQueryList';
 
 interface Props {
   newRecord?: boolean;
@@ -13,6 +19,8 @@ interface Props {
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
   const [form] = Form.useForm();
+
+  const { items: customers, loading: loading } = useQueryList('/customers');
 
   return (
     <ProForm
@@ -118,6 +126,31 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           initialValue={false}
         />
       </ProForm.Group>
+
+      <ProFormTreeSelect
+        name="parent"
+        rules={[{ required: false }]}
+        width="md"
+        label={intl.formatMessage({ id: 'parent' })}
+        allowClear
+        secondary
+        fieldProps={{
+          showArrow: false,
+          treeDefaultExpandAll: true,
+          filterTreeNode: true,
+          showSearch: true,
+          dropdownMatchSelectWidth: false,
+          autoClearSearchValue: true,
+          treeNodeFilterProp: 'name',
+          fieldNames: {
+            label: 'id',
+            value: '_id',
+            children: 'children',
+          },
+          treeData: customers,
+          loading: loading,
+        }}
+      />
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>
