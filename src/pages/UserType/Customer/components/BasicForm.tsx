@@ -131,7 +131,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         name="parent"
         rules={[{ required: false }]}
         width="md"
-        label={intl.formatMessage({ id: 'parent' })}
+        label={intl.formatMessage({ id: 'parent_customer_id' })}
         allowClear
         secondary
         fieldProps={{
