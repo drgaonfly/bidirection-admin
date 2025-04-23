@@ -113,7 +113,7 @@ const TableList: React.FC = () => {
       dataIndex: 'incomeRate',
       hideInForm: false,
       hideInSearch: true,
-      valueType: 'digit',
+      valueType: 'percent',
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
