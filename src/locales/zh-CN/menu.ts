@@ -46,6 +46,7 @@ export default {
   'menu.list.activities': '活动',
   'menu.list.activities.list.activities.index': '活动列表',
   'menu.list.activities.list.activities.release-records': '活动发布记录',
+  'menu.list.chats': '聊天记录',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -65,6 +66,7 @@ export default {
   'menu.mining-output': '采矿产出管理',
   'menu.settings': '设置',
   'menu.records': '记录',
+  'menu.chats': '聊天记录',
 
   'menu.user-type': '用户类型',
   'menu.user-type.proxies': '代理',
@@ -141,6 +143,8 @@ export default {
   'menu.财务管理.划转管理': '划转管理',
   'menu.财务管理.收益管理': '收益管理',
   'menu.财务管理.质押管理': '质押管理',
+
+  'menu.聊天记录': '聊天记录',
 
   'menu.客服': '客服',
 

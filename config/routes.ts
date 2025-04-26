@@ -304,6 +304,12 @@ export default [
     component: './Record',
   },
   {
+    path: '/chats',
+    name: 'list.chats',
+    icon: 'MessageOutlined',
+    component: './Chat',
+  },
+  {
     path: '/customer-service',
     name: 'list.customer-service',
     icon: 'CustomerServiceOutlined',

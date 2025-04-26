@@ -22,6 +22,7 @@ export default {
   'menu.settings': 'Settings',
   'menu.records': 'Records',
   'menu.customer-service': 'Customer Service',
+  'menu.chats': 'Chats',
 
   'menu.user-type': 'User Type',
   'menu.user-type.proxies': 'Proxies',
@@ -78,6 +79,8 @@ export default {
   'menu.内容管理.私信管理': 'Notifications',
   'menu.内容管理.问答管理': 'Questions',
   'menu.内容管理.通知管理': 'Notices',
+
+  'menu.聊天记录': 'Chats',
 
   'menu.财务管理': 'Finance Management',
   'menu.财务管理.兑换管理': 'Exchanges',

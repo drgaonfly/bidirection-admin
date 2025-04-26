@@ -1,8 +1,8 @@
 import { useIntl } from '@umijs/max';
 import { PageContainer } from '@ant-design/pro-components';
-import { Button, List, Avatar, Typography, Spin } from 'antd';
+import { Button, List, Avatar, Typography, Spin, Popconfirm } from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
-import { SendOutlined, UserOutlined } from '@ant-design/icons';
+import { SendOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import useQueryList from '@/hooks/useQueryList';
 import { queryList } from '@/services/ant-design-pro/api';
 import { request } from '@umijs/max';
@@ -68,10 +68,11 @@ const CustomerService: React.FC = () => {
   const [messageInput, setMessageInput] = useState('');
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [deletingMessage, setDeletingMessage] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const socketRef = useRef<any>(null);
 
-  const { items: contacts } = useQueryList('/chats');
+  const { items: contacts, loading: loadingContacts } = useQueryList('/chats/latest');
 
   console.log('contacts', contacts);
 
@@ -84,7 +85,11 @@ const CustomerService: React.FC = () => {
         const response: any = await queryList('/chats/user-messages', {
           customerId: selectedContact.customer._id,
         });
-        setMessages(response.data);
+        setMessages(
+          access.canSuperAdmin
+            ? response.data
+            : response.data.filter((msg: any) => !msg.isSoftDeleted),
+        );
       } catch (error) {
         console.error('获取消息失败:', error);
       }
@@ -130,6 +135,27 @@ const CustomerService: React.FC = () => {
     }
   };
 
+  const handleSoftDelete = async (messageId: string) => {
+    if (!messageId || deletingMessage) return;
+
+    setDeletingMessage(messageId);
+    try {
+      await request('/chats/soft-delete', {
+        method: 'POST',
+        data: {
+          ids: [messageId],
+        },
+      });
+
+      // 刷新消息列表
+      await fetchMessages();
+    } catch (error) {
+      console.error('软删除消息失败:', error);
+    } finally {
+      setDeletingMessage(null);
+    }
+  };
+
   const handleSendMessage = () => {
     sendMessage();
   };
@@ -146,90 +172,107 @@ const CustomerService: React.FC = () => {
           }}
         >
           <div style={{ padding: '10px' }}>
-            <Title level={4}>
-              {intl.formatMessage({ id: 'contacts', defaultMessage: '联系人' })}
+            <Title level={4} style={{ fontSize: '14px', fontWeight: 'normal' }}>
+              {intl.formatMessage({ id: 'contacts', defaultMessage: '工作人员' })}
             </Title>
-            <List
-              dataSource={
-                access.canSuperAdmin
-                  ? contacts
-                  : contacts.filter(
-                      (contact) => (contact as any).user._id === (currentUser as any)._id,
-                    )
-              }
-              renderItem={(contact: any) => (
-                <List.Item
-                  onClick={() =>
-                    setSelectedContact({
-                      ...contact,
-                      id: contact.customer._id,
-                      name: contact.customer.name,
-                      online: contact.customer.isOnline,
-                    })
-                  }
-                  style={{
-                    cursor: 'pointer',
-                    backgroundColor:
-                      selectedContact?.id === contact.customer._id ? '#e6f7ff' : 'transparent',
-                    borderRight:
-                      selectedContact?.id === contact.customer._id ? '3px solid #1890ff' : 'none',
-                    padding: '10px',
-                    borderRadius: '4px',
-                    transition: 'all 0.3s',
-                    color: selectedContact?.id === contact.customer._id ? '#1890ff' : 'inherit',
-                  }}
-                  className="contact-item-hover"
-                >
-                  <List.Item.Meta
-                    title={
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <Badge count={contact.unreadCount}>
-                          <Avatar
-                            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${contact.customer._id}`}
-                          />
-                        </Badge>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <span
-                            style={{
-                              width: '8px',
-                              height: '8px',
-                              borderRadius: '50%',
-                              backgroundColor: contact.customer.isOnline ? '#52c41a' : '#f5222d',
-                              display: 'inline-block',
-                            }}
-                          />
-                          <Text style={{ fontSize: '12px' }}>
-                            {contact.customer.isOnline
-                              ? intl.formatMessage({ id: 'platform.online' })
-                              : intl.formatMessage({ id: 'platform.offline' })}
+            {loadingContacts ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '28rem',
+                }}
+              >
+                <Spin
+                  tip={intl.formatMessage({
+                    id: 'loading.contacts',
+                    defaultMessage: '加载联系人中...',
+                  })}
+                />
+              </div>
+            ) : (
+              <List
+                dataSource={
+                  access.canSuperAdmin
+                    ? contacts
+                    : contacts.filter(
+                        (contact) => (contact as any).user._id === (currentUser as any)._id,
+                      )
+                }
+                renderItem={(contact: any) => (
+                  <List.Item
+                    onClick={() =>
+                      setSelectedContact({
+                        ...contact,
+                        id: contact.customer._id,
+                        name: contact.customer.name,
+                        online: contact.customer.isOnline,
+                      })
+                    }
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor:
+                        selectedContact?.id === contact.customer._id ? '#e6f7ff' : 'transparent',
+                      borderRight:
+                        selectedContact?.id === contact.customer._id ? '3px solid #1890ff' : 'none',
+                      padding: '10px',
+                      borderRadius: '4px',
+                      transition: 'all 0.3s',
+                      color: selectedContact?.id === contact.customer._id ? '#1890ff' : 'inherit',
+                    }}
+                    className="contact-item-hover"
+                  >
+                    <List.Item.Meta
+                      title={
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <Badge count={contact.unreadCount}>
+                            <Avatar
+                              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${contact.customer._id}`}
+                            />
+                          </Badge>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span
+                              style={{
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                backgroundColor: contact.customer.isOnline ? '#52c41a' : '#f5222d',
+                                display: 'inline-block',
+                              }}
+                            />
+                            <Text style={{ fontSize: '12px' }}>
+                              {contact.customer.isOnline
+                                ? intl.formatMessage({ id: 'platform.online' })
+                                : intl.formatMessage({ id: 'platform.offline' })}
+                            </Text>
+                          </div>
+                        </div>
+                      }
+                      description={
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Text ellipsis style={{ maxWidth: '100%' }}>
+                            {contact.lastMessage}
                           </Text>
+                          <div
+                            style={{
+                              fontSize: '12px',
+                              color: '#999',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <span>{contact.customer.network}-</span>
+                            <Typography.Text copyable style={{ fontSize: '12px', color: '#999' }}>
+                              {contact.customer.address}
+                            </Typography.Text>
+                          </div>
                         </div>
-                      </div>
-                    }
-                    description={
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Text ellipsis style={{ maxWidth: '100%' }}>
-                          {contact.lastMessage}
-                        </Text>
-                        <div
-                          style={{
-                            fontSize: '12px',
-                            color: '#999',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <span>{contact.customer.network}-</span>
-                          <Typography.Text copyable style={{ fontSize: '12px', color: '#999' }}>
-                            {contact.customer.address}
-                          </Typography.Text>
-                        </div>
-                      </div>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            )}
           </div>
         </div>
 
@@ -281,42 +324,89 @@ const CustomerService: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    {messages.map((msg: any) => {
-                      const isCustomer = msg.sender === 'customer';
-                      return (
-                        <div
-                          key={msg.id}
-                          style={{
-                            alignSelf: isCustomer ? 'flex-start' : 'flex-end',
-                            maxWidth: '70%',
-                            marginBottom: '10%',
-                          }}
-                        >
+                    {messages // 添加这一行过滤掉被软删除的消息
+                      .map((msg: any) => {
+                        const isCustomer = msg.sender === 'customer';
+                        const isSoftDeleted = msg.isSoftDeleted;
+                        return (
                           <div
+                            key={msg._id}
                             style={{
-                              backgroundColor: isCustomer ? '#f0f0f0' : '#1890ff',
-                              color: isCustomer ? 'black' : 'white',
-                              wordBreak: 'break-word',
+                              alignSelf: isCustomer ? 'flex-start' : 'flex-end',
+                              maxWidth: '70%',
+                              marginBottom: '10%',
+                              position: 'relative',
                             }}
                           >
-                            <ReactQuill value={msg.message} readOnly={true} theme="bubble" />
+                            <div
+                              style={{
+                                backgroundColor: isSoftDeleted
+                                  ? 'rgba(255, 0, 0, 0.1)'
+                                  : isCustomer
+                                  ? '#f0f0f0'
+                                  : '#1890ff',
+                                color: isCustomer ? 'black' : 'white',
+                                wordBreak: 'break-word',
+                                position: 'relative',
+                              }}
+                            >
+                              <ReactQuill value={msg.message} readOnly={true} theme="bubble" />
+                              <span
+                                style={{
+                                  position: 'absolute',
+                                  bottom: '-15px',
+                                  left: '5px',
+                                  fontSize: '10px',
+                                  color: 'red',
+                                }}
+                              >
+                                {isSoftDeleted ? '已删除' : ''}
+                              </span>
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  top: '5px',
+                                  right: '5px',
+                                  opacity: 0.7,
+                                  cursor: 'pointer',
+                                  zIndex: 10,
+                                  color: isCustomer ? 'black' : 'white',
+                                }}
+                              >
+                                {access.canSoftDeleteChat && (
+                                  <Popconfirm
+                                    title={intl.formatMessage({
+                                      id: 'delete.message.confirm',
+                                      defaultMessage: '确定要删除这条消息吗？',
+                                    })}
+                                    onConfirm={() => handleSoftDelete(msg._id)}
+                                    okText={intl.formatMessage({ id: 'yes', defaultMessage: '是' })}
+                                    cancelText={intl.formatMessage({
+                                      id: 'no',
+                                      defaultMessage: '否',
+                                    })}
+                                  >
+                                    <DeleteOutlined spin={deletingMessage === msg._id} />
+                                  </Popconfirm>
+                                )}
+                              </div>
+                            </div>
+                            <div
+                              style={{
+                                fontSize: '12px',
+                                color: '#999',
+                                marginTop: '5px',
+                                textAlign: isCustomer ? 'left' : 'right',
+                              }}
+                            >
+                              {new Date(msg.createdAt).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </div>
                           </div>
-                          <div
-                            style={{
-                              fontSize: '12px',
-                              color: '#999',
-                              marginTop: '5px',
-                              textAlign: isCustomer ? 'left' : 'right',
-                            }}
-                          >
-                            {new Date(msg.createdAt).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                     <div ref={messagesEndRef} />
                   </>
                 )}

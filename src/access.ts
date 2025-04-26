@@ -446,9 +446,22 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetTeamBenefit:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/team-benefits', 'GET')),
 
+    // chats 权限
+    canCreateChat:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/chats', 'POST')),
+    canDeleteChat:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/chats', 'DELETE')),
+    canUpdateChat:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/chats/:id', 'PUT')),
+    canGetChat:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/chats', 'GET')),
+
     // customer service 权限
     canGetCustomerService:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/customer-service', 'GET')),
+    canSoftDeleteChat:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/chats/soft-delete', 'PUT')),
   };
 }

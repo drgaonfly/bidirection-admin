@@ -1,1 +1,1 @@
-declare module 'emoji-mart';
+declare module 'quill-image-resize-module-react';
