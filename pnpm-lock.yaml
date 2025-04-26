@@ -92,6 +92,9 @@ importers:
       socket.io-client:
         specifier: ^4.8.1
         version: 4.8.1
+      timeago.js:
+        specifier: ^4.0.2
+        version: 4.0.2
       use-sound:
         specifier: ^4.0.4
         version: 4.0.4(react@18.3.1)
@@ -10649,6 +10652,9 @@ packages:
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
+
+  timeago.js@4.0.2:
+    resolution: {integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==}
 
   timers-browserify@2.0.12:
     resolution: {integrity: sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==}
@@ -26103,6 +26109,8 @@ snapshots:
   throttle-debounce@5.0.2: {}
 
   through@2.3.8: {}
+
+  timeago.js@4.0.2: {}
 
   timers-browserify@2.0.12:
     dependencies:

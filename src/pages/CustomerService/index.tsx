@@ -10,6 +10,7 @@ import Editor from '@/components/Editor';
 import ReactQuill from 'react-quill';
 import { useModel } from '@umijs/max';
 import { useAccess } from '@umijs/max';
+import { format } from 'timeago.js';
 
 const { Title, Text } = Typography;
 
@@ -110,7 +111,7 @@ const CustomerService: React.FC = () => {
 
     setSendingMessage(true);
     try {
-      await request('/chats/add-user-messages', {
+      const { data } = await request('/chats/add-user-messages', {
         method: 'POST',
         data: {
           message: messageInput,
@@ -118,7 +119,8 @@ const CustomerService: React.FC = () => {
         },
       });
 
-      await Promise.all([fetchMessages()]);
+      // 更新消息列表,添加新消息
+      setMessages([...messages, data]);
 
       setMessageInput('');
 
@@ -146,9 +148,6 @@ const CustomerService: React.FC = () => {
           ids: [messageId],
         },
       });
-
-      // 刷新消息列表
-      await fetchMessages();
     } catch (error) {
       console.error('软删除消息失败:', error);
     } finally {
@@ -165,7 +164,7 @@ const CustomerService: React.FC = () => {
       <div style={{ display: 'flex', height: 'calc(100vh - 100px)' }}>
         <div
           style={{
-            width: '300px',
+            width: '400px',
             borderRight: '1px solid #f0f0f0',
             height: '100%',
             overflow: 'auto',
@@ -245,6 +244,9 @@ const CustomerService: React.FC = () => {
                                 ? intl.formatMessage({ id: 'platform.online' })
                                 : intl.formatMessage({ id: 'platform.offline' })}
                             </Text>
+                            <span style={{ fontSize: '12px', marginLeft: '4px' }}>
+                              {format(contact.lastOnline, 'zh_CN')}
+                            </span>
                           </div>
                         </div>
                       }
@@ -324,8 +326,8 @@ const CustomerService: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    {messages // 添加这一行过滤掉被软删除的消息
-                      .map((msg: any) => {
+                    {Array.isArray(messages) &&
+                      messages.map((msg: any) => {
                         const isCustomer = msg.sender === 'customer';
                         const isSoftDeleted = msg.isSoftDeleted;
                         return (
@@ -355,9 +357,9 @@ const CustomerService: React.FC = () => {
                                 style={{
                                   position: 'absolute',
                                   bottom: '-15px',
-                                  left: '5px',
                                   fontSize: '10px',
                                   color: 'red',
+                                  right: isCustomer ? '0' : '120px',
                                 }}
                               >
                                 {isSoftDeleted ? '已删除' : ''}
