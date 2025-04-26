@@ -102,34 +102,34 @@ const TableList: React.FC = () => {
    * */
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'customer', defaultMessage: 'ID' }),
-      dataIndex: ['customer', 'id'],
+      title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
+      dataIndex: ['parent', 'id'],
       hideInForm: false,
       hideInSearch: false,
     },
     {
-      title: intl.formatMessage({ id: 'fromAddress', defaultMessage: '地址' }),
-      dataIndex: 'fromAddress',
-      hideInForm: false,
-      hideInSearch: false,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'fromNetwork', defaultMessage: '网络' }),
-      dataIndex: 'fromNetwork',
-      hideInForm: false,
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'toAddress', defaultMessage: '转入地址' }),
+      title: intl.formatMessage({ id: 'toAddress', defaultMessage: '地址' }),
       dataIndex: 'toAddress',
       hideInForm: false,
       hideInSearch: false,
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'toNetwork', defaultMessage: '转入网络' }),
+      title: intl.formatMessage({ id: 'toNetwork', defaultMessage: '网络' }),
       dataIndex: 'toNetwork',
+      hideInForm: false,
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'fromAddress', defaultMessage: '邀请人地址' }),
+      dataIndex: 'fromAddress',
+      hideInForm: false,
+      hideInSearch: false,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'fromNetwork', defaultMessage: '邀请人网络' }),
+      dataIndex: 'fromNetwork',
       hideInForm: false,
       hideInSearch: true,
     },
