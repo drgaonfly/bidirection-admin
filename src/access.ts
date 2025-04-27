@@ -127,7 +127,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     // 一键归集权限
     canCollection:
       currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transfers/collection', 'POST')),
+      (currentUser.isAdmin || checkPermission(currentUser, '/transfers/:id/collection', 'POST')),
 
     // 刷新USDT余额权限
     canRefreshUsdtBalance:
