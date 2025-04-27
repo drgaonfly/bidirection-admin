@@ -3,6 +3,7 @@ import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import jwtDecode from 'jwt-decode';
 import { refreshToken } from './services/ant-design-pro/api';
+import { history } from '@umijs/max';
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -77,9 +78,17 @@ export const errorConfig: RequestConfig = {
           }
         }
       } else if (error.response) {
+        console.log('error.response', error.response);
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        if (error.response.status === 403) {
+        if (
+          error.response.status === 401 &&
+          error.response?.data?.message === 'invalid signature'
+        ) {
+          message.error('登录已过期，请重新登录');
+          // 跳转到登录页面
+          history.push('/user/login');
+        } else if (error.response.status === 403) {
           message.error('没有权限');
         } else {
           message.error(`${error.response?.data?.message}`);
