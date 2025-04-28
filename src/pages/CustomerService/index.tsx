@@ -297,9 +297,9 @@ const CustomerService: React.FC = () => {
                               alignItems: 'center',
                             }}
                           >
-                            <span>{contact.customer.network}-</span>
+                            <span>{contact.customer?.network}-</span>
                             <Typography.Text copyable style={{ fontSize: '12px', color: '#999' }}>
-                              {contact.customer.address}
+                              {contact.customer?.address}
                             </Typography.Text>
                           </div>
                         </div>
