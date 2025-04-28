@@ -99,7 +99,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'language' })}
           options={[
             { label: 'en', value: 'en' },
-            { label: 'zh', value: 'zh' },
             { label: 'zh-TW', value: 'zh-TW' },
             { label: 'ja', value: 'ja' },
             { label: 'ko', value: 'ko' },
