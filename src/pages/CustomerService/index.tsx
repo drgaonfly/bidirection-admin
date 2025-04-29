@@ -12,6 +12,7 @@ import { useModel } from '@umijs/max';
 import { useAccess } from '@umijs/max';
 import { format } from 'timeago.js';
 import { playSound } from '@/components/socketNotification/NotificationBadge';
+import { ReloadOutlined } from '@ant-design/icons'; // 引入重置图标
 
 const { Title, Text } = Typography;
 
@@ -226,10 +227,6 @@ const CustomerService: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchContacts();
-  }, [searchInput]);
-
   return (
     <PageContainer>
       <div style={{ display: 'flex', height: 'calc(100vh - 100px)' }}>
@@ -260,10 +257,22 @@ const CustomerService: React.FC = () => {
                   backgroundColor: '#fff',
                   color: '#000',
                 }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#1890ff'; // 蓝色边框
+                  e.target.style.boxShadow = '0 0 0 2px rgba(24, 144, 255, 0.2)'; // 蓝色阴影
+                }}
               />
               <Button type="primary" onClick={fetchContacts}>
                 {intl.formatMessage({ id: 'search', defaultMessage: '搜索' })}
               </Button>
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={() => {
+                  setSearchInput(''); // 清空输入框的值
+                  fetchContacts(); // 调用接口时不传递 searchInput
+                }}
+                style={{ marginLeft: '10px' }}
+              />
             </div>
             {loadingContacts ? (
               <div
