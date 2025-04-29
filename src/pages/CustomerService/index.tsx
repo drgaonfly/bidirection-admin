@@ -1,15 +1,24 @@
 import { useIntl } from '@umijs/max';
 import { PageContainer } from '@ant-design/pro-components';
-import { Button, List, Avatar, Typography, Spin, Popconfirm } from 'antd';
+import {
+  Button,
+  List,
+  Avatar,
+  Typography,
+  Spin,
+  Popconfirm,
+  Input,
+  Modal,
+  message,
+  Badge,
+} from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
 import { SendOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import useQueryList from '@/hooks/useQueryList';
-import { queryList } from '@/services/ant-design-pro/api';
-import { request } from '@umijs/max';
+import { queryList, updateItem } from '@/services/ant-design-pro/api';
+import { request, FormattedMessage, useModel, useAccess } from '@umijs/max';
 import Editor from '@/components/Editor';
 import ReactQuill from 'react-quill';
-import { useModel } from '@umijs/max';
-import { useAccess } from '@umijs/max';
 import { format } from 'timeago.js';
 import { playSound } from '@/components/socketNotification/NotificationBadge';
 import { ReloadOutlined } from '@ant-design/icons'; // 引入重置图标
@@ -33,7 +42,10 @@ interface Contact {
   online?: boolean;
 }
 
-const Badge: React.FC<{ count?: number; children: React.ReactNode }> = ({ count, children }) => {
+const CustomizedBadge: React.FC<{ count?: number; children: React.ReactNode }> = ({
+  count,
+  children,
+}) => {
   if (!count || count <= 0) return <>{children}</>;
 
   return (
@@ -73,12 +85,54 @@ const CustomerService: React.FC = () => {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [deletingMessage, setDeletingMessage] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [remarkModalVisible, setRemarkModalVisible] = useState(false);
+  const [remarkInput, setRemarkInput] = useState('');
+  const [editingContactId, setEditingContactId] = useState<string | null>(null);
 
   const {
     items: contacts,
     setItems: setContacts,
     loading: loadingContacts,
+    setLoading: setLoadingContacts,
   } = useQueryList('/chats/latest');
+
+  // 弹出修改备注窗口
+  const handleUpdateRemark = (contactId: string, currentRemark: string = '') => {
+    setEditingContactId(contactId);
+    setRemarkInput(currentRemark || '');
+    setRemarkModalVisible(true);
+  };
+
+  // 提交备注修改
+  const submitRemarkUpdate = async () => {
+    const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+    if (!editingContactId) return;
+    try {
+      await updateItem(`/customers/${editingContactId}/remark`, { remark: remarkInput.trim() });
+      hide();
+
+      message.success(
+        <FormattedMessage id="update_successful" defaultMessage="Update successful" />,
+      );
+      // 更新前端联系人列表中的备注
+      setContacts((prevContacts: any) =>
+        prevContacts.map((contact: any) =>
+          contact.customer?._id === editingContactId
+            ? {
+                ...contact,
+                customer: {
+                  ...contact.customer,
+                  remark: remarkInput.trim(),
+                },
+              }
+            : contact,
+        ),
+      );
+      setRemarkModalVisible(false);
+    } catch (error) {
+      console.error('更新备注失败:', error);
+    }
+  };
 
   // Use the customer status model to track online status
   const { customerStatus } = useModel('customerStatusModel');
@@ -173,6 +227,7 @@ const CustomerService: React.FC = () => {
   const fetchMessages = async () => {
     if (selectedContact?.customer?._id) {
       setLoadingMessages(true);
+
       try {
         const response: any = await queryList('/chats/user-messages', {
           customerId: selectedContact.customer?._id,
@@ -248,6 +303,7 @@ const CustomerService: React.FC = () => {
   // 更新联系人列表时使用搜索输入
   const fetchContacts = async (address = '') => {
     // 添加参数 address，默认值为空字符串
+    setLoadingContacts(true);
     try {
       const response: any = await queryList('/chats/latest', {
         address: address.trim(), // 使用传入的 address 参数
@@ -255,6 +311,8 @@ const CustomerService: React.FC = () => {
       setContacts(response.data);
     } catch (error) {
       console.error('获取联系人失败:', error);
+    } finally {
+      setLoadingContacts(false);
     }
   };
 
@@ -263,35 +321,21 @@ const CustomerService: React.FC = () => {
       <div style={{ display: 'flex', height: 'calc(100vh - 100px)' }}>
         <div
           style={{
-            width: '400px',
+            width: 'auto',
             borderRight: '1px solid #f0f0f0',
             height: '100%',
             overflow: 'auto',
           }}
         >
           <div style={{ padding: '10px' }}>
-            <div style={{ display: 'flex', marginBottom: '10px' }}>
-              <input
-                type="text"
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <Input
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder={intl.formatMessage({
                   id: 'search.contacts',
                   defaultMessage: '搜索地址...',
                 })}
-                style={{
-                  flex: 1,
-                  marginRight: '10px',
-                  padding: '5px',
-                  border: '1px solid #d9d9d9',
-                  borderRadius: '4px',
-                  backgroundColor: '#fff',
-                  color: '#000',
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#1890ff'; // 蓝色边框
-                  e.target.style.boxShadow = '0 0 0 2px rgba(24, 144, 255, 0.2)'; // 蓝色阴影
-                }}
               />
               <Button type="primary" onClick={() => fetchContacts(searchInput)}>
                 {intl.formatMessage({ id: 'search', defaultMessage: '搜索' })}
@@ -302,7 +346,6 @@ const CustomerService: React.FC = () => {
                   setSearchInput(''); // 清空输入框的值
                   fetchContacts(''); // 调用接口时传递空字符串
                 }}
-                style={{ marginLeft: '10px' }}
               />
             </div>
             {loadingContacts ? (
@@ -331,14 +374,7 @@ const CustomerService: React.FC = () => {
                 }
                 renderItem={(contact: any) => (
                   <List.Item
-                    onClick={() =>
-                      setSelectedContact({
-                        ...contact,
-                        id: contact.customer?._id,
-                        name: contact.customer?.name,
-                        online: contact.customer?.isOnline,
-                      })
-                    }
+                    onClick={() => setSelectedContact(contact)}
                     style={{
                       cursor: 'pointer',
                       backgroundColor:
@@ -357,11 +393,11 @@ const CustomerService: React.FC = () => {
                     <List.Item.Meta
                       title={
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                          <Badge count={contact.unreadCount}>
+                          <CustomizedBadge count={contact.unreadCount}>
                             <Avatar
                               src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${contact.customer?._id}`}
                             />
-                          </Badge>
+                          </CustomizedBadge>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                             <span
                               style={{
@@ -382,6 +418,19 @@ const CustomerService: React.FC = () => {
                                 ? format(contact.customer?.lastOnline, 'zh_CN')
                                 : null}
                             </span>
+                            <span
+                              style={{
+                                fontSize: '12px',
+                                marginLeft: '4px',
+                                cursor: 'pointer',
+                                color: '#1890ff',
+                              }}
+                              onClick={() =>
+                                handleUpdateRemark(contact.customer?._id, contact.customer?.remark)
+                              }
+                            >
+                              {contact.customer?.remark ? contact.customer.remark : '设置备注名'}
+                            </span>
                           </div>
                         </div>
                       }
@@ -399,7 +448,11 @@ const CustomerService: React.FC = () => {
                             }}
                           >
                             <span>{contact.customer?.network}-</span>
-                            <Typography.Text copyable style={{ fontSize: '12px', color: '#999' }}>
+                            <Typography.Text
+                              copyable
+                              style={{ fontSize: '12px', color: '#999' }}
+                              ellipsis={{ tooltip: contact.customer?.address }}
+                            >
                               {contact.customer?.address}
                             </Typography.Text>
                           </div>
@@ -419,19 +472,29 @@ const CustomerService: React.FC = () => {
               <div style={{ padding: '10px 20px', borderBottom: '1px solid #f0f0f0' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <Avatar
-                    src={selectedContact.avatar}
-                    icon={!selectedContact.avatar && <UserOutlined />}
+                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${selectedContact.customer?._id}`}
+                    icon={<UserOutlined />}
                     style={{ marginRight: '10px' }}
                   />
                   <div>
-                    <Title level={5} style={{ margin: 0 }}>
-                      {selectedContact?.name}
+                    <Title
+                      level={5}
+                      style={{ margin: 0, color: '#1890ff' }}
+                      onClick={() =>
+                        handleUpdateRemark(
+                          selectedContact.customer?._id,
+                          selectedContact.customer?.remark,
+                        )
+                      }
+                    >
+                      {selectedContact?.customer?.remark}
                     </Title>
-                    {selectedContact.online && (
-                      <Text type="success" style={{ fontSize: '12px' }}>
-                        Online
-                      </Text>
-                    )}
+                  </div>
+                  <div>
+                    <Badge
+                      status={selectedContact.customer?.isOnline ? 'success' : 'error'}
+                      style={{ marginLeft: '10px' }}
+                    />
                   </div>
                 </div>
               </div>
@@ -621,6 +684,25 @@ const CustomerService: React.FC = () => {
           )}
         </div>
       </div>
+
+      <Modal
+        title={intl.formatMessage({ id: 'edit.remark', defaultMessage: '修改备注' })}
+        open={remarkModalVisible}
+        onCancel={() => setRemarkModalVisible(false)}
+        onOk={submitRemarkUpdate}
+        okText={intl.formatMessage({ id: 'confirm', defaultMessage: '确认' })}
+        cancelText={intl.formatMessage({ id: 'cancel', defaultMessage: '取消' })}
+        maskClosable={false}
+      >
+        <Input
+          value={remarkInput}
+          onChange={(e) => setRemarkInput(e.target.value)}
+          placeholder={intl.formatMessage({
+            id: 'input.new.remark',
+            defaultMessage: '输入新的备注...',
+          })}
+        />
+      </Modal>
     </PageContainer>
   );
 };
