@@ -395,6 +395,7 @@ const CustomerService: React.FC = () => {
                       messages.map((msg: any) => {
                         const isCustomer = msg.sender === 'customer';
                         const isSoftDeleted = msg.isSoftDeleted;
+                        const hasImage = msg.image; // 假设消息对象中有一个image属性
                         return (
                           <div
                             key={msg?._id}
@@ -417,7 +418,15 @@ const CustomerService: React.FC = () => {
                                 position: 'relative',
                               }}
                             >
-                              <ReactQuill value={msg.message} readOnly={true} theme="bubble" />
+                              {msg.message ? (
+                                <ReactQuill value={msg.message} readOnly={true} theme="bubble" />
+                              ) : hasImage ? (
+                                <img
+                                  src={msg.image}
+                                  alt="message image"
+                                  style={{ maxWidth: '100%' }}
+                                />
+                              ) : null}
                               <span
                                 style={{
                                   position: 'absolute',
