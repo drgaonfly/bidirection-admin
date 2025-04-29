@@ -72,7 +72,6 @@ const CustomerService: React.FC = () => {
   const [sendingMessage, setSendingMessage] = useState(false);
   const [deletingMessage, setDeletingMessage] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const socketRef = useRef<any>(null);
 
   const {
     items: contacts,
@@ -184,13 +183,6 @@ const CustomerService: React.FC = () => {
       setMessages([...messages, data]);
 
       setMessageInput('');
-
-      if (socketRef.current) {
-        socketRef.current.emit('message', {
-          content: messageInput,
-          recipient: selectedContact.id,
-        });
-      }
     } catch (error) {
       console.error('发送消息失败:', error);
     } finally {
