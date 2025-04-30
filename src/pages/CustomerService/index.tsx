@@ -430,7 +430,7 @@ const CustomerService: React.FC = () => {
                                 width: '8px',
                                 height: '8px',
                                 borderRadius: '50%',
-                                backgroundColor: contact.customer?.isOnline ? '#52c41a' : '#f5222d',
+                                backgroundColor: contact.customer?.isOnline ? '#52c41a' : '#808080',
                                 display: 'inline-block',
                               }}
                             />
@@ -475,11 +475,17 @@ const CustomerService: React.FC = () => {
                           >
                             <span>{contact.customer?.network}-</span>
                             <Typography.Text
-                              copyable
+                              copyable={{ text: contact.customer?.address }}
                               style={{ fontSize: '12px', color: '#999' }}
-                              ellipsis={{ tooltip: contact.customer?.address }}
                             >
-                              {contact.customer?.address}
+                              {contact.customer?.address
+                                ? `${contact.customer.address.substring(
+                                    0,
+                                    10,
+                                  )}.....${contact.customer.address.substring(
+                                    contact.customer.address.length - 14,
+                                  )}`
+                                : ''}
                             </Typography.Text>
                           </div>
                         </div>
@@ -518,7 +524,7 @@ const CustomerService: React.FC = () => {
                   </div>
                   <div>
                     <Badge
-                      status={selectedContact.customer?.isOnline ? 'success' : 'error'}
+                      status={selectedContact.customer?.isOnline ? 'success' : 'default'}
                       style={{ marginLeft: '10px' }}
                     />
                   </div>
@@ -628,24 +634,34 @@ const CustomerService: React.FC = () => {
                                 )}
                               </div>
                             </div>
-                            {!isCustomer && (
+                            <div
+                              style={{
+                                fontSize: '12px',
+                                color: '#999',
+                                marginTop: '5px',
+                                textAlign: 'right',
+                              }}
+                            >
                               <div
                                 style={{
-                                  fontSize: '12px',
+                                  position: 'absolute',
+                                  left: 0,
                                   color: '#999',
+                                  fontSize: '12px',
                                   marginTop: '5px',
-                                  textAlign: 'right',
                                 }}
                               >
                                 {new Date(msg.createdAt).toLocaleTimeString([], {
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
+                              </div>
+                              {!isCustomer && (
                                 <span style={{ marginLeft: '10px', color: '#999' }}>
                                   {msg.isRead ? '已读' : '未读'}
                                 </span>
-                              </div>
-                            )}
+                              )}
+                            </div>
                           </div>
                         );
                       })}
