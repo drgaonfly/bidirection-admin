@@ -80,7 +80,7 @@ const CustomerService: React.FC = () => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 1,
+    pageSize: 50,
     total: 0,
   });
 
