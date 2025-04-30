@@ -628,24 +628,34 @@ const CustomerService: React.FC = () => {
                                 )}
                               </div>
                             </div>
-                            {!isCustomer && (
+                            <div
+                              style={{
+                                fontSize: '12px',
+                                color: '#999',
+                                marginTop: '5px',
+                                textAlign: 'right',
+                              }}
+                            >
                               <div
                                 style={{
-                                  fontSize: '12px',
+                                  position: 'absolute',
+                                  left: 0,
                                   color: '#999',
+                                  fontSize: '12px',
                                   marginTop: '5px',
-                                  textAlign: 'right',
                                 }}
                               >
                                 {new Date(msg.createdAt).toLocaleTimeString([], {
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
+                              </div>
+                              {!isCustomer && (
                                 <span style={{ marginLeft: '10px', color: '#999' }}>
                                   {msg.isRead ? '已读' : '未读'}
                                 </span>
-                              </div>
-                            )}
+                              )}
+                            </div>
                           </div>
                         );
                       })}
