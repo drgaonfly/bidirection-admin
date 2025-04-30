@@ -347,6 +347,20 @@ const CustomerService: React.FC = () => {
   .message-bubble:hover .delete-button {
     opacity: 1 !important;
   }
+  
+  .message-content .ql-editor {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+  }
+  
+  .message-content .ql-container {
+    border: none !important;
+  }
+  
+  .message-content p {
+    margin: 0 !important;
+  }
 `;
 
   return (
@@ -548,7 +562,7 @@ const CustomerService: React.FC = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   position: 'relative',
-                  marginBottom: '80px',
+                  marginBottom: '120px', // 从80px增加到120px，增加底部间距
                 }}
               >
                 {loadingMessages ? (
@@ -578,7 +592,7 @@ const CustomerService: React.FC = () => {
                             style={{
                               alignSelf: isCustomer ? 'flex-start' : 'flex-end',
                               maxWidth: '70%',
-                              marginBottom: '10%',
+                              marginBottom: '15px',
                               position: 'relative',
                             }}
                             className="message-bubble"
@@ -591,15 +605,27 @@ const CustomerService: React.FC = () => {
                                   ? '#f0f0f0'
                                   : '#1890ff',
                                 color: isCustomer ? 'black' : 'white',
-                                padding: '10px 15px',
+                                padding: '8px 12px',
                                 borderRadius: isCustomer ? '0 15px 15px 15px' : '15px 0 15px 15px',
                                 boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
                                 position: 'relative',
                                 wordBreak: 'break-word',
+                                display: 'inline-block',
+                                maxWidth: '100%',
                               }}
                             >
                               {msg.message ? (
-                                <ReactQuill value={msg.message} readOnly={true} theme="bubble" />
+                                <div className="message-content">
+                                  <ReactQuill
+                                    value={msg.message}
+                                    readOnly={true}
+                                    theme="bubble"
+                                    style={{
+                                      padding: 0,
+                                      margin: 0,
+                                    }}
+                                  />
+                                </div>
                               ) : hasImage ? (
                                 <img
                                   src={msg.image}
