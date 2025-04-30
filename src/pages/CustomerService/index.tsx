@@ -439,15 +439,20 @@ const CustomerService: React.FC = () => {
                     style={{
                       cursor: 'pointer',
                       backgroundColor:
-                        selectedContact?.id === contact.customer?._id ? '#e6f7ff' : 'transparent',
+                        selectedContact?.customer?._id === contact.customer?._id
+                          ? '#e6f7ff'
+                          : 'transparent',
                       borderRight:
-                        selectedContact?.id === contact.customer?._id
+                        selectedContact?.customer?._id === contact.customer?._id
                           ? '3px solid #1890ff'
                           : 'none',
                       padding: '10px',
                       borderRadius: '4px',
                       transition: 'all 0.3s',
-                      color: selectedContact?.id === contact.customer?._id ? '#1890ff' : 'inherit',
+                      color:
+                        selectedContact?.customer?._id === contact.customer?._id
+                          ? '#1890ff'
+                          : 'inherit',
                     }}
                     className="contact-item-hover"
                   >
