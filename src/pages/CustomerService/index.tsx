@@ -78,6 +78,11 @@ const CustomerService: React.FC = () => {
   const [remarkInput, setRemarkInput] = useState('');
   const [editingContactId, setEditingContactId] = useState<string | null>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 2,
+    total: 0,
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -109,7 +114,7 @@ const CustomerService: React.FC = () => {
     setItems: setContacts,
     loading: loadingContacts,
     setLoading: setLoadingContacts,
-  } = useQueryList('/chats/latest');
+  } = useQueryList('/chats/latest', false); // 将第二个参数设为false，表示不自动加载数据
 
   // 弹出修改备注窗口
   const handleUpdateRemark = (contactId: string, currentRemark: string = '') => {
@@ -316,20 +321,30 @@ const CustomerService: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
 
   // 更新联系人列表时使用搜索输入
-  const fetchContacts = async (address = '') => {
-    // 添加参数 address，默认值为空字符串
+  const fetchContacts = async (address = '', currentPage = 1) => {
     setLoadingContacts(true);
     try {
       const response: any = await queryList('/chats/latest', {
-        address: address.trim(), // 使用传入的 address 参数
+        address: address.trim(),
+        current: currentPage,
+        pageSize: pagination.pageSize,
       });
       setContacts(response.data);
+      setPagination((prev) => ({
+        ...prev,
+        total: response.total || 0,
+        current: currentPage,
+      }));
     } catch (error) {
       console.error('获取联系人失败:', error);
     } finally {
       setLoadingContacts(false);
     }
   };
+
+  useEffect(() => {
+    fetchContacts('', pagination.current);
+  }, []);
 
   // 在组件的顶部或者适当位置添加这段样式
   const messageHoverStyle = `
@@ -374,14 +389,14 @@ const CustomerService: React.FC = () => {
                   defaultMessage: '搜索地址...',
                 })}
               />
-              <Button type="primary" onClick={() => fetchContacts(searchInput)}>
+              <Button type="primary" onClick={() => fetchContacts(searchInput, 1)}>
                 {intl.formatMessage({ id: 'search', defaultMessage: '搜索' })}
               </Button>
               <Button
                 icon={<ReloadOutlined />}
                 onClick={() => {
-                  setSearchInput(''); // 清空输入框的值
-                  fetchContacts(''); // 调用接口时传递空字符串
+                  setSearchInput('');
+                  fetchContacts('', 1);
                 }}
               />
             </div>
@@ -409,6 +424,13 @@ const CustomerService: React.FC = () => {
                         (contact) => (contact as any).user?._id === (currentUser as any)?._id,
                       )
                 }
+                pagination={{
+                  current: pagination.current,
+                  pageSize: pagination.pageSize,
+                  total: pagination.total,
+                  onChange: (page) => fetchContacts(searchInput, page),
+                  showSizeChanger: false,
+                }}
                 renderItem={(contact: any) => (
                   <List.Item
                     onClick={() => setSelectedContact(contact)}
