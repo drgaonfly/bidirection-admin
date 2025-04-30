@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { queryList } from '@/services/ant-design-pro/api';
 
-const useQueryList = (url: string, hasPermission = true) => {
+const useQueryList = (url: string, hasPermission = true, config = {}) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -9,7 +9,7 @@ const useQueryList = (url: string, hasPermission = true) => {
     setLoading(true);
     // Only proceed with the API call if the user has permission
     if (hasPermission) {
-      const response = (await queryList(url, { pageSize: 10000 })) as any;
+      const response = (await queryList(url, { pageSize: 10000, ...config })) as any;
       if (response.success) {
         setItems(response.data);
       }
@@ -19,7 +19,7 @@ const useQueryList = (url: string, hasPermission = true) => {
 
   useEffect(() => {
     query().catch(console.error);
-  }, [hasPermission]); // Adding `hasPermission` to the dependency array to re-run the effect if it changes
+  }, [hasPermission]); // Adding `hasPermission` and `config` to the dependency array to re-run the effect if they change
 
   return { items, setItems, loading, setLoading, query };
 };

@@ -2,7 +2,7 @@ import { useIntl } from '@umijs/max';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, List, Avatar, Typography, Spin, Popconfirm, Input, Modal, message } from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
-import { SendOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SendOutlined, UserOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useQueryList from '@/hooks/useQueryList';
 import { queryList, updateItem } from '@/services/ant-design-pro/api';
 import { request, FormattedMessage, useModel, useAccess } from '@umijs/max';
@@ -78,6 +78,11 @@ const CustomerService: React.FC = () => {
   const [remarkInput, setRemarkInput] = useState('');
   const [editingContactId, setEditingContactId] = useState<string | null>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 30,
+    total: 0,
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -109,7 +114,7 @@ const CustomerService: React.FC = () => {
     setItems: setContacts,
     loading: loadingContacts,
     setLoading: setLoadingContacts,
-  } = useQueryList('/chats/latest');
+  } = useQueryList('/chats/latest', false); // 将第二个参数设为false，表示不自动加载数据
 
   // 弹出修改备注窗口
   const handleUpdateRemark = (contactId: string, currentRemark: string = '') => {
@@ -316,20 +321,30 @@ const CustomerService: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
 
   // 更新联系人列表时使用搜索输入
-  const fetchContacts = async (address = '') => {
-    // 添加参数 address，默认值为空字符串
+  const fetchContacts = async (address = '', currentPage = 1) => {
     setLoadingContacts(true);
     try {
       const response: any = await queryList('/chats/latest', {
-        address: address.trim(), // 使用传入的 address 参数
+        address: address.trim(),
+        current: currentPage,
+        pageSize: pagination.pageSize,
       });
       setContacts(response.data);
+      setPagination((prev) => ({
+        ...prev,
+        total: response.total || 0,
+        current: currentPage,
+      }));
     } catch (error) {
       console.error('获取联系人失败:', error);
     } finally {
       setLoadingContacts(false);
     }
   };
+
+  useEffect(() => {
+    fetchContacts('', pagination.current);
+  }, []);
 
   // 在组件的顶部或者适当位置添加这段样式
   const messageHoverStyle = `
@@ -374,14 +389,14 @@ const CustomerService: React.FC = () => {
                   defaultMessage: '搜索地址...',
                 })}
               />
-              <Button type="primary" onClick={() => fetchContacts(searchInput)}>
+              <Button type="primary" onClick={() => fetchContacts(searchInput, 1)}>
                 {intl.formatMessage({ id: 'search', defaultMessage: '搜索' })}
               </Button>
               <Button
                 icon={<ReloadOutlined />}
                 onClick={() => {
-                  setSearchInput(''); // 清空输入框的值
-                  fetchContacts(''); // 调用接口时传递空字符串
+                  setSearchInput('');
+                  fetchContacts('', 1);
                 }}
               />
             </div>
@@ -409,21 +424,35 @@ const CustomerService: React.FC = () => {
                         (contact) => (contact as any).user?._id === (currentUser as any)?._id,
                       )
                 }
+                pagination={{
+                  current: pagination.current,
+                  pageSize: pagination.pageSize,
+                  total: pagination.total,
+                  onChange: (page) => fetchContacts(searchInput, page),
+                  showSizeChanger: false,
+                  size: 'small',
+                  style: { fontSize: '12px' },
+                }}
                 renderItem={(contact: any) => (
                   <List.Item
                     onClick={() => setSelectedContact(contact)}
                     style={{
                       cursor: 'pointer',
                       backgroundColor:
-                        selectedContact?.id === contact.customer?._id ? '#e6f7ff' : 'transparent',
+                        selectedContact?.customer?._id === contact.customer?._id
+                          ? '#e6f7ff'
+                          : 'transparent',
                       borderRight:
-                        selectedContact?.id === contact.customer?._id
+                        selectedContact?.customer?._id === contact.customer?._id
                           ? '3px solid #1890ff'
                           : 'none',
                       padding: '10px',
                       borderRadius: '4px',
                       transition: 'all 0.3s',
-                      color: selectedContact?.id === contact.customer?._id ? '#1890ff' : 'inherit',
+                      color:
+                        selectedContact?.customer?._id === contact.customer?._id
+                          ? '#1890ff'
+                          : 'inherit',
                     }}
                     className="contact-item-hover"
                   >
@@ -468,6 +497,9 @@ const CustomerService: React.FC = () => {
                               }}
                             >
                               {contact.customer?.remark ? contact.customer.remark : '设置备注名'}
+                              <EditOutlined
+                                style={{ marginLeft: '4px', fontSize: '12px', color: '#1890ff' }}
+                              />
                             </span>
                           </div>
                         </div>
@@ -554,34 +586,19 @@ const CustomerService: React.FC = () => {
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: '16px', fontSize: '13px', color: '#666' }}>
-                      {selectedContact?.customer?.address && (
-                        <div>
-                          钱包地址:{' '}
-                          {`${selectedContact.customer.address.substring(0, 8)}
-                          .....${selectedContact.customer.address.substring(
-                            selectedContact.customer.address.length - 12,
-                          )}`}
-                        </div>
-                      )}
-                      {selectedContact?.customer?.network && (
-                        <div>网络: {selectedContact.customer.network}</div>
-                      )}
-                      {selectedContact?.customer?.createdAt && (
-                        <div>
-                          创建时间: {new Date(selectedContact.customer.createdAt).toLocaleString()}
-                        </div>
-                      )}
                       {selectedContact?.customer?.logedinAt && (
                         <div>
                           登录时间: {new Date(selectedContact.customer.logedinAt).toLocaleString()}
                         </div>
                       )}
-                      {selectedContact?.customer?.registerIP && (
-                        <div>注册IP: {selectedContact.customer.registerIP}</div>
-                      )}
                       {selectedContact?.customer?.loginIP && (
                         <div>登录IP: {selectedContact.customer.loginIP}</div>
                       )}
+                      {selectedContact?.customer?.countryName && (
+                        <div>登录地点: {selectedContact.customer.countryName}</div>
+                      )}
+                      <div>USDT余额: {selectedContact.customer?.usdtBalance}</div>
+                      <div> USDT质押: {selectedContact.customer?.usdtStaking}</div>
                     </div>
                   </div>
                 </div>
