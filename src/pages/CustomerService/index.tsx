@@ -481,9 +481,9 @@ const CustomerService: React.FC = () => {
                               {contact.customer?.address
                                 ? `${contact.customer.address.substring(
                                     0,
-                                    8,
-                                  )}...${contact.customer.address.substring(
-                                    contact.customer.address.length - 12,
+                                    10,
+                                  )}.....${contact.customer.address.substring(
+                                    contact.customer.address.length - 14,
                                   )}`
                                 : ''}
                             </Typography.Text>
