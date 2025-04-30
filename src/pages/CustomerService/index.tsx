@@ -1,17 +1,6 @@
 import { useIntl } from '@umijs/max';
 import { PageContainer } from '@ant-design/pro-components';
-import {
-  Button,
-  List,
-  Avatar,
-  Typography,
-  Spin,
-  Popconfirm,
-  Input,
-  Modal,
-  message,
-  Badge,
-} from 'antd';
+import { Button, List, Avatar, Typography, Spin, Popconfirm, Input, Modal, message } from 'antd';
 import React, { useState, useEffect, useRef } from 'react';
 import { SendOutlined, UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import useQueryList from '@/hooks/useQueryList';
@@ -531,25 +520,63 @@ const CustomerService: React.FC = () => {
                     icon={<UserOutlined />}
                     style={{ marginRight: '10px' }}
                   />
-                  <div>
-                    <Title
-                      level={5}
-                      style={{ margin: 0, color: '#1890ff' }}
-                      onClick={() =>
-                        handleUpdateRemark(
-                          selectedContact.customer?._id,
-                          selectedContact.customer?.remark,
-                        )
-                      }
-                    >
-                      {selectedContact?.customer?.remark}
-                    </Title>
-                  </div>
-                  <div>
-                    <Badge
-                      status={selectedContact.customer?.isOnline ? 'success' : 'default'}
-                      style={{ marginLeft: '10px' }}
-                    />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div>
+                      <Title
+                        level={5}
+                        style={{ margin: 0, color: '#1890ff' }}
+                        onClick={() =>
+                          handleUpdateRemark(
+                            selectedContact.customer?._id,
+                            selectedContact.customer?.remark,
+                          )
+                        }
+                      >
+                        {selectedContact?.customer?.remark}
+                      </Title>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span
+                          style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            backgroundColor: selectedContact.customer?.isOnline
+                              ? '#52c41a'
+                              : '#808080',
+                            display: 'inline-block',
+                          }}
+                        />
+                        <Text style={{ fontSize: '12px' }}>
+                          {selectedContact.customer?.isOnline
+                            ? intl.formatMessage({ id: 'platform.online' })
+                            : intl.formatMessage({ id: 'platform.offline' })}
+                        </Text>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '16px', fontSize: '13px', color: '#666' }}>
+                      {selectedContact?.customer?.address && (
+                        <div>钱包地址: {selectedContact.customer.address}</div>
+                      )}
+                      {selectedContact?.customer?.network && (
+                        <div>网络: {selectedContact.customer.network}</div>
+                      )}
+                      {selectedContact?.customer?.createdAt && (
+                        <div>
+                          创建时间: {new Date(selectedContact.customer.createdAt).toLocaleString()}
+                        </div>
+                      )}
+                      {selectedContact?.customer?.logedinAt && (
+                        <div>
+                          登录时间: {new Date(selectedContact.customer.logedinAt).toLocaleString()}
+                        </div>
+                      )}
+                      {selectedContact?.customer?.registerIP && (
+                        <div>注册IP: {selectedContact.customer.registerIP}</div>
+                      )}
+                      {selectedContact?.customer?.loginIP && (
+                        <div>登录IP: {selectedContact.customer.loginIP}</div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
