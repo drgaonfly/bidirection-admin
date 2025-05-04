@@ -185,6 +185,7 @@ const CustomerService: React.FC = () => {
     }
   }, [messageReadStatus]);
 
+  // 当收到新消息时更新消息列表
   useEffect(() => {
     console.log('Chat Message:', chatMessage);
 
@@ -192,20 +193,25 @@ const CustomerService: React.FC = () => {
 
     if (!customerId) return;
 
-    // 当收到新消息时更新消息列表
-    if (selectedContact?.customer?._id === customerId && chatMessage?.sender === 'customer') {
-      playSound();
+    if (chatMessage?.sender !== 'customer') return; // 忽略非客户发送的消息
+
+    playSound();
+
+    // 以下分两种情况处理：
+    // 1. 当当前选中的联系人是新消息的客户时，直接添加消息到消息列表
+    // 2. 当当前选中的联系人不是新消息的客户时，检查新消息的客户是否存在于联系人列表中
+
+    // 进入跟客户聊天窗口时，直接添加消息
+    // 如果当前选中的联系人是新消息的客户
+    if (selectedContact?.customer?._id === customerId) {
       setMessages((prevMessages: any) => [...prevMessages, chatMessage]);
     }
-    // 在联系人列表上不存在时
+
     // 检查新消息的客户是否存在于联系人列表中
+    const existingContact = contacts.find((contact: any) => contact.customer?._id === customerId);
 
-    const existingContact = contacts.find(
-      (contact: any) => contact.customer?._id === customerId && chatMessage?.sender === 'customer',
-    );
-
+    // 在联系人列表上不存在时
     if (!existingContact && selectedContact?.customer?._id !== customerId) {
-      playSound();
       // @ts-ignore
       setContacts((prevContacts) => [chatMessage, ...prevContacts]);
     }
