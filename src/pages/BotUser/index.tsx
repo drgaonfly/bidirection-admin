@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Typography, TreeSelect } from 'antd';
+import { message, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -11,21 +11,22 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import useQueryList from '@/hooks/useQueryList';
+
+import CopyToClipboard from '@/components/CopyToClipboard';
+// import { Input } from 'antd';
+import SendMessageModal from './components/SendMessageModal';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
  * @param fields
  */
-
-const handleAdd = async (fields: API.ItemData) => {
+const handleAdd = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
 
   try {
-    await addItem('/customers', { ...fields });
+    await addItem('/bot-users', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
-
     return true;
   } catch (error: any) {
     hide();
@@ -47,11 +48,10 @@ const handleAdd = async (fields: API.ItemData) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/customers/${fields._id}`, fields);
+    await updateItem(`/bot-users/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
-
     return true;
   } catch (error: any) {
     hide();
@@ -74,7 +74,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/customers', {
+    await removeItem('/bot-users', {
       ids,
     });
     hide();
@@ -84,7 +84,6 @@ const handleRemove = async (ids: string[]) => {
         defaultMessage="Deleted successfully and will refresh soon"
       />,
     );
-
     return true;
   } catch (error: any) {
     hide();
@@ -93,6 +92,35 @@ const handleRemove = async (ids: string[]) => {
         <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
       ),
     );
+    return false;
+  }
+};
+
+const handleSendMessage = async (botUserId: string, messageContent: string) => {
+  const hide = message.loading({
+    content: <FormattedMessage id="sending" defaultMessage="发送中..." />,
+    key: 'sendMessage',
+  });
+
+  try {
+    await addItem(`/bot-users/${botUserId}/send-message`, {
+      message: messageContent, // 移除了多余的 botUserId
+    });
+
+    hide();
+    message.success({
+      content: <FormattedMessage id="send_successful" defaultMessage="发送成功" />,
+      key: 'sendMessage',
+    });
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error({
+      content: error?.response?.data?.message ?? (
+        <FormattedMessage id="send_failed" defaultMessage="发送失败，请重试！" />
+      ),
+      key: 'sendMessage',
+    });
     return false;
   }
 };
@@ -111,119 +139,130 @@ const TableList: React.FC = () => {
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   // const [batchUploadPriceModalOpen, setBatchUploadPriceModalOpen] = useState<boolean>(false);
 
-  const [showDetail, setShowDetail] = useState<boolean>(false);
-
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.ItemData>();
-  const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
-  const { items: customers, loading } = useQueryList('/customers');
+  const [currentRow, setCurrentRow] = useState<any>();
+  const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
+  const [showDetail, setShowDetail] = useState<boolean>(false);
   const access = useAccess();
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  const columns: ProColumns<API.ItemData>[] = [
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [messageText, setMessageText] = useState('');
+  /**
+   * @en-US International configuration
+   * @zh-CN 国际化配置
+   * */
+  // Define roles object with index signature
+
+  const columns: ProColumns<any>[] = [
     {
-      // add id column
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
-    },
-    {
-      title: intl.formatMessage({ id: 'parent_customer_id' }),
-      dataIndex: ['parent', 'id'],
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      renderFormItem: (_, { type, defaultRender, formItemProps, fieldProps, ...rest }, form) => {
-        if (type === 'form') {
-          return null;
-        }
-        return (
-          <TreeSelect
-            showSearch
-            placeholder={intl.formatMessage({ id: 'select_parent_customer_id' })}
-            allowClear
-            treeNodeFilterProp="id"
-            fieldNames={{ label: 'id', value: '_id' }}
-            treeDefaultExpandAll
-            treeData={customers}
-            loading={loading}
-            {...fieldProps}
-          />
-        );
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'inviteCode' }),
-      dataIndex: 'ownInviteCode',
       hideInSearch: true,
-      render: (ownInviteCode, record) => {
-        if (!ownInviteCode) return '-';
-        const fullUrl = `${process.env.UMI_APP_FRONTEND_URL}?inviter=${record.ownInviteCode}`;
-        return <Typography.Text copyable>{fullUrl}</Typography.Text>;
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'owner' }),
+      dataIndex: ['user', 'name'],
+      hideInSearch: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'owner_bot' }),
+      dataIndex: ['bot', 'botName'],
+      hideInSearch: false,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'calling_name' }),
+      dataIndex: 'userName',
+      render: (_, record) => {
+        const link = `@${record.userName}`;
+        if (record.userName) {
+          return (
+            <span>
+              @{record.userName}
+              <CopyToClipboard text={link} />
+            </span>
+          );
+        }
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: intl.formatMessage({ id: 'first_name' }),
+      dataIndex: 'firstName',
+      hideInSearch: false,
+    },
+    {
+      title: intl.formatMessage({ id: 'last_name' }),
+      dataIndex: 'lastName',
+      hideInSearch: false,
+    },
+    {
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
+      dataIndex: 'createdAt',
+      hideInSearch: true,
+      valueType: 'dateTime',
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
-      fixed: 'right',
-      align: 'center',
-      render: (_, record) => (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            alignItems: 'center',
-            padding: '4px 0',
+      render: (_, record) => [
+        <a
+          key="detail"
+          onClick={() => {
+            setCurrentRow(record);
+            setShowDetail(true);
           }}
         >
+          <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+        </a>,
+        access.canDeleteBotUser && (
+          <DeleteLink
+            onOk={async () => {
+              await handleRemove([record._id!]);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          />
+        ),
+        access.canUpdateBotUser && (
           <a
-            key="detail"
+            key="sendMessage"
             onClick={() => {
               setCurrentRow(record);
-              setShowDetail(true);
+              setMessageModalOpen(true);
             }}
-            style={{ width: '100%', textAlign: 'center' }}
           >
-            <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+            <FormattedMessage id="send.message" defaultMessage="发送消息" />
           </a>
-          {access.canUpdateCustomer && (
-            <a
-              key="edit"
-              onClick={() => {
-                handleUpdateModalOpen(true);
-                setCurrentRow(record);
-              }}
-              style={{ width: '100%', textAlign: 'center' }}
-            >
-              {intl.formatMessage({ id: 'edit' })}
-            </a>
-          )}
-          {access.canDeleteCustomer && (
-            <DeleteLink
-              onOk={async () => {
-                await handleRemove([record._id!]);
-                setSelectedRows([]);
-                actionRef.current?.reloadAndRest?.();
-              }}
-            />
-          )}
-        </div>
-      ),
+        ),
+      ],
     },
   ];
 
   return (
     <PageContainer>
-      <ProTable<API.ItemData, API.PageParams>
+      <ProTable<any, any>
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
-        scroll={{ x: 'max-content' }}
         rowKey="_id"
+        scroll={{ x: 'max-content' }}
         search={{
+          labelWidth: 120,
           collapsed: false,
+          span: {
+            xs: 24, // 手机端占满
+            sm: 24, // 平板端占满
+            md: 6, // 电脑端
+            lg: 6, // 大屏幕
+            xl: 6, // 超大屏幕
+            xxl: 6, // 超超大屏幕
+          },
         }}
-        request={async (params, sort, filter) =>
-          queryList('/customers', { ...params }, sort, filter)
-        }
+        toolBarRender={() => []}
+        request={async (params, sort, filter) => queryList('/bot-users', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {
@@ -243,7 +282,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteCustomer && (
+          {(access.canSuperAdmin || access.canDeleteBotUser) && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -254,12 +293,14 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {access.canCreateCustomer && (
+      {(access.canSuperAdmin || access.canCreateBotUser) && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
           onFinish={async (value) => {
-            const success = await handleAdd(value as API.ItemData);
+            const success = await handleAdd({
+              ...value,
+            });
             if (success) {
               handleModalOpen(false);
               if (actionRef.current) {
@@ -269,7 +310,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {access.canUpdateCustomer && (
+      {(access.canSuperAdmin || access.canUpdateBotUser) && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
@@ -286,15 +327,33 @@ const TableList: React.FC = () => {
           values={currentRow || {}}
         />
       )}
-
       <Show
         open={showDetail}
-        currentRow={currentRow as API.ItemData}
-        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
+        currentRow={currentRow}
+        columns={columns as ProDescriptionsItemProps<any>[]}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);
         }}
+      />
+      <Modal
+        title={intl.formatMessage({ id: 'video_player', defaultMessage: '视频播放' })}
+        open={videoModalOpen}
+        onCancel={() => setVideoModalOpen(false)}
+        footer={null}
+        width={800}
+      ></Modal>
+
+      <SendMessageModal
+        open={messageModalOpen}
+        onClose={() => {
+          setMessageModalOpen(false);
+          setMessageText('');
+        }}
+        currentRow={currentRow}
+        onSendMessage={handleSendMessage}
+        messageText={messageText}
+        setMessageText={setMessageText}
       />
     </PageContainer>
   );
