@@ -11,7 +11,7 @@ import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-
+import CopyToClipboard from '@/components/CopyToClipboard';
 // import { Input } from 'antd';
 import SendMessageModal from './components/SendMessageModal';
 /**
@@ -170,6 +170,17 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'userName' }),
       dataIndex: 'userName',
       hideInSearch: true,
+      render: (_, record) => {
+        const link = `@${record.userName}`;
+        if (record.userName) {
+          return (
+            <span>
+              @{record.userName}
+              <CopyToClipboard text={link} />
+            </span>
+          );
+        }
+      },
     },
     // frist_name
     {
