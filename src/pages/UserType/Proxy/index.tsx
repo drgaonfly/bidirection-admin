@@ -145,20 +145,6 @@ const TableList: React.FC = () => {
       dataIndex: 'name',
     },
     {
-      title: intl.formatMessage({ id: 'profitSharingRate' }),
-      dataIndex: 'proxySharingRate',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'stackingChannel' }),
-      dataIndex: 'stackingChannel',
-      hideInSearch: true,
-      valueEnum: {
-        platform: { text: intl.formatMessage({ id: 'platform', defaultMessage: '平台' }) },
-        broker: { text: intl.formatMessage({ id: 'broker', defaultMessage: '代理' }) },
-      },
-    },
-    {
       title: intl.formatMessage({ id: 'proxy.user' }),
       dataIndex: ['proxy', 'name'],
       hideInSearch: true,
