@@ -50,6 +50,12 @@ const GroupTableList: React.FC = () => {
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
+    // id
+    {
+      title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
+      dataIndex: 'id',
+      hideInSearch: true,
+    },
     {
       title: intl.formatMessage({ id: 'title', defaultMessage: '群名' }),
       dataIndex: 'title',
@@ -127,7 +133,7 @@ const GroupTableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'group.list', defaultMessage: 'Group List' })}
+        headerTitle={intl.formatMessage({ id: 'group.list', defaultMessage: '群组列表' })}
         actionRef={actionRef}
         rowKey="_id"
         request={(params, sort, filter) => queryList('/groups', params, sort, filter)}
