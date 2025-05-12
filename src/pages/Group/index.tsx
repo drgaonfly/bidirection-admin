@@ -74,6 +74,7 @@ const GroupTableList: React.FC = () => {
       title: intl.formatMessage({ id: 'fee_rate', defaultMessage: 'Fee Rate' }),
       dataIndex: 'fee_rate',
       hideInSearch: true,
+      valueType: 'percent',
     },
     {
       title: intl.formatMessage({ id: 'operators', defaultMessage: '操作员' }),
