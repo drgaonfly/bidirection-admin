@@ -108,7 +108,7 @@ const GroupTableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'creator', defaultMessage: 'Creator' }),
-      dataIndex: 'creator',
+      dataIndex: ['creator', 'userName'],
       hideInSearch: true,
     },
     {
