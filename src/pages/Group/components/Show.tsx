@@ -1,7 +1,7 @@
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
-// import { FormattedMessage } from '@umijs/max';
+import BotUserTable from './BotUserTable';
 import { Modal } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -14,6 +14,11 @@ const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns: cols } = props;
   const filteredColumns = cols.filter((col) => col.dataIndex !== 'option');
 
+  const [pagination, setPagination] = useState<{ current: number; pageSize: number }>({
+    current: 1,
+    pageSize: 5,
+  });
+
   return (
     <Modal
       open={open}
@@ -24,31 +29,38 @@ const Show: React.FC<Props> = (props) => {
       className="rounded-lg overflow-hidden"
     >
       {currentRow?._id && (
-        <ProDescriptions<API.ItemData>
-          column={2}
-          title={currentRow?.phoneNumber}
-          request={async () => ({
-            data: currentRow || {},
-          })}
-          params={{
-            id: currentRow?._id,
-          }}
-          columns={filteredColumns as ProDescriptionsItemProps<API.ItemData>[]}
-          style={{ marginTop: '20px' }}
-          bordered
-          labelStyle={{
-            width: '10%',
-            justifyContent: 'flex-end',
-            padding: '8px 16px',
-            backgroundColor: '#f0f0f0',
-          }}
-          contentStyle={{
-            width: '50%',
-            padding: '8px 16px',
-          }}
-          size="small"
-          className="custom-descriptions"
-        />
+        <>
+          <ProDescriptions<API.ItemData>
+            column={2}
+            title={currentRow?.phoneNumber}
+            request={async () => ({
+              data: currentRow || {},
+            })}
+            params={{
+              id: currentRow?._id,
+            }}
+            columns={filteredColumns as ProDescriptionsItemProps<API.ItemData>[]}
+            style={{ marginTop: '20px' }}
+            bordered
+            labelStyle={{
+              width: '10%',
+              justifyContent: 'flex-end',
+              padding: '8px 16px',
+              backgroundColor: '#f0f0f0',
+            }}
+            contentStyle={{
+              width: '50%',
+              padding: '8px 16px',
+            }}
+            size="small"
+            className="custom-descriptions"
+          />
+          <BotUserTable
+            botUsers={currentRow?.botUsers || []}
+            pagination={pagination}
+            setPagination={setPagination}
+          />
+        </>
       )}
     </Modal>
   );
