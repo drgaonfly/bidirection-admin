@@ -28,7 +28,7 @@ const Show: React.FC<Props> = (props) => {
 
     if (response?.success) {
       const filtereds = response?.data?.filter(
-        (item: any) => item.group._id.toString() === currentRow?._id?.toString(),
+        (item: any) => item.group.toString() === currentRow?._id?.toString(),
       );
       console.log(filtereds);
       setTransactions(filtereds);
