@@ -117,4 +117,6 @@ export default {
 
   isAuto: 'is Auto',
   isTrial: 'is Trial',
+
+  subscription_list: 'Subscription List',
 };

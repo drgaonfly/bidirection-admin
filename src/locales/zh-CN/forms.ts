@@ -142,4 +142,6 @@ export default {
 
   isAuto: '是否自动续费',
   isTrial: '是否试用',
+
+  subscription_list: '订阅列表',
 };

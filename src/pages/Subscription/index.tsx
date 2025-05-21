@@ -145,7 +145,7 @@ const SubscriptionTableList: React.FC = () => {
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: 'subscription.list',
+          id: 'subscription_list',
           defaultMessage: 'Subscription List',
         })}
         actionRef={actionRef}
