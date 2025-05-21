@@ -129,4 +129,17 @@ export default {
 
   online: '在线',
   offline: '离线',
+
+  plan: '计划',
+  subscription_weekly: '7天',
+  subscription_biweekly: '半月',
+  subscription_monthly: '每月',
+  subscription_quarter: '每季度',
+
+  subscription_active: '生效中',
+  subscription_expired: '已过期',
+  subscription_canceled: '已取消',
+
+  isAuto: '是否自动续费',
+  isTrial: '是否试用',
 };
