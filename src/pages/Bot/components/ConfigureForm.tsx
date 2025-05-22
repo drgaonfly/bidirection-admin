@@ -140,6 +140,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             label={intl.formatMessage({ id: 'customer_service_link', defaultMessage: '客服链接' })}
             name="customer_service_link"
             tooltip="格式示例: https://t.me/xxxx"
+            placeholder="https://t.me/"
           />
         </ProFormGroup>
         <EditableProTable<menuItem>
