@@ -129,5 +129,6 @@ export default {
 
   pending: 'Pending',
   paid: 'Paid',
-  expires: 'Expired',
+  expired: 'Expired',
+  canceled: 'Canceled',
 };

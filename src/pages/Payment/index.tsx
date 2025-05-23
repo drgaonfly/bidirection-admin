@@ -34,7 +34,7 @@ const handleRemove = async (ids: string[]) => {
 const TableList: React.FC = () => {
   const intl = useIntl();
   const [showDetail, setShowDetail] = useState<boolean>(false);
-
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
@@ -44,11 +44,6 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'orderNumber' }),
       dataIndex: 'orderNumber',
-    },
-    {
-      title: intl.formatMessage({ id: 'wallet' }),
-      dataIndex: ['wallet', 'address'],
-      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'amount' }),
@@ -146,7 +141,43 @@ const TableList: React.FC = () => {
           labelWidth: 120,
           collapsed: true,
         }}
-        request={(params, sort, filter) => queryList('/payments', params, sort, filter)}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="pending" defaultMessage="pending" />,
+                key: 'pending',
+              },
+              {
+                label: <FormattedMessage id="paid" defaultMessage="paid" />,
+                key: 'paid',
+              },
+              {
+                label: <FormattedMessage id="expired" defaultMessage="expired" />,
+                key: 'expired',
+              },
+              {
+                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
+                key: 'canceled',
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
+        request={(params, sort, filter) =>
+          queryList('/payments', { ...params, status: activeKey }, sort, filter)
+        }
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {

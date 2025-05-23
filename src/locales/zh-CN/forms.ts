@@ -154,5 +154,6 @@ export default {
 
   pending: '待处理',
   paid: '已支付',
-  expires: '已过期',
+  expired: '已过期',
+  canceled: '已取消',
 };

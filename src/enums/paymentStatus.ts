@@ -6,7 +6,8 @@ const StatusEnum = () => {
   return {
     pending: { text: intl.formatMessage({ id: 'pending' }), status: 'default' },
     paid: { text: intl.formatMessage({ id: 'paid' }), status: 'success' },
-    expires: { text: intl.formatMessage({ id: 'expires' }), status: 'error' },
+    expired: { text: intl.formatMessage({ id: 'expired' }), status: 'error' },
+    canceled: { text: intl.formatMessage({ id: 'canceled' }), status: 'default' },
   };
 };
 
