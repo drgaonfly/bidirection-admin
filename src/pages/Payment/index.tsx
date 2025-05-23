@@ -53,6 +53,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
+      hideInSearch: true,
       render: (_, record) => {
         return <Tag color="blue">{intl.formatMessage({ id: record.status })}</Tag>;
       },
@@ -80,7 +81,7 @@ const TableList: React.FC = () => {
       dataIndex: 'botUser',
       hideInSearch: true,
       render: (text, record) => {
-        return record?.botUser?.firstName + ' ' + record?.botUser?.lastName;
+        return record.userName || record?.botUser?.firstName + ' ' + record?.botUser?.lastName;
       },
     },
     {
@@ -96,7 +97,7 @@ const TableList: React.FC = () => {
       render: (_, record) => moment(record.createdAt).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
-      title: intl.formatMessage({ id: 'expiresAt' }),
+      title: intl.formatMessage({ id: 'expiredAt' }),
       dataIndex: 'expiresAt',
       valueType: 'dateTime',
       hideInSearch: true,

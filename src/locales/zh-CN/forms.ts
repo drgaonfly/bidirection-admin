@@ -133,8 +133,8 @@ export default {
   plan: '计划',
   subscription_weekly: '7天',
   subscription_biweekly: '半月',
-  subscription_monthly: '每月',
-  subscription_quarter: '每季度',
+  subscription_monthly: '一个月',
+  subscription_quarterly: '三个月',
 
   subscription_active: '生效中',
   subscription_expired: '已过期',
@@ -150,10 +150,21 @@ export default {
   txHash: '交易哈希',
   receiveAddress: '接收地址',
   sendAddress: '发送地址',
-  expiresAt: '过期时间',
+  expiredAt: '过期时间',
 
   pending: '待处理',
   paid: '已支付',
   expired: '已过期',
   canceled: '已取消',
+
+  subscription_autoRenewal: '自动续费',
+  subscription_manualRenewal: '手动续费',
+  subscription_trial: '试用',
+  subscription_regular: '常规',
+
+  authorized: '已授权',
+  unauthorized: '未授权',
+
+  recharge: '充币',
+  subscription: '订阅',
 };

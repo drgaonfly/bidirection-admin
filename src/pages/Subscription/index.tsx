@@ -49,6 +49,7 @@ const SubscriptionTableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<any>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
@@ -80,7 +81,12 @@ const SubscriptionTableList: React.FC = () => {
       dataIndex: 'isAuto',
       hideInSearch: true,
       render: (isAuto) => (
-        <Tag color={isAuto ? 'green' : 'default'}>{isAuto ? 'Auto Renewal' : 'Manual Renewal'}</Tag>
+        <Tag color={isAuto ? 'green' : 'default'}>
+          {intl.formatMessage({
+            id: isAuto ? 'subscription_autoRenewal' : 'subscription_manualRenewal',
+            defaultMessage: isAuto ? 'Auto Renewal' : 'Manual Renewal',
+          })}
+        </Tag>
       ),
     },
     {
@@ -88,7 +94,12 @@ const SubscriptionTableList: React.FC = () => {
       dataIndex: 'isTrial',
       hideInSearch: true,
       render: (isTrial) => (
-        <Tag color={isTrial ? 'blue' : 'default'}>{isTrial ? 'Trial' : 'Regular'}</Tag>
+        <Tag color={isTrial ? 'blue' : 'default'}>
+          {intl.formatMessage({
+            id: isTrial ? 'subscription_trial' : 'subscription_regular',
+            defaultMessage: isTrial ? 'Trial' : 'Regular',
+          })}
+        </Tag>
       ),
     },
     {
@@ -115,7 +126,7 @@ const SubscriptionTableList: React.FC = () => {
             setShowDetail(true);
           }}
         >
-          <FormattedMessage id="subscription.detail" defaultMessage="Detail" />
+          <FormattedMessage id="detail" defaultMessage="Detail" />
         </a>,
         access.canUpdateSubscription && (
           <a
@@ -150,7 +161,39 @@ const SubscriptionTableList: React.FC = () => {
         })}
         actionRef={actionRef}
         rowKey="_id"
-        request={(params, sort, filter) => queryList('/subscriptions', params, sort, filter)}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="active" defaultMessage="active" />,
+                key: 'active',
+              },
+              {
+                label: <FormattedMessage id="expired" defaultMessage="expired" />,
+                key: 'expired',
+              },
+              {
+                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
+                key: 'canceled',
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
+        request={(params, sort, filter) =>
+          queryList('/subscriptions', { ...params, status: activeKey }, sort, filter)
+        }
         columns={columns}
         rowSelection={
           access.canUpdateSubscription && {

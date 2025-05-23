@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { queryList } from '@/services/ant-design-pro/api';
 import TransactionTable from '../../BotUser/components/TransactionTable';
+import PaymentTable from '../../BotUser/components/PaymentTable';
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -16,11 +17,21 @@ const Show: React.FC<Props> = (props) => {
   const { onClose, open, currentRow, columns: cols } = props;
   const filteredColumns = cols.filter((col) => col.dataIndex !== 'option');
   const [loading, setLoading] = useState<boolean>(false);
+  const [payments, setPayments] = useState<any[]>([]);
   const [transactions, setTransactions] = useState<any[]>([]);
-  const [pagination, setPagination] = useState<{ current: number; pageSize: number }>({
+  const [transactionPagination, setTransactionPagination] = useState<{
+    current: number;
+    pageSize: number;
+  }>({
     current: 1,
     pageSize: 5,
   });
+  const [paymentPagination, setPaymentPagination] = useState<{ current: number; pageSize: number }>(
+    {
+      current: 1,
+      pageSize: 5,
+    },
+  );
 
   const query = async () => {
     setLoading(true);
@@ -28,6 +39,7 @@ const Show: React.FC<Props> = (props) => {
 
     if (success) {
       setTransactions(data.transactions);
+      setPayments(data.payments);
     }
 
     setLoading(false);
@@ -79,8 +91,14 @@ const Show: React.FC<Props> = (props) => {
         <TransactionTable
           transactions={transactions}
           loading={loading}
-          pagination={pagination}
-          setPagination={setPagination}
+          pagination={transactionPagination}
+          setPagination={setTransactionPagination}
+        />
+        <PaymentTable
+          payments={payments}
+          loading={loading}
+          pagination={paymentPagination}
+          setPagination={setPaymentPagination}
         />
       </>
     </Modal>
