@@ -159,4 +159,7 @@ export default {
   messageType: 'Message Type',
   content: 'Content',
   group: 'Group',
+  text: 'Text',
+  image: 'Image',
+  command: 'Command',
 };

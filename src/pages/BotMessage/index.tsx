@@ -44,15 +44,17 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'messageType' }),
       dataIndex: 'messageType',
+      hideInSearch: true,
       valueEnum: {
-        text: { text: 'Text' },
-        image: { text: 'Image' },
-        command: { text: 'Command' },
+        text: { text: intl.formatMessage({ id: 'text' }) },
+        image: { text: intl.formatMessage({ id: 'image' }) },
+        command: { text: intl.formatMessage({ id: 'command' }) },
       },
     },
     {
       title: intl.formatMessage({ id: 'content' }),
       dataIndex: 'content',
+      hideInSearch: true,
       ellipsis: true,
       copyable: true,
     },
@@ -71,8 +73,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'group' }),
-      dataIndex: ['group', 'name'],
-      hideInSearch: true,
+      dataIndex: ['group', 'title'],
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
@@ -130,15 +131,15 @@ const TableList: React.FC = () => {
                 key: '',
               },
               {
-                label: 'Text',
+                label: intl.formatMessage({ id: 'text' }),
                 key: 'text',
               },
               {
-                label: 'Image',
+                label: intl.formatMessage({ id: 'image' }),
                 key: 'image',
               },
               {
-                label: 'Command',
+                label: intl.formatMessage({ id: 'command' }),
                 key: 'command',
               },
             ],

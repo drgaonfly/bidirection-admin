@@ -195,4 +195,7 @@ export default {
   messageType: '消息类型',
   content: '内容',
   group: '群组',
+  text: '文本',
+  image: '图片',
+  command: '命令',
 };
