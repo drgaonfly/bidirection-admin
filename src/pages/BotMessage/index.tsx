@@ -56,19 +56,31 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'content' }),
       dataIndex: 'content',
       hideInSearch: true,
-      ellipsis: true,
+      ellipsis: {
+        showTitle: false,
+      },
       copyable: true,
       render: (_, record) => {
         if (record.messageType === 'photo') {
           return <Image src={record.content} alt="message" style={{ maxWidth: '100px' }} preview />;
         }
-        return record.content;
+        return (
+          <div
+            style={{
+              maxWidth: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {record.content}
+          </div>
+        );
       },
     },
     {
       title: intl.formatMessage({ id: 'user' }),
       dataIndex: 'botUser',
-      hideInSearch: true,
       copyable: true,
       render: (_, record) => {
         return record.userName || record?.botUser?.firstName + ' ' + record?.botUser?.lastName;
