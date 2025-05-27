@@ -52,6 +52,25 @@ const TableList: React.FC = () => {
         return intl.formatMessage({ id: `${record.messageType}` });
       },
     },
+    // username
+    {
+      title: intl.formatMessage({ id: 'user' }),
+      dataIndex: 'username',
+      copyable: true,
+      renderText: (_, record) =>
+        record?.username || `${record?.first_name || ''} ${record?.last_name || ''}`.trim(),
+    },
+
+    // botName
+    {
+      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
+      copyable: true,
+      dataIndex: 'botName',
+    },
+    {
+      title: intl.formatMessage({ id: 'group' }),
+      dataIndex: 'chat_title',
+    },
     {
       title: intl.formatMessage({ id: 'content' }),
       dataIndex: 'content',
@@ -62,25 +81,14 @@ const TableList: React.FC = () => {
         if (record.messageType === 'photo') {
           return <Image src={record.content} alt="message" style={{ maxWidth: '100px' }} preview />;
         }
-        return record.content;
+        const content = record.content;
+        // 如果内容太长，截断显示
+        const maxLength = 50;
+        if (typeof content === 'string' && content.length > maxLength) {
+          return content.slice(0, maxLength) + '...';
+        }
+        return content;
       },
-    },
-    // username
-    {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: 'username',
-      copyable: true,
-      renderText: (_, record) => record?.username,
-    },
-    // botName
-    {
-      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
-      copyable: true,
-      dataIndex: 'botName',
-    },
-    {
-      title: intl.formatMessage({ id: 'group' }),
-      dataIndex: 'chat_title',
     },
     {
       title: intl.formatMessage({ id: 'date' }),
