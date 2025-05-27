@@ -8,7 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import { MessageType } from '@/enums/message';
+import MessageType from '@/enums/message';
 import moment from 'moment';
 
 const handleRemove = async (ids: string[]) => {
@@ -41,15 +41,15 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const access = useAccess();
 
+  const messageTypeEnum = MessageType();
+
   const columns: ProColumns<any>[] = [
     {
       title: intl.formatMessage({ id: 'messageType' }),
       dataIndex: 'messageType',
       hideInSearch: true,
-      valueEnum: {
-        text: { text: intl.formatMessage({ id: 'text' }) },
-        photo: { text: intl.formatMessage({ id: 'image' }) },
-        command: { text: intl.formatMessage({ id: 'command' }) },
+      renderText: (_, record) => {
+        return intl.formatMessage({ id: `${record.messageType}` });
       },
     },
     {
@@ -69,40 +69,19 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'user' }),
       dataIndex: 'username',
-      render: (_, record) => {
-        return record.username || record.first_name + '' + record.last_name;
-      },
+      copyable: true,
+      renderText: (_, record) => record?.username,
     },
-    // from
-    // {
-    //   title: intl.formatMessage({ id: 'from' }),
-    //   hideInSearch: true,
-    //   render: (_, record) => {
-    //     return `
-    //     ${intl.formatMessage({ id: 'id' })}: ${record.from.id}
-    //     ${intl.formatMessage({ id: 'is_bot' })}: ${record.is_bot}
-    //     ${intl.formatMessage({ id: 'username' })}: ${record.username || record.first_name + record.last_name}
-    //     ${intl.formatMessage({ id: 'language_code' })}: ${record.language_code}
-    //     `;
-    //   },
-    // },
-    // chat_type
+    // botName
+    {
+      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
+      copyable: true,
+      dataIndex: 'botName',
+    },
     {
       title: intl.formatMessage({ id: 'group' }),
       dataIndex: 'chat_title',
     },
-    // chat
-    // {
-    //   title: intl.formatMessage({ id: 'chat' }),
-    //   hideInSearch: true,
-    //   render: (_, record) => {
-    //     return `
-    //     ${intl.formatMessage({ id: 'id' })}: ${record.chat_id}
-    //     ${intl.formatMessage({ id: 'title' })}: ${record.chat_title}
-    //     ${intl.formatMessage({ id: 'type' })}: ${record.chat_type}
-    //     `;
-    //   }
-    // },
     {
       title: intl.formatMessage({ id: 'date' }),
       dataIndex: 'date',
@@ -158,38 +137,12 @@ const TableList: React.FC = () => {
                 label: <FormattedMessage id="platform.all" defaultMessage="all" />,
                 key: '',
               },
-              {
-                label: intl.formatMessage({ id: 'text' }),
-                key: MessageType.TEXT,
-              },
-              {
-                label: intl.formatMessage({ id: 'image' }),
-                key: MessageType.PHOTO,
-              },
-              {
-                label: intl.formatMessage({ id: 'video' }),
-                key: MessageType.VIDEO,
-              },
-              {
-                label: intl.formatMessage({ id: 'voice' }),
-                key: MessageType.VOICE,
-              },
-              {
-                label: intl.formatMessage({ id: 'document' }),
-                key: MessageType.DOCUMENT,
-              },
-              {
-                label: intl.formatMessage({ id: 'sticker' }),
-                key: MessageType.STICKER,
-              },
-              {
-                label: intl.formatMessage({ id: 'location' }),
-                key: MessageType.LOCATION,
-              },
-              {
-                label: intl.formatMessage({ id: 'command' }),
-                key: MessageType.COMMAND,
-              },
+              ...Object.keys(messageTypeEnum).map((key) => ({
+                label: intl.formatMessage({
+                  id: messageTypeEnum[key as keyof typeof messageTypeEnum].text,
+                }),
+                key: messageTypeEnum[key as keyof typeof messageTypeEnum].value,
+              })),
             ],
             onChange: (key: any) => {
               setActiveKey(key);

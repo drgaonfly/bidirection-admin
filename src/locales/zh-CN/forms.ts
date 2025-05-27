@@ -210,4 +210,6 @@ export default {
   is_bot: '是否机器人',
   language_code: '语言代码',
   date: '时间',
+  photo: '图片',
+  mention: '引用',
 };

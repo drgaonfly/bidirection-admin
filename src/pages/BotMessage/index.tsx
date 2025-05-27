@@ -8,7 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import { MessageType } from '@/enums/message';
+import MessageType from '@/enums/message';
 import moment from 'moment';
 
 const handleRemove = async (ids: string[]) => {
@@ -41,26 +41,23 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const access = useAccess();
 
+  const messageTypeEnum = MessageType();
+
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'messageType' }),
       dataIndex: 'messageType',
       hideInSearch: true,
-      valueEnum: {
-        text: { text: intl.formatMessage({ id: 'text' }) },
-        photo: { text: intl.formatMessage({ id: 'image' }) },
-        command: { text: intl.formatMessage({ id: 'command' }) },
+      renderText: (_, record) => {
+        return intl.formatMessage({ id: `${record.messageType}` });
       },
     },
     {
       title: intl.formatMessage({ id: 'content' }),
       dataIndex: 'content',
+      ellipsis: true,
       hideInSearch: true,
-      ellipsis: {
-        showTitle: false,
-      },
-      copyable: true,
-      render: (_, record) => {
+      renderText: (_, record) => {
         if (record.messageType === 'photo') {
           return <Image src={record.content} alt="message" style={{ maxWidth: '100px' }} preview />;
         }
@@ -68,9 +65,8 @@ const TableList: React.FC = () => {
           <div
             style={{
               maxWidth: '200px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
             }}
           >
             {record.content}
@@ -82,9 +78,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'user' }),
       dataIndex: 'botUser',
       copyable: true,
-      render: (_, record) => {
-        return record.userName || record?.botUser?.firstName + ' ' + record?.botUser?.lastName;
-      },
+      renderText: (botUser) => botUser?.userName || botUser?.displayName,
     },
     {
       title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
@@ -93,8 +87,10 @@ const TableList: React.FC = () => {
       renderText: (bot) => bot?.botName,
     },
     {
-      title: intl.formatMessage({ id: 'group' }),
-      dataIndex: ['group', 'title'],
+      title: intl.formatMessage({ id: 'group', defaultMessage: '所属群组' }),
+      dataIndex: 'group',
+      copyable: true,
+      renderText: (group) => group?.title,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
@@ -151,50 +147,12 @@ const TableList: React.FC = () => {
                 label: <FormattedMessage id="platform.all" defaultMessage="all" />,
                 key: '',
               },
-              {
-                label: intl.formatMessage({ id: 'text' }),
-                key: MessageType.TEXT,
-              },
-              {
-                label: intl.formatMessage({ id: 'image' }),
-                key: MessageType.PHOTO,
-              },
-              {
-                label: intl.formatMessage({ id: 'video' }),
-                key: MessageType.VIDEO,
-              },
-              {
-                label: intl.formatMessage({ id: 'voice' }),
-                key: MessageType.VOICE,
-              },
-              {
-                label: intl.formatMessage({ id: 'document' }),
-                key: MessageType.DOCUMENT,
-              },
-              {
-                label: intl.formatMessage({ id: 'sticker' }),
-                key: MessageType.STICKER,
-              },
-              {
-                label: intl.formatMessage({ id: 'location' }),
-                key: MessageType.LOCATION,
-              },
-              {
-                label: intl.formatMessage({ id: 'command' }),
-                key: MessageType.COMMAND,
-              },
-              {
-                label: intl.formatMessage({ id: 'audio' }),
-                key: MessageType.AUDIO,
-              },
-              {
-                label: intl.formatMessage({ id: 'file' }),
-                key: MessageType.FILE,
-              },
-              {
-                label: intl.formatMessage({ id: 'other' }),
-                key: MessageType.OTHER,
-              },
+              ...Object.keys(messageTypeEnum).map((key) => ({
+                label: intl.formatMessage({
+                  id: messageTypeEnum[key as keyof typeof messageTypeEnum].text,
+                }),
+                key: messageTypeEnum[key as keyof typeof messageTypeEnum].value,
+              })),
             ],
             onChange: (key: any) => {
               setActiveKey(key);

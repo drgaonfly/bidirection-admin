@@ -173,4 +173,6 @@ export default {
   is_bot: 'is Bot',
   language_code: 'Language Code',
   date: 'Date',
+  photo: 'Photo',
+  mention: 'Mention',
 };

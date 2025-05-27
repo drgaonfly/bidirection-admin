@@ -25,7 +25,7 @@ export default [
   },
   {
     path: '/',
-    component: './RootRedirect',
+    component: './Welcome',
   },
   {
     path: '/welcome',
