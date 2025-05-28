@@ -70,18 +70,21 @@ const TableList: React.FC = () => {
       dataIndex: 'txHash',
       hideInSearch: true,
       ellipsis: true,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'sendAddress' }),
       dataIndex: 'sendAddress',
       ellipsis: true,
       hideInSearch: true,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'receiveAddress' }),
       dataIndex: 'receiveAddress',
       ellipsis: true,
       hideInSearch: true,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'user' }),
@@ -95,6 +98,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'bot' }),
       dataIndex: ['bot', 'userName'],
       hideInSearch: true,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
