@@ -62,7 +62,7 @@ const AddOwnerForm: React.FC<AddOwnerFormProps> = (props) => {
     >
       <ProFormText
         name="owner"
-        label={intl.formatMessage({ id: 'owner', defaultMessage: '电报机器人id' })}
+        label={intl.formatMessage({ id: 'owner', defaultMessage: '拥有者' })}
         placeholder={intl.formatMessage({
           id: 'enter_owner',
           defaultMessage: '请输入电报机器人id',
