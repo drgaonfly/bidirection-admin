@@ -17,10 +17,8 @@ import CopyToClipboard from '@/components/CopyToClipboard';
 import GroupForm from './components/GroupForm';
 import AddOwnerForm from './components/AddOwnerForm';
 import DeleteOwnerForm from './components/DeleteOwnerForm';
-import DisplayOwnersModal from './components/DisplayOwnersModal';
 import AddAuthorizerForm from './components/AddAuthorizerForm';
 import DeleteAuthorizerForm from './components/DeleteAuthorizerForm';
-import DisplayAuthorizerForm from './components/DisplayAuthorizerForm';
 import StringArrayWithActions from './components/StringArrayWithAction';
 
 /**
@@ -128,9 +126,6 @@ const TableList: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [addOwnerModalVisible, setAddOwnerModalVisible] = useState<boolean>(false);
   const [deleteOwnerModalVisible, setDeleteOwnerModalVisible] = useState<boolean>(false);
-  const [displayOwnersModalVisible, setDisplayOwnersModalVisible] = useState<boolean>(false);
-  const [displayAuthorizerModalVisible, setDisplayAuthorizerModalVisible] =
-    useState<boolean>(false);
   const [addAuthorizerModalVisible, setAddAuthorizerModalVisible] = useState<boolean>(false);
   const [deleteAuthorizerModalVisible, setDeleteAuthorizerModalVisible] = useState<boolean>(false);
 
@@ -162,11 +157,6 @@ const TableList: React.FC = () => {
           );
         }
       },
-    },
-    {
-      title: intl.formatMessage({ id: 'user', defaultMessage: '用户' }),
-      dataIndex: ['user', 'name'],
-      hideInSearch: false,
     },
     // add owners
     {
@@ -340,7 +330,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 4000 }}
+        scroll={{ x: 3000 }}
         search={{
           collapsed: false,
         }}
@@ -515,16 +505,6 @@ const TableList: React.FC = () => {
             actionRef.current.reload();
           }
         }}
-      />
-      <DisplayOwnersModal
-        open={displayOwnersModalVisible}
-        onCancel={setDisplayOwnersModalVisible}
-        values={currentRow || {}}
-      />
-      <DisplayAuthorizerForm
-        open={displayAuthorizerModalVisible}
-        onCancel={setDisplayAuthorizerModalVisible}
-        values={currentRow || {}}
       />
       <AddAuthorizerForm
         open={addAuthorizerModalVisible}
