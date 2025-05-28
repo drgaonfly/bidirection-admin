@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Modal, Switch } from 'antd';
+import { Button, message, Modal, Switch, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
@@ -16,6 +16,7 @@ import ConfigureForm from './components/ConfigureForm';
 import CopyToClipboard from '@/components/CopyToClipboard';
 import GroupForm from './components/GroupForm';
 import AddOwnerForm from './components/AddOwnerForm';
+import DeleteOwnerForm from './components/DeleteOwnerForm';
 
 /**
  * @en-US Add node
@@ -120,13 +121,8 @@ const TableList: React.FC = () => {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [configureModalVisible, setConfigureModalVisible] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
-  /**
-   * @en-US International configuration
-   * @zh-CN 国际化配置
-   * */
-  // Define roles object with index signature
-
   const [addOwnerModalVisible, setAddOwnerModalVisible] = useState<boolean>(false);
+  const [deleteOwnerModalVisible, setDeleteOwnerModalVisible] = useState<boolean>(false);
 
   const columns: ProColumns<any>[] = [
     {
@@ -169,15 +165,27 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       align: 'center',
       render: (_, record) => (
-        <a
-          key="add_owner"
-          onClick={() => {
-            setCurrentRow(record);
-            setAddOwnerModalVisible(true);
-          }}
-        >
-          {intl.formatMessage({ id: 'add_owner' })}
-        </a>
+        <Space>
+          <a
+            key="add_owner"
+            onClick={() => {
+              setCurrentRow(record);
+              setAddOwnerModalVisible(true);
+            }}
+          >
+            {intl.formatMessage({ id: 'add_owner' })}
+          </a>
+
+          <a
+            key="delete_owner"
+            onClick={() => {
+              setCurrentRow(record);
+              setDeleteOwnerModalVisible(true);
+            }}
+          >
+            {intl.formatMessage({ id: 'delete_owner' })}
+          </a>
+        </Space>
       ),
     },
     {
@@ -466,6 +474,16 @@ const TableList: React.FC = () => {
       <AddOwnerForm
         open={addOwnerModalVisible}
         onCancel={setAddOwnerModalVisible}
+        values={currentRow || {}}
+        onSuccess={() => {
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }}
+      />
+      <DeleteOwnerForm
+        open={deleteOwnerModalVisible}
+        onCancel={setDeleteOwnerModalVisible}
         values={currentRow || {}}
         onSuccess={() => {
           if (actionRef.current) {

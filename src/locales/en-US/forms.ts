@@ -182,4 +182,7 @@ export default {
   lastName: 'Last Name',
   isAuthorized: 'Is Authorized',
   bot_users_list: 'Bot Users List',
+  add_owner: 'Add Owner',
+  delete_owner: 'Delete Owner',
+  select_owner_required: 'Please select owner',
 };

@@ -220,4 +220,6 @@ export default {
   isAuthorized: '是否授权',
   bot_users_list: '机器人用户列表',
   add_owner: '添加拥有者',
+  delete_owner: '删除拥有者',
+  select_owner_required: '请选择需要删除的拥有者',
 };
