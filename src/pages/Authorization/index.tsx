@@ -14,6 +14,7 @@ import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import ConfigureForm from './components/ConfigureForm';
 import CopyToClipboard from '@/components/CopyToClipboard';
+import GroupForm from './components/GroupForm';
 
 /**
  * @en-US Add node
@@ -109,7 +110,7 @@ const TableList: React.FC = () => {
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   // const [batchUploadPriceModalOpen, setBatchUploadPriceModalOpen] = useState<boolean>(false);
-
+  const [groupModalVisible, setGroupModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<any>();
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
@@ -276,6 +277,16 @@ const TableList: React.FC = () => {
             }}
           />
         ),
+        // 查看群组
+        <a
+          key="group"
+          onClick={() => {
+            setCurrentRow(record);
+            setGroupModalVisible(true);
+          }}
+        >
+          {intl.formatMessage({ id: 'group' })}
+        </a>,
       ],
     },
   ];
@@ -428,6 +439,11 @@ const TableList: React.FC = () => {
         }}
         onCancel={setConfigureModalVisible}
         updateModalOpen={configureModalVisible}
+        values={currentRow || {}}
+      />
+      <GroupForm
+        open={groupModalVisible}
+        onCancel={setGroupModalVisible}
         values={currentRow || {}}
       />
       <Modal
