@@ -63,13 +63,16 @@ const AddAuthorizerForm: React.FC<AddAuthorizerFormProps> = (props) => {
       <ProFormText
         name="authorizer"
         label={intl.formatMessage({ id: 'authorizer', defaultMessage: '授权人' })}
-        placeholder={intl.formatMessage({ id: 'enter_authorizer', defaultMessage: '请输入授权人' })}
+        placeholder={intl.formatMessage({
+          id: 'enter_authorizer',
+          defaultMessage: '请输入电报机器人id',
+        })}
         rules={[
           {
             required: true,
             message: intl.formatMessage({
               id: 'enter_authorizer_required',
-              defaultMessage: '请输入授权人',
+              defaultMessage: '请输入电报机器人id',
             }),
           },
         ]}
