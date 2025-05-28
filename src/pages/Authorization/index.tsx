@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Modal, Switch, Space } from 'antd';
+import { Button, message, Modal, Switch } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
@@ -21,6 +21,7 @@ import DisplayOwnersModal from './components/DisplayOwnersModal';
 import AddAuthorizerForm from './components/AddAuthorizerForm';
 import DeleteAuthorizerForm from './components/DeleteAuthorizerForm';
 import DisplayAuthorizerForm from './components/DisplayAuthorizerForm';
+import StringArrayWithActions from './components/StringArrayWithAction';
 
 /**
  * @en-US Add node
@@ -174,78 +175,42 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       align: 'center',
       render: (_, record) => (
-        <Space>
-          <a
-            key="display_owner"
-            onClick={() => {
-              setCurrentRow(record);
-              setDisplayOwnersModalVisible(true);
-            }}
-          >
-            {intl.formatMessage({ id: 'display_owner' })}
-          </a>
-
-          <a
-            key="add_owner"
-            onClick={() => {
-              setCurrentRow(record);
-              setAddOwnerModalVisible(true);
-            }}
-          >
-            {intl.formatMessage({ id: 'add_owner' })}
-          </a>
-
-          <a
-            key="delete_owner"
-            onClick={() => {
-              setCurrentRow(record);
-              setDeleteOwnerModalVisible(true);
-            }}
-          >
-            {intl.formatMessage({ id: 'delete_owner' })}
-          </a>
-        </Space>
+        <StringArrayWithActions
+          values={record.owners}
+          onAdd={() => {
+            setCurrentRow(record);
+            setAddOwnerModalVisible(true);
+          }}
+          onDelete={() => {
+            setCurrentRow(record);
+            setDeleteOwnerModalVisible(true);
+          }}
+          labelAdd={intl.formatMessage({ id: 'add_owner' })}
+          labelDelete={intl.formatMessage({ id: 'delete_owner' })}
+        />
       ),
     },
-    // authorized_users
-    // authorized_users
+
     {
       title: intl.formatMessage({ id: 'authorized_users', defaultMessage: '授权人' }),
       dataIndex: 'authorized_users',
       hideInSearch: true,
       align: 'center',
       render: (_, record) => (
-        <Space>
-          <a
-            key="display_authorizer"
-            onClick={() => {
-              setCurrentRow(record);
-              setDisplayAuthorizerModalVisible(true);
-            }}
-          >
-            {intl.formatMessage({ id: 'display_authorizer' })}
-          </a>
-
-          <a
-            key="add_authorizer"
-            onClick={() => {
-              setCurrentRow(record);
-              setAddAuthorizerModalVisible(true);
-            }}
-          >
-            {intl.formatMessage({ id: 'add_authorizer' })}
-          </a>
-
-          <a
-            key="delete_authorizer"
-            onClick={() => {
-              setCurrentRow(record);
-              setDeleteAuthorizerModalVisible(true);
-            }}
-          >
-            {intl.formatMessage({ id: 'delete_authorizer' })}
-          </a>
-        </Space>
+        <StringArrayWithActions
+          values={record.authorized_users}
+          onAdd={() => {
+            setCurrentRow(record);
+            setAddAuthorizerModalVisible(true);
+          }}
+          onDelete={() => {
+            setCurrentRow(record);
+            setDeleteAuthorizerModalVisible(true);
+          }}
+          labelAdd={intl.formatMessage({ id: 'add_authorizer' })}
+          labelDelete={intl.formatMessage({ id: 'delete_authorizer' })}
+          color="green"
+        />
       ),
     },
     {
