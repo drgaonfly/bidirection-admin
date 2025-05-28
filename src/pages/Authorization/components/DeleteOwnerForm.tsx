@@ -54,7 +54,7 @@ const DeleteOwnerForm: React.FC<DeleteOwnerFormProps> = (props) => {
 
   return (
     <ModalForm
-      title={intl.formatMessage({ id: 'delete_owner', defaultMessage: '删除Owner' })}
+      title={intl.formatMessage({ id: 'delete_owner', defaultMessage: '删除拥有者' })}
       width="500px"
       form={form}
       modalProps={{
@@ -80,7 +80,7 @@ const DeleteOwnerForm: React.FC<DeleteOwnerFormProps> = (props) => {
             required: true,
             message: intl.formatMessage({
               id: 'select_owner_required',
-              defaultMessage: '请选择要删除的Owner',
+              defaultMessage: '请选择要删除的电报机器人id',
             }),
           },
         ]}
@@ -88,12 +88,12 @@ const DeleteOwnerForm: React.FC<DeleteOwnerFormProps> = (props) => {
         <Select
           placeholder={intl.formatMessage({
             id: 'select_owner',
-            defaultMessage: '请选择要删除的Owner',
+            defaultMessage: '请选择要删除的电报机器人id',
           })}
           options={owners.map((owner) => ({ label: owner, value: owner }))}
           notFoundContent={intl.formatMessage({
             id: 'no_owners',
-            defaultMessage: '没有可删除的Owner',
+            defaultMessage: '请选择要删除的电报机器人id',
           })}
         />
       </Form.Item>
