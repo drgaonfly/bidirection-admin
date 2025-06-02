@@ -66,7 +66,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             },
             {
               value: 'custom',
-              label: intl.formatMessage({ id: 'type.custom', defaultMessage: '自定义' }),
+              label: intl.formatMessage({ id: 'type.custom', defaultMessage: '定制' }),
             },
           ]}
         />
