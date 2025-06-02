@@ -24,9 +24,9 @@ const StringArrayWithActions: React.FC<Props> = ({
     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
       {/* 左侧标签列 */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {(values || []).map((val) => (
+        {(values || []).map((val: any) => (
           <Tag color={color} key={val}>
-            @{val}
+            @{val.userName}
           </Tag>
         ))}
       </div>

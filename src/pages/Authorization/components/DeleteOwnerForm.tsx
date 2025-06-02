@@ -90,7 +90,7 @@ const DeleteOwnerForm: React.FC<DeleteOwnerFormProps> = (props) => {
             id: 'select_owner',
             defaultMessage: '请选择要删除的电报机器人id',
           })}
-          options={owners.map((owner) => ({ label: owner, value: owner }))}
+          options={owners.map((owner: any) => ({ label: owner.displayName, value: owner._id }))}
           notFoundContent={intl.formatMessage({
             id: 'no_owners',
             defaultMessage: '请选择要删除的电报机器人id',

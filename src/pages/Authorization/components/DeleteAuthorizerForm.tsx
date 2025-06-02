@@ -90,7 +90,10 @@ const DeleteAuthorizerForm: React.FC<DeleteAuthorizerFormProps> = (props) => {
             id: 'select_authorizer',
             defaultMessage: '请选择要删除的授权人',
           })}
-          options={authorizers.map((authorizer) => ({ label: authorizer, value: authorizer }))}
+          options={authorizers.map((authorizer: any) => ({
+            label: authorizer.displayName,
+            value: authorizer._id,
+          }))}
           notFoundContent={intl.formatMessage({
             id: 'no_authorizers',
             defaultMessage: '没有可删除的授权人',
