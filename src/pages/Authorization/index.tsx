@@ -201,6 +201,22 @@ const TableList: React.FC = () => {
       ),
     },
     {
+      title: intl.formatMessage({ id: 'type', defaultMessage: '类型' }),
+      dataIndex: 'type',
+      align: 'center',
+      valueEnum: {
+        '': { text: intl.formatMessage({ id: 'all', defaultMessage: '所有' }) },
+        public: { text: intl.formatMessage({ id: 'type.public', defaultMessage: '公开' }) },
+        custom: { text: intl.formatMessage({ id: 'type.custom', defaultMessage: '定制' }) },
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'expireAt', defaultMessage: '到期时间' }),
+      dataIndex: 'expireAt',
+      hideInSearch: true,
+      valueType: 'dateTime',
+    },
+    {
       title: intl.formatMessage({ id: 'token', defaultMessage: 'Bot Token' }),
       dataIndex: 'token',
       hideInSearch: true,
@@ -267,6 +283,7 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       valueType: 'dateTime',
     },
+
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
