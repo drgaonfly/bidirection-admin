@@ -10,7 +10,7 @@ const cliProgress = require('cli-progress');
 require('dotenv').config();
 
 // 远程部署目录
-const REMOTE_DEPLOY_PATH = '/www/wwwroot/account-bot-admin';
+const REMOTE_DEPLOY_PATH = '/www/wwwroot/trx-admin';
 
 // 远程服务器配置
 const sshConfig = {
