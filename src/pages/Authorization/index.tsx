@@ -20,6 +20,7 @@ import DeleteOwnerForm from './components/DeleteOwnerForm';
 import AddAuthorizerForm from './components/AddAuthorizerForm';
 import DeleteAuthorizerForm from './components/DeleteAuthorizerForm';
 import StringArrayWithActions from './components/StringArrayWithAction';
+import MessageForm from '../Bot/components/MessageForm';
 
 /**
  * @en-US Add node
@@ -128,6 +129,7 @@ const TableList: React.FC = () => {
   const [deleteOwnerModalVisible, setDeleteOwnerModalVisible] = useState<boolean>(false);
   const [addAuthorizerModalVisible, setAddAuthorizerModalVisible] = useState<boolean>(false);
   const [deleteAuthorizerModalVisible, setDeleteAuthorizerModalVisible] = useState<boolean>(false);
+  const [messageModalOpen, setMessageModalOpen] = useState<boolean>(false);
 
   const columns: ProColumns<any>[] = [
     {
@@ -312,7 +314,19 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canCreateBot && (
+        <a
+          key="sendMessage"
+          onClick={() => {
+            setMessageModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'sendMessage',
+            defaultMessage: intl.formatMessage({ id: 'sendMessage' }),
+          })}
+        </a>,
+        access.canUpdateBot && (
           <a
             key="configure"
             onClick={() => {
@@ -563,6 +577,7 @@ const TableList: React.FC = () => {
           }
         }}
       />
+      <MessageForm open={messageModalOpen} onCancel={setMessageModalOpen} currentRow={currentRow} />
     </PageContainer>
   );
 };

@@ -232,35 +232,32 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canCreateBot &&
-          (access.canCreateBot && (
-            <a
-              key="sendMessage"
-              onClick={() => {
-                setMessageModalOpen(true);
-                setCurrentRow(record);
-              }}
-            >
-              {intl.formatMessage({
-                id: 'sendMessage',
-                defaultMessage: intl.formatMessage({ id: 'sendMessage' }),
-              })}
-            </a>
-          ),
-          (
-            <a
-              key="configure"
-              onClick={() => {
-                setConfigureModalVisible(true);
-                setCurrentRow(record);
-              }}
-            >
-              {intl.formatMessage({
-                id: 'configure',
-                defaultMessage: intl.formatMessage({ id: 'configure' }),
-              })}
-            </a>
-          )),
+        <a
+          key="sendMessage"
+          onClick={() => {
+            setMessageModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'sendMessage',
+            defaultMessage: intl.formatMessage({ id: 'sendMessage' }),
+          })}
+        </a>,
+        access.canUpdateBot && (
+          <a
+            key="configure"
+            onClick={() => {
+              setConfigureModalVisible(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({
+              id: 'configure',
+              defaultMessage: intl.formatMessage({ id: 'configure' }),
+            })}
+          </a>
+        ),
         <a
           key="detail"
           onClick={() => {
