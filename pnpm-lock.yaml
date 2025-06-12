@@ -123,9 +123,6 @@ importers:
       '@types/classnames':
         specifier: ^2.3.4
         version: 2.3.4
-      '@types/emoji-mart':
-        specifier: ^5.3.0
-        version: 5.3.0(react@18.3.1)
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -2731,10 +2728,6 @@ packages:
   '@types/d3-timer@3.0.2':
     resolution: {integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==}
 
-  '@types/emoji-mart@5.3.0':
-    resolution: {integrity: sha512-H1fl4YVSqJERHbn1ZhTgzb/iqha8QcJANvYXI8S1CpDYn82Kq4LdkKgR20OCxe9324XoMGuvSP8HsSU633/e4g==}
-    deprecated: This is a stub types definition. emoji-mart provides its own type definitions, so you do not need this installed.
-
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
 
@@ -5143,11 +5136,6 @@ packages:
   emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
-
-  emoji-mart@3.0.1:
-    resolution: {integrity: sha512-sxpmMKxqLvcscu6mFn9ITHeZNkGzIvD0BSNFE/LJESPbCA8s1jM6bCDPjWbV31xHq7JXaxgpHxLB54RCbBZSlg==}
-    peerDependencies:
-      react: ^0.14.0 || ^15.0.0-0 || ^16.0.0 || ^17.0.0
 
   emoji-regex@7.0.3:
     resolution: {integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==}
@@ -15649,12 +15637,6 @@ snapshots:
 
   '@types/d3-timer@3.0.2': {}
 
-  '@types/emoji-mart@5.3.0(react@18.3.1)':
-    dependencies:
-      emoji-mart: 3.0.1(react@18.3.1)
-    transitivePeerDependencies:
-      - react
-
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 9.6.1
@@ -19151,12 +19133,6 @@ snapshots:
   email-addresses@3.1.0: {}
 
   emittery@0.13.1: {}
-
-  emoji-mart@3.0.1(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.26.10
-      prop-types: 15.8.1
-      react: 18.3.1
 
   emoji-regex@7.0.3: {}
 
