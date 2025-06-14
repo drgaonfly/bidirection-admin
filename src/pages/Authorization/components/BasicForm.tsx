@@ -5,9 +5,9 @@ import {
   ProFormText,
   ProFormSwitch,
   ProFormTextArea,
-  ProFormSelect,
-  ProFormDependency,
-  ProFormDateTimePicker,
+  // ProFormSelect,
+  // ProFormDependency,
+  // ProFormDateTimePicker,
 } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 
@@ -54,7 +54,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           disabled={!newRecord}
         />
 
-        <ProFormSelect
+        {/* <ProFormSelect
           rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'type', defaultMessage: '类型' })}
@@ -84,7 +84,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
               />
             ) : null
           }
-        </ProFormDependency>
+        </ProFormDependency> */}
 
         <ProFormTextArea
           width="md"
