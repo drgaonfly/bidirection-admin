@@ -8,7 +8,6 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import moment from 'moment';
 import Update from './components/Update';
 
 const handleUpdate = async (fields: any) => {
@@ -99,12 +98,17 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       copyable: true,
     },
+    // remark
+    {
+      title: intl.formatMessage({ id: 'remark' }),
+      dataIndex: 'remark',
+      hideInSearch: true,
+    },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
-      render: (_, record) => moment(record.createdAt).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
