@@ -53,6 +53,13 @@ const TableList: React.FC = () => {
       copyable: true,
       renderText: (wallet) => wallet?.address,
     },
+    // type
+    {
+      title: intl.formatMessage({ id: 'type' }),
+      dataIndex: 'type',
+      hideInSearch: true,
+      renderText: (type) => (type === 'transferIn' ? '收入' : '支出'),
+    },
     {
       title: intl.formatMessage({ id: 'amount' }),
       dataIndex: 'amount',
