@@ -10,11 +10,6 @@ import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import StatusEnum from '@/enums/exchangeStatus';
 
-enum Crypto {
-  usdt = 'usdt',
-  trx = 'trx',
-}
-
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
@@ -62,16 +57,14 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'from_crypt' }),
-      dataIndex: 'from_crypt',
+      title: intl.formatMessage({ id: 'from_address' }),
+      dataIndex: 'from_address',
       copyable: true,
-      valueEnum: Crypto,
     },
     {
-      title: intl.formatMessage({ id: 'to_crypt' }),
-      dataIndex: 'to_crypt',
+      title: intl.formatMessage({ id: 'to_address' }),
+      dataIndex: 'to_address',
       copyable: true,
-      valueEnum: Crypto,
     },
     {
       title: intl.formatMessage({ id: 'from_amount' }),
@@ -81,6 +74,12 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'to_amount' }),
       dataIndex: 'to_amount',
+      hideInSearch: true,
+    },
+    // isTransferIntoOther
+    {
+      title: intl.formatMessage({ id: 'isTransferIntoOther' }),
+      dataIndex: 'isTransferIntoOther',
       hideInSearch: true,
     },
     {

@@ -198,4 +198,7 @@ export default {
   balance: 'Balance',
   hash: 'Hash',
   time: 'Time',
+  from_address: 'From Address',
+  to_address: 'To Address',
+  isTransferIntoOther: 'Is Transfer Into Other',
 };

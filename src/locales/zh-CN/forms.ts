@@ -248,4 +248,7 @@ export default {
   to_amount: '需兑换的金额',
   rate: '汇率',
   fee: '手续费',
+  from_address: '发送地址',
+  to_address: '接收地址',
+  isTransferIntoOther: '是否是转账到其他人',
 };
