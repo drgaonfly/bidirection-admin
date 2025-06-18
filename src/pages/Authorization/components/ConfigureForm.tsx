@@ -144,12 +144,15 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             placeholder="https://t.me/"
           />
           <ProFormText
-            rules={[{ message: intl.formatMessage({ id: 'enter_trx20_address' }) }]}
+            rules={[{ message: intl.formatMessage({ id: 'enter_auto_exchange_address' }) }]}
             width="md"
-            label={intl.formatMessage({ id: 'trx20_address', defaultMessage: 'TRX20地址' })}
-            name="trx20_address"
+            label={intl.formatMessage({
+              id: 'auto_exchange_address',
+              defaultMessage: '自动闪兑地址',
+            })}
+            name="auto_exchange_address"
             tooltip="格式示例: T..."
-            placeholder="请输入TRX20地址"
+            placeholder="请输入trx地址"
           />
           <ProFormDigit
             width="md"
