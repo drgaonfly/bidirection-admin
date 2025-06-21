@@ -44,9 +44,8 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'user' }),
       dataIndex: 'botUser',
-      renderText: (text, record) => {
-        return record.botUser?.displayName;
-      },
+      copyable: true,
+      renderText: (botUser) => botUser?.userName || botUser?.displayName,
     },
     {
       title: intl.formatMessage({ id: 'bot' }),
