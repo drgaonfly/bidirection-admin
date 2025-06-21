@@ -202,4 +202,5 @@ export default {
   to_address: 'To Address',
   isTransferIntoOther: 'Is Transfer Into Other',
   intervalTime: 'Interval Time',
+  receive_address: 'Receive Address',
 };

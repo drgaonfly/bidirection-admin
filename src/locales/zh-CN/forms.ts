@@ -252,4 +252,5 @@ export default {
   to_address: '接收地址',
   isTransferIntoOther: '兑换给他人',
   intervalTime: '间隔时间',
+  receive_address: '转账地址',
 };

@@ -65,6 +65,12 @@ const TableList: React.FC = () => {
       dataIndex: 'to_address',
       copyable: true,
     },
+    // receive_address
+    {
+      title: intl.formatMessage({ id: 'receive_address' }),
+      dataIndex: 'receive_address',
+      copyable: true,
+    },
     {
       title: intl.formatMessage({ id: 'from_amount' }),
       dataIndex: 'from_amount',
