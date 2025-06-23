@@ -1,9 +1,9 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Image, Switch } from 'antd';
+import { message, Image } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -31,24 +31,24 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
-const handleUpdate = async (fields: any) => {
-  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
-  try {
-    await updateItem(`/group-messages/${fields._id}`, fields);
-    hide();
+// const handleUpdate = async (fields: any) => {
+//   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+//   try {
+//     await updateItem(`/group-messages/${fields._id}`, fields);
+//     hide();
 
-    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(
-      error?.response?.data?.message ?? (
-        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
-      ),
-    );
-    return false;
-  }
-};
+//     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+//     return true;
+//   } catch (error: any) {
+//     hide();
+//     message.error(
+//       error?.response?.data?.message ?? (
+//         <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+//       ),
+//     );
+//     return false;
+//   }
+// };
 
 const TableList: React.FC = () => {
   const intl = useIntl();
@@ -96,21 +96,12 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'isRealtime' }),
       dataIndex: 'isRealtime',
       hideInSearch: true,
-      render: (_, record: any) => (
-        <Switch
-          checked={record.isRealtime}
-          onChange={async () => {
-            await handleUpdate({ _id: record._id, isRealtime: !record.isRealtime });
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }}
-        />
-      ),
+      renderText: (isRealtime) =>
+        isRealtime ? intl.formatMessage({ id: 'yes' }) : intl.formatMessage({ id: 'no' }),
     },
     // intervalTime
     {
-      title: intl.formatMessage({ id: 'intervalTime' }),
+      title: intl.formatMessage({ id: 'interval_time_hour' }),
       dataIndex: 'intervalTime',
       hideInSearch: true,
     },

@@ -215,4 +215,5 @@ export default {
   no_groups_joined: 'No groups joined',
   txid: 'Exchange Hash',
   interval_time: 'Interval Time',
+  send_type: 'Send Type',
 };

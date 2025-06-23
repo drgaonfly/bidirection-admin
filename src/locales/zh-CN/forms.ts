@@ -268,4 +268,7 @@ export default {
   hours: 'N小时',
   txid: '兑换哈希',
   interval_time: '间隔时间',
+  send_type: '发送类型',
+  usdt_balance: 'USDT余额',
+  trx_balance: 'TRX余额',
 };

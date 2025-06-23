@@ -2,7 +2,7 @@ import { message, Form, Space } from 'antd';
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { useState, useEffect } from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
-import { addItem } from '@/services/ant-design-pro/api';
+import { addItem, updateItem } from '@/services/ant-design-pro/api';
 import Upload from '@/components/Upload';
 import {
   ModalForm,
@@ -11,13 +11,19 @@ import {
   ProFormDigit,
   ProFormCheckbox,
   ProFormSelect,
+  ProFormRadio,
+  ProFormDependency,
 } from '@ant-design/pro-components';
 
 const handleAdd = async (data: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
 
   try {
-    await addItem('/group-messages', data);
+    if (data.sendType === 'scheduled') {
+      await addItem('/group-messages', data);
+    } else {
+      await updateItem(`/bots/${data.bot}/send-group-message`, data);
+    }
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -77,11 +83,14 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ open, onCancel, cur
           content: values.message,
           bot: currentRow?._id,
           intervalTime:
-            values.timeUnit === 'minutes'
+            values.sendType === 'immediate'
+              ? 0
+              : values.timeUnit === 'minutes'
               ? Number((values.intervalTime / 60).toFixed(2))
               : values.intervalTime,
           groups: values.groups || [],
           image: imageUrl,
+          sendType: values.sendType,
         };
 
         const success = await handleAdd(data);
@@ -142,37 +151,57 @@ const GroupMessageForm: React.FC<GroupMessageFormProps> = ({ open, onCancel, cur
           />
         )}
 
-        <ProFormGroup
-          title={intl.formatMessage({ id: 'interval_time', defaultMessage: 'Interval Time' })}
-          size={8}
-        >
-          <Space>
-            <ProFormSelect
-              name="timeUnit"
-              width="xs"
-              initialValue="hours"
-              options={[
-                {
-                  label: intl.formatMessage({ id: 'minutes', defaultMessage: 'Minutes' }),
-                  value: 'minutes',
-                },
-                {
-                  label: intl.formatMessage({ id: 'hours', defaultMessage: 'Hours' }),
-                  value: 'hours',
-                },
-              ]}
-              noStyle
-            />
+        <ProFormRadio.Group
+          name="sendType"
+          label={intl.formatMessage({ id: 'send_type', defaultMessage: 'Send Type' })}
+          initialValue="immediate"
+          options={[
+            {
+              label: intl.formatMessage({ id: 'immediate_send', defaultMessage: '立即发送' }),
+              value: 'immediate',
+            },
+            {
+              label: intl.formatMessage({ id: 'scheduled_send', defaultMessage: '定时发送' }),
+              value: 'scheduled',
+            },
+          ]}
+        />
+        <ProFormDependency name={['sendType']}>
+          {({ sendType }) =>
+            sendType === 'scheduled' && (
+              <ProFormGroup
+                label={intl.formatMessage({ id: 'interval_time', defaultMessage: 'Interval Time' })}
+              >
+                <Space>
+                  <ProFormSelect
+                    name="timeUnit"
+                    width="xs"
+                    initialValue="hours"
+                    options={[
+                      {
+                        label: intl.formatMessage({ id: 'minutes', defaultMessage: 'Minutes' }),
+                        value: 'minutes',
+                      },
+                      {
+                        label: intl.formatMessage({ id: 'hours', defaultMessage: 'Hours' }),
+                        value: 'hours',
+                      },
+                    ]}
+                    noStyle
+                  />
 
-            <ProFormDigit
-              name="intervalTime"
-              width="xs"
-              min={0}
-              fieldProps={{ style: { width: '100%' } }}
-              noStyle
-            />
-          </Space>
-        </ProFormGroup>
+                  <ProFormDigit
+                    name="intervalTime"
+                    width="xs"
+                    min={0}
+                    fieldProps={{ style: { width: '100%' } }}
+                    noStyle
+                  />
+                </Space>
+              </ProFormGroup>
+            )
+          }
+        </ProFormDependency>
       </ProFormGroup>
     </ModalForm>
   );
