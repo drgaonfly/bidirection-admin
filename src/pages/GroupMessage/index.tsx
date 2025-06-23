@@ -83,7 +83,11 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'image' }),
       dataIndex: 'image',
       hideInSearch: true,
-      renderText: (_, record) => {
+      render: (_, record) => {
+        if (!record.image) {
+          return null;
+        }
+
         return (
           <Image
             src={`${process.env.UMI_APP_API_URL}/api/static/${record.image}`}
