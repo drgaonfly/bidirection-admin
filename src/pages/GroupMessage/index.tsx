@@ -88,14 +88,7 @@ const TableList: React.FC = () => {
           return null;
         }
 
-        return (
-          <Image
-            src={`${process.env.UMI_APP_API_URL}/api/static/${record.image}`}
-            alt="message"
-            style={{ maxWidth: '100px' }}
-            preview
-          />
-        );
+        return <Image src={record.image} alt="message" style={{ maxWidth: '100px' }} preview />;
       },
     },
     {
