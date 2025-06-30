@@ -48,7 +48,7 @@ const TableList: React.FC = () => {
       renderText: (botUser) =>
         botUser?.userName ||
         botUser?.displayName ||
-        `${botUser.firstName} ${botUser.lastName}`.trim(),
+        `${botUser?.firstName} ${botUser?.lastName}`?.trim(),
     },
     {
       title: intl.formatMessage({ id: 'bot' }),
