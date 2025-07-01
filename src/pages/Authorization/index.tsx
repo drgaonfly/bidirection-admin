@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Modal, Switch } from 'antd';
+import { Button, message, Modal, Switch, Form, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
@@ -19,7 +19,9 @@ import AddOwnerForm from './components/AddOwnerForm';
 import DeleteOwnerForm from './components/DeleteOwnerForm';
 import AddAuthorizerForm from './components/AddAuthorizerForm';
 import DeleteAuthorizerForm from './components/DeleteAuthorizerForm';
-import StringArrayWithActions from './components/StringArrayWithAction';
+// import StringArrayWithActions from './components/StringArrayWithAction';
+import MessageForm from './components/MessageForm';
+import GroupMessageForm from './components/GroupMessageForm';
 
 /**
  * @en-US Add node
@@ -128,21 +130,61 @@ const TableList: React.FC = () => {
   const [deleteOwnerModalVisible, setDeleteOwnerModalVisible] = useState<boolean>(false);
   const [addAuthorizerModalVisible, setAddAuthorizerModalVisible] = useState<boolean>(false);
   const [deleteAuthorizerModalVisible, setDeleteAuthorizerModalVisible] = useState<boolean>(false);
+  const [messageModalOpen, setMessageModalOpen] = useState<boolean>(false);
+  const [groupMessageModalOpen, setGroupMessageModalOpen] = useState<boolean>(false);
+  const [privateKeyModalOpen, setPrivateKeyModalOpen] = useState<boolean>(false);
+  const [privateKeyForm] = Form.useForm();
+
+  // 保存Private Key的方法
+  const handleSavePrivateKey = async () => {
+    try {
+      const values = await privateKeyForm.validateFields();
+      const hide = message.loading(<FormattedMessage id="saving" defaultMessage="Saving..." />);
+
+      try {
+        await updateItem(`/bots/${currentRow?._id}`, {
+          private_key: values.private_key,
+        });
+
+        hide();
+        message.success(
+          <FormattedMessage id="save_successful" defaultMessage="Saved successfully" />,
+        );
+        setPrivateKeyModalOpen(false);
+
+        if (actionRef.current) {
+          actionRef.current.reload();
+        }
+      } catch (error: any) {
+        hide();
+        message.error(
+          error?.response?.data?.message ?? (
+            <FormattedMessage id="save_failed" defaultMessage="Save failed, please try again" />
+          ),
+        );
+      }
+    } catch (error) {
+      console.log('Validation failed:', error);
+    }
+  };
 
   const columns: ProColumns<any>[] = [
     {
       title: intl.formatMessage({ id: 'ID', defaultMessage: 'ID' }),
       dataIndex: 'id',
+      width: 120,
       copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'owner_bot_display_name' }),
       dataIndex: 'botName',
+      width: 150,
       copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'owner_bot_identifier_name' }),
       dataIndex: 'userName',
+      width: 150,
       render: (_, record) => {
         const link = `@${record.userName}`;
         if (record.userName) {
@@ -155,93 +197,46 @@ const TableList: React.FC = () => {
         }
       },
     },
-    // add owners
+    // canBeCloned
     {
-      title: intl.formatMessage({ id: 'owners', defaultMessage: '拥有者' }),
-      dataIndex: 'owners',
+      title: intl.formatMessage({ id: 'is_canBeCloned' }),
+      dataIndex: 'canBeCloned',
+      width: 120,
       hideInSearch: true,
-      align: 'center',
-      render: (_, record) => (
-        <StringArrayWithActions
-          values={record.owners}
-          onAdd={() => {
-            setCurrentRow(record);
-            setAddOwnerModalVisible(true);
+      render: (_, record: any) => (
+        <Switch
+          checked={record.canBeCloned}
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, canBeCloned: !record.canBeCloned });
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
           }}
-          onDelete={() => {
-            setCurrentRow(record);
-            setDeleteOwnerModalVisible(true);
-          }}
-          labelAdd={intl.formatMessage({ id: 'add_owner' })}
-          labelDelete={intl.formatMessage({ id: 'delete_owner' })}
-        />
-      ),
-    },
-
-    {
-      title: intl.formatMessage({ id: 'authorized_users', defaultMessage: '授权人' }),
-      dataIndex: 'authorized_users',
-      hideInSearch: true,
-      align: 'center',
-      render: (_, record) => (
-        <StringArrayWithActions
-          values={record.authorized_users}
-          onAdd={() => {
-            setCurrentRow(record);
-            setAddAuthorizerModalVisible(true);
-          }}
-          onDelete={() => {
-            setCurrentRow(record);
-            setDeleteAuthorizerModalVisible(true);
-          }}
-          labelAdd={intl.formatMessage({ id: 'add_authorizer' })}
-          labelDelete={intl.formatMessage({ id: 'delete_authorizer' })}
-          color="green"
         />
       ),
     },
     {
-      title: intl.formatMessage({ id: 'type', defaultMessage: '类型' }),
-      dataIndex: 'type',
-      align: 'center',
-      valueEnum: {
-        '': { text: intl.formatMessage({ id: 'all', defaultMessage: '所有' }) },
-        public: { text: intl.formatMessage({ id: 'type.public', defaultMessage: '公开' }) },
-        custom: { text: intl.formatMessage({ id: 'type.custom', defaultMessage: '定制' }) },
+      title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '复制机器人' }),
+      dataIndex: 'clonedFrom',
+      width: 120,
+      renderText: (text: any) => {
+        return text?.botName || text?.userName;
       },
-    },
-    {
-      title: intl.formatMessage({ id: 'expireAt', defaultMessage: '到期时间' }),
-      dataIndex: 'expireAt',
       hideInSearch: true,
-      valueType: 'dateTime',
     },
     {
-      title: intl.formatMessage({ id: 'isExpired', defaultMessage: '是否已过期' }),
-      dataIndex: 'isExpired',
-      align: 'center',
-      valueEnum: {
-        '': { text: intl.formatMessage({ id: 'all', defaultMessage: '所有' }) },
-        true: {
-          text: intl.formatMessage({ id: 'expired', defaultMessage: '已过期' }),
-          status: 'Error',
-        },
-        false: {
-          text: intl.formatMessage({ id: 'not_expired', defaultMessage: '未过期' }),
-          status: 'Success',
-        },
+      title: intl.formatMessage({ id: 'creator', defaultMessage: 'Creator' }),
+      width: 120,
+      dataIndex: 'creator',
+      renderText: (text: any) => {
+        return text?.botName || text?.userName;
       },
-      // render: (_, record) => {
-      //   // 判断是否过期
-      //   const expired = record.expireAt ? new Date(record.expireAt).getTime() < Date.now() : false;
-      //   return expired
-      //     ? intl.formatMessage({ id: 'expired', defaultMessage: '已过期' })
-      //     : intl.formatMessage({ id: 'not_expired', defaultMessage: '未过期' });
-      // },
+      hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'token', defaultMessage: 'Bot Token' }),
       dataIndex: 'token',
+      width: 400,
       hideInSearch: true,
       copyable: true,
     },
@@ -249,6 +244,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'group', defaultMessage: '群组' }),
       dataIndex: 'groups',
+      width: 120,
       hideInSearch: true,
       align: 'center',
       render: (_, record) => (
@@ -274,6 +270,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
       dataIndex: 'isOnline',
+      width: 120,
       hideInSearch: true,
       valueEnum: {
         true: { text: intl.formatMessage({ id: 'platform.online' }), status: 'Success' },
@@ -300,9 +297,33 @@ const TableList: React.FC = () => {
       valueType: 'text',
       ellipsis: true,
     },
+    // private_key
+    // 如果record.private_key不为空，则显示修改，如果为空，则添加
+    {
+      title: intl.formatMessage({ id: 'private_key', defaultMessage: 'Private Key' }),
+      dataIndex: 'private_key',
+      hideInSearch: true,
+      valueType: 'text',
+      ellipsis: true,
+      render: (_, record) => [
+        <a
+          key="editPrivateKey"
+          onClick={() => {
+            setCurrentRow(record);
+            privateKeyForm.setFieldsValue({ private_key: record.private_key || '' });
+            setPrivateKeyModalOpen(true);
+          }}
+        >
+          {record.private_key
+            ? intl.formatMessage({ id: 'modify', defaultMessage: '修改' })
+            : intl.formatMessage({ id: 'add', defaultMessage: '添加' })}
+        </a>,
+      ],
+    },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
+      width: 150,
       hideInSearch: true,
       valueType: 'dateTime',
     },
@@ -311,8 +332,37 @@ const TableList: React.FC = () => {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
+      width: 300,
       render: (_, record) => [
-        access.canCreateBot && (
+        <a
+          key="sendMessage"
+          onClick={() => {
+            setMessageModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'sendMessage',
+            defaultMessage: intl.formatMessage({ id: 'sendMessage' }),
+          })}
+        </a>,
+        <a
+          key="sendGroupMessage"
+          onClick={() => {
+            setGroupMessageModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'sendGroupMessage',
+            defaultMessage: intl.formatMessage({
+              id: 'sendGroupMessage',
+              defaultMessage: 'Group Message',
+            }),
+          })}
+        </a>,
+        access.canUpdateBot && (
           <a
             key="configure"
             onClick={() => {
@@ -367,7 +417,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 2700 }}
+        scroll={{ x: 2000 }}
         search={{
           collapsed: false,
         }}
@@ -563,6 +613,53 @@ const TableList: React.FC = () => {
           }
         }}
       />
+      <MessageForm open={messageModalOpen} onCancel={setMessageModalOpen} currentRow={currentRow} />
+      <GroupMessageForm
+        open={groupMessageModalOpen}
+        onCancel={setGroupMessageModalOpen}
+        currentRow={currentRow}
+      />
+
+      {/* Private Key 编辑 Modal */}
+      <Modal
+        title={
+          currentRow?.private_key
+            ? intl.formatMessage({ id: 'modify_private_key', defaultMessage: '修改私钥' })
+            : intl.formatMessage({ id: 'add_private_key', defaultMessage: '添加私钥' })
+        }
+        open={privateKeyModalOpen}
+        onOk={handleSavePrivateKey}
+        onCancel={() => setPrivateKeyModalOpen(false)}
+        destroyOnClose
+      >
+        <Form
+          form={privateKeyForm}
+          layout="vertical"
+          initialValues={{ private_key: currentRow?.private_key || '' }}
+        >
+          <Form.Item
+            name="private_key"
+            label={intl.formatMessage({ id: 'private_key', defaultMessage: 'Private Key' })}
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({
+                  id: 'please_input_private_key',
+                  defaultMessage: 'Please input private key',
+                }),
+              },
+            ]}
+          >
+            <Input.TextArea
+              rows={6}
+              placeholder={intl.formatMessage({
+                id: 'please_input_private_key',
+                defaultMessage: 'Please input private key',
+              })}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </PageContainer>
   );
 };

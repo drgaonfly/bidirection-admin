@@ -3,17 +3,18 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import StatusEnum from '@/enums/exchangeStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/payments', {
+    await removeItem('/exchanges', {
       ids,
     });
     hide();
@@ -41,66 +42,88 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'orderNumber' }),
-      dataIndex: 'orderNumber',
+      title: intl.formatMessage({ id: 'user' }),
+      dataIndex: 'botUser',
+      copyable: true,
+      renderText: (botUser) => {
+        if (!botUser) return '-';
+        return (
+          botUser.userName ||
+          botUser.displayName ||
+          `${botUser.firstName ?? ''} ${botUser.lastName ?? ''}`.trim()
+        );
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'bot' }),
+      dataIndex: 'bot',
+      copyable: true,
+      renderText: (text, record) => {
+        return record.bot?.botName;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'from_address' }),
+      dataIndex: 'from_address',
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'amount' }),
-      dataIndex: 'amount',
+      title: intl.formatMessage({ id: 'to_address' }),
+      dataIndex: 'to_address',
+      copyable: true,
+    },
+    // receive_address
+    {
+      title: intl.formatMessage({ id: 'receive_address' }),
+      dataIndex: 'receive_address',
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'from_amount' }),
+      dataIndex: 'from_amount',
       hideInSearch: true,
     },
-    // paymentAmount
     {
-      title: intl.formatMessage({ id: 'paymentAmount' }),
-      dataIndex: 'paymentAmount',
+      title: intl.formatMessage({ id: 'to_amount' }),
+      dataIndex: 'to_amount',
+      hideInSearch: true,
+    },
+    // isTransferIntoOther
+    {
+      title: intl.formatMessage({ id: 'isTransferIntoOther' }),
+      dataIndex: 'isTransferIntoOther',
+      hideInSearch: true,
+      renderText: (text, record) => {
+        return record.isTransferIntoOther ? '是' : '否';
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'hash' }),
+      dataIndex: 'hash',
+      ellipsis: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'txid' }),
+      dataIndex: 'txid',
+      ellipsis: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'rate' }),
+      dataIndex: 'rate',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'fee' }),
+      dataIndex: 'fee',
       hideInSearch: true,
     },
     {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
       hideInSearch: true,
-      render: (_, record) => {
-        return <Tag color="blue">{intl.formatMessage({ id: record.status })}</Tag>;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'txHash' }),
-      dataIndex: 'txHash',
-      hideInSearch: true,
-      ellipsis: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'sendAddress' }),
-      dataIndex: 'sendAddress',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'receiveAddress' }),
-      dataIndex: 'receiveAddress',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: 'botUser',
-      hideInSearch: true,
-      renderText: (text, record) => {
-        return record.botUser?.displayName;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'bot' }),
-      dataIndex: 'bot',
-      hideInSearch: true,
-      copyable: true,
-      renderText: (text, record) => {
-        return record.bot?.botName;
-      },
+      valueEnum: StatusEnum,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
@@ -108,9 +131,10 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
       hideInSearch: true,
     },
+    // expiredAt
     {
       title: intl.formatMessage({ id: 'expiredAt' }),
-      dataIndex: 'expiresAt',
+      dataIndex: 'expiredAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
@@ -129,7 +153,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeletePayment && (
+        access.canDeleteExchange && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -151,7 +175,7 @@ const TableList: React.FC = () => {
         scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
-          collapsed: true,
+          collapsed: false,
         }}
         toolbar={{
           menu: {
@@ -167,16 +191,12 @@ const TableList: React.FC = () => {
                 key: 'pending',
               },
               {
-                label: <FormattedMessage id="paid" defaultMessage="paid" />,
-                key: 'paid',
+                label: <FormattedMessage id="completed" defaultMessage="completed" />,
+                key: 'completed',
               },
               {
-                label: <FormattedMessage id="expired" defaultMessage="expired" />,
-                key: 'expired',
-              },
-              {
-                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
-                key: 'canceled',
+                label: <FormattedMessage id="failed" defaultMessage="failed" />,
+                key: 'failed',
               },
             ],
             onChange: (key: any) => {
@@ -188,7 +208,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/payments', { ...params, status: activeKey }, sort, filter)
+          queryList('/exchanges', { ...params, status: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
@@ -207,7 +227,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeletePayment && (
+          {access.canDeleteExchange && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

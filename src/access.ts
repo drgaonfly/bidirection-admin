@@ -210,5 +210,49 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/messages/:id', 'PUT')),
     canGetMessage:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/messages', 'GET')),
+
+    // Wallet
+    canCreateWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'POST')),
+    canDeleteWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'DELETE')),
+    canUpdateWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets/:id', 'PUT')),
+    canGetWallet:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'GET')),
+
+    // Receipt
+    canCreateReceipt:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts', 'POST')),
+    canDeleteReceipt:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts', 'DELETE')),
+    canUpdateReceipt:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts/:id', 'PUT')),
+    canGetReceipt:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts', 'GET')),
+
+    // Exchange
+    canCreateExchange:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges', 'POST')),
+    canDeleteExchange:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges', 'DELETE')),
+    canUpdateExchange:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges/:id', 'PUT')),
+    canGetExchange:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges', 'GET')),
+
+    // GroupMessage
+    canCreateGroupMessage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/group-messages', 'POST')),
+    canDeleteGroupMessage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/group-messages', 'DELETE')),
+    canUpdateGroupMessage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/group-messages/:id', 'PUT')),
+    canGetGroupMessage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/group-messages', 'GET')),
   };
 }

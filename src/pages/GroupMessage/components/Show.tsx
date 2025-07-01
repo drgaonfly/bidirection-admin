@@ -1,6 +1,6 @@
+import { useIntl } from '@umijs/max';
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { Modal } from 'antd';
-import { useIntl } from '@umijs/max';
 
 interface Props {
   onClose: (e: React.MouseEvent | React.KeyboardEvent) => void;
@@ -10,8 +10,8 @@ interface Props {
 }
 
 const Show: React.FC<Props> = (props) => {
-  const intl = useIntl();
   const { onClose, open, currentRow, columns } = props;
+  const intl = useIntl();
   const filteredColumns = columns
     .filter((col) => col.dataIndex !== 'option')
     .filter((_, index) => index !== 3);

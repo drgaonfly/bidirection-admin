@@ -3,17 +3,18 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import moment from 'moment';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/payments', {
+    await removeItem('/receipts', {
       ids,
     });
     hide();
@@ -33,86 +34,74 @@ const handleRemove = async (ids: string[]) => {
 const TableList: React.FC = () => {
   const intl = useIntl();
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
+    // wallet
     {
-      title: intl.formatMessage({ id: 'orderNumber' }),
-      dataIndex: 'orderNumber',
+      title: intl.formatMessage({ id: 'wallet' }),
+      dataIndex: 'wallet',
       copyable: true,
+      renderText: (wallet) => wallet?.address,
+    },
+    // crypto_type
+    {
+      title: intl.formatMessage({ id: 'crypto_type', defaultMessage: '金额类型' }),
+      dataIndex: 'crypto_type',
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'amount' }),
+      title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
       dataIndex: 'amount',
       hideInSearch: true,
     },
-    // paymentAmount
+    // type
     {
-      title: intl.formatMessage({ id: 'paymentAmount' }),
-      dataIndex: 'paymentAmount',
+      title: intl.formatMessage({ id: 'type' }),
+      dataIndex: 'type',
+      hideInSearch: true,
+      renderText: (type) => (type === 'transferIn' ? '收入' : '支出'),
+    },
+    // from_address
+    {
+      title: intl.formatMessage({ id: 'from_address' }),
+      dataIndex: 'from_address',
       hideInSearch: true,
     },
+    // to_address
     {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
+      title: intl.formatMessage({ id: 'to_address' }),
+      dataIndex: 'to_address',
       hideInSearch: true,
-      render: (_, record) => {
-        return <Tag color="blue">{intl.formatMessage({ id: record.status })}</Tag>;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'txHash' }),
-      dataIndex: 'txHash',
-      hideInSearch: true,
-      ellipsis: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'sendAddress' }),
-      dataIndex: 'sendAddress',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'receiveAddress' }),
-      dataIndex: 'receiveAddress',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'user' }),
       dataIndex: 'botUser',
-      hideInSearch: true,
-      renderText: (text, record) => {
-        return record.botUser?.displayName;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'bot' }),
-      dataIndex: 'bot',
-      hideInSearch: true,
       copyable: true,
-      renderText: (text, record) => {
-        return record.bot?.botName;
-      },
+      renderText: (botUser) => botUser?.userName || botUser?.displayName,
     },
     {
-      title: intl.formatMessage({ id: 'createdAt' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
+      dataIndex: 'bot',
+      copyable: true,
+      renderText: (bot) => bot?.botName,
     },
     {
-      title: intl.formatMessage({ id: 'expiredAt' }),
-      dataIndex: 'expiresAt',
+      title: intl.formatMessage({ id: 'time' }),
+      dataIndex: 'time',
       valueType: 'dateTime',
       hideInSearch: true,
+      render: (_, record) => moment(record.time * 1000).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: intl.formatMessage({ id: 'hash' }),
+      dataIndex: 'hash',
+      width: 150,
+      ellipsis: true,
+      copyable: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
@@ -129,7 +118,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeletePayment && (
+        access.canDeleteReceipt && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -151,45 +140,9 @@ const TableList: React.FC = () => {
         scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
-          collapsed: true,
+          collapsed: false,
         }}
-        toolbar={{
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="pending" defaultMessage="pending" />,
-                key: 'pending',
-              },
-              {
-                label: <FormattedMessage id="paid" defaultMessage="paid" />,
-                key: 'paid',
-              },
-              {
-                label: <FormattedMessage id="expired" defaultMessage="expired" />,
-                key: 'expired',
-              },
-              {
-                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
-                key: 'canceled',
-              },
-            ],
-            onChange: (key: any) => {
-              setActiveKey(key);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            },
-          },
-        }}
-        request={(params, sort, filter) =>
-          queryList('/payments', { ...params, status: activeKey }, sort, filter)
-        }
+        request={(params, sort, filter) => queryList('/receipts', { ...params }, sort, filter)}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -207,7 +160,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeletePayment && (
+          {access.canDeleteReceipt && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

@@ -27,6 +27,10 @@ export default {
   'menu.list.subscriptions': '订阅列表',
   'menu.list.payments': '支付订单',
   'menu.list.messages': '消息列表',
+  'menu.list.wallets': '钱包列表',
+  'menu.list.receipts': '收据列表',
+  'menu.list.exchanges': '兑换记录',
+  'menu.list.group-messages': '群组消息列表',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -54,6 +58,10 @@ export default {
   'menu.payments': '支付订单',
   'menu.messages': '消息',
   'menu.authorizations': '授权机器人管理',
+  'menu.wallets': '钱包管理',
+  'menu.receipts': '钱包收据',
+  'menu.exchanges': '兑换记录',
+  'menu.group-messages': '群组消息',
 
   'menu.工作台管理': '工作台管理',
   'menu.认证管理': '认证管理',
@@ -80,4 +88,8 @@ export default {
   'menu.订阅管理': '订阅管理',
   'menu.支付订单': '支付订单',
   'menu.授权机器人管理': '授权机器人管理',
+  'menu.钱包管理': '钱包管理',
+  'menu.钱包收据': '钱包收据',
+  'menu.兑换记录': '兑换记录',
+  'menu.群组消息': '群组消息管理',
 };

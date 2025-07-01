@@ -1,5 +1,7 @@
 import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { Modal } from 'antd';
+import { useState } from 'react';
+import ReceiptTable from './ReceiptTable';
 import { useIntl } from '@umijs/max';
 
 interface Props {
@@ -15,6 +17,12 @@ const Show: React.FC<Props> = (props) => {
   const filteredColumns = columns
     .filter((col) => col.dataIndex !== 'option')
     .filter((_, index) => index !== 3);
+  const [paymentPagination, setPaymentPagination] = useState<{ current: number; pageSize: number }>(
+    {
+      current: 1,
+      pageSize: 5,
+    },
+  );
 
   return (
     <Modal
@@ -39,6 +47,11 @@ const Show: React.FC<Props> = (props) => {
             columns={filteredColumns as ProDescriptionsItemProps<API.ItemData>[]}
             bordered
             size="middle"
+          />
+          <ReceiptTable
+            receipts={currentRow?.receipts || []}
+            pagination={paymentPagination}
+            setPagination={setPaymentPagination}
           />
         </>
       )}

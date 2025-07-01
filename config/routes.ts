@@ -187,4 +187,32 @@ export default [
     icon: 'TableOutlined',
     component: './Authorization',
   },
+  // wallet
+  {
+    path: '/wallets',
+    name: 'list.wallets',
+    icon: 'WalletOutlined',
+    component: './Wallet',
+  },
+  // receipt
+  {
+    path: '/receipts',
+    name: 'list.receipts',
+    icon: 'MoneyCollectOutlined',
+    component: './Receipt',
+  },
+  // exchange
+  {
+    path: '/exchanges',
+    name: 'list.exchanges',
+    icon: 'SwapOutlined',
+    component: './Exchange',
+  },
+  // groupMessage
+  {
+    path: '/group-messages',
+    name: 'list.group-messages',
+    icon: 'MessageOutlined',
+    component: './GroupMessage',
+  },
 ];

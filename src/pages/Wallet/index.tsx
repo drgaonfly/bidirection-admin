@@ -5,102 +5,86 @@ import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-componen
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { message, Switch } from 'antd';
 import React, { useRef, useState } from 'react';
-import Update from './components/Update';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import Update from './components/Update';
 
 const handleUpdate = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/groups/${fields._id}`, fields);
+    await updateItem(`/wallets/${fields._id}`, fields);
     hide();
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
     return true;
   } catch (error: any) {
     hide();
-    message.error(error?.response?.data?.message ?? 'Failed to update group');
+    message.error(error?.response?.data?.message ?? 'Failed to update wallet');
     return false;
   }
 };
 
-const handleRemove = async (ids: any) => {
+const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
+  if (!ids) return true;
   try {
-    await removeItem('/groups', { ids });
+    await removeItem('/wallets', {
+      ids,
+    });
     hide();
-    message.success(
-      <FormattedMessage id="delete_successful" defaultMessage="Deleted successfully" />,
-    );
+    message.success(<FormattedMessage id="delete_successful" defaultMessage="Delete successful" />);
     return true;
   } catch (error: any) {
     hide();
-    message.error(error?.response?.data?.message ?? 'Failed to delete group');
+    message.error(
+      error.response.data.message ?? (
+        <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
+      ),
+    );
     return false;
   }
 };
 
-const GroupTableList: React.FC = () => {
+const TableList: React.FC = () => {
   const intl = useIntl();
-  const [updateModalOpen, handleUpdateModalOpen] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
-  const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<any>();
-  const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
+  const actionRef = useRef<ActionType>();
+  const [currentRow, setCurrentRow] = useState<API.ItemData>();
+  const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [updateModalOpen, handleUpdateModalOpen] = useState(false);
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
-    // id
     {
-      title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
-      dataIndex: 'id',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'title', defaultMessage: '群名' }),
-      dataIndex: 'title',
-    },
-    {
-      title: intl.formatMessage({ id: 'type', defaultMessage: '类型' }),
-      dataIndex: 'type',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'exchange_rate', defaultMessage: 'Exchange Rate' }),
-      dataIndex: 'exchange_rate',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'fee_rate', defaultMessage: 'Fee Rate' }),
-      dataIndex: 'fee_rate',
-      hideInSearch: true,
-      valueType: 'percent',
-    },
-    {
-      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
-      dataIndex: 'bot',
+      title: intl.formatMessage({ id: 'remark' }),
+      dataIndex: 'remark',
       copyable: true,
-      renderText: (bot) => bot?.botName,
     },
     {
-      title: intl.formatMessage({ id: 'operators', defaultMessage: '操作员' }),
-      dataIndex: 'operators',
+      title: intl.formatMessage({ id: 'address' }),
+      dataIndex: 'address',
+      copyable: true,
+      ellipsis: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'usdt_balance' }),
+      dataIndex: 'usdt_balance',
       hideInSearch: true,
-      render: (text) =>
-        Array.isArray(text)
-          ? text.map((op: any) => op.userName || op.firstName || op.lastName).join(', ')
-          : '',
     },
-    // isOnline
     {
-      title: intl.formatMessage({ id: 'isOnline', defaultMessage: 'Is Online' }),
+      title: intl.formatMessage({ id: 'trx_balance' }),
+      dataIndex: 'trx_balance',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'isOnline',
       hideInSearch: true,
       render: (_, record: any) => (
         <Switch
-          checkedChildren={intl.formatMessage({ id: 'online' })}
-          unCheckedChildren={intl.formatMessage({ id: 'offline' })}
+          checkedChildren={intl.formatMessage({ id: 'platform.online' })}
+          unCheckedChildren={intl.formatMessage({ id: 'platform.offline' })}
           checked={record.isOnline}
           onChange={async () => {
             await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
@@ -112,20 +96,28 @@ const GroupTableList: React.FC = () => {
       ),
     },
     {
-      title: intl.formatMessage({ id: 'creator', defaultMessage: 'Creator' }),
-      dataIndex: ['creator', 'userName'],
+      title: intl.formatMessage({ id: 'user' }),
+      dataIndex: 'botUser',
       copyable: true,
-      hideInSearch: true,
+      renderText: (botUser) => botUser?.userName || botUser?.displayName,
+    },
+    {
+      title: intl.formatMessage({ id: 'bot' }),
+      dataIndex: 'bot',
+      copyable: true,
+      renderText: (bot) => bot?.botName,
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
+      valueType: 'dateTime',
       hideInSearch: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Actions" />,
+      title: <FormattedMessage id="pages.searchTable.titleOption" />,
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, record) => [
         <a
           key="detail"
@@ -134,9 +126,9 @@ const GroupTableList: React.FC = () => {
             setShowDetail(true);
           }}
         >
-          <FormattedMessage id="platforms.detail" defaultMessage="Detail" />
+          <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canUpdateGroup && (
+        access.canUpdateWallet && (
           <a
             key="edit"
             onClick={() => {
@@ -144,15 +136,15 @@ const GroupTableList: React.FC = () => {
               setCurrentRow(record);
             }}
           >
-            {intl.formatMessage({ id: 'edit' })}
+            <FormattedMessage id="edit" defaultMessage="编辑" />
           </a>
         ),
-        access.canDeleteGroup && (
+        access.canDeleteWallet && (
           <DeleteLink
+            key="delete"
             onOk={async () => {
               await handleRemove([record._id!]);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
+              actionRef.current?.reload();
             }}
           />
         ),
@@ -163,25 +155,30 @@ const GroupTableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'group_list', defaultMessage: '群组列表' })}
+        headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
+        scroll={{ x: 'max-content' }}
+        search={{
+          labelWidth: 120,
+          collapsed: false,
+        }}
         toolbar={{
           menu: {
             type: 'tab',
             activeKey: activeKey,
             items: [
               {
-                label: <FormattedMessage id="all" defaultMessage="all" />,
+                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
                 key: '',
               },
               {
                 label: <FormattedMessage id="online" defaultMessage="online" />,
-                key: 'true',
+                key: 'online',
               },
               {
                 label: <FormattedMessage id="offline" defaultMessage="offline" />,
-                key: 'false',
+                key: 'offline',
               },
             ],
             onChange: (key: any) => {
@@ -192,43 +189,43 @@ const GroupTableList: React.FC = () => {
             },
           },
         }}
-        request={async (params, sort, filter) => {
-          // 处理isOnline参数
-          let isOnline;
-          if (activeKey === '') {
-            isOnline = undefined; // 全部
-          } else if (activeKey === 'true') {
-            isOnline = true; // 在线
-          } else if (activeKey === 'false') {
-            isOnline = false; // 离线
-          }
-
-          return queryList('/groups', { ...params, isOnline }, sort, filter);
-        }}
-        columns={columns}
-        rowSelection={
-          access.canSuperAdmin && {
-            onChange: (_, selectedRows) => setSelectedRows(selectedRows),
-          }
+        request={(params, sort, filter) =>
+          queryList(
+            '/wallets',
+            {
+              ...params,
+              isOnline: activeKey === 'online' ? true : activeKey === 'offline' ? false : undefined,
+            },
+            sort,
+            filter,
+          )
         }
+        columns={columns}
+        rowSelection={{
+          onChange: (_, selectedRows) => {
+            setSelectedRows(selectedRows);
+          },
+        }}
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <FormattedMessage id="pages.searchTable.chosen" />{' '}
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="items" />
+              <FormattedMessage id="pages.searchTable.item" />
             </div>
           }
         >
-          <DeleteButton
-            onOk={async () => {
-              await handleRemove(selectedRowsState.map((item) => item._id!));
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          />
+          {access.canDeleteWallet && (
+            <DeleteButton
+              onOk={async () => {
+                await handleRemove(selectedRowsState.map((item) => item._id!));
+                setSelectedRows([]);
+                actionRef.current?.reloadAndRest?.();
+              }}
+            />
+          )}
         </FooterToolbar>
       )}
       {access.canUpdateGroup && (
@@ -246,10 +243,11 @@ const GroupTableList: React.FC = () => {
           values={currentRow || {}}
         />
       )}
+
       <Show
         open={showDetail}
-        currentRow={currentRow}
-        columns={columns as ProDescriptionsItemProps<any>[]}
+        currentRow={currentRow || ({} as API.ItemData)}
+        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);
@@ -259,4 +257,4 @@ const GroupTableList: React.FC = () => {
   );
 };
 
-export default GroupTableList;
+export default TableList;

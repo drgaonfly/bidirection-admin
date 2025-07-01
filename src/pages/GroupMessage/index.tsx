@@ -1,19 +1,21 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message, Image } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import Update from './components/Update';
+import moment from 'moment';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/payments', {
+    await removeItem('/group-messages', {
       ids,
     });
     hide();
@@ -30,6 +32,50 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+/**
+ * @en-US Update node
+ * @zh-CN 更新节点
+ *
+ * @param fields
+ */
+const handleUpdate = async (fields: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/group-messages/${fields._id}`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
+// const handleUpdate = async (fields: any) => {
+//   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+//   try {
+//     await updateItem(`/group-messages/${fields._id}`, fields);
+//     hide();
+
+//     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+//     return true;
+//   } catch (error: any) {
+//     hide();
+//     message.error(
+//       error?.response?.data?.message ?? (
+//         <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+//       ),
+//     );
+//     return false;
+//   }
+// };
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -37,82 +83,61 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'orderNumber' }),
-      dataIndex: 'orderNumber',
+      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
+      dataIndex: 'bot',
       copyable: true,
+      renderText: (bot) => bot?.botName,
     },
     {
-      title: intl.formatMessage({ id: 'amount' }),
-      dataIndex: 'amount',
+      title: intl.formatMessage({ id: 'groups', defaultMessage: '所属群组' }),
+      dataIndex: 'groups',
+      copyable: true,
+      renderText: (groups) => groups?.map((group: any) => group?.title).join(','),
+    },
+    {
+      title: intl.formatMessage({ id: 'content' }),
+      dataIndex: 'content',
+      ellipsis: true,
       hideInSearch: true,
     },
-    // paymentAmount
+    // image
     {
-      title: intl.formatMessage({ id: 'paymentAmount' }),
-      dataIndex: 'paymentAmount',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
+      title: intl.formatMessage({ id: 'image' }),
+      dataIndex: 'image',
       hideInSearch: true,
       render: (_, record) => {
-        return <Tag color="blue">{intl.formatMessage({ id: record.status })}</Tag>;
+        if (!record.image) {
+          return null;
+        }
+
+        return <Image src={record.image} alt="message" style={{ maxWidth: '100px' }} preview />;
       },
     },
+    // isRealtime
     {
-      title: intl.formatMessage({ id: 'txHash' }),
-      dataIndex: 'txHash',
+      title: intl.formatMessage({ id: 'isRealtime' }),
+      dataIndex: 'isRealtime',
       hideInSearch: true,
-      ellipsis: true,
-      copyable: true,
+      renderText: (isRealtime) =>
+        isRealtime ? intl.formatMessage({ id: 'yes' }) : intl.formatMessage({ id: 'no' }),
     },
+    // intervalTime
     {
-      title: intl.formatMessage({ id: 'sendAddress' }),
-      dataIndex: 'sendAddress',
-      ellipsis: true,
+      title: intl.formatMessage({ id: 'interval_time_hour' }),
+      dataIndex: 'intervalTime',
       hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'receiveAddress' }),
-      dataIndex: 'receiveAddress',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: 'botUser',
-      hideInSearch: true,
-      renderText: (text, record) => {
-        return record.botUser?.displayName;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'bot' }),
-      dataIndex: 'bot',
-      hideInSearch: true,
-      copyable: true,
-      renderText: (text, record) => {
-        return record.bot?.botName;
-      },
     },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'expiredAt' }),
-      dataIndex: 'expiresAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
+      render: (_, record) => moment(record.createdAt).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
@@ -129,7 +154,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeletePayment && (
+        access.canDeleteGroupMessage && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -138,6 +163,19 @@ const TableList: React.FC = () => {
             }}
           />
         ),
+        access.canUpdateGroupMessage && (
+          <a
+            key="edit"
+            onClick={() => {
+              console.log();
+
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
       ],
     },
   ];
@@ -145,40 +183,18 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list' })}
+        headerTitle={intl.formatMessage({ id: 'groupMessage_list' })}
         actionRef={actionRef}
         rowKey="_id"
         scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
-          collapsed: true,
+          collapsed: false,
         }}
         toolbar={{
           menu: {
             type: 'tab',
             activeKey: activeKey,
-            items: [
-              {
-                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="pending" defaultMessage="pending" />,
-                key: 'pending',
-              },
-              {
-                label: <FormattedMessage id="paid" defaultMessage="paid" />,
-                key: 'paid',
-              },
-              {
-                label: <FormattedMessage id="expired" defaultMessage="expired" />,
-                key: 'expired',
-              },
-              {
-                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
-                key: 'canceled',
-              },
-            ],
             onChange: (key: any) => {
               setActiveKey(key);
               if (actionRef.current) {
@@ -188,7 +204,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/payments', { ...params, status: activeKey }, sort, filter)
+          queryList('/group-messages', { ...params, messageType: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
@@ -207,7 +223,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeletePayment && (
+          {access.canDeleteGroupMessage && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));
@@ -217,6 +233,24 @@ const TableList: React.FC = () => {
             />
           )}
         </FooterToolbar>
+      )}
+
+      {(access.canSuperAdmin || access.canUpdateBot) && (
+        <Update
+          onSubmit={async (value) => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalOpen(false);
+              setCurrentRow(undefined);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={handleUpdateModalOpen}
+          updateModalOpen={updateModalOpen}
+          values={currentRow || ({} as any)}
+        />
       )}
 
       <Show

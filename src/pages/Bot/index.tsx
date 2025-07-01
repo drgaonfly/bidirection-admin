@@ -14,7 +14,7 @@ import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import ConfigureForm from './components/ConfigureForm';
 import CopyToClipboard from '@/components/CopyToClipboard';
-
+import MessageForm from '../Authorization/components/MessageForm';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -118,6 +118,7 @@ const TableList: React.FC = () => {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [configureModalVisible, setConfigureModalVisible] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
+  const [messageModalOpen, setMessageModalOpen] = useState<boolean>(false);
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -171,6 +172,36 @@ const TableList: React.FC = () => {
       hideInTable: true,
       valueType: 'text',
       ellipsis: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'is_canBeCloned', defaultMessage: '是否可克隆' }),
+      dataIndex: 'canBeCloned',
+      hideInSearch: true,
+      render: (_, record: any) => (
+        <Switch
+          checkedChildren={intl.formatMessage({ id: 'canBeCloned' })}
+          unCheckedChildren={intl.formatMessage({ id: 'noCanBeCloned' })}
+          checked={record.canBeCloned}
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, canBeCloned: !record.canBeCloned });
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }}
+        />
+      ),
+    },
+    // clonedFrom
+    {
+      title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '克隆自' }),
+      dataIndex: 'clonedFrom',
+      hideInSearch: true,
+      renderText: (_, record: any) => {
+        if (record.clonedFrom) {
+          return record.clonedFrom.botName;
+        }
+        return '-';
+      },
     },
     {
       title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
@@ -231,7 +262,19 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canCreateBot && (
+        <a
+          key="sendMessage"
+          onClick={() => {
+            setMessageModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          {intl.formatMessage({
+            id: 'sendMessage',
+            defaultMessage: intl.formatMessage({ id: 'sendMessage' }),
+          })}
+        </a>,
+        access.canUpdateBot && (
           <a
             key="configure"
             onClick={() => {
@@ -286,7 +329,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 2000 }}
+        scroll={{ x: 'max-content' }}
         search={{
           collapsed: false,
         }}
@@ -437,6 +480,7 @@ const TableList: React.FC = () => {
         footer={null}
         width={800}
       ></Modal>
+      <MessageForm open={messageModalOpen} onCancel={setMessageModalOpen} currentRow={currentRow} />
     </PageContainer>
   );
 };
