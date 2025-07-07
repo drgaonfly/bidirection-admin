@@ -50,6 +50,12 @@ const TableList: React.FC = () => {
       dataIndex: 'amount',
       hideInSearch: true,
     },
+    // crypto_type
+    {
+      title: intl.formatMessage({ id: 'crypto_type' }),
+      dataIndex: 'crypto_type',
+      hideInSearch: true,
+    },
     // paymentAmount
     {
       title: intl.formatMessage({ id: 'paymentAmount' }),

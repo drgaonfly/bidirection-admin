@@ -6,6 +6,7 @@ import {
   ProDescriptions,
   ProFormGroup,
   ProFormText,
+  ProFormDigit,
 } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import { FormattedMessage, useIntl, useModel } from '@umijs/max';
@@ -204,6 +205,23 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             name="trx20_address"
             tooltip="格式示例: T..."
             placeholder="请输入TRX20地址"
+          />
+          <ProFormDigit
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({ id: 'fee_required', defaultMessage: '请输入手续费' }),
+              },
+            ]}
+            width="md"
+            label={intl.formatMessage({ id: 'fee', defaultMessage: 'fee' })}
+            name="fee"
+            placeholder="请输入手续费"
+            fieldProps={{
+              min: 0,
+              max: 1,
+              step: 0.1,
+            }}
           />
         </ProFormGroup>
 
