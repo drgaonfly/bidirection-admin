@@ -88,7 +88,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'balance' }),
-      dataIndex: 'balance',
+      dataIndex: 'usdt_balance',
       hideInSearch: true,
     },
     {
