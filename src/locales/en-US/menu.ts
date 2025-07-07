@@ -27,6 +27,7 @@ export default {
   'menu.receipts': 'Receipts',
   'menu.exchanges': 'Exchanges',
   'menu.group-messages': 'Group Messages',
+  'menu.bot-user-configs': 'Bot User Configs',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -55,4 +56,5 @@ export default {
   'menu.钱包收据': 'Wallet Receipts',
   'menu.兑换记录': 'Exchange Records',
   'menu.群组消息': 'Group Message Management',
+  'menu.机器人用户配置': 'Bot User Config',
 };
