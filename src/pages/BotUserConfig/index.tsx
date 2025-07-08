@@ -87,8 +87,13 @@ const TableList: React.FC = () => {
       renderText: (lastName, record) => record.botUser?.lastName,
     },
     {
-      title: intl.formatMessage({ id: 'balance' }),
+      title: intl.formatMessage({ id: 'usdt_balance' }),
       dataIndex: 'usdt_balance',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'trx_balance' }),
+      dataIndex: 'trx_balance',
       hideInSearch: true,
     },
     {
