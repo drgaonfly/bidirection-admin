@@ -222,4 +222,11 @@ export default [
     icon: 'SettingOutlined',
     component: './BotUserConfig',
   },
+  // rental
+  {
+    path: '/rentals',
+    name: 'list.rentals',
+    icon: 'CarOutlined',
+    component: './Rental',
+  },
 ];

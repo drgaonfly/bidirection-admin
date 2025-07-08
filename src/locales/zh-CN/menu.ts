@@ -32,6 +32,7 @@ export default {
   'menu.list.exchanges': '兑换记录',
   'menu.list.group-messages': '群组消息列表',
   'menu.list.bot-user-configs': '机器人用户配置',
+  'menu.list.rentals': '能量租赁',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -64,6 +65,7 @@ export default {
   'menu.exchanges': '兑换记录',
   'menu.group-messages': '群组消息',
   'menu.bot-user-configs': '机器人用户配置',
+  'menu.rentals': '能量租赁',
 
   'menu.工作台管理': '工作台管理',
   'menu.认证管理': '认证管理',
@@ -95,4 +97,5 @@ export default {
   'menu.兑换记录': '兑换记录',
   'menu.群组消息': '群组消息管理',
   'menu.机器人用户配置': '机器人用户配置',
+  'menu.能量租赁': '能量租赁',
 };

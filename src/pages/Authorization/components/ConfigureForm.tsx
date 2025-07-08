@@ -209,6 +209,17 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             tooltip="格式示例: T..."
             placeholder="请输入trx地址"
           />
+          <ProFormText
+            rules={[{ message: intl.formatMessage({ id: 'enter_trx20_address' }) }]}
+            width="md"
+            label={intl.formatMessage({
+              id: 'trx20_address',
+              defaultMessage: 'TRX20地址',
+            })}
+            name="trx20_address"
+            tooltip="格式示例: T..."
+            placeholder="请输入trx地址"
+          />
           <ProFormDigit
             width="md"
             label={intl.formatMessage({ id: 'fee', defaultMessage: '闪兑费用' })}
@@ -222,10 +233,32 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
               addonAfter: '%',
             }}
           />
+          <ProFormDigit
+            width="md"
+            label={intl.formatMessage({
+              id: 'uni_energy_amount',
+              defaultMessage: '能量单价 (sun)',
+            })}
+            name="uni_energy_price"
+            tooltip="每 1 Energy的价格, 单位: sun"
+            placeholder="1 TRX = 1,000,000 sun"
+            min={0}
+            max={100}
+            fieldProps={{
+              precision: 0,
+            }}
+          />
           <ProFormSwitch
             name="canBeCloned"
             width="md"
             label={intl.formatMessage({ id: 'can_be_cloned', defaultMessage: '是否可克隆' })}
+          />
+          <ProFormDigit
+            width="md"
+            label={intl.formatMessage({ id: 'uni_energy_amount', defaultMessage: '单笔能量数' })}
+            name="uni_energy_amount"
+            tooltip="一笔多少能量"
+            default={65000}
           />
         </ProFormGroup>
 

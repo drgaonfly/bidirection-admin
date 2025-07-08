@@ -268,5 +268,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetBotUserConfig:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/bot-user-configs', 'GET')),
+
+    // Rental
+    canCreateRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals', 'POST')),
+    canDeleteRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals', 'DELETE')),
+    canUpdateRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals/:id', 'PUT')),
+    canGetRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals', 'GET')),
   };
 }
