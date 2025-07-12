@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   EditableProTable,
   ModalForm,
@@ -8,18 +8,29 @@ import {
   ProFormText,
   ProFormDigit,
   ProFormSwitch,
+  type ProColumns,
 } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import { FormattedMessage, useIntl, useModel } from '@umijs/max';
 
 type menuItem = {
   _id: string;
+  menuName: string;
+  url: string;
 };
 
 type keyboardItem = {
   _id: string;
   command: string;
   content: string;
+};
+
+type commandItem = {
+  _id: string;
+  name: string;
+  content: string;
+  isStart: boolean;
+  weight: number;
 };
 
 export type FormValueType = Partial<API.ItemData>;
@@ -36,55 +47,53 @@ export type UpdateFormProps = {
 
 const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
+  const [form] = Form.useForm();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   const { initialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
-  const [menus, setmenu] = useState<menuItem[]>(values?.menus || []);
+  const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
   const [keyboards, setKeyboards] = useState<keyboardItem[]>(values?.keyboards || []);
-  console.log('values', values);
+  const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
 
-  const columns = [
+  useEffect(() => {
+    if (updateModalOpen) {
+      form.resetFields();
+      setKeyboards(values?.keyboards || []);
+      setCommands(values?.commands || []);
+      setMenus(values?.menus || []);
+    }
+  }, [updateModalOpen, values]);
+
+  const columns: ProColumns<menuItem>[] = [
     {
       title: intl.formatMessage({ id: 'menuName', defaultMessage: '按钮' }),
       dataIndex: 'menuName',
-      hideInSearch: false,
       width: 200,
     },
     {
       title: intl.formatMessage({ id: 'url', defaultMessage: '菜单链接' }),
       dataIndex: 'url',
-      hideInSearch: false,
       copyable: true,
       initialValue: process.env.UMI_APP_MENU_URL,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       valueType: 'option',
       width: 200,
-      render: (text: any, record: any, _: any, action: any) => [
-        <a
-          key="editable"
-          onClick={() => {
-            action?.startEditable?.(`${record._id}`);
-          }}
-        >
+      render: (text, record, _, action) => [
+        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
           {intl.formatMessage({ id: 'edit' })}
         </a>,
       ],
     },
   ];
 
-  const keyboard_columns = [
+  const keyboard_columns: ProColumns<keyboardItem>[] = [
     {
       title: intl.formatMessage({ id: 'command', defaultMessage: '命令' }),
       dataIndex: 'command',
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: intl.formatMessage({ id: 'command_required', defaultMessage: '请输入命令' }),
-          },
-        ],
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
       },
     },
     {
@@ -92,25 +101,53 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       dataIndex: 'content',
       valueType: 'textarea',
       formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: intl.formatMessage({ id: 'content_required', defaultMessage: '请输入内容' }),
-          },
-        ],
+        rules: [{ required: true, message: intl.formatMessage({ id: 'content_required' }) }],
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       valueType: 'option',
       width: 200,
-      render: (text: any, record: any, _: any, action: any) => [
-        <a
-          key="editable"
-          onClick={() => {
-            action?.startEditable?.(`${record._id}`);
-          }}
-        >
+      render: (text, record, _, action) => [
+        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
+          {intl.formatMessage({ id: 'edit' })}
+        </a>,
+      ],
+    },
+  ];
+
+  const command_columns: ProColumns<commandItem>[] = [
+    {
+      title: intl.formatMessage({ id: 'name', defaultMessage: '命令名' }),
+      dataIndex: 'name',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'name_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'content', defaultMessage: '回复内容' }),
+      dataIndex: 'content',
+      valueType: 'textarea',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'content_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'isStart', defaultMessage: '是否启动' }),
+      dataIndex: 'isStart',
+      valueType: 'switch',
+    },
+    {
+      title: intl.formatMessage({ id: 'weight', defaultMessage: '权重' }),
+      dataIndex: 'weight',
+      valueType: 'digit',
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
           {intl.formatMessage({ id: 'edit' })}
         </a>,
       ],
@@ -119,24 +156,29 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
   return (
     <ModalForm
-      title={intl.formatMessage({ id: 'configure', defaultMessage: 'Configure' })}
+      form={form}
+      title={intl.formatMessage({ id: 'configure', defaultMessage: '配置' })}
       width="60%"
-      modalProps={{
-        destroyOnClose: true,
-        maskClosable: false,
-      }}
+      modalProps={{ destroyOnClose: true, maskClosable: false }}
       open={updateModalOpen}
       onOpenChange={onCancel}
-      onFinish={async (values: any) => {
+      onFinish={async () => {
         await onSubmit({
           ...values,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           keyboards: keyboards.map(({ _id, ...rest }) => rest),
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           menus: menus.map(({ _id, ...rest }) => rest),
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          commands: commands.map(({ _id, ...rest }) => rest),
         });
       }}
-      initialValues={{ ...values }}
+      initialValues={{
+        ...values,
+        commands: values?.commands?.map((item: any) => item._id),
+        keyboards: values?.keyboards?.map((item: any) => item._id),
+        menus: values?.menus?.map((item: any) => item._id),
+      }}
     >
       {values && (
         <ProDescriptions<API.ItemData>
@@ -159,7 +201,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
               dataIndex: 'botName',
               copyable: true,
             },
-            // 可以根据需要添加更多字段
           ]}
           bordered
           labelStyle={{
@@ -176,158 +217,108 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           style={{ marginTop: '20px', marginBottom: '10px' }}
         />
       )}
-      <>
-        <ProFormGroup>
-          <ProFormTextArea
-            rules={[{ message: intl.formatMessage({ id: 'enter_name' }) }]}
-            width="md"
-            label={intl.formatMessage({ id: 'start_message', defaultMessage: '开始消息' })}
-            name="message"
-          />
-          <ProFormTextArea
-            rules={[{ message: intl.formatMessage({ id: 'enter_contact' }) }]}
-            width="md"
-            label={intl.formatMessage({ id: 'contact_message', defaultMessage: '联系客服信息' })}
-            name="contact"
-          />
-          <ProFormText
-            rules={[{ message: intl.formatMessage({ id: 'enter_customer_service_link' }) }]}
-            width="md"
-            label={intl.formatMessage({ id: 'customer_service_link', defaultMessage: '客服链接' })}
-            name="customer_service_link"
-            tooltip="格式示例: https://t.me/xxxx"
-            placeholder="https://t.me/"
-          />
-          <ProFormText
-            rules={[{ message: intl.formatMessage({ id: 'enter_auto_exchange_address' }) }]}
-            width="md"
-            label={intl.formatMessage({
-              id: 'auto_exchange_address',
-              defaultMessage: '自动闪兑地址',
-            })}
-            name="auto_exchange_address"
-            tooltip="格式示例: T..."
-            placeholder="请输入trx地址"
-          />
-          <ProFormText
-            rules={[{ message: intl.formatMessage({ id: 'enter_trx20_address' }) }]}
-            width="md"
-            label={intl.formatMessage({
-              id: 'trx20_address',
-              defaultMessage: 'TRX20地址',
-            })}
-            name="trx20_address"
-            tooltip="格式示例: T..."
-            placeholder="请输入trx地址"
-          />
-          <ProFormDigit
-            width="md"
-            label={intl.formatMessage({ id: 'fee', defaultMessage: '闪兑费用' })}
-            name="fee"
-            tooltip="闪兑费用，单位：%"
-            placeholder="请输入闪兑费用百分比"
-            min={0}
-            max={100}
-            fieldProps={{
-              precision: 0,
-              addonAfter: '%',
-            }}
-          />
-          <ProFormDigit
-            width="md"
-            label={intl.formatMessage({
-              id: 'uni_energy_amount',
-              defaultMessage: '能量单价 (sun)',
-            })}
-            name="uni_energy_price"
-            tooltip="每 1 Energy的价格, 单位: sun"
-            placeholder="1 TRX = 1,000,000 sun"
-            min={0}
-            max={100}
-            fieldProps={{
-              precision: 0,
-            }}
-          />
-          <ProFormSwitch
-            name="canBeCloned"
-            width="md"
-            label={intl.formatMessage({ id: 'can_be_cloned', defaultMessage: '是否可克隆' })}
-          />
-          <ProFormDigit
-            width="md"
-            label={intl.formatMessage({ id: 'uni_energy_amount', defaultMessage: '单笔能量数' })}
-            name="uni_energy_amount"
-            tooltip="一笔多少能量"
-            default={65000}
-          />
-        </ProFormGroup>
 
-        <EditableProTable<keyboardItem>
-          rowKey="_id"
-          headerTitle={intl.formatMessage({
-            id: 'keyboard_config',
-            defaultMessage: '键盘配置',
-          })}
-          // @ts-ignore
-          columns={keyboard_columns}
-          value={keyboards}
-          name="keyboards"
-          onChange={(value: readonly keyboardItem[]) => setKeyboards([...value])}
-          editable={{
-            type: 'multiple',
-          }}
-          recordCreatorProps={{
-            newRecordType: 'dataSource',
-            position: 'bottom',
-            record: () => ({
-              _id: Date.now().toString(),
-              command: '',
-              content: '',
-            }),
-          }}
+      <ProFormGroup>
+        <ProFormTextArea name="message" label="开始消息" width="md" />
+        <ProFormTextArea name="contact" label="联系客服信息" width="md" />
+        <ProFormText
+          name="customer_service_link"
+          label="客服链接"
+          width="md"
+          placeholder="https://t.me/"
         />
-
-        <EditableProTable<menuItem>
-          rowKey="_id"
-          headerTitle={intl.formatMessage({
-            id: 'inline_menu_config',
-            defaultMessage: '内联菜单配置',
-          })}
-          // @ts-ignore
-          columns={columns}
-          value={menus}
-          name="menus"
-          onChange={(value: readonly menuItem[]) => setmenu([...value])}
-          editable={{
-            type: 'multiple',
-          }}
-          recordCreatorProps={{
-            newRecordType: 'dataSource',
-            position: 'bottom',
-            record: () => ({
-              _id: Date.now().toString(),
-              months: 0,
-              price: 0,
-              originalPrice: 0,
-              isOnline: false,
-              isCarSeat: false,
-              isExclusive: false,
-              exclusivePrice: 0,
-              exclusiveOriginalPrice: 0,
-              seatCount: 0,
-              user: values.user,
-              token: values.token,
-              name: values.name,
-              userName: values.userName,
-              url: process.env.UMI_APP_MENU_URL,
-            }),
-          }}
+        <ProFormText
+          name="trx20_address"
+          label="trx20 地址"
+          width="md"
+          placeholder="请输入 trx 地址"
         />
+        <ProFormDigit
+          name="fee"
+          label="闪兑费用"
+          width="md"
+          placeholder="请输入闪兑费用百分比"
+          min={0}
+          max={100}
+          fieldProps={{ precision: 0, addonAfter: '%' }}
+        />
+        <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
+        <ProFormDigit
+          name="uni_energy_price"
+          label="能量单价 (sun)"
+          width="md"
+          placeholder="1 TRX = 1,000,000 sun"
+          min={0}
+          max={100}
+          fieldProps={{ precision: 0 }}
+        />
+        <ProFormDigit
+          name="uni_energy_amount"
+          label="单笔能量数"
+          width="md"
+          placeholder="如：65000"
+        />
+      </ProFormGroup>
 
-        <Form.Item name="_id" label={false}>
-          <Input type="hidden" />
-        </Form.Item>
-      </>
+      <EditableProTable<commandItem>
+        rowKey="_id"
+        headerTitle="命令配置"
+        columns={command_columns}
+        value={commands}
+        onChange={(value) => setCommands([...value])}
+        editable={{ type: 'multiple' }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            name: '',
+            content: '',
+            isStart: false,
+            weight: 0,
+          }),
+        }}
+      />
+
+      <EditableProTable<keyboardItem>
+        rowKey="_id"
+        headerTitle="键盘配置"
+        columns={keyboard_columns}
+        value={keyboards}
+        onChange={(value) => setKeyboards([...value])}
+        editable={{ type: 'multiple' }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            command: '',
+            content: '',
+          }),
+        }}
+      />
+
+      <EditableProTable<menuItem>
+        rowKey="_id"
+        headerTitle="内联菜单配置"
+        columns={columns}
+        value={menus}
+        onChange={(value) => setMenus([...value])}
+        editable={{ type: 'multiple' }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            menuName: '',
+            url: '',
+          }),
+        }}
+      />
+
+      <Form.Item name="_id" label={false}>
+        <Input type="hidden" />
+      </Form.Item>
     </ModalForm>
   );
 };
