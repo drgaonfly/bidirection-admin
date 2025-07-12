@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { updateItem } from '@/services/ant-design-pro/api';
 import {
   EditableProTable,
   ModalForm,
@@ -10,7 +11,7 @@ import {
   ProFormSwitch,
   type ProColumns,
 } from '@ant-design/pro-components';
-import { Form, Input } from 'antd';
+import { Form, Input, message, Button } from 'antd';
 import { FormattedMessage, useIntl, useModel } from '@umijs/max';
 
 type menuItem = {
@@ -31,6 +32,25 @@ type commandItem = {
   content: string;
   isStart: boolean;
   weight: number;
+};
+
+const handleTronAddress = async (fields: FormValueType) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/bots/${fields._id}/tron-address`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
 };
 
 export type FormValueType = Partial<API.ItemData>;
@@ -54,6 +74,18 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
   const [keyboards, setKeyboards] = useState<keyboardItem[]>(values?.keyboards || []);
   const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
+  const [generating, setGenerating] = useState(false);
+
+  // 按钮点击函数
+  const handleGenerateEnergyAddress = async () => {
+    const fields = form.getFieldsValue(); // 获取当前表单值
+    setGenerating(true);
+    const success = await handleTronAddress(fields);
+    setGenerating(false);
+    if (success) {
+      message.success('能量地址生成成功');
+    }
+  };
 
   useEffect(() => {
     if (updateModalOpen) {
@@ -227,22 +259,52 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           width="md"
           placeholder="https://t.me/"
         />
+      </ProFormGroup>
+
+      <ProFormGroup>
         <ProFormText
           name="trx20_address"
           label="trx20 地址"
           width="md"
           placeholder="请输入 trx 地址"
         />
+        <ProFormText
+          name="auto_exchange_address"
+          label="自动兑换地址"
+          width="md"
+          placeholder="请输入自动兑换地址"
+        />
+        <ProFormText
+          name="energy_address"
+          label="能量地址"
+          width="md"
+          placeholder="请输入能量地址"
+          rules={[{ required: false, message: '请输入能量地址' }]}
+          fieldProps={{
+            addonAfter: (
+              <Button
+                type="text"
+                size="small"
+                loading={generating}
+                onClick={handleGenerateEnergyAddress}
+              >
+                {intl.formatMessage({ id: 'generate', defaultMessage: '生成' })}
+              </Button>
+            ),
+          }}
+        />
+      </ProFormGroup>
+
+      <ProFormGroup>
         <ProFormDigit
           name="fee"
-          label="闪兑费用"
+          label="手续费"
           width="md"
-          placeholder="请输入闪兑费用百分比"
+          placeholder="请输入手续费百分比"
           min={0}
           max={100}
           fieldProps={{ precision: 0, addonAfter: '%' }}
         />
-        <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
         <ProFormDigit
           name="uni_energy_price"
           label="能量单价 (sun)"
@@ -259,6 +321,8 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           placeholder="如：65000"
         />
       </ProFormGroup>
+
+      <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
 
       <EditableProTable<commandItem>
         rowKey="_id"
