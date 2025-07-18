@@ -53,6 +53,13 @@ export default [
     component: './account/service-link',
   },
   {
+    path: '/account/platform-configuration',
+    // hideInMenu: true,
+    name: 'list.platform-configuration',
+    icon: 'SettingOutlined',
+    component: './account/platform-configuration',
+  },
+  {
     path: '/account/two-factor-auth',
     hideInMenu: true,
     name: 'list.two-factor',

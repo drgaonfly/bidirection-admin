@@ -274,4 +274,7 @@ export default {
   cancelled: '已取消',
   energyReceiveAddress: '能量接收地址',
   copied_to_clipboard: '已复制到剪贴板',
+  rechargeAddress: '充值地址',
+  energyAddress: '能量地址',
+  privateKey: '私钥',
 };

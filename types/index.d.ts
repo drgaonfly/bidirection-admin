@@ -15,6 +15,9 @@ export namespace API {
       userid: string;
       email: string;
       signature: string;
+      rechargeAddress: string;
+      energyAddress: string;
+      privateKey: string;
       title: string;
       group: string;
       tags: {

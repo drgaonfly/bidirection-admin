@@ -59,4 +59,5 @@ export default {
   'menu.群组消息': 'Group Message Management',
   'menu.机器人用户配置': 'Bot User Config',
   'menu.能量租赁': 'Energy Rentals',
+  'menu.account.platform-configuration': 'Platform Configuration',
 };

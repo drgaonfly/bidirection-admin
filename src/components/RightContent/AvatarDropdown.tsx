@@ -140,6 +140,13 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
       icon: <LogoutOutlined />,
       label: <FormattedMessage id="menu.account.logout" defaultMessage="退出登录" />,
     },
+    {
+      key: 'platform-configuration',
+      icon: <SettingOutlined />,
+      label: (
+        <FormattedMessage id="menu.account.platform-configuration" defaultMessage="平台配置" />
+      ),
+    },
   ];
 
   return (

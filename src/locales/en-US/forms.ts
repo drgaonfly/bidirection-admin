@@ -219,4 +219,7 @@ export default {
   cancelled: 'Cancelled',
   energyReceiveAddress: 'Energy Receive Address',
   copied_to_clipboard: 'Copied to clipboard',
+  rechargeAddress: 'Recharge Address',
+  energyAddress: 'Energy Address',
+  privateKey: 'Private Key',
 };

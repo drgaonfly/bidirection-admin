@@ -31,6 +31,9 @@ declare namespace API {
     balance?: number;
     serviceLink?: string;
     serviceLinks?: string;
+    rechargeAddress?: string;
+    energyAddress?: string;
+    privateKey?: string;
   };
 
   // Example type definition
