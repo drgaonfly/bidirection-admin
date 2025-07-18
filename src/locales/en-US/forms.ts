@@ -217,4 +217,6 @@ export default {
   interval_time: 'Interval Time',
   send_type: 'Send Type',
   cancelled: 'Cancelled',
+  energyReceiveAddress: 'Energy Receive Address',
+  copied_to_clipboard: 'Copied to clipboard',
 };

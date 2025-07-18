@@ -73,7 +73,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'password' })}
           name="password"
         />
-
+        <ProFormText
+          rules={[{ required: true }]}
+          width="md"
+          label={intl.formatMessage({ id: 'energyReceiveAddress' })}
+          name="energyReceiveAddress"
+        />
         {newRecord &&
           (loading ? (
             <Spin spinning={loading} />

@@ -272,4 +272,6 @@ export default {
   usdt_balance: 'USDT余额',
   trx_balance: 'TRX余额',
   cancelled: '已取消',
+  energyReceiveAddress: '能量接收地址',
+  copied_to_clipboard: '已复制到剪贴板',
 };

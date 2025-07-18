@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
-import { PlusOutlined } from '@ant-design/icons';
+import { CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -143,6 +143,35 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
+    },
+    {
+      title: intl.formatMessage({ id: 'energyReceiveAddress' }),
+      dataIndex: 'energyReceiveAddress',
+      copyable: true,
+      hideInSearch: false,
+      render: (text) => {
+        const address = React.isValidElement(text) ? text.props?.children : text;
+
+        if (!address || typeof address !== 'string') return '-';
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {address && address !== '-' && (
+              <>
+                <span>{`${address.substring(0, 8)}...${address.substring(
+                  address.length - 9,
+                )}`}</span>
+                <CopyOutlined
+                  style={{ cursor: 'pointer', color: '#1890ff' }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(address);
+                    message.success(intl.formatMessage({ id: 'copied_to_clipboard' }));
+                  }}
+                />
+              </>
+            )}
+          </div>
+        );
+      },
     },
     {
       title: intl.formatMessage({ id: 'proxy.user' }),
