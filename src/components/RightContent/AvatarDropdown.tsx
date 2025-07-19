@@ -4,7 +4,7 @@ import {
   UserOutlined,
   CustomerServiceOutlined,
 } from '@ant-design/icons';
-import { FormattedMessage, history, useModel } from '@umijs/max';
+import { FormattedMessage, history, useModel, useAccess } from '@umijs/max';
 import { Spin } from 'antd';
 import { createStyles } from 'antd-style';
 import { stringify } from 'querystring';
@@ -64,6 +64,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
   const { styles } = useStyles();
 
   const { initialState, setInitialState } = useModel('@@initialState');
+  const access = useAccess();
 
   const onMenuClick = useCallback(
     (event: { key: React.Key }) => {
@@ -140,13 +141,20 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
       icon: <LogoutOutlined />,
       label: <FormattedMessage id="menu.account.logout" defaultMessage="退出登录" />,
     },
-    {
-      key: 'platform-configuration',
-      icon: <SettingOutlined />,
-      label: (
-        <FormattedMessage id="menu.account.platform-configuration" defaultMessage="平台配置" />
-      ),
-    },
+    ...(access.canSuperAdmin
+      ? [
+          {
+            key: 'platform-configuration',
+            icon: <SettingOutlined />,
+            label: (
+              <FormattedMessage
+                id="menu.account.platform-configuration"
+                defaultMessage="平台配置"
+              />
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
