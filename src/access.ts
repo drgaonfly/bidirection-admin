@@ -278,5 +278,18 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals/:id', 'PUT')),
     canGetRental:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals', 'GET')),
+
+    // member-orders
+    canCreateMemberOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'POST')),
+    canDeleteMemberOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'DELETE')),
+    canUpdateMemberOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/member-orders/:id', 'PUT')),
+    canGetMemberOrder:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'GET')),
   };
 }
