@@ -194,9 +194,11 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       modalProps={{ destroyOnClose: true, maskClosable: false }}
       open={updateModalOpen}
       onOpenChange={onCancel}
-      onFinish={async () => {
+      onFinish={async (values) => {
+        const formValues = form.getFieldsValue();
         await onSubmit({
           ...values,
+          ...formValues,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           keyboards: keyboards.map(({ _id, ...rest }) => rest),
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
