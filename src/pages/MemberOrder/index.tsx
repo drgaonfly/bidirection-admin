@@ -135,7 +135,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeletePayment && (
+        access.canDeleteMemberOrder && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -213,7 +213,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeletePayment && (
+          {access.canDeleteMemberOrder && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));
