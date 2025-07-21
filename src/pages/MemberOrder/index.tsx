@@ -3,7 +3,7 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -49,44 +49,38 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'amount' }),
       dataIndex: 'amount',
       hideInSearch: true,
+      valueType: 'money',
     },
-    // crypto_type
     {
-      title: intl.formatMessage({ id: 'crypto_type' }),
-      dataIndex: 'crypto_type',
+      title: intl.formatMessage({ id: 'actualAmount', defaultMessage: '实际收款金额' }),
+      dataIndex: 'actualAmount',
       hideInSearch: true,
+      valueType: 'money',
     },
-    // paymentAmount
     {
-      title: intl.formatMessage({ id: 'paymentAmount' }),
-      dataIndex: 'paymentAmount',
+      title: intl.formatMessage({ id: 'membershipType', defaultMessage: '会员类型' }),
+      dataIndex: 'membershipType',
       hideInSearch: true,
+      valueEnum: {
+        '3m': { text: '3月会员' },
+        '6m': { text: '6月会员' },
+        '1y': { text: '1年会员' },
+      },
     },
     {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
       hideInSearch: true,
-      render: (_, record) => {
-        return <Tag color="blue">{intl.formatMessage({ id: record.status })}</Tag>;
+      valueEnum: {
+        pending: { text: intl.formatMessage({ id: 'pending' }), status: 'warning' },
+        paid: { text: intl.formatMessage({ id: 'paid' }), status: 'success' },
+        expired: { text: intl.formatMessage({ id: 'expired' }), status: 'error' },
+        cancelled: { text: intl.formatMessage({ id: 'cancelled' }), status: 'default' },
       },
     },
     {
-      title: intl.formatMessage({ id: 'txHash' }),
-      dataIndex: 'txHash',
-      hideInSearch: true,
-      ellipsis: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'sendAddress' }),
-      dataIndex: 'sendAddress',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'receiveAddress' }),
-      dataIndex: 'receiveAddress',
+      title: intl.formatMessage({ id: 'paymentAddress', defaultMessage: '收款地址' }),
+      dataIndex: 'paymentAddress',
       ellipsis: true,
       hideInSearch: true,
       copyable: true,
@@ -96,14 +90,13 @@ const TableList: React.FC = () => {
       dataIndex: 'botUser',
       hideInSearch: true,
       renderText: (text, record) => {
-        return record.botUser?.displayName;
+        return record.botUser?.userName;
       },
     },
     {
       title: intl.formatMessage({ id: 'bot' }),
       dataIndex: 'bot',
       hideInSearch: true,
-      copyable: true,
       renderText: (text, record) => {
         return record.bot?.botName;
       },
@@ -115,8 +108,8 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'expiredAt' }),
-      dataIndex: 'expiresAt',
+      title: intl.formatMessage({ id: 'endDate', defaultMessage: '结束日期' }),
+      dataIndex: 'endDate',
       valueType: 'dateTime',
       hideInSearch: true,
     },

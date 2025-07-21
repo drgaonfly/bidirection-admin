@@ -99,4 +99,5 @@ export default {
   'menu.机器人用户配置': '机器人用户配置',
   'menu.能量租赁': '能量租赁',
   'menu.account.platform-configuration': '平台配置',
+  'menu.member-orders': '会员订单',
 };
