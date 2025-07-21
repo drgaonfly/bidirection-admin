@@ -177,7 +177,7 @@ export default [
   {
     path: '/member-orders',
     name: 'list.member-orders',
-    icon: 'OrderedListOutlined',
+    icon: 'MemberOrderOutlined',
     component: './MemberOrder',
   },
   // botMessage
