@@ -173,6 +173,13 @@ export default [
     icon: 'OrderedListOutlined',
     component: './Payment',
   },
+  // MemberOrder
+  {
+    path: '/member-orders',
+    name: 'list.member-orders',
+    icon: 'OrderedListOutlined',
+    component: './MemberOrder',
+  },
   // botMessage
   {
     path: '/bot-messages',
