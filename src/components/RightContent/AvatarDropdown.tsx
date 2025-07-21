@@ -136,11 +136,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
       icon: <SettingOutlined />,
       label: <FormattedMessage id="menu.account.two-factor-auth" defaultMessage="二步认证" />,
     },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: <FormattedMessage id="menu.account.logout" defaultMessage="退出登录" />,
-    },
     ...(access.canSuperAdmin
       ? [
           {
@@ -155,6 +150,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
           },
         ]
       : []),
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: <FormattedMessage id="menu.account.logout" defaultMessage="退出登录" />,
+    },
   ];
 
   return (
