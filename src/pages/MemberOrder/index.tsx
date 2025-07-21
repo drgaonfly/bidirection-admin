@@ -61,10 +61,11 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'membershipType', defaultMessage: '会员类型' }),
       dataIndex: 'membershipType',
       hideInSearch: true,
-      valueEnum: {
-        '3m': { text: '3月会员' },
-        '6m': { text: '6月会员' },
-        '1y': { text: '1年会员' },
+      renderText: (text) => {
+        if (text === '3m') return '3月会员';
+        if (text === '6m') return '6月会员';
+        if (text === '1y') return '1年会员';
+        return text;
       },
     },
     {
