@@ -18,6 +18,7 @@ export namespace API {
       rechargeAddress: string;
       energyAddress: string;
       privateKey: string;
+      mnemonic: string;
       title: string;
       group: string;
       tags: {

@@ -2,7 +2,7 @@ import { Card, message, Typography, Button, Space } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 
@@ -19,6 +19,7 @@ const PlatformConfiguration: React.FC = () => {
     rechargeAddress: string;
     energyAddress: string;
     privateKey: string;
+    mnemonic: string;
   }) => {
     try {
       setLoading(true);
@@ -58,6 +59,7 @@ const PlatformConfiguration: React.FC = () => {
               rechargeAddress: currentUser?.rechargeAddress || '',
               energyAddress: currentUser?.energyAddress || '',
               privateKey: currentUser?.privateKey || '',
+              mnemonic: currentUser?.mnemonic || '',
             }}
             submitter={{
               submitButtonProps: {
@@ -101,6 +103,19 @@ const PlatformConfiguration: React.FC = () => {
               })}
               rules={[{ required: true }]}
             />
+            <ProFormTextArea
+              width="xl"
+              name="mnemonic"
+              label={intl.formatMessage({
+                id: 'platform.mnemonic',
+                defaultMessage: 'TG会员助记词',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.mnemonic',
+                defaultMessage: '请输入TG会员助记词',
+              })}
+              rules={[{ required: true }]}
+            />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
@@ -121,9 +136,15 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{currentUser?.energyAddress || '-'}</Text>
             </div>
-            <div>
+            <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '私钥' })}:{' '}
+              </Text>
+              <Text>{'*'.repeat(20)}</Text>
+            </div>
+            <div>
+              <Text strong>
+                {intl.formatMessage({ id: 'platform.mnemonic', defaultMessage: 'TG会员助记词' })}:{' '}
               </Text>
               <Text>{'*'.repeat(20)}</Text>
             </div>

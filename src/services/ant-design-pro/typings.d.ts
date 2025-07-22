@@ -12,6 +12,7 @@ declare namespace API {
     roles?: any;
     _id?: string;
     userid?: string;
+    mnemonic?: string;
     email?: string;
     signature?: string;
     title?: string;
