@@ -322,6 +322,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           width="md"
           placeholder="如：65000"
         />
+
+        <ProFormDigit
+          name="min_interger_limit"
+          label="预支能量的最少几分数"
+          width="md"
+          placeholder="如: 10"
+        />
       </ProFormGroup>
 
       <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
