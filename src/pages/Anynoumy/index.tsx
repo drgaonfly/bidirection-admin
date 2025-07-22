@@ -110,16 +110,6 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'type', defaultMessage: '类型' }),
-      dataIndex: 'type',
-      hideInSearch: true,
-      valueEnum: {
-        manual: { text: '手动' },
-        bot: { text: '机器人' },
-        auto: { text: '自动' },
-      },
-    },
-    {
       title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
       dataIndex: 'status',
       hideInSearch: true,
