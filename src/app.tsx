@@ -54,6 +54,7 @@ import {
   CarOutlined,
   ShoppingOutlined, // 添加会员订单小图标
   NumberOutlined,
+  StarFilled, // 添加星星小图标
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -84,6 +85,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   CrownOutlined: <CrownOutlined />,
   TrophyOutlined: <TrophyOutlined />,
   StarOutlined: <StarOutlined />,
+  StarFilled: <StarFilled />, // 星星小图标
   FileTextOutlined: <FileTextOutlined />,
   ProfileOutlined: <ProfileOutlined />,
   TransactionOutlined: <TransactionOutlined />,

@@ -311,5 +311,18 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer/:id', 'PUT')),
     canGetInteger:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer', 'GET')),
+    // tg-stars-orders
+    canCreateTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'POST')),
+    canDeleteTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'DELETE')),
+    canUpdateTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders/:id', 'PUT')),
+    canGetTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'GET')),
   };
 }

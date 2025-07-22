@@ -180,6 +180,12 @@ export default [
     icon: 'MemberOrderOutlined',
     component: './MemberOrder',
   },
+  {
+    path: '/tg-stars-orders',
+    name: 'list.tg-stars-orders',
+    icon: 'StarFilled',
+    component: './tgStarsOrder',
+  },
   // botMessage
   {
     path: '/bot-messages',
