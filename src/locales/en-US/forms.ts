@@ -223,4 +223,6 @@ export default {
   energyAddress: 'Energy Address',
   privateKey: 'Private Key',
   crypto_type: 'Crypto Type',
+  invitation: 'Invitation',
+  approach: 'Approach',
 };

@@ -278,4 +278,6 @@ export default {
   energyAddress: '能量地址',
   privateKey: '私钥',
   crypto_type: '货币类型',
+  invitation: '邀请',
+  approach: '途径',
 };

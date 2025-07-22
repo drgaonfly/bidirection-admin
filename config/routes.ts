@@ -243,4 +243,18 @@ export default [
     icon: 'CarOutlined',
     component: './Rental',
   },
+  // anynoumy
+  {
+    path: '/anynoumies',
+    name: 'list.anynoumies',
+    icon: 'UserOutlined',
+    component: './Anynoumy',
+  },
+  // integer
+  {
+    path: '/integers',
+    name: 'list.integers',
+    icon: 'NumberOutlined',
+    component: './Integer',
+  },
 ];
