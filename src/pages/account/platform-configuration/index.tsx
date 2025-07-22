@@ -78,7 +78,6 @@ const PlatformConfiguration: React.FC = () => {
                 id: 'please.enter.rechargeAddress',
                 defaultMessage: '请输入充值地址',
               })}
-              rules={[{ required: true }]}
             />
             <ProFormText
               width="xl"
@@ -91,7 +90,6 @@ const PlatformConfiguration: React.FC = () => {
                 id: 'please.enter.energyAddress',
                 defaultMessage: '请输入能量发送地址',
               })}
-              rules={[{ required: true }]}
             />
             <ProFormText.Password
               width="xl"
@@ -101,7 +99,6 @@ const PlatformConfiguration: React.FC = () => {
                 id: 'please.enter.privateKey',
                 defaultMessage: '请输入私钥',
               })}
-              rules={[{ required: true }]}
             />
             <ProFormTextArea
               width="xl"
@@ -114,7 +111,6 @@ const PlatformConfiguration: React.FC = () => {
                 id: 'please.enter.mnemonic',
                 defaultMessage: '请输入TG会员助记词',
               })}
-              rules={[{ required: true }]}
             />
           </ProForm>
         ) : (
