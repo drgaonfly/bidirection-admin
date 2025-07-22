@@ -277,4 +277,5 @@ export default {
   rechargeAddress: '充值地址',
   energyAddress: '能量地址',
   privateKey: '私钥',
+  crypto_type: '货币类型',
 };
