@@ -291,5 +291,19 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/member-orders/:id', 'PUT')),
     canGetMemberOrder:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'GET')),
+
+    // tg-stars-orders
+    canCreateTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'POST')),
+    canDeleteTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'DELETE')),
+    canUpdateTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders/:id', 'PUT')),
+    canGetTgStarsOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'GET')),
   };
 }
