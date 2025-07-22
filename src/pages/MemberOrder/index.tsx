@@ -49,13 +49,12 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'amount' }),
       dataIndex: 'amount',
       hideInSearch: true,
-      valueType: 'money',
+      renderText: (text) => `${text} USDT`,
     },
     {
       title: intl.formatMessage({ id: 'actualAmount', defaultMessage: '实际收款金额' }),
       dataIndex: 'actualAmount',
       hideInSearch: true,
-      valueType: 'money',
     },
     {
       title: intl.formatMessage({ id: 'membershipType', defaultMessage: '会员类型' }),
