@@ -222,4 +222,5 @@ export default {
   rechargeAddress: 'Recharge Address',
   energyAddress: 'Energy Address',
   privateKey: 'Private Key',
+  crypto_type: 'Crypto Type',
 };
