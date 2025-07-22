@@ -53,6 +53,7 @@ import {
   OrderedListOutlined,
   CarOutlined,
   ShoppingOutlined, // 添加会员订单小图标
+  NumberOutlined,
   StarFilled, // 添加星星小图标
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
@@ -119,6 +120,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   OrderedListOutlined: <OrderedListOutlined />,
   CarOutlined: <CarOutlined />,
   MemberOrderOutlined: <ShoppingOutlined />, // 会员订单小图标
+  NumberOutlined: <NumberOutlined />,
 };
 
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>

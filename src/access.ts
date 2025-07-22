@@ -292,6 +292,25 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetMemberOrder:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'GET')),
 
+    // anynoumy
+    canCreateAnynoumy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/anynoumy', 'POST')),
+    canDeleteAnynoumy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/anynoumy', 'DELETE')),
+    canUpdateAnynoumy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/anynoumy/:id', 'PUT')),
+    canGetAnynoumy:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/anynoumy', 'GET')),
+
+    // Integer
+    canCreateInteger:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer', 'POST')),
+    canDeleteInteger:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer', 'DELETE')),
+    canUpdateInteger:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer/:id', 'PUT')),
+    canGetInteger:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer', 'GET')),
     // tg-stars-orders
     canCreateTgStarsOrder:
       currentUser &&
