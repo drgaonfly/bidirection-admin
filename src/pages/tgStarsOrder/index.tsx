@@ -57,15 +57,9 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'membershipType', defaultMessage: '会员类型' }),
-      dataIndex: 'membershipType',
+      title: intl.formatMessage({ id: 'starsAmount', defaultMessage: 'TG星星数量' }),
+      dataIndex: 'starsAmount',
       hideInSearch: true,
-      renderText: (text) => {
-        if (text === '3m') return '3月会员';
-        if (text === '6m') return '6月会员';
-        if (text === '1y') return '1年会员';
-        return text;
-      },
     },
     {
       title: intl.formatMessage({ id: 'status' }),

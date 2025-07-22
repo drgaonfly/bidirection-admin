@@ -184,7 +184,7 @@ export default [
     path: '/tg-stars-orders',
     name: 'list.tg-stars-orders',
     icon: 'StarFilled',
-    component: './TgStarsOrder',
+    component: './tgStarsOrder',
   },
   // botMessage
   {

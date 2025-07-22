@@ -123,4 +123,5 @@ export default {
   'pages.wallet.updateBalance': 'Update Balance',
   depth: 'Depth',
   incomeRate: 'Income Rate %',
+  'menu.tg-stars-orders': 'TG Stars Orders',
 };

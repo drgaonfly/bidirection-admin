@@ -113,4 +113,5 @@ export default {
   'pages.wallet.updateBalance': '更新余额',
   depth: '层级深度',
   incomeRate: '收益率%',
+  'menu.tg-stars-orders': '星星订单',
 };
