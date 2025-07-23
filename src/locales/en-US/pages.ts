@@ -124,4 +124,5 @@ export default {
   depth: 'Depth',
   incomeRate: 'Income Rate %',
   'menu.tg-stars-orders': 'TG Stars Orders',
+  'menu.advances': 'Energy Advances',
 };

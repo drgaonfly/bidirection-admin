@@ -324,5 +324,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetTgStarsOrder:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'GET')),
+
+    // Advance
+    canCreateAdvance:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/advances', 'POST')),
+    canDeleteAdvance:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/advances', 'DELETE')),
+    canUpdateAdvance:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/advances/:id', 'PUT')),
+    canGetAdvance:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/advances', 'GET')),
   };
 }

@@ -41,8 +41,8 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'orderNumber' }),
-      dataIndex: 'orderNumber',
+      title: intl.formatMessage({ id: 'id' }),
+      dataIndex: 'id',
       copyable: true,
     },
     {
@@ -52,14 +52,35 @@ const TableList: React.FC = () => {
       renderText: (text) => `${text} USDT`,
     },
     {
-      title: intl.formatMessage({ id: 'actualAmount', defaultMessage: '实际收款金额' }),
-      dataIndex: 'actualAmount',
+      title: intl.formatMessage({ id: 'from-address', defaultMessage: '发送地址' }),
+      dataIndex: 'from_address',
+      ellipsis: true,
+      hideInSearch: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'to-address', defaultMessage: '接收地址' }),
+      dataIndex: 'to_address',
+      ellipsis: true,
+      hideInSearch: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'consumption_energy', defaultMessage: '消耗能量' }),
+      dataIndex: 'consumption_energy',
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'starsAmount', defaultMessage: 'TG星星数量' }),
-      dataIndex: 'starsAmount',
+      title: intl.formatMessage({ id: 'consumption_integer', defaultMessage: '消耗带宽' }),
+      dataIndex: 'consumption_integer',
       hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易ID' }),
+      dataIndex: 'tx_id',
+      ellipsis: true,
+      hideInSearch: true,
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'status' }),
@@ -67,17 +88,19 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       valueEnum: {
         pending: { text: intl.formatMessage({ id: 'pending' }), status: 'warning' },
-        paid: { text: intl.formatMessage({ id: 'paid' }), status: 'success' },
+        completed: { text: intl.formatMessage({ id: 'completed' }), status: 'success' },
         expired: { text: intl.formatMessage({ id: 'expired' }), status: 'error' },
         cancelled: { text: intl.formatMessage({ id: 'cancelled' }), status: 'default' },
       },
     },
     {
-      title: intl.formatMessage({ id: 'paymentAddress', defaultMessage: '收款地址' }),
-      dataIndex: 'paymentAddress',
-      ellipsis: true,
+      title: intl.formatMessage({ id: 'crypto_type', defaultMessage: '加密货币类型' }),
+      dataIndex: 'crypto_type',
       hideInSearch: true,
-      copyable: true,
+      valueEnum: {
+        usdt: { text: 'USDT', status: 'success' },
+        trx: { text: 'TRX', status: 'processing' },
+      },
     },
     {
       title: intl.formatMessage({ id: 'user' }),
@@ -85,22 +108,6 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       renderText: (text, record) => {
         return record.botUser?.userName;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'hasPurchased', defaultMessage: '是否已购买' }),
-      dataIndex: 'hasPurchased',
-      hideInSearch: true,
-      copyable: true,
-      render: (text) => {
-        if (text === true) {
-          return (
-            <span style={{ color: 'green' }}>
-              {intl.formatMessage({ id: 'paid', defaultMessage: '已购买' })}
-            </span>
-          );
-        }
-        return <span>{intl.formatMessage({ id: 'notPaid', defaultMessage: '未购买' })}</span>;
       },
     },
     {
@@ -112,14 +119,14 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'createdAt' }),
-      dataIndex: 'createdAt',
+      title: intl.formatMessage({ id: 'expiredAt', defaultMessage: '过期时间' }),
+      dataIndex: 'expiredAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'endDate', defaultMessage: '结束日期' }),
-      dataIndex: 'endDate',
+      title: intl.formatMessage({ id: 'transactionAt', defaultMessage: '交易时间' }),
+      dataIndex: 'transactionAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
@@ -138,7 +145,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeleteTgStarsOrder && (
+        access.canDeleteTransaction && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -176,16 +183,16 @@ const TableList: React.FC = () => {
                 key: 'pending',
               },
               {
-                label: <FormattedMessage id="paid" defaultMessage="paid" />,
-                key: 'paid',
+                label: <FormattedMessage id="completed" defaultMessage="completed" />,
+                key: 'completed',
               },
               {
                 label: <FormattedMessage id="expired" defaultMessage="expired" />,
                 key: 'expired',
               },
               {
-                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
-                key: 'canceled',
+                label: <FormattedMessage id="cancelled" defaultMessage="cancelled" />,
+                key: 'cancelled',
               },
             ],
             onChange: (key: any) => {
@@ -216,7 +223,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteTgStarsOrder && (
+          {access.canDeleteTransaction && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

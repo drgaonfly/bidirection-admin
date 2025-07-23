@@ -114,4 +114,5 @@ export default {
   depth: '层级深度',
   incomeRate: '收益率%',
   'menu.tg-stars-orders': '星星订单',
+  'menu.advances': '能量预支',
 };
