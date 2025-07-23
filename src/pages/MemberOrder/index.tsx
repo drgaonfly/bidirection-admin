@@ -94,6 +94,22 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'hasPurchased', defaultMessage: '是否已购买' }),
+      dataIndex: 'hasPurchased',
+      hideInSearch: true,
+      copyable: true,
+      render: (text) => {
+        if (text === true) {
+          return (
+            <span style={{ color: 'green' }}>
+              {intl.formatMessage({ id: 'paid', defaultMessage: '已购买' })}
+            </span>
+          );
+        }
+        return <span>{intl.formatMessage({ id: 'notPaid', defaultMessage: '未购买' })}</span>;
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'bot' }),
       dataIndex: 'bot',
       hideInSearch: true,
