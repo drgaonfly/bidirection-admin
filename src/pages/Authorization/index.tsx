@@ -170,9 +170,11 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '创建者' }),
+      dataIndex: ['user', 'name'],
       hideInSearch: true,
+      width: 120,
+      hideInTable: !access.canSuperAdmin,
       hideInForm: true,
     },
     {
