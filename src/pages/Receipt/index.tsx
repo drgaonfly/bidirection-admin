@@ -40,6 +40,12 @@ const TableList: React.FC = () => {
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
+    {
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
+      dataIndex: ['proxy', 'name'],
+      hideInSearch: true,
+      hideInForm: true,
+    },
     // wallet
     {
       title: intl.formatMessage({ id: 'wallet' }),

@@ -174,22 +174,10 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'proxy.user' }),
-      dataIndex: ['proxy', 'name'],
+      title: intl.formatMessage({ id: 'creator', defaultMessage: '创建者' }),
+      dataIndex: ['creator', 'name'],
       hideInSearch: true,
       hideInForm: true,
-      // render: (dom, entity) => {
-      //   return (
-      //     <a
-      //       onClick={() => {
-      //         setCurrentRow(entity);
-      //         setShowDetail(true);
-      //       }}
-      //     >
-      //       {dom}
-      //     </a>
-      //   );
-      // },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

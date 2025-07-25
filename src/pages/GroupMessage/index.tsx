@@ -88,6 +88,12 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
+      dataIndex: ['proxy', 'name'],
+      hideInSearch: true,
+      hideInForm: true,
+    },
+    {
       title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
       dataIndex: 'bot',
       copyable: true,
