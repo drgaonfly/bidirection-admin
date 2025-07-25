@@ -1,26 +1,26 @@
-name: Auto Deploy to Release Server
-on:
-  push:
-    branches:
-      - main
-      - release
-jobs:
+# name: Auto Deploy to Release Server
+# on:
+#   push:
+#     branches:
+#       - main
+#       - release
+# jobs:
 
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: deploy to release server
-        if: github.ref == 'refs/heads/main'
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: 82.180.137.15
-          username: root
-          password: ${{ secrets.PASSWORD }}
-          port: 22
-          script: |
-            cd /www/wwwroot/trx-admin.2025fc.xyz/trx-admin &&
-            git pull --rebase origin main &&
-            /www/server/nodejs/v20.16.0/bin/pnpm install &&
-            git checkout -f . &&
-            npm run build
+#   build:
+#     name: Build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: deploy to release server
+#         if: github.ref == 'refs/heads/main'
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: 82.180.137.15
+#           username: root
+#           password: ${{ secrets.PASSWORD }}
+#           port: 22
+#           script: |
+#             cd /www/wwwroot/trx-admin.2025fc.xyz/trx-admin &&
+#             git pull --rebase origin main &&
+#             /www/server/nodejs/v20.16.0/bin/pnpm install &&
+#             git checkout -f . &&
+#             npm run build
