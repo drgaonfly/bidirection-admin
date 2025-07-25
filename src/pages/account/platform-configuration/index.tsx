@@ -17,8 +17,7 @@ const PlatformConfiguration: React.FC = () => {
 
   const handleSubmit = async (values: {
     rechargeAddress: string;
-    energyAddress: string;
-    privateKey: string;
+    energy_privateKey: string;
     mnemonic: string;
   }) => {
     try {
@@ -57,8 +56,8 @@ const PlatformConfiguration: React.FC = () => {
             onFinish={handleSubmit}
             initialValues={{
               rechargeAddress: currentUser?.rechargeAddress || '',
-              energyAddress: currentUser?.energyAddress || '',
-              privateKey: currentUser?.privateKey || '',
+              // energyAddress: currentUser?.energyAddress || '',
+              energy_privateKey: currentUser?.energy_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
             }}
             submitter={{
@@ -79,22 +78,10 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '请输入充值地址',
               })}
             />
-            <ProFormText
-              width="xl"
-              name="energyAddress"
-              label={intl.formatMessage({
-                id: 'platform.energyAddress',
-                defaultMessage: '能量发送地址',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.energyAddress',
-                defaultMessage: '请输入能量发送地址',
-              })}
-            />
             <ProFormText.Password
               width="xl"
-              name="privateKey"
-              label={intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '私钥' })}
+              name="energy_privateKey"
+              label={intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '能量私钥' })}
               placeholder={intl.formatMessage({
                 id: 'please.enter.privateKey',
                 defaultMessage: '请输入私钥',
@@ -124,17 +111,7 @@ const PlatformConfiguration: React.FC = () => {
             </div>
             <div style={{ marginBottom: 16 }}>
               <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.energyAddress',
-                  defaultMessage: '能量发送地址',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.energyAddress || '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '私钥' })}:{' '}
+                {intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '发送能量私钥' })}:{' '}
               </Text>
               <Text>{'*'.repeat(20)}</Text>
             </div>

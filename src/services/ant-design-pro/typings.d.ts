@@ -35,6 +35,7 @@ declare namespace API {
     rechargeAddress?: string;
     energyAddress?: string;
     privateKey?: string;
+    energy_privateKey?: string;
   };
 
   // Example type definition
