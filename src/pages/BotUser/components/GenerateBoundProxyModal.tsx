@@ -63,18 +63,21 @@ const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish
             width="md"
             label={intl.formatMessage({ id: 'name' })}
             rules={[{ required: true }]}
+            placeholder={'jack'}
           />
           <ProFormText
             name="email"
             width="md"
             label={intl.formatMessage({ id: 'email' })}
             rules={[{ required: true, type: 'email' }]}
+            placeholder={'jack@gmail.com'}
           />
           <ProFormText.Password
             name="password"
             width="md"
             label={intl.formatMessage({ id: 'password' })}
             rules={[{ required: true }]}
+            placeholder={'abcd1234'}
           />
         </>
       )}
