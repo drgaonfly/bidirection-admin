@@ -1,7 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React, { useState } from 'react';
-import { ModalForm, ProFormText } from '@ant-design/pro-components';
-import { Radio } from 'antd';
+import { ModalForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
 
 interface Props {
   open: boolean;
@@ -44,28 +43,36 @@ const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish
         },
       }}
     >
-      <Radio.Group
-        value={mode}
-        onChange={(e) => setMode(e.target.value)}
-        style={{ marginBottom: 16 }}
-      >
-        <Radio.Button value="auto">{intl.formatMessage({ id: 'auto_generate' })}</Radio.Button>
-        <Radio.Button value="manual">{intl.formatMessage({ id: 'manual_generate' })}</Radio.Button>
-      </Radio.Group>
+      <ProFormRadio.Group
+        name="mode"
+        options={[
+          { label: intl.formatMessage({ id: 'auto_generate' }), value: 'auto' },
+          { label: intl.formatMessage({ id: 'manual_generate' }), value: 'manual' },
+        ]}
+        fieldProps={{
+          value: mode,
+          onChange: (e) => setMode(e.target.value),
+          style: { marginBottom: 16 },
+        }}
+        radioType="button"
+      />
       {mode === 'manual' && (
         <>
           <ProFormText
             name="name"
+            width="md"
             label={intl.formatMessage({ id: 'name' })}
             rules={[{ required: true }]}
           />
           <ProFormText
             name="email"
+            width="md"
             label={intl.formatMessage({ id: 'email' })}
             rules={[{ required: true, type: 'email' }]}
           />
           <ProFormText.Password
             name="password"
+            width="md"
             label={intl.formatMessage({ id: 'password' })}
             rules={[{ required: true }]}
           />

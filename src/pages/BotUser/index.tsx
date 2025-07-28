@@ -258,17 +258,6 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canUpdateBotUser && !record?.bound_proxy && (
-          <a
-            key="generate_bound_proxy"
-            onClick={() => {
-              setCurrentRow(record);
-              setGenerateProxyModalOpen(true);
-            }}
-          >
-            <FormattedMessage id="generate_bound_proxy" defaultMessage="生成绑定代理" />
-          </a>
-        ),
         <a
           key="detail"
           onClick={() => {
@@ -296,6 +285,17 @@ const TableList: React.FC = () => {
             }}
           >
             <FormattedMessage id="send_message" defaultMessage="发送消息" />
+          </a>
+        ),
+        access.canUpdateBotUser && !record?.bound_proxy && (
+          <a
+            key="generate_bound_proxy"
+            onClick={() => {
+              setCurrentRow(record);
+              setGenerateProxyModalOpen(true);
+            }}
+          >
+            <FormattedMessage id="generate_bound_proxy" defaultMessage="生成绑定代理" />
           </a>
         ),
       ],
