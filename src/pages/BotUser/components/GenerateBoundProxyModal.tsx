@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React, { useState } from 'react';
-import { ModalForm, ProFormRadio, ProFormText } from '@ant-design/pro-components';
+import { ModalForm, ProFormRadio, ProFormText, ProFormGroup } from '@ant-design/pro-components';
 
 interface Props {
   open: boolean;
@@ -58,20 +58,23 @@ const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish
       />
       {mode === 'manual' && (
         <>
-          <ProFormText
-            name="name"
-            width="md"
-            label={intl.formatMessage({ id: 'name' })}
-            rules={[{ required: true }]}
-            placeholder={'jack'}
-          />
-          <ProFormText
-            name="email"
-            width="md"
-            label={intl.formatMessage({ id: 'email' })}
-            rules={[{ required: true, type: 'email' }]}
-            placeholder={'jack@gmail.com'}
-          />
+          <ProFormGroup>
+            <ProFormText
+              name="name"
+              width="md"
+              label={intl.formatMessage({ id: 'name' })}
+              rules={[{ required: true }]}
+              placeholder={'jack'}
+            />
+            <ProFormText
+              name="email"
+              width="md"
+              label={intl.formatMessage({ id: 'email' })}
+              rules={[{ required: true, type: 'email' }]}
+              placeholder={'jack@gmail.com'}
+            />
+          </ProFormGroup>
+
           <ProFormText.Password
             name="password"
             width="md"
