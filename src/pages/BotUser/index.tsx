@@ -178,7 +178,7 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '绑定的代理' }),
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
       dataIndex: 'proxy',
       hideInSearch: true,
       renderText: (_, record) => {
@@ -240,7 +240,7 @@ const TableList: React.FC = () => {
       ),
     },
     {
-      title: intl.formatMessage({ id: 'generated_proxy', defaultMessage: '生成的代理' }),
+      title: intl.formatMessage({ id: 'bound_proxy', defaultMessage: '绑定的代理' }),
       dataIndex: 'bound_proxy',
       hideInSearch: true,
       renderText: (_, record) => {
