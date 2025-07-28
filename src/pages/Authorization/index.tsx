@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Button, message, Modal, Switch, Form, Input } from 'antd';
+import { Button, message, Modal, Switch, Form, Input, Badge } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
@@ -227,19 +227,25 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '复制机器人' }),
       dataIndex: 'clonedFrom',
       width: 120,
+      hideInSearch: true,
       renderText: (text: any) => {
         return text?.botName || text?.userName;
       },
-      hideInSearch: true,
     },
+    // isCreatedByAdmin - 红绿灯
     {
-      title: intl.formatMessage({ id: 'creator', defaultMessage: 'Creator' }),
-      width: 120,
-      dataIndex: 'creator',
-      renderText: (text: any) => {
-        return text?.botName || text?.userName;
-      },
+      title: intl.formatMessage({ id: 'isCreatedByAdmin' }),
+      dataIndex: 'isCreatedByAdmin',
       hideInSearch: true,
+      render: (_, record) => {
+        const isAdmin = record?.isCreatedByAdmin;
+        return (
+          <span>
+            <Badge color={isAdmin ? '#52c41a' : '#ff4d4f'} style={{ marginRight: 8 }} dot />
+            {isAdmin ? intl.formatMessage({ id: 'yes' }) : intl.formatMessage({ id: 'no' })}
+          </span>
+        );
+      },
     },
     {
       title: intl.formatMessage({ id: 'token', defaultMessage: 'Bot Token' }),
@@ -425,7 +431,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 2000 }}
+        scroll={{ x: 2500 }}
         search={{
           collapsed: false,
         }}

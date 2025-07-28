@@ -14,6 +14,7 @@ import DeleteLink from '@/components/DeleteLink';
 import CopyToClipboard from '@/components/CopyToClipboard';
 // import { Input } from 'antd';
 import SendMessageModal from './components/SendMessageModal';
+import GenerateBoundProxyModal from './components/GenerateBoundProxyModal';
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -153,12 +154,36 @@ const TableList: React.FC = () => {
    * */
   // Define roles object with index signature
 
+  const [generateProxyModalOpen, setGenerateProxyModalOpen] = useState(false);
+  const [generateProxyLoading, setGenerateProxyLoading] = useState(false);
+
+  // 生成绑定代理处理函数
+  const handleGenerateProxy = async (values: any) => {
+    setGenerateProxyLoading(true);
+    try {
+      await updateItem(`/bot-users/${currentRow._id}/generate-bound-proxy`, {
+        ...values,
+      });
+      message.success('生成绑定代理成功');
+      setGenerateProxyModalOpen(false);
+      if (actionRef.current) {
+        actionRef.current.reload();
+      }
+    } catch (error: any) {
+      message.error(error?.response?.data?.message || '生成绑定代理失败');
+    } finally {
+      setGenerateProxyLoading(false);
+    }
+  };
+
   const columns: ProColumns<any>[] = [
     {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '绑定的代理' }),
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, record) => {
+        return record?.bind_proxy;
+      },
     },
     {
       title: intl.formatMessage({ id: 'id' }),
@@ -215,6 +240,14 @@ const TableList: React.FC = () => {
       ),
     },
     {
+      title: intl.formatMessage({ id: 'generated_proxy', defaultMessage: '生成的代理' }),
+      dataIndex: 'bound_proxy',
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record?.bound_proxy?.name;
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
       hideInSearch: true,
@@ -225,6 +258,17 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
+        access.canUpdateBotUser && !record?.bound_proxy && (
+          <a
+            key="generate_bound_proxy"
+            onClick={() => {
+              setCurrentRow(record);
+              setGenerateProxyModalOpen(true);
+            }}
+          >
+            <FormattedMessage id="generate_bound_proxy" defaultMessage="生成绑定代理" />
+          </a>
+        ),
         <a
           key="detail"
           onClick={() => {
@@ -398,6 +442,13 @@ const TableList: React.FC = () => {
         onSendMessage={handleSendMessage}
         messageText={messageText}
         setMessageText={setMessageText}
+      />
+
+      <GenerateBoundProxyModal
+        open={generateProxyModalOpen}
+        onOpenChange={setGenerateProxyModalOpen}
+        onFinish={handleGenerateProxy}
+        loading={generateProxyLoading}
       />
     </PageContainer>
   );

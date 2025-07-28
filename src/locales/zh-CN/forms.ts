@@ -280,4 +280,10 @@ export default {
   crypto_type: '货币类型',
   invitation: '邀请',
   approach: '途径',
+  generate_bound_proxy: '生成代理',
+  bind_proxy: '绑定代理',
+  generated_proxy: '生成的代理',
+  auto_generate: '自动生成',
+  manual_generate: '手动生成',
+  isCreatedByAdmin: '是否是平台机器人',
 };

@@ -127,18 +127,6 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'email' }),
       dataIndex: 'email',
       copyable: true,
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
     },
     {
       title: intl.formatMessage({ id: 'name' }),

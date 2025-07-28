@@ -225,4 +225,10 @@ export default {
   crypto_type: 'Crypto Type',
   invitation: 'Invitation',
   approach: 'Approach',
+  generate_bound_proxy: 'Generate Proxy',
+  bind_proxy: 'Bound Proxy',
+  generated_proxy: 'Generated Proxy',
+  auto_generate: 'Auto Generate',
+  manual_generate: 'Manual Generate',
+  isCreatedByAdmin: 'Is Created By Admin',
 };
