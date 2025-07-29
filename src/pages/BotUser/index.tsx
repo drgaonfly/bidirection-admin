@@ -125,30 +125,6 @@ const handleSendMessage = async (botUserId: string, messageContent: string) => {
   }
 };
 
-const handleRemoveBoundProxy = async (fileds: any) => {
-  const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
-  if (!fileds) return true;
-  try {
-    await updateItem(`/bot-users/${fileds._id}/remove-bound-proxy`);
-    hide();
-    message.success(
-      <FormattedMessage
-        id="delete_successful"
-        defaultMessage="Deleted successfully and will refresh soon"
-      />,
-    );
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(
-      error.response.data.message ?? (
-        <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
-      ),
-    );
-    return false;
-  }
-};
-
 const TableList: React.FC = () => {
   const intl = useIntl();
   /**
@@ -197,6 +173,36 @@ const TableList: React.FC = () => {
       message.error(error?.response?.data?.message || '生成绑定代理失败');
     } finally {
       setGenerateProxyLoading(false);
+    }
+  };
+
+  const handleRemoveBoundProxy = async (fields: any) => {
+    const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
+    if (!fields) return true;
+    try {
+      await updateItem(`/bot-users/${fields._id}/remove-bound-proxy`);
+      hide();
+      message.success(
+        <FormattedMessage
+          id="delete_successful"
+          defaultMessage="Deleted successfully and will refresh soon"
+        />,
+      );
+
+      // ✅ 手动刷新 ProTable
+      if (actionRef.current) {
+        actionRef.current.reload();
+      }
+
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error(
+        error.response?.data?.message ?? (
+          <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
+        ),
+      );
+      return false;
     }
   };
 
