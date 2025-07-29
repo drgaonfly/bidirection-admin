@@ -35,6 +35,7 @@ export default {
   'menu.list.rentals': '能量租赁',
   'menu.list.anynoumies': '匿名号码',
   'menu.list.integers': '积分',
+  'menu.list.applications': '代理申请',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -47,6 +48,7 @@ export default {
   'menu.user-type.proxies': '代理',
   'menu.user-type.employees': '渠道',
   'menu.user-type.customers': '客户',
+  'menu.user-type.applications': '代理申请',
 
   'menu.change-password': '修改密码',
   'menu.list.change-password': '修改密码',
@@ -86,6 +88,7 @@ export default {
   'menu.用户管理.代理管理': '代理管理',
   'menu.用户管理.渠道管理': '渠道管理',
   'menu.用户管理.客户管理': '客户管理',
+  'menu.用户管理.代理申请': '代理申请',
 
   'menu.机器人管理': '机器人管理',
   'menu.机器人用户管理': '机器人用户管理',

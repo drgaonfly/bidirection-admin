@@ -334,5 +334,17 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/advances/:id', 'PUT')),
     canGetAdvance:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/advances', 'GET')),
+
+    // Application
+    canCreateApplication:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/applications', 'POST')),
+    canDeleteApplication:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/applications', 'DELETE')),
+    canUpdateApplication:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/applications/:id', 'PUT')),
+    canGetApplication:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/applications', 'GET')),
   };
 }

@@ -131,6 +131,12 @@ export default [
         icon: 'UserOutlined',
         component: './UserType/Customer',
       },
+      {
+        path: '/user-type/applications',
+        name: 'list.applications',
+        icon: 'AppstoreAddOutlined',
+        component: './UserType/Application',
+      },
     ],
   },
   {

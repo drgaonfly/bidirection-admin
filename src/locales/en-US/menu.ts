@@ -12,6 +12,7 @@ export default {
   'menu.user-type.proxies': 'Proxies',
   'menu.user-type.employees': 'Employees',
   'menu.user-type.customers': 'Customers',
+  'menu.user-type.applications': 'Applications',
 
   'menu.change-password': 'Change Password',
 
@@ -47,6 +48,7 @@ export default {
   'menu.用户管理.代理管理': 'Proxy Management',
   'menu.用户管理.渠道管理': 'Channel Management',
   'menu.用户管理.客户管理': 'Customer Management',
+  'menu.用户管理.代理申请': 'Proxy Application',
 
   'menu.机器人管理': 'Bot Management',
   'menu.机器人用户管理': 'Bot User Management',
