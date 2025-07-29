@@ -125,6 +125,30 @@ const handleSendMessage = async (botUserId: string, messageContent: string) => {
   }
 };
 
+const handleRemoveBoundProxy = async (fileds: any) => {
+  const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
+  if (!fileds) return true;
+  try {
+    await updateItem(`/bot-users/${fileds._id}/remove-bound-proxy`);
+    hide();
+    message.success(
+      <FormattedMessage
+        id="delete_successful"
+        defaultMessage="Deleted successfully and will refresh soon"
+      />,
+    );
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error.response.data.message ?? (
+        <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
+      ),
+    );
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   /**
@@ -296,6 +320,17 @@ const TableList: React.FC = () => {
             }}
           >
             <FormattedMessage id="generate_bound_proxy" defaultMessage="生成绑定代理" />
+          </a>
+        ),
+        access.canUpdateBotUser && record?.bound_proxy && (
+          <a
+            key="remove_bound_proxy"
+            onClick={() => {
+              setCurrentRow(record);
+              handleRemoveBoundProxy(record);
+            }}
+          >
+            <FormattedMessage id="remove_bound_proxy" defaultMessage="删除绑定代理" />
           </a>
         ),
       ],
