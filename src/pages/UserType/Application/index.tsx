@@ -135,13 +135,13 @@ const TableList: React.FC = () => {
         ),
         access.canUpdateApplication && record.status === 'pending' && (
           <a
-            key="rejected"
+            key="reject"
             onClick={() => {
               setCurrentRow(record);
               setRejectModalOpen(true);
             }}
           >
-            <FormattedMessage id="rejected" defaultMessage="拒绝" />
+            <FormattedMessage id="reject" defaultMessage="拒绝" />
           </a>
         ),
       ],
