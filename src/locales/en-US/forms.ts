@@ -232,4 +232,7 @@ export default {
   auto_generate: 'Auto Generate',
   manual_generate: 'Manual Generate',
   isCreatedByAdmin: 'Is Created By Admin',
+  approve: 'Approve',
+  rejected: 'Rejected',
+  reject_application: 'Reject Application',
 };

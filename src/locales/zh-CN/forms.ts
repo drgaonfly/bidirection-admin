@@ -287,4 +287,7 @@ export default {
   auto_generate: '自动生成',
   manual_generate: '手动生成',
   isCreatedByAdmin: '是否是平台机器人',
+  approved: '已批准',
+  rejected: '已拒绝',
+  reject_application: '拒绝理由',
 };
