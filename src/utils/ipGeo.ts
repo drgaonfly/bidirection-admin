@@ -46,7 +46,7 @@ export async function getRandomUser(): Promise<{
       name: `${first} ${last}`,
       phone,
       password,
-      email: `${phone}@gmail.com`,
+      email: `${first}@gmail.com`,
     };
   } catch (error) {
     console.error('获取随机用户信息失败:', error);
