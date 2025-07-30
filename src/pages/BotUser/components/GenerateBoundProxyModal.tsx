@@ -1,6 +1,7 @@
 import { useIntl } from '@umijs/max';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ModalForm, ProFormRadio, ProFormText, ProFormGroup } from '@ant-design/pro-components';
+import { getRandomUser } from '../../../utils/ipGeo';
 
 interface Props {
   open: boolean;
@@ -12,6 +13,15 @@ interface Props {
 const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish, loading }) => {
   const intl = useIntl();
   const [mode, setMode] = useState<'auto' | 'manual'>('auto');
+  const [userInfo, setUserInfo] = useState<any>(null);
+
+  const fetchUser = async () => {
+    setUserInfo(await getRandomUser());
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [open]);
 
   return (
     <ModalForm
@@ -64,23 +74,23 @@ const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish
               width="md"
               label={intl.formatMessage({ id: 'name' })}
               rules={[{ required: true }]}
-              placeholder={'jack'}
+              initialValue={userInfo.name}
             />
             <ProFormText
               name="email"
               width="md"
               label={intl.formatMessage({ id: 'email' })}
-              rules={[{ required: true, type: 'email' }]}
-              placeholder={'jack@gmail.com'}
+              rules={[{ required: true }]}
+              initialValue={userInfo.email}
             />
           </ProFormGroup>
 
-          <ProFormText.Password
+          <ProFormText
             name="password"
             width="md"
             label={intl.formatMessage({ id: 'password' })}
             rules={[{ required: true }]}
-            placeholder={'abcd1234'}
+            initialValue={userInfo.password}
           />
         </>
       )}
