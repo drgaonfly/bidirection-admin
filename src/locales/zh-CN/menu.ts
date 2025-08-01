@@ -36,6 +36,7 @@ export default {
   'menu.list.anynoumies': '匿名号码',
   'menu.list.integers': '积分',
   'menu.list.applications': '代理申请',
+  'menu.ist.transfers': '转账记录',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -72,6 +73,7 @@ export default {
   'menu.rentals': '能量租赁',
   'menu.anynoumies': '匿名号码',
   'menu.integers': '积分',
+  'menu.transfers': '转账',
 
   'menu.工作台管理': '工作台管理',
   'menu.认证管理': '认证管理',
@@ -107,6 +109,7 @@ export default {
   'menu.能量租赁': '能量租赁',
   'menu.匿名号码': '匿名号码',
   'menu.积分记录': '积分记录',
+  'menu.转账记录': '转账记录',
 
   'menu.account.platform-configuration': '平台配置',
   'menu.member-orders': '会员订单',

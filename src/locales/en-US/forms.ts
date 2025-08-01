@@ -235,4 +235,5 @@ export default {
   approve: 'Approve',
   rejected: 'Rejected',
   reject_application: 'Reject Application',
+  exchange_id: 'Exchange ID',
 };

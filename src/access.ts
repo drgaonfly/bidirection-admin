@@ -346,5 +346,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/applications/:id', 'PUT')),
     canGetApplication:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/applications', 'GET')),
+
+    // Transfer
+    canCreateTransfer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'POST')),
+    canDeleteTransfer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'DELETE')),
+    canUpdateTransfer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers/:id', 'PUT')),
+    canGetTransfer:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'GET')),
   };
 }

@@ -32,6 +32,7 @@ export default {
   'menu.rentals': 'Energy Rentals',
   'menu.anynoumies': 'Anynoumies',
   'menu.integers': 'Integers',
+  'menu.transfers': 'Transfers',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -65,6 +66,7 @@ export default {
   'menu.能量租赁': 'Energy Rentals',
   'menu.匿名号码': 'Anynoumies',
   'menu.积分记录': 'Integers',
+  'menu.转账记录': 'Transfer Records',
 
   'menu.account.platform-configuration': 'Platform Configuration',
   'menu.member-orders': 'Member Orders',

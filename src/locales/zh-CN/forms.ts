@@ -290,4 +290,5 @@ export default {
   approved: '已批准',
   rejected: '已拒绝',
   reject_application: '拒绝理由',
+  exchange_id: '兑换ID',
 };

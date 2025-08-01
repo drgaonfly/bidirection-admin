@@ -275,4 +275,11 @@ export default [
     icon: 'NumberOutlined',
     component: './Integer',
   },
+  // transfers
+  {
+    path: '/transfers',
+    name: 'list.transfers',
+    icon: 'SwapOutlined',
+    component: './Transfer',
+  },
 ];
