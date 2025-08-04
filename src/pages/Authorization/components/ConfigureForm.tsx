@@ -278,6 +278,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         />
         <ProFormText
           name="energy_address"
+          initialValue={values.energy_address}
           label="能量地址"
           width="md"
           placeholder="请输入能量地址"
