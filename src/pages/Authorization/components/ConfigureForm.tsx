@@ -88,8 +88,10 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   };
 
   useEffect(() => {
-    if (updateModalOpen) {
-      form.resetFields();
+    if (updateModalOpen && values) {
+      form.setFieldsValue({
+        ...values,
+      });
       setKeyboards(values?.keyboards || []);
       setCommands(values?.commands || []);
       setMenus(values?.menus || []);
@@ -253,8 +255,24 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       )}
 
       <ProFormGroup>
-        <ProFormTextArea name="message" label="开始消息" width="md" />
-        <ProFormTextArea name="contact" label="联系客服信息" width="md" />
+        <ProFormTextArea
+          name="message"
+          label="开始消息"
+          width="md"
+          fieldProps={{
+            autoSize: { minRows: 8 },
+          }}
+        />
+
+        <ProFormTextArea
+          name="contact"
+          label="联系客服信息"
+          width="md"
+          fieldProps={{
+            autoSize: { minRows: 8 },
+          }}
+        />
+
         <ProFormText
           name="customer_service_link"
           label="客服链接"
