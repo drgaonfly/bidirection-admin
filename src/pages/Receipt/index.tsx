@@ -110,6 +110,16 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
+      title: intl.formatMessage({ id: 'status' }),
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: {
+        success: { text: '成功', status: 'Success' },
+        failed: { text: '失败', status: 'Error' },
+        pending: { text: '待处理', status: 'Processing' },
+      },
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
       dataIndex: 'option',
       valueType: 'option',
