@@ -9,7 +9,7 @@ import {
   ProFormText,
   ProFormDigit,
   ProFormSwitch,
-  ProFormSelect,
+  // ProFormSelect,
   type ProColumns,
 } from '@ant-design/pro-components';
 import { Form, Input, message, Button } from 'antd';
@@ -33,6 +33,12 @@ type commandItem = {
   content: string;
   isStart: boolean;
   weight: number;
+};
+
+type pricePairItem = {
+  _id: string;
+  expenditure: number;
+  aqusition: number;
 };
 
 const handleTronAddress = async (fields: FormValueType) => {
@@ -75,6 +81,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
   const [keyboards, setKeyboards] = useState<keyboardItem[]>(values?.keyboards || []);
   const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
+  const [pricePairs, setPricePairs] = useState<pricePairItem[]>(values?.price_pairs || []);
   const [generating, setGenerating] = useState(false);
 
   // 按钮点击函数
@@ -96,6 +103,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       setKeyboards(values?.keyboards || []);
       setCommands(values?.commands || []);
       setMenus(values?.menus || []);
+      setPricePairs(values?.price_pairs || []);
     }
   }, [updateModalOpen, values]);
 
@@ -189,6 +197,35 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     },
   ];
 
+  const pricePair_columns: ProColumns<pricePairItem>[] = [
+    {
+      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用' }),
+      dataIndex: 'expenditure',
+      valueType: 'digit',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量' }),
+      dataIndex: 'aqusition',
+      valueType: 'digit',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'aqusition_required' }) }],
+      },
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
+          {intl.formatMessage({ id: 'edit' })}
+        </a>,
+      ],
+    },
+  ];
+
   return (
     <ModalForm
       form={form}
@@ -208,6 +245,8 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           menus: menus.map(({ _id, ...rest }) => rest),
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           commands: commands.map(({ _id, ...rest }) => rest),
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          price_pairs: pricePairs.map(({ _id, ...rest }) => rest),
         });
       }}
       initialValues={{
@@ -215,6 +254,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         commands: values?.commands?.map((item: any) => item._id),
         keyboards: values?.keyboards?.map((item: any) => item._id),
         menus: values?.menus?.map((item: any) => item._id),
+        pricePairs: values?.pricePairs?.map((item: any) => item._id),
       }}
     >
       {values && (
@@ -327,23 +367,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           max={100}
           fieldProps={{ precision: 0, addonAfter: '%' }}
         />
-        <ProFormSelect
-          name="uni_energy_price"
-          label="能量单价 (sun)"
-          width="md"
-          placeholder="1 TRX = 1,000,000 sun"
-          options={[
-            { label: '65000', value: 65000 },
-            { label: '1300000', value: 1300000 },
-          ]}
-        />
-        <ProFormDigit
-          name="uni_energy_amount"
-          label="单笔能量数"
-          width="md"
-          placeholder="如：65000"
-        />
-
         <ProFormDigit
           name="min_interger_limit"
           label="预支能量的最少几分数"
@@ -406,6 +429,24 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             _id: Date.now().toString(),
             menuName: '',
             url: '',
+          }),
+        }}
+      />
+
+      <EditableProTable<pricePairItem>
+        rowKey="_id"
+        headerTitle="闪兑配置"
+        columns={pricePair_columns}
+        value={pricePairs}
+        onChange={(value) => setPricePairs([...value])}
+        editable={{ type: 'multiple' }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            expenditure: 0,
+            aqusition: 0,
           }),
         }}
       />
