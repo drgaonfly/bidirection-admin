@@ -39,6 +39,7 @@ type pricePairItem = {
   _id: string;
   expenditure: number;
   aqusition: number;
+  expiration: number;
 };
 
 const handleTronAddress = async (fields: FormValueType) => {
@@ -199,7 +200,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
   const pricePair_columns: ProColumns<pricePairItem>[] = [
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用' }),
+      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
       dataIndex: 'expenditure',
       valueType: 'digit',
       formItemProps: {
@@ -207,11 +208,19 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量' }),
+      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
       valueType: 'digit',
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'aqusition_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
+      dataIndex: 'expiration',
+      valueType: 'digit',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
       },
     },
     {
@@ -447,6 +456,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             _id: Date.now().toString(),
             expenditure: 0,
             aqusition: 0,
+            expiration: 0,
           }),
         }}
       />
