@@ -9,6 +9,7 @@ import {
   ProFormText,
   ProFormDigit,
   ProFormSwitch,
+  ProFormSelect,
   type ProColumns,
 } from '@ant-design/pro-components';
 import { Form, Input, message, Button } from 'antd';
@@ -326,14 +327,15 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           max={100}
           fieldProps={{ precision: 0, addonAfter: '%' }}
         />
-        <ProFormDigit
+        <ProFormSelect
           name="uni_energy_price"
           label="能量单价 (sun)"
           width="md"
           placeholder="1 TRX = 1,000,000 sun"
-          min={0}
-          max={100}
-          fieldProps={{ precision: 0 }}
+          options={[
+            { label: '65000', value: 65000 },
+            { label: '1300000', value: 1300000 },
+          ]}
         />
         <ProFormDigit
           name="uni_energy_amount"
