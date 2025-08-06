@@ -386,6 +386,25 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
       <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
 
+      <EditableProTable<pricePairItem>
+        rowKey="_id"
+        headerTitle="闪兑配置"
+        columns={pricePair_columns}
+        value={pricePairs}
+        onChange={(value) => setPricePairs([...value])}
+        editable={{ type: 'multiple' }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            expenditure: 0,
+            aqusition: 0,
+            expiration: 0,
+          }),
+        }}
+      />
+
       <EditableProTable<commandItem>
         rowKey="_id"
         headerTitle="命令配置"
@@ -438,25 +457,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             _id: Date.now().toString(),
             menuName: '',
             url: '',
-          }),
-        }}
-      />
-
-      <EditableProTable<pricePairItem>
-        rowKey="_id"
-        headerTitle="闪兑配置"
-        columns={pricePair_columns}
-        value={pricePairs}
-        onChange={(value) => setPricePairs([...value])}
-        editable={{ type: 'multiple' }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            expenditure: 0,
-            aqusition: 0,
-            expiration: 0,
           }),
         }}
       />
