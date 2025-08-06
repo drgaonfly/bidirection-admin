@@ -210,7 +210,11 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
-      valueType: 'digit',
+      valueType: 'select',
+      valueEnum: {
+        65000: '65000',
+        130000: '130000',
+      },
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'aqusition_required' }) }],
       },
@@ -393,16 +397,20 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         value={pricePairs}
         onChange={(value) => setPricePairs([...value])}
         editable={{ type: 'multiple' }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            expenditure: 0,
-            aqusition: 0,
-            expiration: 0,
-          }),
-        }}
+        recordCreatorProps={
+          pricePairs.length >= 2
+            ? false // 不显示“新增”按钮
+            : {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  expenditure: 0,
+                  aqusition: 0,
+                  expiration: 0,
+                }),
+              }
+        }
       />
 
       <EditableProTable<commandItem>
