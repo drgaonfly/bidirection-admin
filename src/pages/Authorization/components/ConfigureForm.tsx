@@ -355,15 +355,24 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           width="md"
           placeholder="请输入能量地址"
           rules={[{ required: false, message: '请输入能量地址' }]}
+          disabled
           fieldProps={{
             addonAfter: (
               <Button
                 type="text"
                 size="small"
                 loading={generating}
-                onClick={handleGenerateEnergyAddress}
+                onClick={async () => {
+                  if (values.energy_address) {
+                    await navigator.clipboard.writeText(values.energy_address);
+                  } else {
+                    await handleGenerateEnergyAddress();
+                  }
+                }}
               >
-                {intl.formatMessage({ id: 'generate', defaultMessage: '生成' })}
+                {values.energy_address
+                  ? intl.formatMessage({ id: 'copy', defaultMessage: '复制' })
+                  : intl.formatMessage({ id: 'generate', defaultMessage: '生成' })}
               </Button>
             ),
           }}
