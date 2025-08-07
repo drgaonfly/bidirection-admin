@@ -2,7 +2,7 @@ import { Card, message, Typography, Button, Space } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import { ProForm, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
+import { ProForm, ProFormDigit, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 
@@ -55,6 +55,8 @@ const PlatformConfiguration: React.FC = () => {
           <ProForm
             onFinish={handleSubmit}
             initialValues={{
+              recharge_min: currentUser?.recharge_min || 0,
+              recharge_max: currentUser?.recharge_max || 0,
               rechargeAddress: currentUser?.rechargeAddress || '',
               // energyAddress: currentUser?.energyAddress || '',
               energy_privateKey: currentUser?.energy_privateKey || '',
@@ -66,7 +68,7 @@ const PlatformConfiguration: React.FC = () => {
               },
             }}
           >
-            <ProFormText
+            {/* <ProFormText
               width="xl"
               name="rechargeAddress"
               label={intl.formatMessage({
@@ -77,6 +79,40 @@ const PlatformConfiguration: React.FC = () => {
                 id: 'please.enter.rechargeAddress',
                 defaultMessage: '请输入充值地址',
               })}
+            /> */}
+            <ProFormDigit
+              width="xl"
+              name="recharge_min"
+              label={intl.formatMessage({
+                id: 'platform.rechargeMin',
+                defaultMessage: '充值最小值 (%)',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.rechargeMin',
+                defaultMessage: '请输入充值最小百分比',
+              })}
+              min={0}
+              max={100}
+              fieldProps={{
+                addonAfter: '%',
+              }}
+            />
+            <ProFormDigit
+              width="xl"
+              name="recharge_max"
+              label={intl.formatMessage({
+                id: 'platform.rechargeMax',
+                defaultMessage: '充值最大值 (%)',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.rechargeMax',
+                defaultMessage: '请输入充值最大百分比',
+              })}
+              min={0}
+              max={100}
+              fieldProps={{
+                addonAfter: '%',
+              }}
             />
             <ProFormText.Password
               width="xl"
@@ -102,12 +138,32 @@ const PlatformConfiguration: React.FC = () => {
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
-            <div style={{ marginBottom: 16 }}>
+            {/* <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({ id: 'platform.rechargeAddress', defaultMessage: '充值地址' })}
                 :{' '}
               </Text>
               <Text>{currentUser?.rechargeAddress || '-'}</Text>
+            </div> */}
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.rechargeMin',
+                  defaultMessage: '充值最小值 (%)',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.recharge_min ?? '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.rechargeMax',
+                  defaultMessage: '充值最大值 (%)',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.recharge_max ?? '-'}</Text>
             </div>
             <div style={{ marginBottom: 16 }}>
               <Text strong>
