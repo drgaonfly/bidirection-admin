@@ -210,21 +210,16 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
-      valueType: 'select',
-      valueEnum: {
-        65000: '65000',
-        130000: '130000',
-      },
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'aqusition_required' }) }],
+      fieldProps: {
+        disabled: true,
       },
     },
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      fieldProps: {
+        disabled: true,
       },
     },
     {
@@ -405,21 +400,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         columns={pricePair_columns}
         value={pricePairs}
         onChange={(value) => setPricePairs([...value])}
-        editable={{ type: 'multiple' }}
-        recordCreatorProps={
-          pricePairs.length >= 2
-            ? false // 不显示“新增”按钮
-            : {
-                newRecordType: 'dataSource',
-                position: 'bottom',
-                record: () => ({
-                  _id: Date.now().toString(),
-                  expenditure: 0,
-                  aqusition: 0,
-                  expiration: 0,
-                }),
-              }
-        }
+        editable={{
+          type: 'multiple',
+          actionRender: (row, config, defaultDoms) => {
+            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
+          },
+        }}
+        recordCreatorProps={false}
       />
 
       <EditableProTable<commandItem>
