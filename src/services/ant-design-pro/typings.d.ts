@@ -113,6 +113,8 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
     isOnline?: boolean;
+    data: any;
+    success: boolean;
   };
 
   type LoginResult = {

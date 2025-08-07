@@ -134,9 +134,20 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'creator', defaultMessage: '创建者' }),
-      dataIndex: ['creator', 'name'],
+      dataIndex: 'creator',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, record) => record?.creator?.name,
+    },
+    // botUser
+    {
+      title: intl.formatMessage({ id: 'telegram_id' }),
+      dataIndex: 'botUser',
+      renderText: (_, record) => record?.botUser?.id,
+    },
+    {
+      title: intl.formatMessage({ id: 'telegram_user' }),
+      dataIndex: 'botUser',
+      renderText: (_, record) => record?.botUser?.userName,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,

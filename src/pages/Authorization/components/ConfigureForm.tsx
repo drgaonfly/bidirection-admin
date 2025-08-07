@@ -40,26 +40,27 @@ type pricePairItem = {
   expenditure: number;
   aqusition: number;
   expiration: number;
+  times: number;
 };
 
-const handleTronAddress = async (fields: FormValueType) => {
-  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
-  try {
-    await updateItem(`/bots/${fields._id}/tron-address`, fields);
-    hide();
+// const handleTronAddress = async (fields: FormValueType) => {
+//   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+//   try {
+//     await updateItem(`/bots/${fields._id}/tron-address`, fields);
+//     hide();
 
-    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(
-      error?.response?.data?.message ?? (
-        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
-      ),
-    );
-    return false;
-  }
-};
+//     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+//     return true;
+//   } catch (error: any) {
+//     hide();
+//     message.error(
+//       error?.response?.data?.message ?? (
+//         <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+//       ),
+//     );
+//     return false;
+//   }
+// };
 
 export type FormValueType = Partial<API.ItemData>;
 
@@ -84,15 +85,33 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
   const [pricePairs, setPricePairs] = useState<pricePairItem[]>(values?.price_pairs || []);
   const [generating, setGenerating] = useState(false);
+  // const [energyAddress, setEnergyAddress] = useState<string>('');
 
   // 按钮点击函数
   const handleGenerateEnergyAddress = async () => {
-    const fields = form.getFieldsValue(); // 获取当前表单值
+    const fields = form.getFieldsValue();
     setGenerating(true);
-    const success = await handleTronAddress(fields);
-    setGenerating(false);
-    if (success) {
+
+    try {
+      const { data } = await updateItem(`/bots/${fields._id}/tron-address`, fields);
+
+      // 仅更新部分字段
+      const newAddress = data?.energy_address;
+
+      console.log('data', data);
+
+      if (newAddress) {
+        form.setFieldsValue({
+          ...fields,
+          energy_address: newAddress, // 👈 更新 energy_address 字段
+        });
+      }
+
       message.success('能量地址生成成功');
+    } catch (error: any) {
+      message.error(error?.response?.data?.message ?? '生成失败，请重试！');
+    } finally {
+      setGenerating(false);
     }
   };
 
@@ -221,6 +240,11 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       fieldProps: {
         disabled: true,
       },
+    },
+    {
+      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
+      dataIndex: 'times',
+      valueType: 'digit',
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -406,7 +430,17 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
           },
         }}
-        recordCreatorProps={false}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            expenditure: 0,
+            aqusition: 0,
+            expiration: 0,
+            times: 0,
+          }),
+        }}
       />
 
       <EditableProTable<commandItem>
