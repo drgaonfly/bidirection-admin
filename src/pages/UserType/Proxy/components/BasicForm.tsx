@@ -157,20 +157,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
           },
         }}
-        recordCreatorProps={
-          pricePairs.length >= 2
-            ? false // 不显示“新增”按钮
-            : {
-                newRecordType: 'dataSource',
-                position: 'bottom',
-                record: () => ({
-                  _id: Date.now().toString(),
-                  commission: 0,
-                  aqusition: 0,
-                  expiration: 0,
-                }),
-              }
-        }
+        recordCreatorProps={false}
       />
 
       {!newRecord && (
