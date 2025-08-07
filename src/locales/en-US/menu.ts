@@ -1,6 +1,8 @@
 export default {
   'menu.welcome': 'Welcome',
   'menu.dashboard': 'Dashboard',
+  'menu.account.platform-configuration': 'Platform Configuration',
+
   'menu.auth.users': 'Users',
   'menu.auth.roles': 'Roles',
   'menu.auth.menus': 'Menus',
@@ -33,6 +35,8 @@ export default {
   'menu.anynoumies': 'Anynoumies',
   'menu.integers': 'Integers',
   'menu.transfers': 'Transfers',
+  'menu.packages': 'Packages',
+  'menu.member-orders': 'Member Orders',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -67,7 +71,5 @@ export default {
   'menu.匿名号码': 'Anynoumies',
   'menu.积分记录': 'Integers',
   'menu.转账记录': 'Transfer Records',
-
-  'menu.account.platform-configuration': 'Platform Configuration',
-  'menu.member-orders': 'Member Orders',
+  'menu.闪兑产品': 'Packages',
 };
