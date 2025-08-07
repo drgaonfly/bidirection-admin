@@ -18,7 +18,7 @@ interface Props {
 
 type pricePairItem = {
   _id: string;
-  expenditure: number;
+  commission: number;
   aqusition: number;
   expiration: number;
 };
@@ -43,8 +43,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
   const pricePair_columns: ProColumns<pricePairItem>[] = [
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
-      dataIndex: 'expenditure',
+      title: intl.formatMessage({ id: 'commission', defaultMessage: '分佣(trx)' }),
+      dataIndex: 'commission',
       valueType: 'digit',
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
@@ -166,7 +166,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
                 position: 'bottom',
                 record: () => ({
                   _id: Date.now().toString(),
-                  expenditure: 0,
+                  commission: 0,
                   aqusition: 0,
                   expiration: 0,
                 }),
