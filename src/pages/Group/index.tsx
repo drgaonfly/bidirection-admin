@@ -1,4 +1,4 @@
-import { useIntl } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -42,6 +42,8 @@ const handleRemove = async (ids: any) => {
 
 const GroupTableList: React.FC = () => {
   const intl = useIntl();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const [updateModalOpen, handleUpdateModalOpen] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const actionRef = useRef<ActionType>();
@@ -53,9 +55,8 @@ const GroupTableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
     },
     // id
     {
@@ -209,7 +210,12 @@ const GroupTableList: React.FC = () => {
             isOnline = false; // 离线
           }
 
-          return queryList('/groups', { ...params, isOnline }, sort, filter);
+          return queryList(
+            '/groups',
+            { ...params, isOnline, proxy: currentUser?._id },
+            sort,
+            filter,
+          );
         }}
         columns={columns}
         rowSelection={

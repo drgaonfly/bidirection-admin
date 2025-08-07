@@ -1,4 +1,4 @@
-import { useIntl } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -33,8 +33,10 @@ const handleRemove = async (ids: string[]) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
-  const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
+  const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const access = useAccess();
@@ -158,7 +160,9 @@ const TableList: React.FC = () => {
           labelWidth: 120,
           collapsed: false,
         }}
-        request={(params, sort, filter) => queryList('/receipts', { ...params }, sort, filter)}
+        request={(params, sort, filter) =>
+          queryList('/receipts', { ...params, proxy: currentUser?._id }, sort, filter)
+        }
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {

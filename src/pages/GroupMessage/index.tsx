@@ -1,4 +1,4 @@
-import { useIntl } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -78,6 +78,8 @@ const handleUpdate = async (fields: any) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const actionRef = useRef<ActionType>();
@@ -210,7 +212,12 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/group-messages', { ...params, messageType: activeKey }, sort, filter)
+          queryList(
+            '/group-messages',
+            { ...params, messageType: activeKey, proxy: currentUser?._id },
+            sort,
+            filter,
+          )
         }
         columns={columns}
         rowSelection={{

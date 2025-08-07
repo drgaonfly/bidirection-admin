@@ -1,4 +1,4 @@
-import { useIntl } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -32,6 +32,8 @@ const handleRemove = async (ids: string[]) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const actionRef = useRef<ActionType>();
@@ -42,9 +44,9 @@ const TableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, record) => record?.proxy?.name,
     },
     {
       title: intl.formatMessage({ id: 'orderNumber' }),
@@ -200,7 +202,12 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/payments', { ...params, status: activeKey }, sort, filter)
+          queryList(
+            '/payments',
+            { ...params, status: activeKey, proxy: currentUser?._id },
+            sort,
+            filter,
+          )
         }
         columns={columns}
         rowSelection={{
