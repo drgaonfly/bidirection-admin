@@ -53,27 +53,21 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
-      valueType: 'select',
-      valueEnum: {
-        65000: '65000',
-        130000: '130000',
-      },
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'aqusition_required' }) }],
+      fieldProps: {
+        disabled: true,
       },
     },
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      fieldProps: {
+        disabled: true,
       },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       valueType: 'option',
-      width: 200,
       render: (text, record, _, action) => [
         <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
           {intl.formatMessage({ id: 'edit' })}
@@ -157,7 +151,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         columns={pricePair_columns}
         value={pricePairs}
         onChange={(value) => setPricePairs([...value])}
-        editable={{ type: 'multiple' }}
+        editable={{
+          type: 'multiple',
+          actionRender: (row, config, defaultDoms) => {
+            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
+          },
+        }}
         recordCreatorProps={
           pricePairs.length >= 2
             ? false // 不显示“新增”按钮

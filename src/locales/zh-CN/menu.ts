@@ -38,7 +38,7 @@ export default {
   'menu.list.integers': '积分',
   'menu.list.applications': '代理申请',
   'menu.ist.transfers': '转账记录',
-  'menu.list.packages': '闪兑产品',
+  'menu.list.packages': '能量产品',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -76,7 +76,7 @@ export default {
   'menu.anynoumies': '匿名号码',
   'menu.integers': '积分',
   'menu.transfers': '转账',
-  'menu.packages': '闪兑产品',
+  'menu.packages': '能量产品',
 
   'menu.工作台管理': '工作台管理',
   'menu.认证管理': '认证管理',
@@ -113,7 +113,7 @@ export default {
   'menu.匿名号码': '匿名号码',
   'menu.积分记录': '积分记录',
   'menu.转账记录': '转账记录',
-  'menu.闪兑产品': '闪兑产品',
+  'menu.能量产品': '能量产品',
 
   'menu.member-orders': '会员订单',
 };

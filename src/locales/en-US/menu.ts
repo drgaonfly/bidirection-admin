@@ -71,5 +71,5 @@ export default {
   'menu.匿名号码': 'Anynoumies',
   'menu.积分记录': 'Integers',
   'menu.转账记录': 'Transfer Records',
-  'menu.闪兑产品': 'Packages',
+  'menu.能量产品': 'Packages',
 };

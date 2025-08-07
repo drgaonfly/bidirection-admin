@@ -1,7 +1,8 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormDigit } from '@ant-design/pro-components';
+import { ProForm, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
+import PackageEnum from '../../../enums/packageStatus';
 
 interface Props {
   newRecord?: boolean;
@@ -71,6 +72,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="times"
           label={intl.formatMessage({ id: 'times', defaultMessage: 'Times' })}
           min={0}
+          required
+        />
+
+        <ProFormSelect
+          name="type"
+          label={intl.formatMessage({ id: 'type', defaultMessage: 'Type' })}
+          valueEnum={PackageEnum}
           required
         />
       </ProForm.Group>

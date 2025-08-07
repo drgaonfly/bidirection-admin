@@ -11,6 +11,7 @@ import DeleteLink from '@/components/DeleteLink';
 import { PlusOutlined } from '@ant-design/icons';
 import Create from './components/Create';
 import Update from './components/Update';
+import PackageEnum from '../../enums/packageStatus';
 
 const handleAdd = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
@@ -79,8 +80,9 @@ const handleRemove = async (ids: string[]) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
-  const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
+  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
@@ -88,6 +90,18 @@ const TableList: React.FC = () => {
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
+    {
+      title: intl.formatMessage({ id: 'times', defaultMessage: 'Times' }),
+      dataIndex: 'times',
+      valueType: 'digit',
+    },
+    // type
+    {
+      title: intl.formatMessage({ id: 'type', defaultMessage: 'Type' }),
+      dataIndex: 'type',
+      hideInSearch: true,
+      valueEnum: PackageEnum,
+    },
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: 'Aqusition (SUN)' }),
       dataIndex: 'aqusition',
@@ -106,11 +120,6 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: 'Expiration (Hour)' }),
       dataIndex: 'expiration',
-      valueType: 'digit',
-    },
-    {
-      title: intl.formatMessage({ id: 'times', defaultMessage: 'Times' }),
-      dataIndex: 'times',
       valueType: 'digit',
     },
     {
@@ -163,6 +172,32 @@ const TableList: React.FC = () => {
           labelWidth: 120,
           collapsed: false,
         }}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="hourly" defaultMessage="hourly" />,
+                key: 'hourly',
+              },
+              {
+                label: <FormattedMessage id="daily" defaultMessage="daily" />,
+                key: 'daily',
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
         toolBarRender={() => [
           access.canCreatePackage && (
             <Button
@@ -176,7 +211,9 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={(params, sort, filter) => queryList('/packages', { ...params }, sort, filter)}
+        request={(params, sort, filter) =>
+          queryList('/packages', { ...params, type: activeKey }, sort, filter)
+        }
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {

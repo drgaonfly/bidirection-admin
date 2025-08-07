@@ -239,6 +239,8 @@ export default {
   commission: 'Commission (TRX)',
   expenditure: 'Expenditure (TRX)',
   aqusition: 'Aqusition (SUN)',
-  expiration: 'Expiration (Hour)',
+  expiration: 'Expiration',
   times: 'Times',
+  hourly: 'Hourly',
+  daily: 'Daily',
 };
