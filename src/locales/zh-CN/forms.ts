@@ -298,4 +298,5 @@ export default {
   times: '笔数',
   hourly: '闪租(小时)',
   daily: '日租(天)',
+  min_expenditure: '最低消费(trx)',
 };

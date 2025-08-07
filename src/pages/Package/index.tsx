@@ -107,6 +107,12 @@ const TableList: React.FC = () => {
       dataIndex: 'aqusition',
       valueType: 'digit',
     },
+    // min_expenditure
+    {
+      title: intl.formatMessage({ id: 'min_expenditure', defaultMessage: 'Min Expenditure (TRX)' }),
+      dataIndex: 'min_expenditure',
+      valueType: 'digit',
+    },
     {
       title: intl.formatMessage({ id: 'expenditure', defaultMessage: 'Expenditure (TRX)' }),
       dataIndex: 'expenditure',

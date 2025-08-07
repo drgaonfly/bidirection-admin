@@ -62,6 +62,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
       <ProForm.Group>
         <ProFormDigit
+          name="min_expenditure"
+          label={intl.formatMessage({ id: 'min_expenditure', defaultMessage: 'min_expenditure' })}
+          min={0}
+          required
+        />
+
+        <ProFormDigit
           name="expiration"
           label={intl.formatMessage({ id: 'expiration', defaultMessage: 'Expiration (Hour)' })}
           min={0}

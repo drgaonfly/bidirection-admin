@@ -243,4 +243,5 @@ export default {
   times: 'Times',
   hourly: 'Hourly',
   daily: 'Daily',
+  min_expenditure: 'Min Expenditure',
 };
