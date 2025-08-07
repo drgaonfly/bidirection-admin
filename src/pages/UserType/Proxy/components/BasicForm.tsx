@@ -1,6 +1,12 @@
-import { useIntl } from '@umijs/max';
-import React from 'react';
-import { ProForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-components';
+import { FormattedMessage, useIntl } from '@umijs/max';
+import React, { useState } from 'react';
+import {
+  ProForm,
+  ProFormText,
+  ProFormCheckbox,
+  ProColumns,
+  EditableProTable,
+} from '@ant-design/pro-components';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 
@@ -10,10 +16,18 @@ interface Props {
   values?: any;
 }
 
+type pricePairItem = {
+  _id: string;
+  expenditure: number;
+  aqusition: number;
+  expiration: number;
+};
+
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
 
   const { items: roles, loading } = useQueryList('/roles/filter/?type=proxy');
+  const [pricePairs, setPricePairs] = useState<pricePairItem[]>(values?.price_pairs || []);
 
   const filteredRolesIds = roles?.map((role: { _id: string }) => role._id);
 
@@ -27,16 +41,60 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     }
   }, [roles]);
 
+  const pricePair_columns: ProColumns<pricePairItem>[] = [
+    {
+      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
+      dataIndex: 'expenditure',
+      valueType: 'digit',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
+      dataIndex: 'aqusition',
+      valueType: 'select',
+      valueEnum: {
+        65000: '65000',
+        130000: '130000',
+      },
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'aqusition_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
+      dataIndex: 'expiration',
+      valueType: 'digit',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
+          {intl.formatMessage({ id: 'edit' })}
+        </a>,
+      ],
+    },
+  ];
+
   return (
     <ProForm
       form={form}
       initialValues={{
         ...values,
+        pricePairs: values?.pricePairs?.map((item: any) => item._id),
       }}
       onFinish={async (values) => {
         await onFinish({
           ...values,
           roles: filteredRolesIds,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          price_pairs: pricePairs.map(({ _id, ...rest }) => rest),
         });
       }}
       submitter={{
@@ -98,6 +156,29 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             />
           ))}
       </ProForm.Group>
+
+      <EditableProTable<pricePairItem>
+        rowKey="_id"
+        headerTitle="闪兑配置"
+        columns={pricePair_columns}
+        value={pricePairs}
+        onChange={(value) => setPricePairs([...value])}
+        editable={{ type: 'multiple' }}
+        recordCreatorProps={
+          pricePairs.length >= 2
+            ? false // 不显示“新增”按钮
+            : {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  expenditure: 0,
+                  aqusition: 0,
+                  expiration: 0,
+                }),
+              }
+        }
+      />
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>
