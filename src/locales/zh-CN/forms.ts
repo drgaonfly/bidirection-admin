@@ -291,9 +291,9 @@ export default {
   rejected: '已拒绝',
   reject_application: '拒绝理由',
   exchange_id: '兑换ID',
-  commission: '向代理的抽佣(trx)',
+  commission: '代理抽佣(trx)',
   expenditure: '用户花费(trx)',
-  aqusition: '获取的能量(sun)',
+  aqusition: '能量(sun)',
   expiration: '有效期(hour)',
   times: '笔数',
 };
