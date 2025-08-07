@@ -282,4 +282,11 @@ export default [
     icon: 'SwapOutlined',
     component: './Transfer',
   },
+  // packages
+  {
+    path: '/packages',
+    name: 'list.packages',
+    icon: 'ProductOutlined',
+    component: './Package',
+  },
 ];

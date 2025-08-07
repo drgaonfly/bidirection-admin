@@ -356,5 +356,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers/:id', 'PUT')),
     canGetTransfer:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'GET')),
+
+    // Package
+    canCreatePackage:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages', 'POST')),
+    canDeletePackage:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages', 'DELETE')),
+    canUpdatePackage:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages/:id', 'PUT')),
+    canGetPackage:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages', 'GET')),
   };
 }

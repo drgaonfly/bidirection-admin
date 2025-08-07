@@ -236,4 +236,9 @@ export default {
   rejected: 'Rejected',
   reject_application: 'Reject Application',
   exchange_id: 'Exchange ID',
+  commission: 'Commission (TRX)',
+  expenditure: 'Expenditure (TRX)',
+  aqusition: 'Aqusition (SUN)',
+  expiration: 'Expiration (Hour)',
+  times: 'Times',
 };
