@@ -231,7 +231,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
       fieldProps: {
-        disabled: access.canSuperAdmin,
+        disabled: !access.canSuperAdmin,
       },
     },
     {
@@ -239,7 +239,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       dataIndex: 'expiration',
       valueType: 'digit',
       fieldProps: {
-        disabled: access.canSuperAdmin,
+        disabled: !access.canSuperAdmin,
       },
     },
     {
