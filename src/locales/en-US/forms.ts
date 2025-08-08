@@ -246,4 +246,5 @@ export default {
   min_expenditure: 'Min Expenditure',
   telegram_id: 'Telegram ID',
   telegram_user: 'Telegram User',
+  proxy_botUser: 'botUser of Proxy',
 };

@@ -301,4 +301,5 @@ export default {
   min_expenditure: '最低消费(trx)',
   telegram_id: '电报ID',
   telegram_user: '电报用户',
+  proxy_botUser: '代理电报用户',
 };
