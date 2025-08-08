@@ -304,4 +304,5 @@ export default {
   proxy_botUser: '代理电报用户',
   delegated: '已出租',
   undelegated: '已回收',
+  energyFromAddress: '能量来源地址',
 };
