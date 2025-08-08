@@ -137,8 +137,8 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'startAt', defaultMessage: '开始时间' }),
-      dataIndex: 'startAt',
+      title: intl.formatMessage({ id: 'transactionAt', defaultMessage: '交易时间' }),
+      dataIndex: 'transactionAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
