@@ -289,4 +289,10 @@ export default [
     icon: 'ProductOutlined',
     component: './Package',
   },
+  {
+    path: '/unrentals',
+    name: 'list.unrentals',
+    icon: 'CarOutlined',
+    component: './UnRental',
+  },
 ];

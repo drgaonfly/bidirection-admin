@@ -37,6 +37,7 @@ export default {
   'menu.transfers': 'Transfers',
   'menu.packages': 'Packages',
   'menu.member-orders': 'Member Orders',
+  'menu.list.unrentals': 'Unrentals',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -72,4 +73,5 @@ export default {
   'menu.积分记录': 'Integers',
   'menu.转账记录': 'Transfer Records',
   'menu.能量产品': 'Packages',
+  'menu.能量回收记录': 'UnRentals',
 };

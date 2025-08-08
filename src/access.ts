@@ -366,5 +366,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages/:id', 'PUT')),
     canGetPackage:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages', 'GET')),
+
+    // UnRental
+    canCreateUnRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals', 'POST')),
+    canDeleteUnRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals', 'DELETE')),
+    canUpdateUnRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals/:id', 'PUT')),
+    canGetUnRental:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals', 'GET')),
   };
 }
