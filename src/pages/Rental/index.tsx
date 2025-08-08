@@ -85,7 +85,7 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'amount', defaultMessage: '能量数' }),
+      title: intl.formatMessage({ id: 'energy', defaultMessage: '能量' }),
       dataIndex: 'amount',
       hideInSearch: true,
     },
