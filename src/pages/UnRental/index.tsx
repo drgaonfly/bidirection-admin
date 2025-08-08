@@ -8,14 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-
-// Status enum for unrental orders
-const UnRentalStatusEnum = {
-  pending: { text: '待处理', status: 'Processing' },
-  completed: { text: '已完成', status: 'Success' },
-  cancelled: { text: '已取消', status: 'Error' },
-  expired: { text: '已过期', status: 'Default' },
-};
+import UnrentalStatusEnum from '../../enums/unrentalStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -70,7 +63,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
       dataIndex: 'status',
       hideInSearch: true,
-      valueEnum: UnRentalStatusEnum,
+      valueEnum: UnrentalStatusEnum,
     },
     {
       title: intl.formatMessage({ id: 'hash', defaultMessage: '哈希' }),

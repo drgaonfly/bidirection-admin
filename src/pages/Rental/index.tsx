@@ -8,14 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-
-// Status enum for rental orders
-const RentalStatusEnum = {
-  pending: { text: '待处理', status: 'Processing' },
-  completed: { text: '已完成', status: 'Success' },
-  cancelled: { text: '已取消', status: 'Error' },
-  expired: { text: '已过期', status: 'Default' },
-};
+import RntalStatusEnum from '../../enums/rentalStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -131,7 +124,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
       dataIndex: 'status',
       hideInSearch: true,
-      valueEnum: RentalStatusEnum,
+      valueEnum: RntalStatusEnum,
     },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
