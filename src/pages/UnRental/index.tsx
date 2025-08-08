@@ -120,10 +120,6 @@ const TableList: React.FC = () => {
                 key: '',
               },
               {
-                label: <FormattedMessage id="delegated" defaultMessage="出租中" />,
-                key: 'pending',
-              },
-              {
                 label: <FormattedMessage id="undelegated" defaultMessage="已回收" />,
                 key: 'undelegated',
               },
