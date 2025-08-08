@@ -302,6 +302,6 @@ export default {
   telegram_id: '电报ID',
   telegram_user: '电报用户',
   proxy_botUser: '代理电报用户',
-  delegated: '以出租',
+  delegated: '已出租',
   undelegated: '已回收',
 };
