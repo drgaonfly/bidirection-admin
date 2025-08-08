@@ -13,7 +13,7 @@ import {
   type ProColumns,
 } from '@ant-design/pro-components';
 import { Form, Input, message, Button } from 'antd';
-import { FormattedMessage, useIntl, useModel } from '@umijs/max';
+import { FormattedMessage, useAccess, useIntl, useModel } from '@umijs/max';
 
 type menuItem = {
   _id: string;
@@ -76,6 +76,7 @@ export type UpdateFormProps = {
 
 const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
+  const access = useAccess();
   const [form] = Form.useForm();
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   const { initialState } = useModel('@@initialState');
@@ -230,7 +231,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
       fieldProps: {
-        disabled: true,
+        disabled: access.canSuperAdmin,
       },
     },
     {
@@ -238,7 +239,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       dataIndex: 'expiration',
       valueType: 'digit',
       fieldProps: {
-        disabled: true,
+        disabled: access.canSuperAdmin,
       },
     },
     {
