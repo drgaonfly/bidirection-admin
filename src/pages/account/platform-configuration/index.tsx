@@ -114,7 +114,20 @@ const PlatformConfiguration: React.FC = () => {
                 addonAfter: '%',
               }}
             />
-            <ProFormText.Password
+            <ProFormDigit
+              width="xl"
+              name="energy_per_times"
+              label={intl.formatMessage({
+                id: 'platform.energyPerTimes',
+                defaultMessage: '每笔能量消耗 (sun)',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.energyPerTimes',
+                defaultMessage: '请输入每笔能量消耗 (sun)',
+              })}
+              min={0}
+            />
+            <ProFormText
               width="xl"
               name="energy_privateKey"
               label={intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '能量私钥' })}
@@ -164,6 +177,16 @@ const PlatformConfiguration: React.FC = () => {
                 :{' '}
               </Text>
               <Text>{currentUser?.recharge_max ?? '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.energyPerTimes',
+                  defaultMessage: '每次发送能量 (sun)',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.energy_per_times ?? '-'}</Text>
             </div>
             <div style={{ marginBottom: 16 }}>
               <Text strong>
