@@ -310,4 +310,6 @@ export default {
   recycledAt: '回收时间',
   recycled: '已回收',
   success: '成功',
+  transfer_in_hash: '转入哈希',
+  transfer_out_hash: '转出哈希',
 };

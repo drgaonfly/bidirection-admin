@@ -253,4 +253,6 @@ export default {
   recycledAt: 'Recycled At',
   recycled: 'Recycled',
   success: 'Success',
+  transfer_in_hash: 'Transfer In Hash',
+  transfer_out_hash: 'Transfer Out Hash',
 };

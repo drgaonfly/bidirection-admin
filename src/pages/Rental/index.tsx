@@ -128,8 +128,15 @@ const TableList: React.FC = () => {
         usdt: { text: 'USDT' },
       },
     },
+    // hash
     {
-      title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易哈希' }),
+      title: intl.formatMessage({ id: 'transfer_in_hash', defaultMessage: '转账哈希' }),
+      dataIndex: 'hash',
+      ellipsis: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'transfer_out_hash', defaultMessage: '发送哈希' }),
       dataIndex: 'tx_id',
       ellipsis: true,
       copyable: true,
