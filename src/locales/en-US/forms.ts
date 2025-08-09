@@ -252,4 +252,5 @@ export default {
   rentedAt: 'Rented At',
   recycledAt: 'Recycled At',
   recycled: 'Recycled',
+  success: 'Success',
 };
