@@ -294,7 +294,7 @@ export default {
   commission: '代理抽佣(trx)',
   expenditure: '价格(trx)',
   aqusition: '能量(sun)',
-  expiration: '有效期',
+  expiration: '有效期(小时)',
   times: '笔数',
   hourly: '闪租(小时)',
   daily: '日租(天)',
