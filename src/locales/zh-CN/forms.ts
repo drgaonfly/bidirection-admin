@@ -305,4 +305,5 @@ export default {
   delegated: '已出租',
   undelegated: '已回收',
   energyFromAddress: '能量来源地址',
+  energy: '能量',
 };

@@ -248,4 +248,5 @@ export default {
   telegram_user: 'Telegram User',
   proxy_botUser: 'botUser of Proxy',
   energyFromAddress: 'Energy From Address',
+  energy: 'Energy',
 };
