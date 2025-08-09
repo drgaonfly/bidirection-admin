@@ -10,6 +10,7 @@ const RntalStatusEnum = () => {
     expired: { text: intl.formatMessage({ id: 'expired' }), status: 'warning' },
     failed: { text: intl.formatMessage({ id: 'failed' }), status: 'error' },
     recycled: { text: intl.formatMessage({ id: 'recycled' }), status: 'processing' },
+    success: { text: intl.formatMessage({ id: 'success' }), status: 'success' },
   };
 };
 
