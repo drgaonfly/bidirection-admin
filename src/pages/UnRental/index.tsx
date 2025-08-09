@@ -98,7 +98,7 @@ const TableList: React.FC = () => {
       ],
     },
     {
-      title: intl.formatMessage({ id: 'amount', defaultMessage: '租赁能量数' }),
+      title: intl.formatMessage({ id: 'energy', defaultMessage: '能量' }),
       dataIndex: 'amount',
       hideInSearch: true,
       renderText: (_, record) => record?.amount,
@@ -122,10 +122,10 @@ const TableList: React.FC = () => {
       renderText: (_, record) => record?.price,
     },
     {
-      title: intl.formatMessage({ id: 'actual_price', defaultMessage: '实际价格' }),
-      dataIndex: 'actual_price',
+      title: intl.formatMessage({ id: 'createdAt' }),
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
       hideInSearch: true,
-      renderText: (_, record) => record?.actual_price,
     },
   ];
 

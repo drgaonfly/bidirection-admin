@@ -4,7 +4,7 @@ const UnrentalStatusEnum = () => {
   const intl = useIntl();
 
   return {
-    undelegated: { text: intl.formatMessage({ id: 'undelegated' }), status: 'undelegated' },
+    success: { text: intl.formatMessage({ id: 'success' }), status: 'success' },
     failed: { text: intl.formatMessage({ id: 'failed' }), status: 'error' },
   };
 };
