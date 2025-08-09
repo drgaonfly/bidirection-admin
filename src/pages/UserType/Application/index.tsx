@@ -65,6 +65,11 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: 'ID',
+      dataIndex: 'id',
+      copyable: true,
+    },
+    {
       title: intl.formatMessage({ id: 'user' }),
       dataIndex: 'botUser',
       copyable: true,
