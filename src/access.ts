@@ -278,6 +278,9 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals/:id', 'PUT')),
     canGetRental:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rentals', 'GET')),
+    canRecycling:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/rentals/:id/recycling', 'PUT')),
 
     // member-orders
     canCreateMemberOrder:

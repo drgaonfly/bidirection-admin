@@ -198,17 +198,18 @@ const TableList: React.FC = () => {
             }}
           />
         ),
-        currentDate?.getTime() - record.endAt?.getTime() > record.limit_hour * 60 * 60 * 1000 && (
-          <a
-            key="recycling"
-            onClick={async () => {
-              setCurrentRow(record);
-              await handleRecycling(record._id!);
-            }}
-          >
-            <FormattedMessage id="recycling" defaultMessage="回收" />
-          </a>
-        ),
+        currentDate?.getTime() - record.endAt?.getTime() > record.limit_hour * 60 * 60 * 1000 &&
+          access.canRecycling && (
+            <a
+              key="recycling"
+              onClick={async () => {
+                setCurrentRow(record);
+                await handleRecycling(record._id!);
+              }}
+            >
+              <FormattedMessage id="recycling" defaultMessage="回收" />
+            </a>
+          ),
       ],
     },
   ];
