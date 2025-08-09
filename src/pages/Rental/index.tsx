@@ -199,7 +199,8 @@ const TableList: React.FC = () => {
           />
         ),
         currentDate?.getTime() - record.endAt?.getTime() > record.limit_hour * 60 * 60 * 1000 &&
-          access.canRecycling && (
+          access.canRecycling &&
+          record.status !== 'recycled' && (
             <a
               key="recycling"
               onClick={async () => {
