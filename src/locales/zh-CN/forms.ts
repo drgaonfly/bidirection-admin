@@ -308,4 +308,5 @@ export default {
   energy: '能量',
   rentedAt: '出租时间',
   recycledAt: '回收时间',
+  recycled: '已回收',
 };

@@ -251,4 +251,5 @@ export default {
   energy: 'Energy',
   rentedAt: 'Rented At',
   recycledAt: 'Recycled At',
+  recycled: 'Recycled',
 };

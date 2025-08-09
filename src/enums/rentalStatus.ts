@@ -5,9 +5,11 @@ const RntalStatusEnum = () => {
 
   return {
     pending: { text: intl.formatMessage({ id: 'pending' }), status: 'default' },
-    completed: { text: intl.formatMessage({ id: 'completed' }), status: 'completed' },
-    expired: { text: intl.formatMessage({ id: 'expired' }), status: 'error' },
-    canceled: { text: intl.formatMessage({ id: 'canceled' }), status: 'default' },
+    completed: { text: intl.formatMessage({ id: 'completed' }), status: 'success' },
+    cancelled: { text: intl.formatMessage({ id: 'cancelled' }), status: 'warning' },
+    expired: { text: intl.formatMessage({ id: 'expired' }), status: 'warning' },
+    failed: { text: intl.formatMessage({ id: 'failed' }), status: 'error' },
+    recycled: { text: intl.formatMessage({ id: 'recycled' }), status: 'processing' },
   };
 };
 
