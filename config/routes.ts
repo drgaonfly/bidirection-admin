@@ -295,4 +295,11 @@ export default [
     icon: 'CarOutlined',
     component: './UnRental',
   },
+  //
+  {
+    path: '/energy-sends',
+    name: 'list.energy-sends',
+    icon: 'SendOutlined',
+    component: './EnergySend',
+  },
 ];

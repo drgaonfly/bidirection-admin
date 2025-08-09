@@ -38,6 +38,7 @@ export default {
   'menu.packages': 'Packages',
   'menu.member-orders': 'Member Orders',
   'menu.list.unrentals': 'Unrentals',
+  'menu.list.energy-sends': 'Energy Sends',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -74,4 +75,5 @@ export default {
   'menu.转账记录': 'Transfer Records',
   'menu.能量产品': 'Packages',
   'menu.能量回收记录': 'UnRentals',
+  'menu.能量发送记录': 'Energy Send Records',
 };

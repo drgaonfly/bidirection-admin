@@ -57,6 +57,7 @@ import {
   StarFilled, // 添加星星小图标
   ThunderboltOutlined, // 添加能量小图标
   ProductOutlined, // 添加商品小图标
+  SendOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -125,6 +126,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   NumberOutlined: <NumberOutlined />,
   ThunderboltOutlined: <ThunderboltOutlined />, // 能量小图标
   ProductOutlined: <ProductOutlined />,
+  SendOutlined: <SendOutlined />,
 };
 
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>

@@ -379,5 +379,17 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals/:id', 'PUT')),
     canGetUnRental:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals', 'GET')),
+
+    // EnergySend
+    canCreateEnergySend:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/energysends', 'POST')),
+    canDeleteEnergySend:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/energysends', 'DELETE')),
+    canUpdateEnergySend:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/energysends/:id', 'PUT')),
+    canGetEnergySend:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/energysends', 'GET')),
   };
 }
