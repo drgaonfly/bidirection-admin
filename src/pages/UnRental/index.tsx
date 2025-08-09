@@ -97,6 +97,36 @@ const TableList: React.FC = () => {
         ),
       ],
     },
+    {
+      title: intl.formatMessage({ id: 'amount', defaultMessage: '租赁能量数' }),
+      dataIndex: 'amount',
+      hideInSearch: true,
+      renderText: (_, record) => record?.amount,
+    },
+    {
+      title: intl.formatMessage({ id: 'separation', defaultMessage: '笔数' }),
+      dataIndex: 'separation',
+      hideInSearch: true,
+      renderText: (_, record) => record?.separation,
+    },
+    {
+      title: intl.formatMessage({ id: 'limit_hour', defaultMessage: '时长(小时)' }),
+      dataIndex: 'limit_hour',
+      hideInSearch: true,
+      renderText: (_, record) => record?.limit_hour,
+    },
+    {
+      title: intl.formatMessage({ id: 'price', defaultMessage: '价格' }),
+      dataIndex: 'price',
+      hideInSearch: true,
+      renderText: (_, record) => record?.price,
+    },
+    {
+      title: intl.formatMessage({ id: 'actual_price', defaultMessage: '实际价格' }),
+      dataIndex: 'actual_price',
+      hideInSearch: true,
+      renderText: (_, record) => record?.actual_price,
+    },
   ];
 
   return (
@@ -120,8 +150,8 @@ const TableList: React.FC = () => {
                 key: '',
               },
               {
-                label: <FormattedMessage id="undelegated" defaultMessage="已回收" />,
-                key: 'undelegated',
+                label: <FormattedMessage id="success" defaultMessage="成功" />,
+                key: 'success',
               },
               {
                 label: <FormattedMessage id="failed" defaultMessage="失败" />,
