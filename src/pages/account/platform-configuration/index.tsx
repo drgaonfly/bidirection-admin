@@ -61,6 +61,7 @@ const PlatformConfiguration: React.FC = () => {
               // energyAddress: currentUser?.energyAddress || '',
               energy_privateKey: currentUser?.energy_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
+              energy_per_times: currentUser?.energy_per_times || 0,
             }}
             submitter={{
               submitButtonProps: {
