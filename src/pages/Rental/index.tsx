@@ -137,13 +137,13 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'transactionAt', defaultMessage: '交易时间' }),
+      title: intl.formatMessage({ id: 'rentedAt', defaultMessage: '租赁时间' }),
       dataIndex: 'transactionAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'endAt', defaultMessage: '结束时间' }),
+      title: intl.formatMessage({ id: 'recycledAt', defaultMessage: '回收时间' }),
       dataIndex: 'endAt',
       valueType: 'dateTime',
       hideInSearch: true,

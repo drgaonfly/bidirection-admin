@@ -306,4 +306,6 @@ export default {
   undelegated: '已回收',
   energyFromAddress: '能量来源地址',
   energy: '能量',
+  rentedAt: '出租时间',
+  recycledAt: '回收时间',
 };

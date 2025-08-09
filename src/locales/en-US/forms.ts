@@ -249,4 +249,6 @@ export default {
   proxy_botUser: 'botUser of Proxy',
   energyFromAddress: 'Energy From Address',
   energy: 'Energy',
+  rentedAt: 'Rented At',
+  recycledAt: 'Recycled At',
 };
