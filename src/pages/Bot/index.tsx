@@ -128,9 +128,11 @@ const TableList: React.FC = () => {
   const columns: ProColumns<any>[] = [
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, reocrd) => {
+        return reocrd?.proxy.name;
+      },
     },
     {
       title: intl.formatMessage({ id: 'ID', defaultMessage: 'ID' }),

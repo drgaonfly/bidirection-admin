@@ -53,17 +53,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
-      fieldProps: {
-        disabled: true,
-      },
+      valueType: 'digit',
     },
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      fieldProps: {
-        disabled: true,
-      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
