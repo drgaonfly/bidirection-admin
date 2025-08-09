@@ -1,5 +1,5 @@
 import { useIntl, useModel } from '@umijs/max';
-import { queryList, removeItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -31,6 +31,25 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+const handleRecycling = async (fields: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/rentals/${fields._id}/recycling`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   const { initialState } = useModel('@@initialState');
@@ -40,6 +59,7 @@ const TableList: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const currentDate = new Date();
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
@@ -177,6 +197,17 @@ const TableList: React.FC = () => {
               actionRef.current?.reload();
             }}
           />
+        ),
+        currentDate.getTime() - record.endAt.getTime() > record.limit_hour * 60 * 60 * 1000 && (
+          <a
+            key="recycling"
+            onClick={async () => {
+              setCurrentRow(record);
+              await handleRecycling(record._id!);
+            }}
+          >
+            <FormattedMessage id="recycling" defaultMessage="回收" />
+          </a>
         ),
       ],
     },
