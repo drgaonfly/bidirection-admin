@@ -61,6 +61,14 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       valueType: 'digit',
     },
     {
+      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
+      dataIndex: 'times',
+      valueType: 'digit',
+      fieldProps: {
+        disabled: true,
+      },
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
       valueType: 'option',
       render: (text, record, _, action) => [
