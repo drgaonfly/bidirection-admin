@@ -150,6 +150,12 @@ const TableList: React.FC = () => {
       renderText: (_, record) => record?.botUser?.userName,
     },
     {
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
