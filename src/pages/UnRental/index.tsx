@@ -165,7 +165,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/un-rentals', { ...params, status: activeKey }, sort, filter)
+          queryList('/unrentals', { ...params, status: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
