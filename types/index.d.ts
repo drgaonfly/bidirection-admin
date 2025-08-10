@@ -16,7 +16,7 @@ export namespace API {
       email: string;
       signature: string;
       rechargeAddress: string;
-      energyAddress: string;
+      energy_address: string;
       privateKey: string;
       mnemonic: string;
       title: string;

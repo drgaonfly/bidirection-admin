@@ -33,7 +33,7 @@ declare namespace API {
     serviceLink?: string;
     serviceLinks?: string;
     rechargeAddress?: string;
-    energyAddress?: string;
+    energy_address?: string;
     privateKey?: string;
     energy_privateKey?: string;
     recharge_min?: number;

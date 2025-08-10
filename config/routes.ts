@@ -233,6 +233,13 @@ export default [
     icon: 'MoneyCollectOutlined',
     component: './Receipt',
   },
+  // deduction
+  {
+    path: '/deductions',
+    name: 'list.deductions',
+    icon: 'MinusCircleOutlined',
+    component: './Deduction',
+  },
   // exchange
   {
     path: '/exchanges',

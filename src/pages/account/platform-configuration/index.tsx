@@ -19,7 +19,7 @@ const PlatformConfiguration: React.FC = () => {
     rechargeAddress: string;
     energy_privateKey: string;
     mnemonic: string;
-    energyAddress: string;
+    energy_address: string;
   }) => {
     try {
       setLoading(true);
@@ -59,7 +59,7 @@ const PlatformConfiguration: React.FC = () => {
               recharge_min: currentUser?.recharge_min || 0,
               recharge_max: currentUser?.recharge_max || 0,
               rechargeAddress: currentUser?.rechargeAddress || '',
-              energyAddress: currentUser?.energyAddress || '',
+              energy_address: currentUser?.energy_address || '',
               energy_privateKey: currentUser?.energy_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
@@ -140,13 +140,13 @@ const PlatformConfiguration: React.FC = () => {
             />
             <ProFormText
               width="xl"
-              name="energyAddress"
+              name="energy_address"
               label={intl.formatMessage({
-                id: 'platform.energyAddress',
+                id: 'platform.energy_address',
                 defaultMessage: '能量地址',
               })}
               placeholder={intl.formatMessage({
-                id: 'please.enter.energyAddress',
+                id: 'please.enter.energy_address',
                 defaultMessage: '请输入能量的地址',
               })}
             />
@@ -211,12 +211,12 @@ const PlatformConfiguration: React.FC = () => {
             <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({
-                  id: 'platform.energyAddress',
+                  id: 'platform.energy_address',
                   defaultMessage: '能量地址',
                 })}
                 :{' '}
               </Text>
-              <Text>{currentUser?.energyAddress || '-'}</Text>
+              <Text>{currentUser?.energy_address || '-'}</Text>
             </div>
             <div>
               <Text strong>
