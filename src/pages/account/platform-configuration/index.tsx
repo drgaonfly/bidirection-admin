@@ -19,6 +19,7 @@ const PlatformConfiguration: React.FC = () => {
     rechargeAddress: string;
     energy_privateKey: string;
     mnemonic: string;
+    energyAddress: string;
   }) => {
     try {
       setLoading(true);
@@ -58,7 +59,7 @@ const PlatformConfiguration: React.FC = () => {
               recharge_min: currentUser?.recharge_min || 0,
               recharge_max: currentUser?.recharge_max || 0,
               rechargeAddress: currentUser?.rechargeAddress || '',
-              // energyAddress: currentUser?.energyAddress || '',
+              energyAddress: currentUser?.energyAddress || '',
               energy_privateKey: currentUser?.energy_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
@@ -137,6 +138,18 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '请输入私钥',
               })}
             />
+            <ProFormText
+              width="xl"
+              name="energyAddress"
+              label={intl.formatMessage({
+                id: 'platform.energyAddress',
+                defaultMessage: '能量地址',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.energyAddress',
+                defaultMessage: '请输入能量的地址',
+              })}
+            />
             <ProFormTextArea
               width="xl"
               name="mnemonic"
@@ -194,6 +207,16 @@ const PlatformConfiguration: React.FC = () => {
                 {intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '发送能量私钥' })}:{' '}
               </Text>
               <Text>{'*'.repeat(20)}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.energyAddress',
+                  defaultMessage: '能量地址',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.energyAddress || '-'}</Text>
             </div>
             <div>
               <Text strong>
