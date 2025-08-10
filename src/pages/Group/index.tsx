@@ -1,4 +1,4 @@
-import { useIntl, useModel } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -42,8 +42,6 @@ const handleRemove = async (ids: any) => {
 
 const GroupTableList: React.FC = () => {
   const intl = useIntl();
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState || {};
   const [updateModalOpen, handleUpdateModalOpen] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const actionRef = useRef<ActionType>();
@@ -210,12 +208,7 @@ const GroupTableList: React.FC = () => {
             isOnline = false; // 离线
           }
 
-          return queryList(
-            '/groups',
-            { ...params, isOnline, proxy: currentUser?._id },
-            sort,
-            filter,
-          );
+          return queryList('/groups', { ...params, isOnline }, sort, filter);
         }}
         columns={columns}
         rowSelection={
