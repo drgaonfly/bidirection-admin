@@ -91,8 +91,14 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'energySendAddress', defaultMessage: '能量发送地址' }),
+      dataIndex: 'energySendAddress',
+      copyable: true,
+    },
+    {
       title: intl.formatMessage({ id: 'energyFromAddress', defaultMessage: '能量来源地址' }),
       dataIndex: 'energyFromAddress',
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'from_address', defaultMessage: 'From' }),
