@@ -1,4 +1,4 @@
-import { useIntl, useModel } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -107,8 +107,6 @@ const handleRemove = async (ids: string[]) => {
 const TableList: React.FC = () => {
   const intl = useIntl();
   const access = useAccess();
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState || {};
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [groupModalVisible, setGroupModalVisible] = useState<boolean>(false);
@@ -479,7 +477,6 @@ const TableList: React.FC = () => {
             {
               ...params,
               isOnline: activeKey, // 添加这个行
-              proxy: currentUser?._id,
             },
             sort,
             filter,

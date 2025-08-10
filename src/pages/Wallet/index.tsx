@@ -1,4 +1,4 @@
-import { useIntl, useModel } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -47,8 +47,6 @@ const handleRemove = async (ids: string[]) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState || {};
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const actionRef = useRef<ActionType>();
@@ -197,18 +195,7 @@ const TableList: React.FC = () => {
             },
           },
         }}
-        request={(params, sort, filter) =>
-          queryList(
-            '/wallets',
-            {
-              ...params,
-              isOnline: activeKey === 'online' ? true : activeKey === 'offline' ? false : undefined,
-              proxy: currentUser?._id,
-            },
-            sort,
-            filter,
-          )
-        }
+        request={(params, sort, filter) => queryList('/wallets', { ...params }, sort, filter)}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {

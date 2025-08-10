@@ -1,4 +1,4 @@
-import { useIntl, useModel } from '@umijs/max';
+import { useIntl } from '@umijs/max';
 import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -78,14 +78,12 @@ const handleUpdate = async (fields: any) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState || {};
+  const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
-  const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [updateModalOpen, handleUpdateModalOpen] = useState(false);
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
@@ -212,12 +210,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList(
-            '/group-messages',
-            { ...params, messageType: activeKey, proxy: currentUser?._id },
-            sort,
-            filter,
-          )
+          queryList('/group-messages', { ...params, messageType: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
