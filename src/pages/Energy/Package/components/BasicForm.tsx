@@ -38,6 +38,14 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
+        <ProFormSelect
+          name="type"
+          width="md"
+          label={intl.formatMessage({ id: 'type', defaultMessage: 'Type' })}
+          valueEnum={PackageEnum}
+          required
+        />
+
         <ProFormDigit
           name="expenditure"
           width="md"
@@ -51,14 +59,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           width="md"
           label={intl.formatMessage({ id: 'commission', defaultMessage: 'Commission' })}
           min={0}
-          required
-        />
-
-        <ProFormSelect
-          name="type"
-          width="md"
-          label={intl.formatMessage({ id: 'type', defaultMessage: 'Type' })}
-          valueEnum={PackageEnum}
           required
         />
       </ProForm.Group>
