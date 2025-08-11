@@ -8,6 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import DecutionStatusEnum from '../../enums/deductionStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -42,9 +43,11 @@ const TableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
     },
     {
       title: intl.formatMessage({ id: 'id' }),
@@ -93,19 +96,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
       hideInSearch: true,
-      valueEnum: {
-        pending: { text: intl.formatMessage({ id: 'pending' }), status: 'warning' },
-        processing: {
-          text: intl.formatMessage({ id: 'processing', defaultMessage: '处理中' }),
-          status: 'processing',
-        },
-        completed: { text: intl.formatMessage({ id: 'completed' }), status: 'success' },
-        failed: {
-          text: intl.formatMessage({ id: 'failed', defaultMessage: '失败' }),
-          status: 'error',
-        },
-        cancelled: { text: intl.formatMessage({ id: 'cancelled' }), status: 'default' },
-      },
+      valueEnum: DecutionStatusEnum,
     },
     {
       title: intl.formatMessage({ id: 'hash', defaultMessage: '交易哈希' }),
@@ -122,27 +113,27 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'from-address', defaultMessage: '扣款来源地址' }),
+      title: intl.formatMessage({ id: 'from_address', defaultMessage: '扣款来源地址' }),
       dataIndex: 'from_address',
       ellipsis: true,
       hideInSearch: true,
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'to-address', defaultMessage: '扣款目标地址' }),
+      title: intl.formatMessage({ id: 'to_address', defaultMessage: '扣款目标地址' }),
       dataIndex: 'to_address',
       ellipsis: true,
       hideInSearch: true,
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'balance-before', defaultMessage: '扣款前余额' }),
+      title: intl.formatMessage({ id: 'balance_before_deducted', defaultMessage: '扣款前余额' }),
       dataIndex: 'balance_before',
       hideInSearch: true,
       renderText: (text, record) => (text ? `${text} ${record.currency || 'TRX'}` : '-'),
     },
     {
-      title: intl.formatMessage({ id: 'balance-after', defaultMessage: '扣款后余额' }),
+      title: intl.formatMessage({ id: 'balance_after_deducted', defaultMessage: '扣款后余额' }),
       dataIndex: 'balance_after',
       hideInSearch: true,
       renderText: (text, record) => (text ? `${text} ${record.currency || 'TRX'}` : '-'),

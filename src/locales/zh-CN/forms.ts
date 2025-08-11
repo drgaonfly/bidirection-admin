@@ -314,4 +314,6 @@ export default {
   success: '成功',
   transfer_in_hash: '转入哈希',
   transfer_out_hash: '转出哈希',
+  balance_after_deducted: '扣款后余额',
+  balance_before_deducted: '扣款前余额',
 };
