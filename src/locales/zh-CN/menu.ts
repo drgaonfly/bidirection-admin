@@ -20,7 +20,7 @@ export default {
   'menu.list.user-types.list.customers': '客户列表',
 
   'menu.list.energy': '能量管理',
-  'menu.list.energy.renals': '能量租赁',
+  'menu.list.energy.rentals': '能量租赁',
   'menu.list.energy.packages': '能量产品',
   'menu.list.energy.unrentals': '能量回收记录',
   'menu.list.energy.energy-sends': '能量发送记录',

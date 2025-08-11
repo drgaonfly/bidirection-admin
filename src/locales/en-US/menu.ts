@@ -17,7 +17,7 @@ export default {
   'menu.user-type.applications': 'Applications',
 
   'menu.energy': 'Energy',
-  'menu.energy.renals': 'Rentals',
+  'menu.energy.rentals': 'Rentals',
   'menu.energy.packages': 'Packages',
   'menu.energy.unrentals': 'UnRentals',
   'menu.energy.energy-sends': 'Sends',
