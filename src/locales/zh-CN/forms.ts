@@ -300,7 +300,7 @@ export default {
   times: '笔数',
   hourly: '闪租(小时)',
   daily: '日租(天)',
-  min_expenditure: '最低消费(trx)',
+  min_expenditure: '最低消费笔数',
   telegram_id: '电报ID',
   telegram_user: '电报用户',
   proxy_botUser: '代理电报用户',
