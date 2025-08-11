@@ -265,6 +265,10 @@ const TableList: React.FC = () => {
                 label: <FormattedMessage id="expired" defaultMessage="已过期" />,
                 key: 'expired',
               },
+              {
+                label: <FormattedMessage id="recycled" defaultMessage="已回收" />,
+                key: 'recycled',
+              },
             ],
             onChange: (key: any) => {
               setActiveKey(key);

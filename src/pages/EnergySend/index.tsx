@@ -74,6 +74,12 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
+      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: RntalStatusEnum,
+    },
+    {
       title: intl.formatMessage({ id: 'from_address', defaultMessage: 'From' }),
       dataIndex: 'from_address',
       copyable: true,
@@ -103,12 +109,6 @@ const TableList: React.FC = () => {
       dataIndex: 'tx_id',
       ellipsis: true,
       copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
-      dataIndex: 'status',
-      hideInSearch: true,
-      valueEnum: RntalStatusEnum,
     },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),

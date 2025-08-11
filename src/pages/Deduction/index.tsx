@@ -86,6 +86,10 @@ const TableList: React.FC = () => {
           text: intl.formatMessage({ id: 'rental', defaultMessage: '租赁' }),
           status: 'warning',
         },
+        Rental: {
+          text: intl.formatMessage({ id: 'rental', defaultMessage: '租赁' }),
+          status: 'warning',
+        },
         recharge: {
           text: intl.formatMessage({ id: 'recharge', defaultMessage: '充值' }),
           status: 'success',
@@ -97,20 +101,6 @@ const TableList: React.FC = () => {
       dataIndex: 'status',
       hideInSearch: true,
       valueEnum: DecutionStatusEnum,
-    },
-    {
-      title: intl.formatMessage({ id: 'hash', defaultMessage: '交易哈希' }),
-      dataIndex: 'hash',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'txid', defaultMessage: '交易ID' }),
-      dataIndex: 'txid',
-      ellipsis: true,
-      hideInSearch: true,
-      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'from_address', defaultMessage: '扣款来源地址' }),
@@ -163,12 +153,6 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'processedAt', defaultMessage: '处理时间' }),
       dataIndex: 'processedAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
-      dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
