@@ -261,13 +261,6 @@ export default [
     icon: 'SettingOutlined',
     component: './BotUserConfig',
   },
-  // rental
-  {
-    path: '/rentals',
-    name: 'list.rentals',
-    icon: 'CarOutlined',
-    component: './Rental',
-  },
   // anynoumy
   {
     path: '/anynoumies',
@@ -289,26 +282,41 @@ export default [
     icon: 'SwapOutlined',
     component: './Transfer',
   },
-  // packages
+  // 用户管理
   {
-    path: '/packages',
-    name: 'list.packages',
+    path: '/energy',
+    name: 'list.energy',
     icon: 'ProductOutlined',
-    component: './Package',
+    routes: [
+      // rental
+      {
+        path: '/energy/rentals',
+        name: 'list.rentals',
+        component: './Energy/Rental',
+      },
+      // packages
+      {
+        path: '/energy/packages',
+        name: 'list.packages',
+        icon: 'ProductOutlined',
+        component: './Energy/Package',
+      },
+      {
+        path: '/energy/unrentals',
+        name: 'list.unrentals',
+        icon: 'CarOutlined',
+        component: './Energy/UnRental',
+      },
+      //
+      {
+        path: '/energy/energy-sends',
+        name: 'list.energy-sends',
+        icon: 'SendOutlined',
+        component: './Energy/EnergySend',
+      },
+    ],
   },
-  {
-    path: '/unrentals',
-    name: 'list.unrentals',
-    icon: 'CarOutlined',
-    component: './UnRental',
-  },
-  //
-  {
-    path: '/energy-sends',
-    name: 'list.energy-sends',
-    icon: 'SendOutlined',
-    component: './EnergySend',
-  },
+
   {
     path: '/deductions',
     name: 'list.deductions',

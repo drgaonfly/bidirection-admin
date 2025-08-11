@@ -16,6 +16,12 @@ export default {
   'menu.user-type.customers': 'Customers',
   'menu.user-type.applications': 'Applications',
 
+  'menu.energy': 'Energy',
+  'menu.energy.renals': 'Rentals',
+  'menu.energy.packages': 'Packages',
+  'menu.energy.unrentals': 'UnRentals',
+  'menu.energy.energy-sends': 'Sends',
+
   'menu.change-password': 'Change Password',
 
   'menu.bots': 'Bots',
@@ -31,14 +37,10 @@ export default {
   'menu.exchanges': 'Exchanges',
   'menu.group-messages': 'Group Messages',
   'menu.bot-user-configs': 'Bot User Configs',
-  'menu.rentals': 'Energy Rentals',
   'menu.anynoumies': 'Anynoumies',
   'menu.integers': 'Integers',
   'menu.transfers': 'Transfers',
-  'menu.packages': 'Packages',
   'menu.member-orders': 'Member Orders',
-  'menu.list.unrentals': 'Unrentals',
-  'menu.list.energy-sends': 'Energy Sends',
   'menu.list.deductions': 'Deductions',
 
   'menu.工作台管理': 'Dashboard Management',
@@ -58,6 +60,12 @@ export default {
   'menu.用户管理.客户管理': 'Customer Management',
   'menu.用户管理.代理申请': 'Proxy Application',
 
+  'menu.能量管理': 'Energy',
+  'menu.能量管理.能量租赁': 'Rentals',
+  'menu.能量管理.能量产品': 'Packages',
+  'menu.能量管理.能量回收记录': 'UnRentals',
+  'menu.能量管理.能量发送记录': 'Sends',
+
   'menu.机器人管理': 'Bot Management',
   'menu.机器人用户管理': 'Bot User Management',
   'menu.机器人消息管理': 'Bot Message Management',
@@ -70,12 +78,8 @@ export default {
   'menu.兑换记录': 'Exchange Records',
   'menu.群组消息': 'Group Message Management',
   'menu.机器人用户配置': 'Bot User Config',
-  'menu.能量租赁': 'Energy Rentals',
   'menu.匿名号码': 'Anynoumies',
   'menu.积分记录': 'Integers',
   'menu.转账记录': 'Transfer Records',
-  'menu.能量产品': 'Packages',
-  'menu.能量回收记录': 'UnRentals',
-  'menu.能量发送记录': 'Energy Send Records',
   'menu.扣款记录': 'Deductions',
 };

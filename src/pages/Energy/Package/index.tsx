@@ -11,7 +11,7 @@ import DeleteLink from '@/components/DeleteLink';
 import { PlusOutlined } from '@ant-design/icons';
 import Create from './components/Create';
 import Update from './components/Update';
-import PackageEnum from '../../enums/packageStatus';
+import PackageEnum from '../../../enums/packageStatus';
 
 const handleAdd = async (fields: any) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);

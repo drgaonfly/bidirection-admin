@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -8,13 +8,13 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import RntalStatusEnum from '../../enums/rentalStatus';
+import RntalStatusEnum from '../../../enums/rentalStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/energy-sends', {
+    await removeItem('/rentals', {
       ids,
     });
     hide();
@@ -31,20 +31,43 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+const handleRecycling = async (fields: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/rentals/${fields._id}/recycling`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const currentDate = new Date();
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
     },
     {
       title: intl.formatMessage({ id: 'user', defaultMessage: '用户' }),
@@ -71,13 +94,11 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'energySendAddress', defaultMessage: '能量发送地址' }),
       dataIndex: 'energySendAddress',
       copyable: true,
-      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
-      dataIndex: 'status',
-      hideInSearch: true,
-      valueEnum: RntalStatusEnum,
+      title: intl.formatMessage({ id: 'energyFromAddress', defaultMessage: '能量来源地址' }),
+      dataIndex: 'energyFromAddress',
+      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'from_address', defaultMessage: 'From' }),
@@ -105,14 +126,64 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易哈希' }),
+      title: intl.formatMessage({ id: 'crypto_type', defaultMessage: '币种' }),
+      dataIndex: 'crypto_type',
+      hideInSearch: true,
+      valueEnum: {
+        trx: { text: 'TRX' },
+        usdt: { text: 'USDT' },
+      },
+    },
+    // hash
+    {
+      title: intl.formatMessage({ id: 'transfer_in_hash', defaultMessage: '转账哈希' }),
+      dataIndex: 'hash',
+      ellipsis: true,
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'transfer_out_hash', defaultMessage: '发送哈希' }),
       dataIndex: 'tx_id',
       ellipsis: true,
       copyable: true,
     },
     {
+      title: intl.formatMessage({ id: 'type', defaultMessage: '类型' }),
+      dataIndex: 'type',
+      hideInSearch: true,
+      valueEnum: {
+        manual: { text: '手动' },
+        bot: { text: '机器人' },
+        auto: { text: '自动' },
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: RntalStatusEnum,
+    },
+    {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'rentedAt', defaultMessage: '租赁时间' }),
+      dataIndex: 'transactionAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'recycledAt', defaultMessage: '回收时间' }),
+      dataIndex: 'endAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'expiredAt', defaultMessage: '过期时间' }),
+      dataIndex: 'expiredAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
@@ -131,7 +202,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeleteEnergySend && (
+        access.canDeleteRental && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -140,6 +211,20 @@ const TableList: React.FC = () => {
             }}
           />
         ),
+        new Date(currentDate).getTime() - new Date(record?.endAt ? record?.endAt : 0).getTime() >
+          record?.limit_hour * 60 * 60 * 1000 &&
+          access.canRecycling &&
+          record.status === 'success' && (
+            <a
+              key="recycling"
+              onClick={async () => {
+                setCurrentRow(record);
+                await handleRecycling(record._id!);
+              }}
+            >
+              <FormattedMessage id="recycling" defaultMessage="回收" />
+            </a>
+          ),
       ],
     },
   ];
@@ -147,7 +232,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'energySend.list', defaultMessage: '能量发送记录' })}
+        headerTitle={intl.formatMessage({ id: 'rental.list', defaultMessage: '能量租用订单' })}
         actionRef={actionRef}
         rowKey="_id"
         scroll={{ x: 'max-content' }}
@@ -155,7 +240,47 @@ const TableList: React.FC = () => {
           labelWidth: 120,
           collapsed: false,
         }}
-        request={(params, sort, filter) => queryList('/energy-sends', { ...params }, sort, filter)}
+        toolbar={{
+          menu: {
+            type: 'tab',
+            activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="全部" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="pending" defaultMessage="待处理" />,
+                key: 'pending',
+              },
+              {
+                label: <FormattedMessage id="completed" defaultMessage="已完成" />,
+                key: 'completed',
+              },
+              {
+                label: <FormattedMessage id="cancelled" defaultMessage="已取消" />,
+                key: 'cancelled',
+              },
+              {
+                label: <FormattedMessage id="expired" defaultMessage="已过期" />,
+                key: 'expired',
+              },
+              {
+                label: <FormattedMessage id="recycled" defaultMessage="已回收" />,
+                key: 'recycled',
+              },
+            ],
+            onChange: (key: any) => {
+              setActiveKey(key);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            },
+          },
+        }}
+        request={(params, sort, filter) =>
+          queryList('/rentals', { ...params, status: activeKey }, sort, filter)
+        }
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -173,7 +298,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteEnergySend && (
+          {access.canDeleteRental && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

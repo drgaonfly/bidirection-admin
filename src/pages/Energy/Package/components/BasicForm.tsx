@@ -2,7 +2,7 @@ import { useIntl } from '@umijs/max';
 import React from 'react';
 import { ProForm, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
-import PackageEnum from '../../../enums/packageStatus';
+import PackageEnum from '../../../../enums/packageStatus';
 
 interface Props {
   newRecord?: boolean;
