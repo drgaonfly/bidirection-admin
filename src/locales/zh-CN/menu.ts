@@ -41,6 +41,7 @@ export default {
   'menu.list.packages': '能量产品',
   'menu.list.unrentals': '能量回收记录',
   'menu.list.energy-sends': '能量发送记录',
+  'menu.list.deductions': '扣款记录',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -82,6 +83,7 @@ export default {
   'menu.unrentals': '能量回收记录',
   'menu.member-orders': '会员订单',
   'menu.energy-sends': '能量发送记录',
+  'menu.deductions': '扣款记录',
 
   'menu.工作台管理': '工作台管理',
   'menu.认证管理': '认证管理',
@@ -121,4 +123,5 @@ export default {
   'menu.能量产品': '能量产品',
   'menu.能量回收记录': '能量回收记录',
   'menu.能量发送记录': '能量发送记录',
+  'menu.扣款记录': '扣款记录',
 };

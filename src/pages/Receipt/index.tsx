@@ -42,9 +42,11 @@ const TableList: React.FC = () => {
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
-      hideInForm: true,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
     },
     // wallet
     {

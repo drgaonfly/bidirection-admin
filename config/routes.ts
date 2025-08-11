@@ -309,4 +309,10 @@ export default [
     icon: 'SendOutlined',
     component: './EnergySend',
   },
+  {
+    path: '/deductions',
+    name: 'list.deductions',
+    icon: 'MoneyCollectFilled',
+    component: './Deduction',
+  },
 ];
