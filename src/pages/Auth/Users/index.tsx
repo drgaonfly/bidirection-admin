@@ -187,14 +187,14 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
     },
-    {
-      title: intl.formatMessage({ id: 'isAdmin' }),
-      dataIndex: 'isAdmin',
-      hideInSearch: true,
-      render: (text) => (
-        <span>{text ? intl.formatMessage({ id: 'yes' }) : intl.formatMessage({ id: 'no' })}</span>
-      ),
-    },
+    // {
+    //   title: intl.formatMessage({ id: 'isAdmin' }),
+    //   dataIndex: 'isAdmin',
+    //   hideInSearch: true,
+    //   render: (text) => (
+    //     <span>{text ? intl.formatMessage({ id: 'yes' }) : intl.formatMessage({ id: 'no' })}</span>
+    //   ),
+    // },
     {
       title: intl.formatMessage({ id: 'role' }),
       dataIndex: 'roles',
