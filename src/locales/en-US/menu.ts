@@ -41,7 +41,7 @@ export default {
   'menu.integers': 'Integers',
   'menu.transfers': 'Transfers',
   'menu.member-orders': 'Member Orders',
-  'menu.list.deductions': 'Deductions',
+  'menu.deductions': 'Deductions',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',

@@ -60,7 +60,7 @@ export default {
   'menu.user-type.applications': '代理申请',
 
   'menu.energy': '能量管理',
-  'menu.energy.renals': '能量租赁',
+  'menu.energy.rentals': '能量租赁',
   'menu.energy.packages': '能量产品',
   'menu.energy.unrentals': '能量回收记录',
   'menu.energy.energy-sends': '能量发送记录',
