@@ -39,6 +39,7 @@ declare namespace API {
     recharge_min?: number;
     recharge_max?: number;
     energy_per_times?: number;
+    recycle_min?: number;
   };
 
   // Example type definition

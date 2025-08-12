@@ -20,6 +20,7 @@ const PlatformConfiguration: React.FC = () => {
     energy_privateKey: string;
     mnemonic: string;
     energy_address: string;
+    recycle_min: number;
   }) => {
     try {
       setLoading(true);
@@ -63,6 +64,7 @@ const PlatformConfiguration: React.FC = () => {
               energy_privateKey: currentUser?.energy_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
+              recycle_min: currentUser?.recycle_min || 0,
             }}
             submitter={{
               submitButtonProps: {
@@ -126,6 +128,19 @@ const PlatformConfiguration: React.FC = () => {
               placeholder={intl.formatMessage({
                 id: 'please.enter.energyPerTimes',
                 defaultMessage: '请输入每笔能量消耗 (sun)',
+              })}
+              min={0}
+            />
+            <ProFormDigit
+              width="xl"
+              name="recycle_min"
+              label={intl.formatMessage({
+                id: 'platform.recycle_min',
+                defaultMessage: '最低销回收时间 (小时)',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.recycle_min',
+                defaultMessage: '请输入最低销回收时间 (小时)',
               })}
               min={0}
             />
@@ -201,6 +216,16 @@ const PlatformConfiguration: React.FC = () => {
                 :{' '}
               </Text>
               <Text>{currentUser?.energy_per_times ?? '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.recycle_min',
+                  defaultMessage: '最低销回收时间 (小时)',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.recycle_min ?? '-'}</Text>
             </div>
             <div style={{ marginBottom: 16 }}>
               <Text strong>
