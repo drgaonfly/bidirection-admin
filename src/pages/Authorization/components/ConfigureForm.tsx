@@ -41,6 +41,7 @@ type pricePairItem = {
   aqusition: number;
   expiration: number;
   times: number;
+  type: string; // hourly, daily
 };
 
 // const handleTronAddress = async (fields: FormValueType) => {
@@ -84,7 +85,12 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
   const [keyboards, setKeyboards] = useState<keyboardItem[]>(values?.keyboards || []);
   const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
-  const [pricePairs, setPricePairs] = useState<pricePairItem[]>(values?.price_pairs || []);
+  const [hourlyPricePairs, setHourlyPricePairs] = useState<pricePairItem[]>(
+    values?.price_pairs?.filter((item: pricePairItem) => item.type === 'hourly') || [],
+  );
+  const [dailyPricePairs, setDailyPricePairs] = useState<pricePairItem[]>(
+    values?.price_pairs?.filter((item: pricePairItem) => item.type === 'daily') || [],
+  );
   const [generating, setGenerating] = useState(false);
   // const [energyAddress, setEnergyAddress] = useState<string>('');
 
@@ -124,7 +130,12 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       setKeyboards(values?.keyboards || []);
       setCommands(values?.commands || []);
       setMenus(values?.menus || []);
-      setPricePairs(values?.price_pairs || []);
+      setHourlyPricePairs(
+        values?.price_pairs?.filter((item: pricePairItem) => item.type === 'hourly') || [],
+      );
+      setDailyPricePairs(
+        values?.price_pairs?.filter((item: pricePairItem) => item.type === 'daily') || [],
+      );
     }
   }, [updateModalOpen, values]);
 
@@ -269,6 +280,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       onOpenChange={onCancel}
       onFinish={async (values) => {
         const formValues = form.getFieldsValue();
+        const combinedPricePairs = [
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          ...hourlyPricePairs.map(({ _id, ...rest }) => rest),
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          ...dailyPricePairs.map(({ _id, ...rest }) => rest),
+        ];
+
         await onSubmit({
           ...values,
           ...formValues,
@@ -279,7 +297,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           commands: commands.map(({ _id, ...rest }) => rest),
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          price_pairs: pricePairs.map(({ _id, ...rest }) => rest),
+          price_pairs: combinedPricePairs,
         });
       }}
       initialValues={{
@@ -421,10 +439,10 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
       <EditableProTable<pricePairItem>
         rowKey="_id"
-        headerTitle="闪兑配置"
+        headerTitle="闪租配置"
         columns={pricePair_columns}
-        value={pricePairs}
-        onChange={(value) => setPricePairs([...value])}
+        value={hourlyPricePairs}
+        onChange={(value) => setHourlyPricePairs([...value])}
         editable={{
           type: 'multiple',
           actionRender: (row, config, defaultDoms) => {
@@ -440,6 +458,33 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             aqusition: 0,
             expiration: 0,
             times: 0,
+            type: 'hourly',
+          }),
+        }}
+      />
+
+      <EditableProTable<pricePairItem>
+        rowKey="_id"
+        headerTitle="日租配置"
+        columns={pricePair_columns}
+        value={dailyPricePairs}
+        onChange={(value) => setDailyPricePairs([...value])}
+        editable={{
+          type: 'multiple',
+          actionRender: (row, config, defaultDoms) => {
+            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
+          },
+        }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            expenditure: 0,
+            aqusition: 0,
+            expiration: 0,
+            times: 0,
+            type: 'daily',
           }),
         }}
       />
