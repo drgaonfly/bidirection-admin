@@ -21,6 +21,7 @@ export default {
   'menu.energy.packages': 'Packages',
   'menu.energy.unrentals': 'UnRentals',
   'menu.energy.energy-sends': 'Sends',
+  'menu.energy.advances': 'Advances',
 
   'menu.change-password': 'Change Password',
 
@@ -65,6 +66,7 @@ export default {
   'menu.能量管理.能量产品': 'Packages',
   'menu.能量管理.能量回收记录': 'UnRentals',
   'menu.能量管理.能量发送记录': 'Sends',
+  'menu.能量管理.能量预支': 'Advances',
 
   'menu.机器人管理': 'Bot Management',
   'menu.机器人用户管理': 'Bot User Management',

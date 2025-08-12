@@ -192,12 +192,6 @@ export default [
     icon: 'StarFilled',
     component: './tgStarsOrder',
   },
-  {
-    path: '/advances',
-    name: 'list.advances',
-    icon: 'ThunderboltOutlined',
-    component: './Advance',
-  },
   // botMessage
   {
     path: '/bot-messages',
@@ -313,6 +307,12 @@ export default [
         name: 'list.energy-sends',
         icon: 'SendOutlined',
         component: './Energy/EnergySend',
+      },
+      {
+        path: '/energy/advances',
+        name: 'list.advances',
+        icon: 'ThunderboltOutlined',
+        component: './Energy/Advance',
       },
     ],
   },
