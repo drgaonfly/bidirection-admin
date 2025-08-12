@@ -90,6 +90,11 @@ const TableList: React.FC = () => {
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
+    // name
+    {
+      title: intl.formatMessage({ id: 'name', defaultMessage: 'Name' }),
+      dataIndex: 'name',
+    },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: 'Times' }),
       dataIndex: 'times',

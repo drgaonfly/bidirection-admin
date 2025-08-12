@@ -37,6 +37,7 @@ type commandItem = {
 
 type pricePairItem = {
   _id: string;
+  name?: string;
   expenditure: number;
   aqusition: number;
   expiration: number;
@@ -229,7 +230,60 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     },
   ];
 
-  const pricePair_columns: ProColumns<pricePairItem>[] = [
+  const pricePair_hourly_columns: ProColumns<pricePairItem>[] = [
+    {
+      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
+      dataIndex: 'expenditure',
+      valueType: 'digit',
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
+      dataIndex: 'aqusition',
+      fieldProps: {
+        disabled: !access.canSuperAdmin,
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
+      dataIndex: 'expiration',
+      valueType: 'digit',
+      fieldProps: {
+        disabled: !access.canSuperAdmin,
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
+      dataIndex: 'times',
+      valueType: 'digit',
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
+          {intl.formatMessage({ id: 'edit' })}
+        </a>,
+      ],
+    },
+  ];
+
+  const pricePair_daily_columns: ProColumns<pricePairItem>[] = [
+    {
+      title: intl.formatMessage({ id: 'name', defaultMessage: '名称' }),
+      dataIndex: 'name',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: intl.formatMessage({ id: 'name_required', defaultMessage: '请输入名称' }),
+          },
+        ],
+      },
+    },
     {
       title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
       dataIndex: 'expenditure',
@@ -439,8 +493,35 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
       <EditableProTable<pricePairItem>
         rowKey="_id"
+        headerTitle="日租配置"
+        columns={pricePair_daily_columns}
+        value={dailyPricePairs}
+        onChange={(value) => setDailyPricePairs([...value])}
+        editable={{
+          type: 'multiple',
+          actionRender: (row, config, defaultDoms) => {
+            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
+          },
+        }}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            name: '',
+            expenditure: 0,
+            aqusition: 0,
+            expiration: 0,
+            times: 0,
+            type: 'daily',
+          }),
+        }}
+      />
+
+      <EditableProTable<pricePairItem>
+        rowKey="_id"
         headerTitle="闪租配置"
-        columns={pricePair_columns}
+        columns={pricePair_hourly_columns}
         value={hourlyPricePairs}
         onChange={(value) => setHourlyPricePairs([...value])}
         editable={{
@@ -459,32 +540,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             expiration: 0,
             times: 0,
             type: 'hourly',
-          }),
-        }}
-      />
-
-      <EditableProTable<pricePairItem>
-        rowKey="_id"
-        headerTitle="日租配置"
-        columns={pricePair_columns}
-        value={dailyPricePairs}
-        onChange={(value) => setDailyPricePairs([...value])}
-        editable={{
-          type: 'multiple',
-          actionRender: (row, config, defaultDoms) => {
-            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
-          },
-        }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            expenditure: 0,
-            aqusition: 0,
-            expiration: 0,
-            times: 0,
-            type: 'daily',
           }),
         }}
       />
