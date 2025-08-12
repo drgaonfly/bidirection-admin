@@ -259,4 +259,5 @@ export default {
   transfer_out_hash: 'Transfer Out Hash',
   balance_after_deducted: 'Balance After Deducted',
   balance_before_deducted: 'Balance Before Deducted',
+  days: 'Days',
 };

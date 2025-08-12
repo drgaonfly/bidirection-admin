@@ -49,7 +49,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         <ProFormDigit
           name="expenditure"
           width="md"
-          label={intl.formatMessage({ id: 'expenditure', defaultMessage: 'Expenditure (TRX)' })}
+          label={intl.formatMessage({ id: 'expenditure', defaultMessage: 'Expenditure' })}
           min={0}
           required
         />
@@ -61,9 +61,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           min={0}
           required
         />
-      </ProForm.Group>
 
-      <ProForm.Group>
         <ProFormDigit
           name="min_expenditure"
           width="md"
@@ -75,7 +73,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         <ProFormDigit
           name="expiration"
           width="md"
-          label={intl.formatMessage({ id: 'expiration', defaultMessage: 'Expiration (Hour)' })}
+          label={intl.formatMessage({ id: 'expiration', defaultMessage: 'Expiration' })}
           min={0}
           required
         />

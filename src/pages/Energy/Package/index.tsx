@@ -109,14 +109,21 @@ const TableList: React.FC = () => {
     },
     // min_expenditure
     {
-      title: intl.formatMessage({ id: 'min_expenditure', defaultMessage: 'Min Expenditure (TRX)' }),
+      title: intl.formatMessage({ id: 'min_expenditure', defaultMessage: 'Min Expenditure' }),
       dataIndex: 'min_expenditure',
       valueType: 'digit',
     },
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: 'Expenditure (TRX)' }),
+      title: intl.formatMessage({ id: 'expenditure', defaultMessage: 'Expenditure' }),
       dataIndex: 'expenditure',
       valueType: 'digit',
+      render: (_, record) => {
+        if (record.type === 'daily') {
+          return `${record.expenditure} USDT`;
+        } else {
+          return `${record.expenditure} TRX`;
+        }
+      },
     },
     {
       title: intl.formatMessage({ id: 'commission', defaultMessage: 'Commission' }),
@@ -124,9 +131,22 @@ const TableList: React.FC = () => {
       valueType: 'digit',
     },
     {
-      title: intl.formatMessage({ id: 'expiration', defaultMessage: 'Expiration (Hour)' }),
+      title: intl.formatMessage({ id: 'expiration', defaultMessage: 'Expiration' }),
       dataIndex: 'expiration',
       valueType: 'digit',
+      render: (_, record) => {
+        if (record.type === 'daily') {
+          return `${record.expiration} ${intl.formatMessage({
+            id: 'days',
+            defaultMessage: 'days',
+          })}`;
+        } else {
+          return `${record.expiration} ${intl.formatMessage({
+            id: 'hours',
+            defaultMessage: 'hours',
+          })}`;
+        }
+      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
