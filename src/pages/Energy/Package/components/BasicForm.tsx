@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
+import { ProForm, ProFormDigit, ProFormSelect, ProFormText } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 import PackageEnum from '../../../../enums/packageStatus';
 
@@ -38,6 +38,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       }}
     >
       <ProForm.Group>
+        <ProFormText
+          name="name"
+          width="md"
+          label={intl.formatMessage({ id: 'type', defaultMessage: 'Type' })}
+          required
+        />
+
         <ProFormSelect
           name="type"
           width="md"
