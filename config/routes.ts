@@ -295,6 +295,13 @@ export default [
         icon: 'ProductOutlined',
         component: './Energy/Package',
       },
+      // package orders
+      {
+        path: '/energy/package-orders',
+        name: 'list.package-orders',
+        icon: 'ShoppingCartOutlined',
+        component: './Energy/PackageOrder',
+      },
       {
         path: '/energy/unrentals',
         name: 'list.unrentals',

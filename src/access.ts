@@ -370,6 +370,20 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetPackage:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/packages', 'GET')),
 
+    // PackageOrder
+    canCreatePackageOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-orders', 'POST')),
+    canDeletePackageOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-orders', 'DELETE')),
+    canUpdatePackageOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-orders/:id', 'PUT')),
+    canGetPackageOrder:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-orders', 'GET')),
+
     // UnRental
     canCreateUnRental:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/unrentals', 'POST')),

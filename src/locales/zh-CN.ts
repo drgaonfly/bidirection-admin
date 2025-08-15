@@ -7,6 +7,7 @@ import settingDrawer from './zh-CN/settingDrawer';
 import settings from './zh-CN/settings';
 import app from './zh-CN/app';
 import forms from './zh-CN/forms';
+import packageOrder from './zh-CN/packageOrder';
 export default {
   ...pages,
   ...globalHeader,
@@ -17,4 +18,5 @@ export default {
   ...component,
   ...app,
   ...forms,
+  ...packageOrder,
 };
