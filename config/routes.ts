@@ -321,6 +321,13 @@ export default [
         icon: 'ThunderboltOutlined',
         component: './Energy/Advance',
       },
+      // package usage records
+      {
+        path: '/energy/package-usage-records',
+        name: 'list.package-usage-records',
+        icon: 'HistoryOutlined',
+        component: './Energy/PackageUsageRecord',
+      },
     ],
   },
 

@@ -8,6 +8,7 @@ import settings from './zh-CN/settings';
 import app from './zh-CN/app';
 import forms from './zh-CN/forms';
 import packageOrder from './zh-CN/packageOrder';
+import packageUsageRecord from './zh-CN/packageUsageRecord';
 export default {
   ...pages,
   ...globalHeader,
@@ -19,4 +20,5 @@ export default {
   ...app,
   ...forms,
   ...packageOrder,
+  ...packageUsageRecord,
 };

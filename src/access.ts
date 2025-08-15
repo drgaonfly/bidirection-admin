@@ -405,5 +405,19 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/energysends/:id', 'PUT')),
     canGetEnergySend:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/energysends', 'GET')),
+
+    // PackageUsageRecord
+    canCreatePackageUsageRecord:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-usage-records', 'POST')),
+    canDeletePackageUsageRecord:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-usage-records', 'DELETE')),
+    canUpdatePackageUsageRecord:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-usage-records/:id', 'PUT')),
+    canGetPackageUsageRecord:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/package-usage-records', 'GET')),
   };
 }

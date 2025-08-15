@@ -8,6 +8,7 @@ import settings from './en-US/settings';
 import app from './en-US/app';
 import forms from './en-US/forms';
 import packageOrder from './en-US/packageOrder';
+import packageUsageRecord from './en-US/packageUsageRecord';
 export default {
   ...globalHeader,
   ...menu,
@@ -19,4 +20,5 @@ export default {
   ...pages,
   ...forms,
   ...packageOrder,
+  ...packageUsageRecord,
 };
