@@ -203,4 +203,11 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
   };
+
+  export type SuperAdminEnergyPerTimes = {
+    success: boolean;
+    data: {
+      energy_per_times: number;
+    };
+  };
 }

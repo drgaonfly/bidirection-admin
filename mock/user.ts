@@ -200,4 +200,18 @@ export default {
   },
 
   'GET  /api/login/captcha': getFakeCaptcha,
+  // Get super admin energy_per_times
+  'GET /api/super-admin/energy-per-times': (req: Request, res: Response) => {
+    // Mock super admin data
+    const superAdmin = {
+      energy_per_times: 100, // Default value, you can adjust this
+    };
+
+    res.json({
+      success: true,
+      data: {
+        energy_per_times: superAdmin.energy_per_times || 0,
+      },
+    });
+  },
 };
