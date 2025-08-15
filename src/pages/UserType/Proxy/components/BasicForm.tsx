@@ -9,6 +9,7 @@ import {
 } from '@ant-design/pro-components';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
+import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
 
 interface Props {
   newRecord?: boolean;
@@ -21,7 +22,6 @@ type pricePairItem = {
   name?: string;
   type: string; // 'hourly' | 'daily'
   commission: number;
-  aqusition: number;
   expiration: number;
   times?: number;
 };
@@ -55,6 +55,25 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     );
   }, [roles, values]);
 
+  const [energyPerTimes, setEnergyPerTimes] = useState(0);
+
+  useEffect(() => {
+    const fetchEnergyPerTimes = async () => {
+      try {
+        const { data, success } = await getSuperAdminEnergyPerTimes();
+
+        if (success) {
+          console.log('energy_per_times', data.energy_per_times);
+          setEnergyPerTimes(data.energy_per_times);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEnergyPerTimes();
+  }, [roles, values]);
+
   const hourly_columns: ProColumns<pricePairItem>[] = [
     {
       title: intl.formatMessage({ id: 'commission', defaultMessage: '分佣(trx)' }),
@@ -68,6 +87,11 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
       valueType: 'digit',
+      editable: false,
+      render: (_, record) => {
+        const times = Number(record.times) || 0;
+        return energyPerTimes * times;
+      },
     },
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
@@ -78,9 +102,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
       valueType: 'digit',
-      fieldProps: {
-        disabled: true,
-      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -118,6 +139,11 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
       valueType: 'digit',
+      editable: false,
+      render: (_, record) => {
+        const times = Number(record.times) || 0;
+        return energyPerTimes * times;
+      },
     },
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
@@ -128,9 +154,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
       valueType: 'digit',
-      fieldProps: {
-        disabled: true,
-      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -229,7 +252,19 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             return [defaultDoms.save, defaultDoms.cancel];
           },
         }}
-        recordCreatorProps={false}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            name: '',
+            expenditure: 0,
+            expiration: 0,
+            times: 0,
+            type: 'daily',
+            commission: 0,
+          }),
+        }}
       />
 
       <EditableProTable<pricePairItem>
@@ -244,7 +279,18 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             return [defaultDoms.save, defaultDoms.cancel];
           },
         }}
-        recordCreatorProps={false}
+        recordCreatorProps={{
+          newRecordType: 'dataSource',
+          position: 'bottom',
+          record: () => ({
+            _id: Date.now().toString(),
+            expenditure: 0,
+            expiration: 0,
+            times: 0,
+            type: 'hourly',
+            commission: 0,
+          }),
+        }}
       />
 
       {!newRecord && (

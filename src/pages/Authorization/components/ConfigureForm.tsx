@@ -14,6 +14,7 @@ import {
 } from '@ant-design/pro-components';
 import { Form, Input, message, Button } from 'antd';
 import { FormattedMessage, useAccess, useIntl, useModel } from '@umijs/max';
+import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
 
 type menuItem = {
   _id: string;
@@ -39,7 +40,7 @@ type pricePairItem = {
   _id: string;
   name?: string;
   expenditure: number;
-  aqusition: number;
+  // aqusition: number;
   expiration: number;
   times: number;
   type: string; // hourly, daily
@@ -93,7 +94,24 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     values?.price_pairs?.filter((item: pricePairItem) => item.type === 'daily') || [],
   );
   const [generating, setGenerating] = useState(false);
-  // const [energyAddress, setEnergyAddress] = useState<string>('');
+  const [energyPerTimes, setEnergyPerTimes] = useState(0);
+
+  useEffect(() => {
+    const fetchEnergyPerTimes = async () => {
+      try {
+        const { data, success } = await getSuperAdminEnergyPerTimes();
+
+        if (success) {
+          console.log('energy_per_times', data.energy_per_times);
+          setEnergyPerTimes(data.energy_per_times);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEnergyPerTimes();
+  }, [currentUser]);
 
   // 按钮点击函数
   const handleGenerateEnergyAddress = async () => {
@@ -242,8 +260,11 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
-      fieldProps: {
-        disabled: !access.canSuperAdmin,
+      valueType: 'digit',
+      editable: false,
+      render: (_, record) => {
+        const times = Number(record.times) || 0;
+        return energyPerTimes * times;
       },
     },
     {
@@ -295,8 +316,11 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     {
       title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
       dataIndex: 'aqusition',
-      fieldProps: {
-        disabled: !access.canSuperAdmin,
+      valueType: 'digit',
+      editable: false,
+      render: (_, record) => {
+        const times = Number(record.times) || 0;
+        return energyPerTimes * times;
       },
     },
     {
@@ -510,7 +534,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             _id: Date.now().toString(),
             name: '',
             expenditure: 0,
-            aqusition: 0,
             expiration: 0,
             times: 0,
             type: 'daily',
@@ -536,7 +559,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           record: () => ({
             _id: Date.now().toString(),
             expenditure: 0,
-            aqusition: 0,
             expiration: 0,
             times: 0,
             type: 'hourly',

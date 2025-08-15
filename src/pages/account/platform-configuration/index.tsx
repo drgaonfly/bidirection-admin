@@ -1,10 +1,11 @@
 import { Card, message, Typography, Button, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
 import { ProForm, ProFormDigit, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
+import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
 
 const { Text } = Typography;
 
@@ -14,6 +15,24 @@ const PlatformConfiguration: React.FC = () => {
   const { currentUser } = initialState || {};
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [energyPerTimes, setEnergyPerTimes] = useState(0);
+
+  useEffect(() => {
+    const fetchEnergyPerTimes = async () => {
+      try {
+        const { data, success } = await getSuperAdminEnergyPerTimes();
+
+        if (success) {
+          console.log('energy_per_times', data.energy_per_times);
+          setEnergyPerTimes(data.energy_per_times);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEnergyPerTimes();
+  }, [currentUser]);
 
   const handleSubmit = async (values: {
     rechargeAddress: string;
@@ -130,6 +149,7 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '请输入每笔能量消耗 (sun)',
               })}
               min={0}
+              defaultValue={energyPerTimes}
             />
             <ProFormDigit
               width="xl"
