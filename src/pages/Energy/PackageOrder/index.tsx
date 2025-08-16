@@ -171,19 +171,19 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: intl.formatMessage({ id: 'packageOrder.filter.all' }),
+                label: intl.formatMessage({ id: 'all' }),
                 key: '',
               },
               {
-                label: intl.formatMessage({ id: 'packageOrder.filter.pending' }),
+                label: intl.formatMessage({ id: 'pending' }),
                 key: 'pending',
               },
               {
-                label: intl.formatMessage({ id: 'packageOrder.filter.active' }),
-                key: 'active',
+                label: intl.formatMessage({ id: 'using' }),
+                key: 'using',
               },
               {
-                label: intl.formatMessage({ id: 'packageOrder.filter.expired' }),
+                label: intl.formatMessage({ id: 'expired' }),
                 key: 'expired',
               },
             ],
