@@ -84,7 +84,7 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.proxy' }),
-      dataIndex: ['proxy', 'username'],
+      dataIndex: ['proxy', 'name'],
       hideInSearch: true,
       width: 100,
     },
