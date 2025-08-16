@@ -136,9 +136,12 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'packageOrder.columns.proxy' }),
-      dataIndex: ['proxy', 'username'],
+      dataIndex: 'proxy',
       hideInSearch: true,
       width: 100,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
     },
     {
       title: intl.formatMessage({ id: 'packageOrder.columns.createdAt' }),
