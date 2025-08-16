@@ -3,11 +3,13 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import PackageOrderStatusEnum from '@/enums/packageOrderStatus';
+import PaymentTypeEnum from '@/enums/paymentType';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -39,19 +41,6 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
 
   const access = useAccess();
-
-  // 套餐订单状态枚举
-  const PackageOrderStatusEnum = {
-    pending: { text: intl.formatMessage({ id: 'packageOrder.status.pending' }), status: 'warning' },
-    active: { text: intl.formatMessage({ id: 'packageOrder.status.active' }), status: 'success' },
-    expired: { text: intl.formatMessage({ id: 'packageOrder.status.expired' }), status: 'error' },
-  };
-
-  // 支付类型枚举
-  const PaymentTypeEnum = {
-    trx: { text: intl.formatMessage({ id: 'packageOrder.paymentType.trx' }), status: 'processing' },
-    usdt: { text: intl.formatMessage({ id: 'packageOrder.paymentType.usdt' }), status: 'default' },
-  };
 
   const columns: ProColumns<API.ItemData>[] = [
     {
@@ -106,11 +95,6 @@ const TableList: React.FC = () => {
       dataIndex: 'paymentType',
       valueEnum: PaymentTypeEnum,
       width: 100,
-      render: (_, record) => (
-        <Tag color={PaymentTypeEnum[record.paymentType as keyof typeof PaymentTypeEnum]?.status}>
-          {PaymentTypeEnum[record.paymentType as keyof typeof PaymentTypeEnum]?.text}
-        </Tag>
-      ),
     },
     {
       title: intl.formatMessage({ id: 'packageOrder.columns.expiredAt' }),
@@ -124,15 +108,6 @@ const TableList: React.FC = () => {
       dataIndex: 'status',
       valueEnum: PackageOrderStatusEnum,
       width: 100,
-      render: (_, record) => (
-        <Tag
-          color={
-            PackageOrderStatusEnum[record.status as keyof typeof PackageOrderStatusEnum]?.status
-          }
-        >
-          {PackageOrderStatusEnum[record.status as keyof typeof PackageOrderStatusEnum]?.text}
-        </Tag>
-      ),
     },
     {
       title: intl.formatMessage({ id: 'packageOrder.columns.proxy' }),
