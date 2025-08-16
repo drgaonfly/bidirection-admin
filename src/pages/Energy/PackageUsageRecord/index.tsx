@@ -3,11 +3,12 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import UsageStatusEnum from '@/enums/usageStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -32,29 +33,12 @@ const handleRemove = async (ids: string[]) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
+  const access = useAccess();
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
-
-  const access = useAccess();
-
-  // 使用状态枚举
-  const UsageStatusEnum = {
-    success: {
-      text: intl.formatMessage({ id: 'packageUsageRecord.status.success' }),
-      status: 'success',
-    },
-    failed: {
-      text: intl.formatMessage({ id: 'packageUsageRecord.status.failed' }),
-      status: 'error',
-    },
-    pending: {
-      text: intl.formatMessage({ id: 'packageUsageRecord.status.pending' }),
-      status: 'warning',
-    },
-  };
 
   const columns: ProColumns<API.ItemData>[] = [
     {
@@ -66,27 +50,39 @@ const TableList: React.FC = () => {
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.packageOrder' }),
-      dataIndex: ['packageOrder', 'id'],
+      dataIndex: 'packageOrder',
       copyable: true,
       width: 120,
+      renderText: (_, record) => {
+        return record.packageOrder?.id;
+      },
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.bot' }),
-      dataIndex: ['bot', 'botName'],
+      dataIndex: 'bot',
       hideInSearch: true,
       width: 120,
+      renderText: (_, record) => {
+        return record.bot?.botName;
+      },
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.botUser' }),
-      dataIndex: ['botUser', 'userName'],
+      dataIndex: 'botUser',
       hideInSearch: true,
       width: 120,
+      renderText: (_, record) => {
+        return record.botUser?.userName;
+      },
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.proxy' }),
-      dataIndex: ['proxy', 'name'],
+      dataIndex: 'proxy',
       hideInSearch: true,
       width: 100,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.address' }),
@@ -100,11 +96,6 @@ const TableList: React.FC = () => {
       dataIndex: 'status',
       valueEnum: UsageStatusEnum,
       width: 100,
-      render: (_, record) => (
-        <Tag color={UsageStatusEnum[record.status as keyof typeof UsageStatusEnum]?.status}>
-          {UsageStatusEnum[record.status as keyof typeof UsageStatusEnum]?.text}
-        </Tag>
-      ),
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
