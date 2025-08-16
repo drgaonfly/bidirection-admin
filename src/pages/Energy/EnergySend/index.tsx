@@ -60,6 +60,14 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'type', defaultMessage: '租赁类型' }),
+      dataIndex: 'type',
+      valueEnum: {
+        flash: { text: intl.formatMessage({ id: 'flash', defaultMessage: '闪租' }) },
+        daily: { text: intl.formatMessage({ id: 'daily', defaultMessage: '日租' }) },
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
       dataIndex: 'bot',
       copyable: true,
