@@ -260,4 +260,5 @@ export default {
   balance_after_deducted: 'Balance After Deducted',
   balance_before_deducted: 'Balance Before Deducted',
   days: 'Days',
+  using: 'Using',
 };

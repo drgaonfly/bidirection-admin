@@ -317,4 +317,5 @@ export default {
   balance_after_deducted: '扣款后余额',
   balance_before_deducted: '扣款前余额',
   days: '天',
+  using: '使用中',
 };
