@@ -175,10 +175,6 @@ const TableList: React.FC = () => {
                 key: '',
               },
               {
-                label: intl.formatMessage({ id: 'pending' }),
-                key: 'pending',
-              },
-              {
                 label: intl.formatMessage({ id: 'using' }),
                 key: 'using',
               },
