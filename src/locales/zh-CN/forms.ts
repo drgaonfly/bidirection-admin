@@ -205,7 +205,6 @@ export default {
   sticker: '贴纸',
   location: '位置',
   audio: '音频',
-  other: '其他',
   from: '发送者',
   is_bot: '是否机器人',
   language_code: '语言代码',
@@ -318,4 +317,6 @@ export default {
   balance_before_deducted: '扣款前余额',
   days: '天',
   using: '使用中',
+  myself: '自己用',
+  other: '他人用',
 };

@@ -15,6 +15,7 @@ export default {
   'packageUsageRecord.columns.usedAt': '使用时间',
   'packageUsageRecord.columns.notes': '备注',
   'packageUsageRecord.columns.createdAt': '创建时间',
+  'packageUsageRecord.columns.type': '类型',
 
   // 状态枚举
   'packageUsageRecord.status.success': '成功',
