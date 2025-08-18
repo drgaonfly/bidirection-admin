@@ -15,6 +15,7 @@ export default {
   'packageUsageRecord.columns.usedAt': 'Used At',
   'packageUsageRecord.columns.notes': 'Notes',
   'packageUsageRecord.columns.createdAt': 'Created At',
+  'packageUsageRecord.columns.type': 'Type',
 
   // Status enums
   'packageUsageRecord.status.success': 'Success',

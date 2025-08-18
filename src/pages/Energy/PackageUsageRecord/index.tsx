@@ -103,6 +103,11 @@ const TableList: React.FC = () => {
       valueType: 'digit',
       width: 100,
     },
+    // type
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.type' }),
+      dataIndex: 'type',
+    },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedAt' }),
       dataIndex: 'usedAt',
