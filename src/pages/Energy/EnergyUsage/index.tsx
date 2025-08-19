@@ -48,19 +48,19 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'address', defaultMessage: '地址' }),
-      dataIndex: 'address',
+      title: intl.formatMessage({ id: 'owner_address', defaultMessage: '拥有者地址' }),
+      dataIndex: 'owner_address',
+      copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'contract_address', defaultMessage: '合约地址' }),
+      dataIndex: 'contract_address',
       copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'consupmtion', defaultMessage: '消耗能量' }),
       dataIndex: 'consupmtion',
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'owner_address', defaultMessage: '拥有者' }),
-      dataIndex: 'owner',
-      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易哈希' }),
