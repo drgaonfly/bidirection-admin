@@ -48,18 +48,67 @@ const TableList: React.FC = () => {
       },
     },
     {
+      title: intl.formatMessage({ id: 'bot' }),
+      dataIndex: 'bot',
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record.bot?.botName;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'botUser' }),
+      dataIndex: 'botUser',
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record.botUser?.userName;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'proxy' }),
+      dataIndex: 'proxy',
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'spied_address', defaultMessage: '被监控的地址' }),
+      dataIndex: 'spied_address',
+      copyable: true,
+    },
+    {
       title: intl.formatMessage({ id: 'owner_address', defaultMessage: '拥有者地址' }),
       dataIndex: 'owner_address',
       copyable: true,
     },
+    // to_address
     {
-      title: intl.formatMessage({ id: 'contract_address', defaultMessage: '合约地址' }),
-      dataIndex: 'contract_address',
+      title: intl.formatMessage({ id: 'to_address', defaultMessage: '接收地址' }),
+      dataIndex: 'to_address',
       copyable: true,
+      hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'consupmtion', defaultMessage: '消耗能量' }),
-      dataIndex: 'consupmtion',
+      title: intl.formatMessage({ id: 'energy', defaultMessage: '消耗能量' }),
+      dataIndex: 'energy',
+      hideInSearch: true,
+    },
+    // bandWidth
+    {
+      title: intl.formatMessage({ id: 'bandwidth', defaultMessage: '消耗带宽' }),
+      dataIndex: 'bandwidth',
+      hideInSearch: true,
+    },
+    // amount
+    {
+      title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
+      dataIndex: 'amount',
+      hideInSearch: true,
+    },
+    // pens
+    {
+      title: intl.formatMessage({ id: 'pens', defaultMessage: '笔数' }),
+      dataIndex: 'pens',
       hideInSearch: true,
     },
     {
