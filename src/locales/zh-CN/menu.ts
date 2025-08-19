@@ -27,6 +27,7 @@ export default {
   'menu.list.energy.energy-sends': '能量发送记录',
   'menu.list.energy.advances': '能量预支',
   'menu.list.energy.package-usage-records': '笔数套餐使用记录',
+  'menu.list.energy.energy-usages': '能量使用记录',
 
   'menu.list.bots': '机器人列表',
   'menu.list.bot-users': '机器人用户列表',
@@ -70,6 +71,7 @@ export default {
   'menu.energy.energy-sends': '能量发送记录',
   'menu.energy.advances': '能量预支',
   'menu.energy.package-usage-records': '笔数套餐使用记录',
+  'menu.energy.energy-usages': '能量使用记录',
 
   'menu.change-password': '修改密码',
   'list.change-password': '修改密码',
@@ -120,6 +122,7 @@ export default {
   'menu.能量管理.能量发送记录': '能量发送记录',
   'menu.能量管理.能量预支': '能量预支',
   'menu.能量管理.笔数套餐使用记录': '笔数套餐使用记录',
+  'menu.能量管理.能量使用记录': '能量使用记录',
 
   'menu.机器人管理': '机器人管理',
   'menu.机器人用户管理': '机器人用户管理',

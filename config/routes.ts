@@ -328,6 +328,13 @@ export default [
         icon: 'HistoryOutlined',
         component: './Energy/PackageUsageRecord',
       },
+      // energy usages
+      {
+        path: '/energy/energy-usages',
+        name: 'list.energy-usages',
+        icon: 'ProfileOutlined',
+        component: './Energy/EnergyUsage',
+      },
     ],
   },
 
