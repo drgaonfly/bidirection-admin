@@ -72,13 +72,8 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'spied_address', defaultMessage: '被监控的地址' }),
-      dataIndex: 'spied_address',
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'owner_address', defaultMessage: '拥有者地址' }),
-      dataIndex: 'owner_address',
+      title: intl.formatMessage({ id: 'address', defaultMessage: '被监控的地址' }),
+      dataIndex: 'address',
       copyable: true,
     },
     // to_address
