@@ -59,8 +59,11 @@ const TableList: React.FC = () => {
       renderText: (_, record) => record.proxy?.name,
     },
     {
-      title: intl.formatMessage({ id: 'packageOrder', defaultMessage: 'Package Order' }),
-      dataIndex: 'packageOrder',
+      title: intl.formatMessage({
+        id: 'packageUsageRecord',
+        defaultMessage: 'Package Usage Record',
+      }),
+      dataIndex: 'packageUsageRecord',
       width: 120,
       renderText: (_, record) => record.packageOrder?.id,
     },
