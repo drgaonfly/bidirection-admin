@@ -25,6 +25,7 @@ export default {
   'menu.energy.advances': 'Advances',
   'menu.energy.package-usage-records': 'Package Usage Records',
   'menu.energy.energy-usages': 'Energy Usages',
+  'menu.energy.min-consumptions': 'Min Consumptions',
 
   'menu.change-password': 'Change Password',
 
@@ -73,6 +74,7 @@ export default {
   'menu.能量管理.能量预支': 'Advances',
   'menu.能量管理.笔数套餐使用记录': 'Package Usage Records',
   'menu.能量管理.能量使用记录': 'Energy Usage Records',
+  'menu.能量管理.低消记录': 'Min Consumptions',
 
   'menu.机器人管理': 'Bot Management',
   'menu.机器人用户管理': 'Bot User Management',

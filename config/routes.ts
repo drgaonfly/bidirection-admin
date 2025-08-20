@@ -335,6 +335,12 @@ export default [
         icon: 'ProfileOutlined',
         component: './Energy/EnergyUsage',
       },
+      {
+        path: '/energy/min-consumptions',
+        name: 'list.min-consumptions',
+        icon: 'ProfileOutlined',
+        component: './Energy/MinConsumption',
+      },
     ],
   },
 

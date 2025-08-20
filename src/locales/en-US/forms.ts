@@ -262,4 +262,5 @@ export default {
   days: 'Days',
   using: 'Using',
   myself: 'Myself',
+  packageOrder: 'Package Order',
 };

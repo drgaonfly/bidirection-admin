@@ -319,4 +319,5 @@ export default {
   using: '使用中',
   myself: '自己用',
   other: '他人用',
+  packageOrder: '套餐订单',
 };

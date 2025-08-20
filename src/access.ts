@@ -432,5 +432,19 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/energy-usages/:id', 'PUT')),
     canGetEnergyUsage:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/energy-usages', 'GET')),
+
+    // minConsumption
+    canCreateMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'POST')),
+    canDeleteMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'DELETE')),
+    canUpdateMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions/:id', 'PUT')),
+    canGetMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'GET')),
   };
 }
