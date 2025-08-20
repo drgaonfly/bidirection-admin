@@ -75,22 +75,6 @@ const TableList: React.FC = () => {
       width: 100,
     },
     {
-      title: intl.formatMessage({ id: 'energy', defaultMessage: 'Energy' }),
-      dataIndex: 'energy',
-      hideInSearch: true,
-      valueType: 'digit',
-      width: 100,
-    },
-    {
-      title: intl.formatMessage({ id: 'txHash', defaultMessage: 'Tx ID' }),
-      dataIndex: 'tx_id',
-      hideInSearch: true,
-      hideInTable: true,
-      width: 200,
-      ellipsis: true,
-      copyable: true,
-    },
-    {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
