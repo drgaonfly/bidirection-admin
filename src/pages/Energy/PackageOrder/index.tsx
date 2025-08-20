@@ -68,6 +68,13 @@ const TableList: React.FC = () => {
       valueType: 'digit',
       width: 80,
     },
+    // current_times
+    {
+      title: intl.formatMessage({ id: 'packageOrder.columns.currentTimes' }),
+      dataIndex: 'current_times',
+      valueType: 'digit',
+      width: 80,
+    },
     {
       title: intl.formatMessage({ id: 'packageOrder.columns.price' }),
       dataIndex: 'price',

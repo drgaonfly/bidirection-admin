@@ -320,4 +320,5 @@ export default {
   myself: '自己用',
   other: '他人用',
   packageOrder: '套餐订单',
+  packageUsageRecord: '套餐使用记录',
 };

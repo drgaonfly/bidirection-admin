@@ -263,4 +263,5 @@ export default {
   using: 'Using',
   myself: 'Myself',
   packageOrder: 'Package Order',
+  packageUsageRecord: 'Package Usage Record',
 };

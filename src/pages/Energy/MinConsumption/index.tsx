@@ -65,7 +65,7 @@ const TableList: React.FC = () => {
       }),
       dataIndex: 'packageUsageRecord',
       width: 120,
-      renderText: (_, record) => record.packageOrder?.id,
+      renderText: (_, record) => record.packageUsageRecord?.id,
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: 'times' }),
@@ -85,6 +85,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'txHash', defaultMessage: 'Tx ID' }),
       dataIndex: 'tx_id',
       hideInSearch: true,
+      hideInTable: true,
       width: 200,
       ellipsis: true,
       copyable: true,

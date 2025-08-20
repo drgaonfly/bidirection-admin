@@ -241,7 +241,7 @@ const PlatformConfiguration: React.FC = () => {
               <Text strong>
                 {intl.formatMessage({
                   id: 'platform.recycle_min',
-                  defaultMessage: '最低销回收时间 (小时)',
+                  defaultMessage: '最低消费笔数',
                 })}
                 :{' '}
               </Text>
