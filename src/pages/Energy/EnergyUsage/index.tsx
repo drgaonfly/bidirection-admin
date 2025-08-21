@@ -8,6 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import PackageUsageTypeEnum from '@/enums/packageUsageType';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -82,6 +83,12 @@ const TableList: React.FC = () => {
       dataIndex: 'to_address',
       copyable: true,
       hideInSearch: true,
+    },
+    // type
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.type' }),
+      dataIndex: 'type',
+      valueEnum: PackageUsageTypeEnum,
     },
     {
       title: intl.formatMessage({ id: 'energy', defaultMessage: '消耗能量' }),
