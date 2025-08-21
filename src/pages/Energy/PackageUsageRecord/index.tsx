@@ -95,6 +95,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.status' }),
       dataIndex: 'status',
+      hideInSearch: true,
       valueEnum: UsageStatusEnum,
       width: 100,
     },
@@ -121,6 +122,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'isRecycled', defaultMessage: '是否回收' }),
       dataIndex: 'isRecycled',
+      hideInSearch: true,
       renderText: (_, record) => {
         return record?.isRecycled ? (
           <Badge status="success" text="已回收" />

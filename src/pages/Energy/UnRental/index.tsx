@@ -49,12 +49,20 @@ const TableList: React.FC = () => {
         return record?.proxy?.name;
       },
     },
+    // 订单类型·
+    {
+      title: intl.formatMessage({ id: 'order_type', defaultMessage: '订单类型' }),
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record?.rental ? '闪租' : '日租';
+      },
+    },
     {
       title: intl.formatMessage({ id: 'rental', defaultMessage: '租用订单' }),
       dataIndex: 'rental',
       hideInSearch: true,
       renderText: (_, record) => {
-        return record?.rental?._id;
+        return record?.rental?._id || record?.packageUsageRecord.packageOrder.id;
       },
     },
     {
