@@ -264,4 +264,5 @@ export default {
   myself: 'Myself',
   packageOrder: 'Package Order',
   packageUsageRecord: 'Package Usage Record',
+  isRecycled: 'Is Recycled',
 };

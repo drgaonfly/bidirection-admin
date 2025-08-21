@@ -321,4 +321,5 @@ export default {
   other: '他人用',
   packageOrder: '套餐订单',
   packageUsageRecord: '套餐使用记录',
+  isRecycled: '是否回收',
 };
