@@ -3,7 +3,7 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message } from 'antd';
+import { Badge, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -117,6 +117,18 @@ const TableList: React.FC = () => {
       dataIndex: 'transactionAt',
       valueType: 'dateTime',
       hideInSearch: true,
+    },
+    // isRecycled
+    {
+      title: intl.formatMessage({ id: 'isRecycled', defaultMessage: '是否回收' }),
+      dataIndex: 'isRecycled',
+      renderText: (_, record) => {
+        return record?.isRecycled ? (
+          <Badge status="success" text="已回收" />
+        ) : (
+          <Badge status="error" text="未回收" />
+        );
+      },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
