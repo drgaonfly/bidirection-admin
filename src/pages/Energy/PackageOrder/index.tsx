@@ -133,6 +133,13 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
+      title: intl.formatMessage({ id: 'expiredAt' }),
+      dataIndex: 'expiredAt',
+      valueType: 'dateTime',
+      width: 150,
+      hideInSearch: true,
+    },
+    {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
       dataIndex: 'option',
       valueType: 'option',
