@@ -3,7 +3,7 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { Badge, message } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -99,6 +99,14 @@ const TableList: React.FC = () => {
       valueEnum: UsageStatusEnum,
       width: 100,
     },
+    // recycling_status
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.recycleStatus' }),
+      dataIndex: 'recycling_status',
+      hideInSearch: true,
+      valueEnum: UsageStatusEnum,
+      width: 100,
+    },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
       dataIndex: 'usedTimes',
@@ -117,19 +125,6 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
       width: 150,
       hideInSearch: true,
-    },
-    // isRecycled
-    {
-      title: intl.formatMessage({ id: 'isRecycled', defaultMessage: '是否回收' }),
-      dataIndex: 'isRecycled',
-      hideInSearch: true,
-      renderText: (_, record) => {
-        return record?.isRecycled ? (
-          <Badge status="success" text="已回收" />
-        ) : (
-          <Badge status="error" text="未回收" />
-        );
-      },
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.notes' }),
