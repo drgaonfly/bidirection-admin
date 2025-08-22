@@ -114,6 +114,17 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
+      title: intl.formatMessage({ id: 'isRecycled', defaultMessage: '是否回收' }),
+      dataIndex: 'isRecycled',
+      renderText: (_, record) => {
+        return record?.isRecycled ? (
+          <Badge status="success" text="已回收" />
+        ) : (
+          <Badge status="error" text="未回收" />
+        );
+      },
+    },
+    {
       title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易哈希' }),
       dataIndex: 'tx_id',
       copyable: true,
@@ -125,17 +136,12 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
       hideInSearch: true,
     },
-    // isRecycled
+    // createdAt
     {
-      title: intl.formatMessage({ id: 'isRecycled', defaultMessage: '是否回收' }),
-      dataIndex: 'isRecycled',
-      renderText: (_, record) => {
-        return record?.isRecycled ? (
-          <Badge status="success" text="已回收" />
-        ) : (
-          <Badge status="error" text="未回收" />
-        );
-      },
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
