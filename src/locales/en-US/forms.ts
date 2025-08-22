@@ -265,4 +265,6 @@ export default {
   packageOrder: 'Package Order',
   packageUsageRecord: 'Package Usage Record',
   isRecycled: 'Is Recycled',
+  expenditure_hourly: 'Price (trx)',
+  expenditure_daily: 'Price (usdt)',
 };

@@ -250,7 +250,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
   const pricePair_hourly_columns: ProColumns<pricePairItem>[] = [
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
+      title: intl.formatMessage({ id: 'expenditure_hourly', defaultMessage: '价格(trx)' }),
       dataIndex: 'expenditure',
       valueType: 'digit',
       formItemProps: {
@@ -306,7 +306,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
+      title: intl.formatMessage({ id: 'expenditure_daily', defaultMessage: '价格(usdt)' }),
       dataIndex: 'expenditure',
       valueType: 'digit',
       formItemProps: {
@@ -527,18 +527,22 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
           },
         }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            name: '',
-            expenditure: 0,
-            expiration: 0,
-            times: 0,
-            type: 'daily',
-          }),
-        }}
+        recordCreatorProps={
+          access.canSuperAdmin
+            ? {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  name: '',
+                  expenditure: 0,
+                  expiration: 0,
+                  times: 0,
+                  type: 'daily',
+                }),
+              }
+            : false
+        }
       />
 
       <EditableProTable<pricePairItem>
@@ -553,17 +557,21 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
           },
         }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            expenditure: 0,
-            expiration: 0,
-            times: 0,
-            type: 'hourly',
-          }),
-        }}
+        recordCreatorProps={
+          access.canSuperAdmin
+            ? {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  expenditure: 0,
+                  expiration: 0,
+                  times: 0,
+                  type: 'hourly',
+                }),
+              }
+            : false
+        }
       />
 
       <EditableProTable<commandItem>

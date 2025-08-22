@@ -107,11 +107,6 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       valueEnum: PackageEnum,
     },
-    {
-      title: intl.formatMessage({ id: 'aqusition', defaultMessage: 'Aqusition (SUN)' }),
-      dataIndex: 'aqusition',
-      valueType: 'digit',
-    },
     // min_expenditure
     {
       title: intl.formatMessage({ id: 'min_expenditure', defaultMessage: 'Min Expenditure' }),
