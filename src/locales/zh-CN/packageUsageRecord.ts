@@ -10,12 +10,13 @@ export default {
   'packageUsageRecord.columns.botUser': '机器人用户',
   'packageUsageRecord.columns.proxy': '代理',
   'packageUsageRecord.columns.address': '使用地址',
-  'packageUsageRecord.columns.status': '使用状态',
+  'packageUsageRecord.columns.status': '发送状态',
   'packageUsageRecord.columns.usedTimes': '使用笔数',
   'packageUsageRecord.columns.usedAt': '使用时间',
   'packageUsageRecord.columns.notes': '备注',
   'packageUsageRecord.columns.createdAt': '创建时间',
   'packageUsageRecord.columns.type': '类型',
+  'packageUsageRecord.columns.recycleStatus': '回收状态',
 
   // 状态枚举
   'packageUsageRecord.status.success': '成功',
