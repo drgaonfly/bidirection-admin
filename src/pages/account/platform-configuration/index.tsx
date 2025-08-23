@@ -40,6 +40,7 @@ const PlatformConfiguration: React.FC = () => {
     mnemonic: string;
     energy_address: string;
     recycle_min: number;
+    quick_recycle_time: number;
   }) => {
     try {
       setLoading(true);
@@ -84,6 +85,7 @@ const PlatformConfiguration: React.FC = () => {
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
               recycle_min: currentUser?.recycle_min || 12,
+              quick_recycle_time: currentUser?.quick_recycle_time || 1,
             }}
             submitter={{
               submitButtonProps: {
@@ -161,6 +163,19 @@ const PlatformConfiguration: React.FC = () => {
               placeholder={intl.formatMessage({
                 id: 'please.enter.recycle_min',
                 defaultMessage: '最低消费笔数',
+              })}
+              min={0}
+            />
+            <ProFormDigit
+              width="xl"
+              name="quick_recycle_time"
+              label={intl.formatMessage({
+                id: 'platform.quick_recycle_time',
+                defaultMessage: '快速回收时间 (分钟)',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.quick_recycle_time',
+                defaultMessage: '请输入快速回收时间 (分钟)',
               })}
               min={0}
             />
@@ -246,6 +261,16 @@ const PlatformConfiguration: React.FC = () => {
                 :{' '}
               </Text>
               <Text>{currentUser?.recycle_min ?? '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.quick_recycle_time',
+                  defaultMessage: '快速回收时间 (分钟)',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.quick_recycle_time ?? '-'}</Text>
             </div>
             <div style={{ marginBottom: 16 }}>
               <Text strong>

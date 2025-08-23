@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -25,6 +25,25 @@ const handleRemove = async (ids: string[]) => {
     message.error(
       error?.response?.data?.message ?? (
         <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
+      ),
+    );
+    return false;
+  }
+};
+
+const resendEnergy = async (id: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/energy-sends/${id}/resend`);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
       ),
     );
     return false;
@@ -139,6 +158,18 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
+        record?.status === 'failed' && (
+          <a
+            key="resend_energy"
+            onClick={async () => {
+              setCurrentRow(record);
+              await resendEnergy(currentRow?._id);
+              actionRef.current?.reload();
+            }}
+          >
+            <FormattedMessage id="resend_energy" defaultMessage="重新发送" />
+          </a>
+        ),
         access.canDeleteEnergySend && (
           <DeleteLink
             key="delete"
