@@ -158,11 +158,11 @@ const PlatformConfiguration: React.FC = () => {
               name="recycle_min"
               label={intl.formatMessage({
                 id: 'platform.recycle_min',
-                defaultMessage: '最低消费笔数',
+                defaultMessage: '累计消费笔数',
               })}
               placeholder={intl.formatMessage({
                 id: 'please.enter.recycle_min',
-                defaultMessage: '最低消费笔数',
+                defaultMessage: '累计消费笔数',
               })}
               min={0}
             />
@@ -256,7 +256,7 @@ const PlatformConfiguration: React.FC = () => {
               <Text strong>
                 {intl.formatMessage({
                   id: 'platform.recycle_min',
-                  defaultMessage: '最低消费笔数',
+                  defaultMessage: '累计消费笔数',
                 })}
                 :{' '}
               </Text>
