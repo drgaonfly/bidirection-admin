@@ -17,6 +17,7 @@ export default {
   'packageUsageRecord.columns.createdAt': 'Created At',
   'packageUsageRecord.columns.type': 'Type',
   'packageUsageRecord.columns.recycleStatus': 'Recycle Status',
+  'packageUsageRecord.columns.recordValue': 'Record Value',
 
   // Status enums
   'packageUsageRecord.status.success': 'Success',

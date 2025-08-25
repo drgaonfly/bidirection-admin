@@ -92,6 +92,13 @@ const TableList: React.FC = () => {
       ellipsis: true,
       width: 150,
     },
+    // record_value
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.recordValue' }),
+      dataIndex: 'record_value',
+      hideInSearch: true,
+      width: 100,
+    },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.status' }),
       dataIndex: 'status',

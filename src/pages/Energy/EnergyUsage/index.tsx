@@ -45,7 +45,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'packageUsageRecord', defaultMessage: '套餐使用记录' }),
       dataIndex: 'packageUsageRecord',
       renderText: (_, record) => {
-        return record.packageUsageRecord.id;
+        return record.packageUsageRecord?.id;
       },
     },
     {
