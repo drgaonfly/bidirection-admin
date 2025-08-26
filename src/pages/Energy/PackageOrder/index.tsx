@@ -185,7 +185,7 @@ const TableList: React.FC = () => {
             }}
           />
         ),
-        access.canUpdateBot && (
+        access.canUpdatePackageOrder && (
           <a
             key="edit"
             onClick={() => {
