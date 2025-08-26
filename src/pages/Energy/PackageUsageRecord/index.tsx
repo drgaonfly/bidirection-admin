@@ -100,6 +100,19 @@ const TableList: React.FC = () => {
       width: 100,
     },
     {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
+      dataIndex: 'usedTimes',
+      valueType: 'digit',
+      width: 100,
+    },
+    // today_used_times
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.todayUsedTimes' }),
+      dataIndex: 'today_used_times',
+      valueType: 'digit',
+      width: 100,
+    },
+    {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.status' }),
       dataIndex: 'status',
       hideInSearch: true,
@@ -114,12 +127,7 @@ const TableList: React.FC = () => {
       valueEnum: UsageStatusEnum,
       width: 100,
     },
-    {
-      title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
-      dataIndex: 'usedTimes',
-      valueType: 'digit',
-      width: 100,
-    },
+
     // type
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.type' }),

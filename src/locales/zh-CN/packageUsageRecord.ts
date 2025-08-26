@@ -18,6 +18,7 @@ export default {
   'packageUsageRecord.columns.type': '类型',
   'packageUsageRecord.columns.recycleStatus': '回收状态',
   'packageUsageRecord.columns.recordValue': '记录值',
+  'packageUsageRecord.columns.todayUsedTimes': '今日使用笔数',
 
   // 状态枚举
   'packageUsageRecord.status.success': '成功',
