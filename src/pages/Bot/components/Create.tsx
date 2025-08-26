@@ -1,6 +1,6 @@
 import { useIntl } from '@umijs/max';
 import { Modal } from 'antd';
-import BasicForm from './BasicForm';
+import BasicForm from '../../Energy/PackageOrder/components/BasicForm';
 
 interface Props {
   open: boolean;

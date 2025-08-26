@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -10,6 +10,7 @@ import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import PackageOrderStatusEnum from '@/enums/packageOrderStatus';
 import PaymentTypeEnum from '@/enums/paymentType';
+import Update from './components/Update';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -32,6 +33,25 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+const handleUpdate = async (fields: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/package-orders/${fields._id}`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
@@ -39,6 +59,7 @@ const TableList: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
   const access = useAccess();
 
@@ -164,6 +185,19 @@ const TableList: React.FC = () => {
             }}
           />
         ),
+        access.canUpdateBot && (
+          <a
+            key="edit"
+            onClick={() => {
+              console.log();
+
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
+        ),
       ],
     },
   ];
@@ -247,6 +281,24 @@ const TableList: React.FC = () => {
           setShowDetail(false);
         }}
       />
+
+      {access.canUpdatePackageOrder && (
+        <Update
+          onSubmit={async (value) => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalOpen(false);
+              setCurrentRow(undefined);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={handleUpdateModalOpen}
+          updateModalOpen={updateModalOpen}
+          values={currentRow}
+        />
+      )}
     </PageContainer>
   );
 };
