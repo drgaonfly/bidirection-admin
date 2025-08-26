@@ -74,8 +74,8 @@ const TableList: React.FC = () => {
       renderText: (_, record) => record.packageUsageRecord?.id,
     },
     {
-      title: intl.formatMessage({ id: 'times', defaultMessage: 'times' }),
-      dataIndex: 'pens',
+      title: intl.formatMessage({ id: 'minus', defaultMessage: '扣除' }),
+      dataIndex: 'minus',
       valueType: 'digit',
       hideInSearch: true,
       width: 100,
