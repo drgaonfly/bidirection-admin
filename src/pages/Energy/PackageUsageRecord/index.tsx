@@ -120,12 +120,12 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       width: 100,
     },
-    {
-      title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
-      dataIndex: 'usedTimes',
-      valueType: 'digit',
-      width: 100,
-    },
+    // {
+    //   title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
+    //   dataIndex: 'usedTimes',
+    //   valueType: 'digit',
+    //   width: 100,
+    // },
     // today_used_times
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.todayUsedTimes' }),

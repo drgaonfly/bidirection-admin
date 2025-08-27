@@ -43,6 +43,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'today_used_times', defaultMessage: '当天使用笔数' })}
           name="today_used_times"
         />
+
+        <ProFormDigit
+          rules={[{ required: true }]}
+          width="md"
+          label={intl.formatMessage({ id: 'record_value', defaultMessage: '记录值' })}
+          name="record_value"
+        />
       </ProForm.Group>
 
       {!newRecord && (
