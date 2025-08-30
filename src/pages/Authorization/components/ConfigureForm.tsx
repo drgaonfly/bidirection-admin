@@ -271,9 +271,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      fieldProps: {
-        disabled: !access.canSuperAdmin,
-      },
+      editable: false,
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
@@ -327,9 +325,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      fieldProps: {
-        disabled: !access.canSuperAdmin,
-      },
+      editable: false,
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),

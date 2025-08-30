@@ -40,6 +40,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
   const filteredRolesIds = roles?.map((role: { _id: string }) => role._id);
 
+  const isAdmin = access.canSuperAdmin ? true : false;
+
   const [form] = Form.useForm();
   //表单初始化filteredRoles数据更新时，确保表单中的角色选择能加载出来
   useEffect(() => {
@@ -97,11 +99,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
+      editable: false,
       valueType: 'digit',
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
+      editable: false,
       valueType: 'digit',
     },
     {
@@ -149,11 +153,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
+      editable: false,
       valueType: 'digit',
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
+      editable: false,
       valueType: 'digit',
     },
     {
@@ -210,14 +216,12 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'name' })}
           name="name"
         />
-
         <ProFormText
           rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'email' })}
           name="email"
         />
-
         <ProFormText
           rules={[{ required: newRecord }]}
           width="md"
@@ -225,7 +229,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="password"
         />
 
-        <ProxySelect currentUser={values} />
+        {isAdmin && <ProxySelect currentUser={values} />}
 
         {newRecord &&
           (loading ? (
@@ -260,7 +264,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           },
         }}
         recordCreatorProps={
-          access.canSuperAdmin
+          isAdmin
             ? {
                 newRecordType: 'dataSource',
                 position: 'bottom',
@@ -291,7 +295,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           },
         }}
         recordCreatorProps={
-          access.canSuperAdmin
+          isAdmin
             ? {
                 newRecordType: 'dataSource',
                 position: 'bottom',
