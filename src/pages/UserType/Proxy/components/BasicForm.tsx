@@ -1,4 +1,4 @@
-import { FormattedMessage, useIntl, useAccess } from '@umijs/max';
+import { FormattedMessage, useIntl, useAccess, useModel } from '@umijs/max';
 import React, { useState, useEffect } from 'react';
 import {
   ProForm,
@@ -30,6 +30,8 @@ type pricePairItem = {
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
   const access = useAccess();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const { items: roles, loading } = useQueryList('/roles/filter/?type=proxy');
   const [hourlyPricePairs, setHourlyPricePairs] = useState<pricePairItem[]>(
     values?.price_pairs?.filter((item: pricePairItem) => item.type === 'hourly') || [],
@@ -229,7 +231,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="password"
         />
 
-        {values?.role === 'ADMIN' && <ProxySelect currentUser={values} />}
+        {currentUser?.isAdmin && <ProxySelect currentUser={values} />}
 
         {newRecord &&
           (loading ? (
