@@ -17,7 +17,7 @@ const ProxySelect: React.FC<ProxySelectProps> = ({ currentUser }) => {
 
   return (
     <ProFormSelect
-      rules={[{ required: true }]}
+      rules={[{ required: false }]}
       options={filteredUsers.map((user: any) => ({
         label: user.name,
         value: user._id,

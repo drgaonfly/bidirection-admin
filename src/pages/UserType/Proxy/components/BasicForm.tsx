@@ -229,7 +229,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           name="password"
         />
 
-        {isAdmin && <ProxySelect currentUser={values} />}
+        {values?.role === 'ADMIN' && <ProxySelect currentUser={values} />}
 
         {newRecord &&
           (loading ? (
