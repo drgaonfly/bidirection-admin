@@ -324,4 +324,5 @@ export default {
   isRecycled: '是否回收',
   expenditure_hourly: '价格(trx)',
   expenditure_daily: '价格(usdt)',
+  superior: '上级',
 };

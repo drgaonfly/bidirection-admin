@@ -7,6 +7,7 @@ import {
   ProColumns,
   EditableProTable,
 } from '@ant-design/pro-components';
+import ProxySelect from './ProxySelect';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
@@ -172,6 +173,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       initialValues={{
         ...values,
         pricePairs: values?.pricePairs?.map((item: any) => item._id),
+        proxy: values?.proxy?._id,
       }}
       onFinish={async (values) => {
         const combinedPricePairs = [
@@ -208,18 +210,23 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'name' })}
           name="name"
         />
+
         <ProFormText
           rules={[{ required: true }]}
           width="md"
           label={intl.formatMessage({ id: 'email' })}
           name="email"
         />
+
         <ProFormText
           rules={[{ required: newRecord }]}
           width="md"
           label={intl.formatMessage({ id: 'password' })}
           name="password"
         />
+
+        <ProxySelect currentUser={values} />
+
         {newRecord &&
           (loading ? (
             <Spin spinning={loading} />
