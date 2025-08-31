@@ -96,6 +96,8 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [generating, setGenerating] = useState(false);
   const [energyPerTimes, setEnergyPerTimes] = useState(0);
 
+  const isAdmin = currentUser?.isAdmin;
+
   useEffect(() => {
     const fetchEnergyPerTimes = async () => {
       try {
@@ -250,8 +252,21 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
   const pricePair_hourly_columns: ProColumns<pricePairItem>[] = [
     {
+      title: intl.formatMessage({ id: 'name', defaultMessage: '命令名' }),
+      dataIndex: 'name',
+    },
+    {
       title: intl.formatMessage({ id: 'expenditure_hourly', defaultMessage: '价格(trx)' }),
       dataIndex: 'expenditure',
+      valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'sale', defaultMessage: '出价(trx)' }),
+      dataIndex: 'sale',
       valueType: 'digit',
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
@@ -304,8 +319,17 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'expenditure_daily', defaultMessage: '价格(usdt)' }),
+      title: intl.formatMessage({ id: 'expenditure_daily', defaultMessage: '来价(usdt)' }),
       dataIndex: 'expenditure',
+      valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'sale', defaultMessage: '出价(usdt)' }),
+      dataIndex: 'sale',
       valueType: 'digit',
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
@@ -535,6 +559,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
                   expiration: 0,
                   times: 0,
                   type: 'daily',
+                  sale: 0,
                 }),
               }
             : false
@@ -564,6 +589,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
                   expiration: 0,
                   times: 0,
                   type: 'hourly',
+                  sale: 0,
                 }),
               }
             : false

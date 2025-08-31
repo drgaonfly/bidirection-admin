@@ -322,7 +322,7 @@ export default {
   packageOrder: '套餐订单',
   packageUsageRecord: '套餐使用记录',
   isRecycled: '是否回收',
-  expenditure_hourly: '价格(trx)',
-  expenditure_daily: '价格(usdt)',
+  expenditure_hourly: '来价(trx)',
+  expenditure_daily: '来价(usdt)',
   superior: '上级',
 };

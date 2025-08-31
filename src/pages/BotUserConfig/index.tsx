@@ -77,21 +77,21 @@ const TableList: React.FC = () => {
       copyable: true,
       renderText: (bot) => bot?.botName,
     },
-    {
-      title: intl.formatMessage({ id: 'first_name_user_telegram' }),
-      dataIndex: 'firstName',
-      hideInSearch: true,
-      copyable: true,
-      renderText: (firstName, record) => record.botUser?.firstName,
-    },
-    // last_name
-    {
-      title: intl.formatMessage({ id: 'last_name_user_telegram' }),
-      dataIndex: 'lastName',
-      hideInSearch: true,
-      copyable: true,
-      renderText: (lastName, record) => record.botUser?.lastName,
-    },
+    // {
+    //   title: intl.formatMessage({ id: 'first_name_user_telegram' }),
+    //   dataIndex: 'firstName',
+    //   hideInSearch: true,
+    //   copyable: true,
+    //   renderText: (firstName, record) => record.botUser?.firstName,
+    // },
+    // // last_name
+    // {
+    //   title: intl.formatMessage({ id: 'last_name_user_telegram' }),
+    //   dataIndex: 'lastName',
+    //   hideInSearch: true,
+    //   copyable: true,
+    //   renderText: (lastName, record) => record.botUser?.lastName,
+    // },
     {
       title: intl.formatMessage({ id: 'usdt_balance' }),
       dataIndex: 'usdt_balance',
