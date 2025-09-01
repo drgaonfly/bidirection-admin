@@ -55,7 +55,7 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       renderText: (text, record) => {
         return (
-          record.botUser?.displayName || record.botUser?.firstName + '\n' + record.botUser?.lastName
+          record.botUser?.userName || record.botUser?.firstName + '\n' + record.botUser?.lastName
         );
       },
     },

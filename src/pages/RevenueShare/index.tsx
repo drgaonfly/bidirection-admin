@@ -65,7 +65,7 @@ const TableList: React.FC = () => {
     // balance_type
     {
       title: intl.formatMessage({ id: 'balance_type', defaultMessage: 'Type' }),
-      dataIndex: 'balanceType',
+      dataIndex: 'balance_type',
     },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
