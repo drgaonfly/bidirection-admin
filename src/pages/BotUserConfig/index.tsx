@@ -102,6 +102,12 @@ const TableList: React.FC = () => {
       dataIndex: 'trx_balance',
       hideInSearch: true,
     },
+    // point
+    {
+      title: intl.formatMessage({ id: 'point', defaultMessage: '积分' }),
+      dataIndex: 'point',
+      hideInSearch: true,
+    },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
