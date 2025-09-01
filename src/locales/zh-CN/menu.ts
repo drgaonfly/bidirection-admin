@@ -50,6 +50,7 @@ export default {
   'menu.list.applications': '代理申请',
   'menu.ist.transfers': '转账记录',
   'menu.list.deductions': '扣款记录',
+  'menu.list.revenue-shares': '代理分润',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -98,6 +99,7 @@ export default {
   'menu.transfers': '转账',
   'menu.member-orders': '会员订单',
   'menu.deductions': '扣款记录',
+  'menu.revenue-shares': '代理分润',
 
   'menu.工作台管理': '工作台管理',
   'menu.认证管理': '认证管理',
@@ -145,4 +147,5 @@ export default {
   'menu.积分记录': '积分记录',
   'menu.转账记录': '转账记录',
   'menu.扣款记录': '扣款记录',
+  'menu.代理分润': '代理分润',
 };

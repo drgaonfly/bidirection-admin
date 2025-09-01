@@ -47,6 +47,7 @@ export default {
   'menu.transfers': 'Transfers',
   'menu.member-orders': 'Member Orders',
   'menu.deductions': 'Deductions',
+  'menu.revenue-shares': 'Revenue Shares',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -92,4 +93,5 @@ export default {
   'menu.积分记录': 'Integers',
   'menu.转账记录': 'Transfer Records',
   'menu.扣款记录': 'Deductions',
+  'menu.代理分润': 'Revenue Shares',
 };

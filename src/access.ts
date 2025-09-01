@@ -446,5 +446,19 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetMinConsumption:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'GET')),
+
+    // revenueShare
+    canCreateRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'POST')),
+    canDeleteRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'DELETE')),
+    canUpdateRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares/:id', 'PUT')),
+    canGetRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'GET')),
   };
 }

@@ -343,11 +343,17 @@ export default [
       },
     ],
   },
-
   {
     path: '/deductions',
     name: 'list.deductions',
     icon: 'MoneyCollectFilled',
     component: './Deduction',
+  },
+  // 代理分润
+  {
+    path: '/revenue-shares',
+    name: 'list.revenue-shares',
+    icon: 'ProfileOutlined',
+    component: './RevenueShare',
   },
 ];
