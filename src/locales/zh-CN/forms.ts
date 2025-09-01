@@ -325,4 +325,7 @@ export default {
   expenditure_hourly: '来价(trx)',
   expenditure_daily: '来价(usdt)',
   superior: '上级',
+  balance_type: '余额类型',
+  revenue_amount: '分润数量',
+  integer_amount: '积分数量',
 };

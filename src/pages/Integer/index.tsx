@@ -3,7 +3,7 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Tag } from 'antd';
+import { message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -41,27 +41,12 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
+      title: intl.formatMessage({ id: 'bot', defaultMessage: 'Bot' }),
+      dataIndex: 'bot',
       hideInSearch: true,
-      hideInForm: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
-      dataIndex: 'id',
       copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'amount', defaultMessage: 'Amount' }),
-      dataIndex: 'amount',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'approach', defaultMessage: 'Approach' }),
-      dataIndex: 'approach',
-      hideInSearch: true,
-      render: (_, record) => {
-        return <Tag color="blue">{intl.formatMessage({ id: record.approach })}</Tag>;
+      renderText: (text, record) => {
+        return record.bot?.botName;
       },
     },
     {
@@ -74,15 +59,17 @@ const TableList: React.FC = () => {
         );
       },
     },
+    // type
     {
-      title: intl.formatMessage({ id: 'bot', defaultMessage: 'Bot' }),
-      dataIndex: 'bot',
-      hideInSearch: true,
-      copyable: true,
-      renderText: (text, record) => {
-        return record.bot?.botName;
-      },
+      title: intl.formatMessage({ id: 'type', defaultMessage: 'Type' }),
+      dataIndex: 'type',
     },
+    {
+      title: intl.formatMessage({ id: 'integer_amount', defaultMessage: 'Amount' }),
+      dataIndex: 'amount',
+      hideInSearch: true,
+    },
+
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
       dataIndex: 'createdAt',
@@ -138,12 +125,12 @@ const TableList: React.FC = () => {
                 key: '',
               },
               {
-                label: <FormattedMessage id="invitation" defaultMessage="invitation" />,
-                key: 'invitation',
+                label: <FormattedMessage id="PackageOrder" defaultMessage="PackageOrder" />,
+                key: 'PackageOrder',
               },
               {
-                label: <FormattedMessage id="recharge" defaultMessage="recharge" />,
-                key: 'recharge',
+                label: <FormattedMessage id="Rental" defaultMessage="Rental" />,
+                key: 'Rental',
               },
             ],
             onChange: (key: any) => {
@@ -155,7 +142,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/integers', { ...params, approach: activeKey }, sort, filter)
+          queryList('/integers', { ...params, type: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{

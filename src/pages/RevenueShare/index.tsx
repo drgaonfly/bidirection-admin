@@ -58,9 +58,14 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'amount', defaultMessage: 'Amount' }),
+      title: intl.formatMessage({ id: 'revenue_amount', defaultMessage: 'Amount' }),
       dataIndex: 'amount',
       hideInSearch: true,
+    },
+    // balance_type
+    {
+      title: intl.formatMessage({ id: 'balance_type', defaultMessage: 'Type' }),
+      dataIndex: 'balanceType',
     },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
