@@ -82,6 +82,8 @@ const PlatformConfiguration: React.FC = () => {
               rechargeAddress: currentUser?.rechargeAddress || '',
               energy_address: currentUser?.energy_address || '',
               energy_privateKey: currentUser?.energy_privateKey || '',
+              withdraw_address: currentUser?.withdraw_address || '',
+              withdraw_privateKey: currentUser?.withdraw_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
               recycle_min: currentUser?.recycle_min || 12,
@@ -200,6 +202,30 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '请输入能量的地址',
               })}
             />
+            <ProFormText
+              width="xl"
+              name="withdraw_address"
+              label={intl.formatMessage({
+                id: 'platform.withdraw_address',
+                defaultMessage: '提现地址',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.withdraw_address',
+                defaultMessage: '请输入提现地址',
+              })}
+            />
+            <ProFormText
+              width="xl"
+              name="withdraw_privateKey"
+              label={intl.formatMessage({
+                id: 'platform.withdraw_privateKey',
+                defaultMessage: '提现私钥',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.withdraw_privateKey',
+                defaultMessage: '请输入提现私钥',
+              })}
+            />
             <ProFormTextArea
               width="xl"
               name="mnemonic"
@@ -287,6 +313,26 @@ const PlatformConfiguration: React.FC = () => {
                 :{' '}
               </Text>
               <Text>{currentUser?.energy_address || '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.withdraw_address',
+                  defaultMessage: '提现地址',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.withdraw_address || '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.withdraw_privateKey',
+                  defaultMessage: '提现私钥',
+                })}
+                :{' '}
+              </Text>
+              <Text>{'*'.repeat(20)}</Text>
             </div>
             <div>
               <Text strong>
