@@ -11,6 +11,7 @@ const DeleteLink: React.FC<DeleteLinkProps> = ({ onOk }) => {
   return (
     <a
       key="delete"
+      style={{ color: 'red' }}
       onClick={() => {
         return Modal.confirm({
           title: intl.formatMessage({ id: 'confirm_delete' }),
