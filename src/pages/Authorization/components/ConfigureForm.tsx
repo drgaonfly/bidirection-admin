@@ -530,7 +530,16 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       <ProFormGroup>
         <ProFormDigit
           name="fee"
-          label="手续费"
+          label="闪兑费率"
+          width="md"
+          placeholder="请输入手续费百分比"
+          min={0}
+          max={100}
+          fieldProps={{ precision: 0, addonAfter: '%' }}
+        />
+        <ProFormDigit
+          name="downStream_fee"
+          label="下游闪兑费率"
           width="md"
           placeholder="请输入手续费百分比"
           min={0}
