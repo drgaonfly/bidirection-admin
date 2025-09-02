@@ -1,5 +1,6 @@
-import { useIntl } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { addItem, queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
+import { useRequest } from '@umijs/max';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
@@ -10,19 +11,19 @@ import type { FormValueType } from './components/Update';
 import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
-// import Recharge from './components/Recharge';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import RefusingModal from './components/RefusingModal';
 
 /**
- * @en-US Add node
- * @zh-CN 添加节点
+ * @en-US Add withdraw
+ * @zh-CN 添加提现
  * @param fields
  */
 const handleAdd = async (fields: API.ItemData) => {
   const hide = message.loading(<FormattedMessage id="adding" defaultMessage="Adding..." />);
   try {
-    await addItem('/proxies', { ...fields });
+    await addItem('/withdraws', { ...fields });
     hide();
     message.success(<FormattedMessage id="add_successful" defaultMessage="Added successfully" />);
     return true;
@@ -38,15 +39,15 @@ const handleAdd = async (fields: API.ItemData) => {
 };
 
 /**
- * @en-US Update node
- * @zh-CN 更新节点
+ * @en-US Update withdraw
+ * @zh-CN 更新提现
  *
  * @param fields
  */
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/proxies/${fields._id}`, fields);
+    await updateItem(`/withdraws/${fields._id}`, fields);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -63,16 +64,16 @@ const handleUpdate = async (fields: FormValueType) => {
 };
 
 /**
- *  Delete node
- * @zh-CN 删除节点
+ *  Delete withdraw
+ * @zh-CN 删除提现
  *
- * @param selectedRows
+ * @param ids
  */
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/proxies', {
+    await removeItem('/withdraws', {
       ids,
     });
     hide();
@@ -86,8 +87,46 @@ const handleRemove = async (ids: string[]) => {
   } catch (error: any) {
     hide();
     message.error(
-      error.response.data.message ?? (
+      error.response?.data?.message ?? (
         <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
+      ),
+    );
+    return false;
+  }
+};
+
+const handleReject = async (fields: FormValueType) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/withdraws/${fields._id}/reject`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
+const handleApprove = async (fields: FormValueType) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/withdraws/${fields._id}/approve`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
       ),
     );
     return false;
@@ -96,68 +135,77 @@ const handleRemove = async (ids: string[]) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
-  /**
-   * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
-   *  */
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  /**2024fc.xyz
-   * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
-   * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-  // const [batchUploadPriceModalOpen, setBatchUploadPriceModalOpen] = useState<boolean>(false);
-
-  const [showDetail, setShowDetail] = useState<boolean>(false);
-
   const actionRef = useRef<ActionType>();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
+
+  // 获取用户余额
+  const { data: balanceData, loading: balanceLoading } = useRequest(
+    `/users/${currentUser?._id}/get-balances`,
+    {
+      refreshDeps: [], // 依赖项为空数组，表示只在组件挂载时请求一次
+    },
+  );
+
+  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
-  // const [rechargeModalVisible, setRechargeModalVisible] = useState(false);
+  const [refusingModalOpen, handleRefusingModalOpen] = useState<boolean>(false);
   const access = useAccess();
 
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
    * */
-  // Define roles object with index signature
 
   const columns: ProColumns<API.ItemData>[] = [
     {
-      title: intl.formatMessage({ id: 'email' }),
-      dataIndex: 'email',
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'name' }),
-      dataIndex: 'name',
-    },
-    // proxy
-    {
-      title: intl.formatMessage({ id: 'superior' }),
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
       dataIndex: 'proxy',
-      hideInSearch: true,
-      renderText: (_, record) => record?.proxy?.name,
+      hideInSearch: false,
+      renderText: (_, record) => {
+        return record.proxy.name;
+      },
     },
     {
-      title: intl.formatMessage({ id: 'creator', defaultMessage: '创建者' }),
-      dataIndex: 'creator',
+      title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
+      dataIndex: 'amount',
       hideInSearch: true,
-      renderText: (_, record) => record?.creator?.name,
     },
-    // 总USDT余额
     {
-      title: intl.formatMessage({ id: 'total_usdt_balance', defaultMessage: '总USDT余额' }),
-      dataIndex: 'total_usdt_balance',
-      hideInSearch: true,
-      renderText: (_, record) => record?.total_usdt_balance,
+      title: intl.formatMessage({ id: 'type', defaultMessage: '类型' }),
+      dataIndex: 'type',
+      valueType: 'select',
+      valueEnum: {
+        usdt_balance: { text: 'USDT' },
+        trx_balance: { text: 'TRX' },
+      },
+      hideInSearch: false,
     },
-    // 总TRX余额
+    // address
     {
-      title: intl.formatMessage({ id: 'total_trx_balance', defaultMessage: '总TRX余额' }),
-      dataIndex: 'total_trx_balance',
+      title: intl.formatMessage({ id: 'withdraw_address', defaultMessage: '提现地址' }),
+      dataIndex: 'address',
+      hideInSearch: false,
+    },
+    {
+      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        pending: { text: intl.formatMessage({ id: 'pending', defaultMessage: '待处理' }) },
+        approved: { text: intl.formatMessage({ id: 'approved', defaultMessage: '已通过' }) },
+        refused: { text: intl.formatMessage({ id: 'refused', defaultMessage: '已拒绝' }) },
+      },
+      hideInSearch: false,
+    },
+    // remark
+    {
+      title: intl.formatMessage({ id: 'remark', defaultMessage: '备注' }),
+      dataIndex: 'remark',
       hideInSearch: true,
-      renderText: (_, record) => record?.total_trx_balance,
     },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
@@ -170,18 +218,38 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        access.canGetProxyDetail && (
+        <a
+          key="detail"
+          onClick={() => {
+            setCurrentRow(record);
+            setShowDetail(true);
+          }}
+        >
+          <FormattedMessage id="detail" />
+        </a>,
+        access.canSuperAdmin && (
           <a
-            key="detail"
-            onClick={() => {
+            key="approve"
+            onClick={async () => {
               setCurrentRow(record);
-              setShowDetail(true);
+              await handleApprove(record);
             }}
           >
-            <FormattedMessage id="platforms.detail" defaultMessage="platforms.detail" />
+            {intl.formatMessage({ id: 'approve' })}
           </a>
         ),
-        access.canUpdateProxy && (
+        access.canSuperAdmin && (
+          <a
+            key="refused"
+            onClick={() => {
+              setCurrentRow(record);
+              handleRefusingModalOpen(true);
+            }}
+          >
+            {intl.formatMessage({ id: 'refused' })}
+          </a>
+        ),
+        access.canUpdateWithdraw && (
           <a
             key="edit"
             onClick={() => {
@@ -192,7 +260,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'edit' })}
           </a>
         ),
-        access.canDeleteProxy && (
+        access.canSuperAdmin && (
           <DeleteLink
             onOk={async () => {
               await handleRemove([record._id!]);
@@ -206,17 +274,27 @@ const TableList: React.FC = () => {
   ];
 
   return (
-    <PageContainer>
+    <PageContainer
+      extra={[
+        <div key="balance" style={{ display: 'flex', gap: '16px' }}>
+          <span>
+            USDT余额:{' '}
+            {balanceLoading ? '加载中...' : Number(balanceData?.usdt_balance ?? 0).toFixed(2)}
+          </span>
+          <span>
+            TRX余额:{' '}
+            {balanceLoading ? '加载中...' : Number(balanceData?.trx_balance ?? 0).toFixed(2)}
+          </span>
+        </div>,
+      ]}
+    >
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list' })}
+        headerTitle={intl.formatMessage({ id: 'list', defaultMessage: '列表' })}
         actionRef={actionRef}
         rowKey="_id"
-        search={{
-          labelWidth: 120,
-          collapsed: false,
-        }}
+        search={{ labelWidth: 120, collapsed: false }}
         toolBarRender={() => [
-          access.canCreateProxy && (
+          access.canCreateWithdraw && (
             <Button
               type="primary"
               key="primary"
@@ -228,7 +306,7 @@ const TableList: React.FC = () => {
             </Button>
           ),
         ]}
-        request={async (params, sort, filter) => queryList('/proxies', params, sort, filter)}
+        request={async (params, sort, filter) => queryList('/withdraws', params, sort, filter)}
         columns={columns}
         rowSelection={
           access.canSuperAdmin && {
@@ -248,7 +326,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteProxy && (
+          {access.canDeleteWithdraw && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState?.map((item: any) => item._id!));
@@ -259,10 +337,11 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
-      {access.canCreateProxy && (
+      {access.canCreateWithdraw && (
         <Create
           open={createModalOpen}
           onOpenChange={handleModalOpen}
+          balanceData={balanceData}
           onFinish={async (value) => {
             const success = await handleAdd(value as API.ItemData);
             if (success) {
@@ -274,7 +353,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {access.canUpdateProxy && (
+      {access.canUpdateWithdraw && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
@@ -299,6 +378,24 @@ const TableList: React.FC = () => {
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);
+        }}
+      />
+
+      <RefusingModal
+        open={refusingModalOpen}
+        onOpenChange={handleRefusingModalOpen}
+        onFinish={async (value) => {
+          const success = await handleReject({
+            ...value,
+            _id: currentRow?._id,
+          });
+          if (success) {
+            handleRefusingModalOpen(false);
+            setCurrentRow(undefined);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
         }}
       />
     </PageContainer>

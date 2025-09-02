@@ -267,4 +267,5 @@ export default {
   isRecycled: 'Is Recycled',
   expenditure_hourly: 'Price (trx)',
   expenditure_daily: 'Price (usdt)',
+  reject: 'Reject',
 };

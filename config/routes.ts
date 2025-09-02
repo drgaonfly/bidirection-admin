@@ -356,4 +356,11 @@ export default [
     icon: 'ProfileOutlined',
     component: './RevenueShare',
   },
+  // 代理提款
+  {
+    path: '/withdraws',
+    name: 'list.withdraws',
+    icon: 'MoneyCollectOutlined',
+    component: './Withdraw',
+  },
 ];

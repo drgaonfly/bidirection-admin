@@ -328,4 +328,8 @@ export default {
   balance_type: '余额类型',
   revenue_amount: '分润数量',
   integer_amount: '积分数量',
+  approve: '批准',
+  refused: '拒绝',
+  PackageOrder: '套餐订单',
+  Rental: '闪租',
 };
