@@ -234,6 +234,7 @@ const TableList: React.FC = () => {
             onClick={async () => {
               setCurrentRow(record);
               await handleApprove(record);
+              actionRef.current?.reload();
             }}
           >
             {intl.formatMessage({ id: 'approve' })}
@@ -245,6 +246,7 @@ const TableList: React.FC = () => {
             onClick={() => {
               setCurrentRow(record);
               handleRefusingModalOpen(true);
+              actionRef.current?.reload();
             }}
           >
             {intl.formatMessage({ id: 'refused' })}
