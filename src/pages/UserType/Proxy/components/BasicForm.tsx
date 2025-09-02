@@ -1,12 +1,6 @@
-import { FormattedMessage, useIntl, useAccess, useModel } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import React, { useState, useEffect } from 'react';
-import {
-  ProForm,
-  ProFormText,
-  ProFormCheckbox,
-  ProColumns,
-  EditableProTable,
-} from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormCheckbox } from '@ant-design/pro-components';
 import ProxySelect from './ProxySelect';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
@@ -29,7 +23,6 @@ type pricePairItem = {
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
-  const access = useAccess();
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
   const { items: roles, loading } = useQueryList('/roles/filter/?type=proxy');
@@ -41,8 +34,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   );
 
   const filteredRolesIds = roles?.map((role: { _id: string }) => role._id);
-
-  const isAdmin = access.canSuperAdmin ? true : false;
 
   const [form] = Form.useForm();
   //表单初始化filteredRoles数据更新时，确保表单中的角色选择能加载出来
@@ -60,8 +51,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     );
   }, [roles, values]);
 
-  const [energyPerTimes, setEnergyPerTimes] = useState(0);
-
   useEffect(() => {
     const fetchEnergyPerTimes = async () => {
       try {
@@ -69,7 +58,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
         if (success) {
           console.log('energy_per_times', data.energy_per_times);
-          setEnergyPerTimes(data.energy_per_times);
         }
       } catch (error) {
         console.error(error);
@@ -78,102 +66,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
 
     fetchEnergyPerTimes();
   }, [roles, values]);
-
-  const hourly_columns: ProColumns<pricePairItem>[] = [
-    {
-      title: intl.formatMessage({ id: 'commission', defaultMessage: '分佣(trx)' }),
-      dataIndex: 'commission',
-      valueType: 'digit',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
-      dataIndex: 'aqusition',
-      valueType: 'digit',
-      editable: false,
-      render: (_, record) => {
-        const times = Number(record.times) || 0;
-        return energyPerTimes * times;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
-      dataIndex: 'expiration',
-      editable: false,
-      valueType: 'digit',
-    },
-    {
-      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
-      dataIndex: 'times',
-      editable: false,
-      valueType: 'digit',
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
-      valueType: 'option',
-      render: (text, record, _, action) => [
-        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-      ],
-    },
-  ];
-
-  const daily_columns: ProColumns<pricePairItem>[] = [
-    {
-      title: intl.formatMessage({ id: 'name', defaultMessage: '名称' }),
-      dataIndex: 'name',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: intl.formatMessage({ id: 'name_required', defaultMessage: '请输入名称' }),
-          },
-        ],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'commission', defaultMessage: '分佣(trx)' }),
-      dataIndex: 'commission',
-      valueType: 'digit',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
-      dataIndex: 'aqusition',
-      valueType: 'digit',
-      editable: false,
-      render: (_, record) => {
-        const times = Number(record.times) || 0;
-        return energyPerTimes * times;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
-      dataIndex: 'expiration',
-      editable: false,
-      valueType: 'digit',
-    },
-    {
-      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
-      dataIndex: 'times',
-      editable: false,
-      valueType: 'digit',
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
-      valueType: 'option',
-      render: (text, record, _, action) => [
-        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-      ],
-    },
-  ];
 
   return (
     <ProForm
@@ -252,67 +144,6 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             />
           ))}
       </ProForm.Group>
-
-      <EditableProTable<pricePairItem>
-        rowKey="_id"
-        headerTitle="日租配置"
-        columns={daily_columns}
-        value={dailyPricePairs}
-        onChange={(value) => setDailyPricePairs([...value])}
-        editable={{
-          type: 'multiple',
-          actionRender: (row, config, defaultDoms) => {
-            return [defaultDoms.save, defaultDoms.cancel];
-          },
-        }}
-        recordCreatorProps={
-          isAdmin
-            ? {
-                newRecordType: 'dataSource',
-                position: 'bottom',
-                record: () => ({
-                  _id: Date.now().toString(),
-                  name: '',
-                  expenditure: 0,
-                  expiration: 0,
-                  times: 0,
-                  type: 'daily',
-                  commission: 0,
-                }),
-              }
-            : false
-        }
-      />
-
-      <EditableProTable<pricePairItem>
-        rowKey="_id"
-        headerTitle="闪租配置"
-        columns={hourly_columns}
-        value={hourlyPricePairs}
-        onChange={(value) => setHourlyPricePairs([...value])}
-        editable={{
-          type: 'multiple',
-          actionRender: (row, config, defaultDoms) => {
-            return [defaultDoms.save, defaultDoms.cancel];
-          },
-        }}
-        recordCreatorProps={
-          isAdmin
-            ? {
-                newRecordType: 'dataSource',
-                position: 'bottom',
-                record: () => ({
-                  _id: Date.now().toString(),
-                  expenditure: 0,
-                  expiration: 0,
-                  times: 0,
-                  type: 'hourly',
-                  commission: 0,
-                }),
-              }
-            : false
-        }
-      />
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>
