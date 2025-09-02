@@ -145,20 +145,6 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       renderText: (_, record) => record?.creator?.name,
     },
-    // 总USDT余额
-    {
-      title: intl.formatMessage({ id: 'total_usdt_balance', defaultMessage: '总USDT余额' }),
-      dataIndex: 'total_usdt_balance',
-      hideInSearch: true,
-      renderText: (_, record) => record?.total_usdt_balance,
-    },
-    // 总TRX余额
-    {
-      title: intl.formatMessage({ id: 'total_trx_balance', defaultMessage: '总TRX余额' }),
-      dataIndex: 'total_trx_balance',
-      hideInSearch: true,
-      renderText: (_, record) => record?.total_trx_balance,
-    },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
