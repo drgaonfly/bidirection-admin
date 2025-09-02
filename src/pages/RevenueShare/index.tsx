@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -8,13 +8,12 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
-import UnrentalStatusEnum from '../../../enums/unrentalStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/unrentals', {
+    await removeItem('/revenue-shares', {
       ids,
     });
     hide();
@@ -25,25 +24,6 @@ const handleRemove = async (ids: string[]) => {
     message.error(
       error?.response?.data?.message ?? (
         <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
-      ),
-    );
-    return false;
-  }
-};
-
-const rerecycle = async (id: any) => {
-  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
-  try {
-    await updateItem(`/unrentals/${id}/rerecycle`);
-    hide();
-
-    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(
-      error?.response?.data?.message ?? (
-        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
       ),
     );
     return false;
@@ -65,52 +45,33 @@ const TableList: React.FC = () => {
       dataIndex: 'proxy',
       hideInSearch: true,
       renderText: (_, record) => {
-        return record?.proxy?.name;
-      },
-    },
-    // 订单类型·
-    {
-      title: intl.formatMessage({ id: 'order_type', defaultMessage: '订单类型' }),
-      hideInSearch: true,
-      renderText: (_, record) => {
-        return record?.rental ? '闪租' : '日租';
+        return record?.proxy.name;
       },
     },
     {
-      title: intl.formatMessage({ id: 'rental', defaultMessage: '租用订单' }),
-      dataIndex: 'rental',
+      title: intl.formatMessage({ id: 'bot', defaultMessage: 'Bot' }),
+      dataIndex: 'bot',
       hideInSearch: true,
-      renderText: (_, record) => {
-        return record?.rental?._id || record?.packageUsageRecord?.packageOrder.id;
+      copyable: true,
+      renderText: (text, record) => {
+        return record.bot?.botName;
       },
     },
     {
-      title: intl.formatMessage({ id: 'energySendAddress', defaultMessage: '能量发送地址' }),
-      dataIndex: 'energySendAddress',
-      copyable: true,
+      title: intl.formatMessage({ id: 'revenue_amount', defaultMessage: 'Amount' }),
+      dataIndex: 'amount',
       hideInSearch: true,
     },
+    // balance_type
     {
-      title: intl.formatMessage({ id: 'from_address', defaultMessage: 'From' }),
-      dataIndex: 'from',
-      copyable: true,
+      title: intl.formatMessage({ id: 'balance_type', defaultMessage: 'Type' }),
+      dataIndex: 'balance_type',
     },
     {
-      title: intl.formatMessage({ id: 'to_address', defaultMessage: 'To' }),
-      dataIndex: 'to',
-      copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
-      dataIndex: 'status',
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
       hideInSearch: true,
-      valueEnum: UnrentalStatusEnum,
-    },
-    {
-      title: intl.formatMessage({ id: 'hash', defaultMessage: '哈希' }),
-      dataIndex: 'hash',
-      ellipsis: true,
-      copyable: true,
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
@@ -127,19 +88,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        record?.status === 'failed' && (
-          <a
-            key="resend_energy"
-            onClick={async () => {
-              setCurrentRow(record);
-              await rerecycle(currentRow?._id);
-              actionRef.current?.reload();
-            }}
-          >
-            <FormattedMessage id="resend_energy" defaultMessage="重新发送" />
-          </a>
-        ),
-        access.canDeleteRental && (
+        access.canDeleteRevenueShare && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -150,48 +99,18 @@ const TableList: React.FC = () => {
         ),
       ],
     },
-    {
-      title: intl.formatMessage({ id: 'energy', defaultMessage: '能量' }),
-      dataIndex: 'amount',
-      hideInSearch: true,
-      renderText: (_, record) => record?.amount,
-    },
-    {
-      title: intl.formatMessage({ id: 'separation', defaultMessage: '笔数' }),
-      dataIndex: 'separation',
-      hideInSearch: true,
-      renderText: (_, record) => record?.separation,
-    },
-    {
-      title: intl.formatMessage({ id: 'limit_hour', defaultMessage: '时长(小时)' }),
-      dataIndex: 'limit_hour',
-      hideInSearch: true,
-      renderText: (_, record) => record?.limit_hour,
-    },
-    {
-      title: intl.formatMessage({ id: 'price', defaultMessage: '价格' }),
-      dataIndex: 'price',
-      hideInSearch: true,
-      renderText: (_, record) => record?.price,
-    },
-    {
-      title: intl.formatMessage({ id: 'createdAt' }),
-      dataIndex: 'createdAt',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
   ];
 
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'unrental.list', defaultMessage: '能量归还订单' })}
+        headerTitle={intl.formatMessage({ id: 'list', defaultMessage: 'List' })}
         actionRef={actionRef}
         rowKey="_id"
         scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
-          collapsed: false,
+          collapsed: true,
         }}
         toolbar={{
           menu: {
@@ -199,16 +118,16 @@ const TableList: React.FC = () => {
             activeKey: activeKey,
             items: [
               {
-                label: <FormattedMessage id="platform.all" defaultMessage="全部" />,
+                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
                 key: '',
               },
               {
-                label: <FormattedMessage id="success" defaultMessage="成功" />,
-                key: 'success',
+                label: <FormattedMessage id="PackageOrder" defaultMessage="PackageOrder" />,
+                key: 'PackageOrder',
               },
               {
-                label: <FormattedMessage id="failed" defaultMessage="失败" />,
-                key: 'failed',
+                label: <FormattedMessage id="Rental" defaultMessage="Rental" />,
+                key: 'Rental',
               },
             ],
             onChange: (key: any) => {
@@ -220,7 +139,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/unrentals', { ...params, status: activeKey }, sort, filter)
+          queryList('/revenue-shares', { ...params, approach: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
@@ -239,7 +158,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteRental && (
+          {access.canDeleteRevenueShare && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

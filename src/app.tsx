@@ -59,6 +59,7 @@ import {
   ProductOutlined, // 添加商品小图标
   SendOutlined,
   MoneyCollectFilled,
+  ShareAltOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -129,6 +130,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   ProductOutlined: <ProductOutlined />,
   SendOutlined: <SendOutlined />,
   MoneyCollectFilled: <MoneyCollectFilled />,
+  ShareAltOutlined: <ShareAltOutlined />,
 };
 
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>

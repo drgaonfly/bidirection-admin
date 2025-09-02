@@ -17,6 +17,7 @@ export default {
   'packageOrder.columns.status': '状态',
   'packageOrder.columns.proxy': '代理',
   'packageOrder.columns.createdAt': '创建时间',
+  'packageOrder.columns.currentTimes': '可用笔数',
 
   // 状态枚举
   'packageOrder.status.pending': '待激活',

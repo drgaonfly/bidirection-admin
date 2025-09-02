@@ -40,6 +40,7 @@ const PlatformConfiguration: React.FC = () => {
     mnemonic: string;
     energy_address: string;
     recycle_min: number;
+    quick_recycle_time: number;
   }) => {
     try {
       setLoading(true);
@@ -81,9 +82,12 @@ const PlatformConfiguration: React.FC = () => {
               rechargeAddress: currentUser?.rechargeAddress || '',
               energy_address: currentUser?.energy_address || '',
               energy_privateKey: currentUser?.energy_privateKey || '',
+              withdraw_address: currentUser?.withdraw_address || '',
+              withdraw_privateKey: currentUser?.withdraw_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
               recycle_min: currentUser?.recycle_min || 12,
+              quick_recycle_time: currentUser?.quick_recycle_time || 1,
             }}
             submitter={{
               submitButtonProps: {
@@ -156,11 +160,24 @@ const PlatformConfiguration: React.FC = () => {
               name="recycle_min"
               label={intl.formatMessage({
                 id: 'platform.recycle_min',
-                defaultMessage: '最低销回收时间 (小时)',
+                defaultMessage: '累计消费笔数',
               })}
               placeholder={intl.formatMessage({
                 id: 'please.enter.recycle_min',
-                defaultMessage: '请输入最低销回收时间 (小时)',
+                defaultMessage: '累计消费笔数',
+              })}
+              min={0}
+            />
+            <ProFormDigit
+              width="xl"
+              name="quick_recycle_time"
+              label={intl.formatMessage({
+                id: 'platform.quick_recycle_time',
+                defaultMessage: '快速回收时间 (分钟)',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.quick_recycle_time',
+                defaultMessage: '请输入快速回收时间 (分钟)',
               })}
               min={0}
             />
@@ -183,6 +200,30 @@ const PlatformConfiguration: React.FC = () => {
               placeholder={intl.formatMessage({
                 id: 'please.enter.energy_address',
                 defaultMessage: '请输入能量的地址',
+              })}
+            />
+            <ProFormText
+              width="xl"
+              name="withdraw_address"
+              label={intl.formatMessage({
+                id: 'platform.withdraw_address',
+                defaultMessage: '提现地址',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.withdraw_address',
+                defaultMessage: '请输入提现地址',
+              })}
+            />
+            <ProFormText
+              width="xl"
+              name="withdraw_privateKey"
+              label={intl.formatMessage({
+                id: 'platform.withdraw_privateKey',
+                defaultMessage: '提现私钥',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.withdraw_privateKey',
+                defaultMessage: '请输入提现私钥',
               })}
             />
             <ProFormTextArea
@@ -241,11 +282,21 @@ const PlatformConfiguration: React.FC = () => {
               <Text strong>
                 {intl.formatMessage({
                   id: 'platform.recycle_min',
-                  defaultMessage: '最低销回收时间 (小时)',
+                  defaultMessage: '累计消费笔数',
                 })}
                 :{' '}
               </Text>
               <Text>{currentUser?.recycle_min ?? '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.quick_recycle_time',
+                  defaultMessage: '快速回收时间 (分钟)',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.quick_recycle_time ?? '-'}</Text>
             </div>
             <div style={{ marginBottom: 16 }}>
               <Text strong>
@@ -262,6 +313,26 @@ const PlatformConfiguration: React.FC = () => {
                 :{' '}
               </Text>
               <Text>{currentUser?.energy_address || '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.withdraw_address',
+                  defaultMessage: '提现地址',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.withdraw_address || '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.withdraw_privateKey',
+                  defaultMessage: '提现私钥',
+                })}
+                :{' '}
+              </Text>
+              <Text>{'*'.repeat(20)}</Text>
             </div>
             <div>
               <Text strong>

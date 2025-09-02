@@ -17,6 +17,7 @@ export default {
   'packageOrder.columns.status': 'Status',
   'packageOrder.columns.proxy': 'Proxy',
   'packageOrder.columns.createdAt': 'Created At',
+  'packageOrder.columns.currentTimes': 'Current Times',
 
   // Status enums
   'packageOrder.status.pending': 'Pending',

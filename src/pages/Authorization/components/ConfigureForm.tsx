@@ -96,6 +96,8 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [generating, setGenerating] = useState(false);
   const [energyPerTimes, setEnergyPerTimes] = useState(0);
 
+  const isAdmin = currentUser?.isAdmin;
+
   useEffect(() => {
     const fetchEnergyPerTimes = async () => {
       try {
@@ -250,8 +252,21 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
   const pricePair_hourly_columns: ProColumns<pricePairItem>[] = [
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
+      title: intl.formatMessage({ id: 'name', defaultMessage: '命令名' }),
+      dataIndex: 'name',
+    },
+    {
+      title: intl.formatMessage({ id: 'expenditure_hourly', defaultMessage: '价格(trx)' }),
       dataIndex: 'expenditure',
+      valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'sale', defaultMessage: '出价(trx)' }),
+      dataIndex: 'sale',
       valueType: 'digit',
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
@@ -271,14 +286,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      fieldProps: {
-        disabled: !access.canSuperAdmin,
-      },
+      editable: () => !!isAdmin,
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
       valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -306,8 +320,17 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'expenditure', defaultMessage: '费用(trx)' }),
+      title: intl.formatMessage({ id: 'expenditure_daily', defaultMessage: '来价(usdt)' }),
       dataIndex: 'expenditure',
+      valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
+      formItemProps: {
+        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'sale', defaultMessage: '出价(usdt)' }),
+      dataIndex: 'sale',
       valueType: 'digit',
       formItemProps: {
         rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
@@ -327,14 +350,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      fieldProps: {
-        disabled: !access.canSuperAdmin,
-      },
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
       valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -527,18 +549,23 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
           },
         }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            name: '',
-            expenditure: 0,
-            expiration: 0,
-            times: 0,
-            type: 'daily',
-          }),
-        }}
+        recordCreatorProps={
+          access.canSuperAdmin
+            ? {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  name: '',
+                  expenditure: 0,
+                  expiration: 0,
+                  times: 0,
+                  type: 'daily',
+                  sale: 0,
+                }),
+              }
+            : false
+        }
       />
 
       <EditableProTable<pricePairItem>
@@ -553,17 +580,22 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
           },
         }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            expenditure: 0,
-            expiration: 0,
-            times: 0,
-            type: 'hourly',
-          }),
-        }}
+        recordCreatorProps={
+          access.canSuperAdmin
+            ? {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  expenditure: 0,
+                  expiration: 0,
+                  times: 0,
+                  type: 'hourly',
+                  sale: 0,
+                }),
+              }
+            : false
+        }
       />
 
       <EditableProTable<commandItem>

@@ -13,7 +13,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/integers', {
+    await removeItem('/min-consumptions', {
       ids,
     });
     hide();
@@ -34,46 +34,57 @@ const TableList: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
     {
       title: intl.formatMessage({ id: 'bot', defaultMessage: 'Bot' }),
       dataIndex: 'bot',
-      hideInSearch: true,
-      copyable: true,
-      renderText: (text, record) => {
-        return record.bot?.botName;
-      },
+      width: 120,
+      renderText: (_, record) => record.bot?.botName,
     },
     {
       title: intl.formatMessage({ id: 'user', defaultMessage: 'User' }),
       dataIndex: 'botUser',
-      hideInSearch: true,
-      renderText: (text, record) => {
-        return (
-          record.botUser?.userName || record.botUser?.firstName + '\n' + record.botUser?.lastName
-        );
-      },
-    },
-    // type
-    {
-      title: intl.formatMessage({ id: 'type', defaultMessage: 'Type' }),
-      dataIndex: 'type',
+      width: 120,
+      renderText: (_, record) => record.botUser?.userName,
     },
     {
-      title: intl.formatMessage({ id: 'integer_amount', defaultMessage: 'Amount' }),
-      dataIndex: 'amount',
-      hideInSearch: true,
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: 'Proxy' }),
+      dataIndex: 'proxy',
+      width: 120,
+      renderText: (_, record) => record.proxy?.name,
     },
-
+    {
+      title: intl.formatMessage({ id: 'packageOrder', defaultMessage: 'Package Order' }),
+      dataIndex: 'packageOrder',
+      width: 120,
+      renderText: (_, record) => record.packageOrder?.id,
+    },
+    {
+      title: intl.formatMessage({
+        id: 'packageUsageRecord',
+        defaultMessage: 'Package Usage Record',
+      }),
+      dataIndex: 'packageUsageRecord',
+      width: 120,
+      renderText: (_, record) => record.packageUsageRecord?.id,
+    },
+    {
+      title: intl.formatMessage({ id: 'minus', defaultMessage: '扣除' }),
+      dataIndex: 'minus',
+      valueType: 'digit',
+      hideInSearch: true,
+      width: 100,
+    },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
+      width: 150,
       hideInSearch: true,
     },
     {
@@ -81,6 +92,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       fixed: 'right',
+      width: 120,
       render: (_, record) => [
         <a
           key="detail"
@@ -91,7 +103,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeleteInteger && (
+        access.canDeleteMinConsumption && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -107,42 +119,17 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list', defaultMessage: 'List' })}
+        headerTitle={intl.formatMessage({ id: 'list', defaultMessage: 'Min Consumption List' })}
         actionRef={actionRef}
         rowKey="_id"
         scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
-          collapsed: true,
+          collapsed: false,
         }}
-        toolbar={{
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="PackageOrder" defaultMessage="PackageOrder" />,
-                key: 'PackageOrder',
-              },
-              {
-                label: <FormattedMessage id="Rental" defaultMessage="Rental" />,
-                key: 'Rental',
-              },
-            ],
-            onChange: (key: any) => {
-              setActiveKey(key);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            },
-          },
-        }}
+        toolBarRender={() => []}
         request={(params, sort, filter) =>
-          queryList('/integers', { ...params, type: activeKey }, sort, filter)
+          queryList('/min-consumptions', { ...params }, sort, filter)
         }
         columns={columns}
         rowSelection={{
@@ -161,7 +148,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteInteger && (
+          {access.canDeleteMinConsumption && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

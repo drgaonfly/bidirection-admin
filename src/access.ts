@@ -419,5 +419,46 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetPackageUsageRecord:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/package-usage-records', 'GET')),
+
+    // EnergyUsage
+    canCreateEnergyUsage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/energy-usages', 'POST')),
+    canDeleteEnergyUsage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/energy-usages', 'DELETE')),
+    canUpdateEnergyUsage:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/energy-usages/:id', 'PUT')),
+    canGetEnergyUsage:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/energy-usages', 'GET')),
+
+    // minConsumption
+    canCreateMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'POST')),
+    canDeleteMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'DELETE')),
+    canUpdateMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions/:id', 'PUT')),
+    canGetMinConsumption:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/min-consumptions', 'GET')),
+
+    // revenueShare
+    canCreateRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'POST')),
+    canDeleteRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'DELETE')),
+    canUpdateRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares/:id', 'PUT')),
+    canGetRevenueShare:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'GET')),
   };
 }

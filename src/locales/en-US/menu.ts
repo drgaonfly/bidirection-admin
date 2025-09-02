@@ -24,6 +24,8 @@ export default {
   'menu.energy.energy-sends': 'Sends',
   'menu.energy.advances': 'Advances',
   'menu.energy.package-usage-records': 'Package Usage Records',
+  'menu.energy.energy-usages': 'Energy Usages',
+  'menu.energy.min-consumptions': 'Min Consumptions',
 
   'menu.change-password': 'Change Password',
 
@@ -45,6 +47,7 @@ export default {
   'menu.transfers': 'Transfers',
   'menu.member-orders': 'Member Orders',
   'menu.deductions': 'Deductions',
+  'menu.revenue-shares': 'Revenue Shares',
 
   'menu.工作台管理': 'Dashboard Management',
   'menu.认证管理': 'Authentication',
@@ -71,6 +74,8 @@ export default {
   'menu.能量管理.能量发送记录': 'Sends',
   'menu.能量管理.能量预支': 'Advances',
   'menu.能量管理.笔数套餐使用记录': 'Package Usage Records',
+  'menu.能量管理.能量使用记录': 'Energy Usage Records',
+  'menu.能量管理.低消记录': 'Min Consumptions',
 
   'menu.机器人管理': 'Bot Management',
   'menu.机器人用户管理': 'Bot User Management',
@@ -88,4 +93,5 @@ export default {
   'menu.积分记录': 'Integers',
   'menu.转账记录': 'Transfer Records',
   'menu.扣款记录': 'Deductions',
+  'menu.代理分润': 'Revenue Shares',
 };

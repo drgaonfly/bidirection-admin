@@ -41,7 +41,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         <ProFormText
           name="name"
           width="md"
-          label={intl.formatMessage({ id: 'type', defaultMessage: 'Type' })}
+          label={intl.formatMessage({ id: 'name', defaultMessage: 'Name' })}
           required
         />
 

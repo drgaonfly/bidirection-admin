@@ -10,10 +10,7 @@ export type UpdateFormProps = {
   onCancel: (visible: boolean) => void;
   onSubmit: (values: FormValueType) => Promise<void>;
   updateModalOpen: boolean;
-  values: {
-    videoUrl?: string;
-    video?: string;
-  } & Partial<API.ItemData>;
+  values: any;
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {

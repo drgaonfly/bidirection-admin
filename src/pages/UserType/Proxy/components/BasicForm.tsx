@@ -1,4 +1,4 @@
-import { FormattedMessage, useIntl } from '@umijs/max';
+import { FormattedMessage, useIntl, useAccess, useModel } from '@umijs/max';
 import React, { useState, useEffect } from 'react';
 import {
   ProForm,
@@ -7,6 +7,7 @@ import {
   ProColumns,
   EditableProTable,
 } from '@ant-design/pro-components';
+import ProxySelect from './ProxySelect';
 import { Form, Input, Spin } from 'antd';
 import useQueryList from '@/hooks/useQueryList';
 import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
@@ -28,7 +29,9 @@ type pricePairItem = {
 
 const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   const intl = useIntl();
-
+  const access = useAccess();
+  const { initialState } = useModel('@@initialState');
+  const { currentUser } = initialState || {};
   const { items: roles, loading } = useQueryList('/roles/filter/?type=proxy');
   const [hourlyPricePairs, setHourlyPricePairs] = useState<pricePairItem[]>(
     values?.price_pairs?.filter((item: pricePairItem) => item.type === 'hourly') || [],
@@ -38,6 +41,8 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
   );
 
   const filteredRolesIds = roles?.map((role: { _id: string }) => role._id);
+
+  const isAdmin = access.canSuperAdmin ? true : false;
 
   const [form] = Form.useForm();
   //表单初始化filteredRoles数据更新时，确保表单中的角色选择能加载出来
@@ -96,11 +101,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
+      editable: false,
       valueType: 'digit',
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
+      editable: false,
       valueType: 'digit',
     },
     {
@@ -148,11 +155,13 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
+      editable: false,
       valueType: 'digit',
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
+      editable: false,
       valueType: 'digit',
     },
     {
@@ -172,6 +181,7 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
       initialValues={{
         ...values,
         pricePairs: values?.pricePairs?.map((item: any) => item._id),
+        proxy: values?.proxy?._id,
       }}
       onFinish={async (values) => {
         const combinedPricePairs = [
@@ -220,6 +230,9 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
           label={intl.formatMessage({ id: 'password' })}
           name="password"
         />
+
+        {currentUser?.isAdmin && <ProxySelect currentUser={values} />}
+
         {newRecord &&
           (loading ? (
             <Spin spinning={loading} />
@@ -252,19 +265,23 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             return [defaultDoms.save, defaultDoms.cancel];
           },
         }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            name: '',
-            expenditure: 0,
-            expiration: 0,
-            times: 0,
-            type: 'daily',
-            commission: 0,
-          }),
-        }}
+        recordCreatorProps={
+          isAdmin
+            ? {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  name: '',
+                  expenditure: 0,
+                  expiration: 0,
+                  times: 0,
+                  type: 'daily',
+                  commission: 0,
+                }),
+              }
+            : false
+        }
       />
 
       <EditableProTable<pricePairItem>
@@ -279,18 +296,22 @@ const BasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
             return [defaultDoms.save, defaultDoms.cancel];
           },
         }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            expenditure: 0,
-            expiration: 0,
-            times: 0,
-            type: 'hourly',
-            commission: 0,
-          }),
-        }}
+        recordCreatorProps={
+          isAdmin
+            ? {
+                newRecordType: 'dataSource',
+                position: 'bottom',
+                record: () => ({
+                  _id: Date.now().toString(),
+                  expenditure: 0,
+                  expiration: 0,
+                  times: 0,
+                  type: 'hourly',
+                  commission: 0,
+                }),
+              }
+            : false
+        }
       />
 
       {!newRecord && (

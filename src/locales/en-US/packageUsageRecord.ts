@@ -15,6 +15,10 @@ export default {
   'packageUsageRecord.columns.usedAt': 'Used At',
   'packageUsageRecord.columns.notes': 'Notes',
   'packageUsageRecord.columns.createdAt': 'Created At',
+  'packageUsageRecord.columns.type': 'Type',
+  'packageUsageRecord.columns.recycleStatus': 'Recycle Status',
+  'packageUsageRecord.columns.recordValue': 'Record Value',
+  'packageUsageRecord.columns.todayUsedTimes': 'Today Used Times',
 
   // Status enums
   'packageUsageRecord.status.success': 'Success',

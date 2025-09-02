@@ -3,17 +3,18 @@ import { queryList, removeItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message } from 'antd';
+import { Badge, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import PackageUsageTypeEnum from '@/enums/packageUsageType';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/integers', {
+    await removeItem('/energy-usages', {
       ids,
     });
     hide();
@@ -22,7 +23,7 @@ const handleRemove = async (ids: string[]) => {
   } catch (error: any) {
     hide();
     message.error(
-      error.response?.data?.message ?? (
+      error?.response?.data?.message ?? (
         <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
       ),
     );
@@ -34,44 +35,110 @@ const TableList: React.FC = () => {
   const intl = useIntl();
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
-  const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
+    // packageUsageRecord
     {
-      title: intl.formatMessage({ id: 'bot', defaultMessage: 'Bot' }),
+      title: intl.formatMessage({ id: 'packageUsageRecord', defaultMessage: '套餐使用记录' }),
+      dataIndex: 'packageUsageRecord',
+      renderText: (_, record) => {
+        return record.packageUsageRecord?.id;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'bot' }),
       dataIndex: 'bot',
       hideInSearch: true,
-      copyable: true,
-      renderText: (text, record) => {
+      renderText: (_, record) => {
         return record.bot?.botName;
       },
     },
     {
-      title: intl.formatMessage({ id: 'user', defaultMessage: 'User' }),
+      title: intl.formatMessage({ id: 'botUser' }),
       dataIndex: 'botUser',
       hideInSearch: true,
-      renderText: (text, record) => {
-        return (
-          record.botUser?.userName || record.botUser?.firstName + '\n' + record.botUser?.lastName
-        );
+      renderText: (_, record) => {
+        return record.botUser?.userName;
       },
+    },
+    {
+      title: intl.formatMessage({ id: 'proxy' }),
+      dataIndex: 'proxy',
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record.proxy?.name;
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'address', defaultMessage: '被监控的地址' }),
+      dataIndex: 'address',
+      copyable: true,
+    },
+    // to_address
+    {
+      title: intl.formatMessage({ id: 'to_address', defaultMessage: '接收地址' }),
+      dataIndex: 'to_address',
+      copyable: true,
+      hideInSearch: true,
     },
     // type
     {
-      title: intl.formatMessage({ id: 'type', defaultMessage: 'Type' }),
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.type' }),
       dataIndex: 'type',
+      valueEnum: PackageUsageTypeEnum,
     },
     {
-      title: intl.formatMessage({ id: 'integer_amount', defaultMessage: 'Amount' }),
+      title: intl.formatMessage({ id: 'energy', defaultMessage: '消耗能量' }),
+      dataIndex: 'energy',
+      hideInSearch: true,
+    },
+    // bandWidth
+    {
+      title: intl.formatMessage({ id: 'bandwidth', defaultMessage: '消耗带宽' }),
+      dataIndex: 'bandwidth',
+      hideInSearch: true,
+    },
+    // amount
+    {
+      title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
       dataIndex: 'amount',
       hideInSearch: true,
     },
-
+    // pens
     {
-      title: intl.formatMessage({ id: 'createdAt', defaultMessage: 'Created At' }),
+      title: intl.formatMessage({ id: 'pens', defaultMessage: '笔数' }),
+      dataIndex: 'pens',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'isRecycled', defaultMessage: '是否回收' }),
+      dataIndex: 'isRecycled',
+      renderText: (_, record) => {
+        return record?.isRecycled ? (
+          <Badge status="success" text="已回收" />
+        ) : (
+          <Badge status="error" text="未回收" />
+        );
+      },
+    },
+    {
+      title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易哈希' }),
+      dataIndex: 'tx_id',
+      copyable: true,
+      ellipsis: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'transactionAt', defaultMessage: '交易时间' }),
+      dataIndex: 'transactionAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    // createdAt
+    {
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
@@ -91,7 +158,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeleteInteger && (
+        access.canDeleteEnergyUsage && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -107,43 +174,15 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.ItemData, API.PageParams>
-        headerTitle={intl.formatMessage({ id: 'list', defaultMessage: 'List' })}
+        headerTitle={intl.formatMessage({ id: 'energyUsage.list', defaultMessage: '能量消耗记录' })}
         actionRef={actionRef}
         rowKey="_id"
         scroll={{ x: 'max-content' }}
         search={{
           labelWidth: 120,
-          collapsed: true,
+          collapsed: false,
         }}
-        toolbar={{
-          menu: {
-            type: 'tab',
-            activeKey: activeKey,
-            items: [
-              {
-                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="PackageOrder" defaultMessage="PackageOrder" />,
-                key: 'PackageOrder',
-              },
-              {
-                label: <FormattedMessage id="Rental" defaultMessage="Rental" />,
-                key: 'Rental',
-              },
-            ],
-            onChange: (key: any) => {
-              setActiveKey(key);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            },
-          },
-        }}
-        request={(params, sort, filter) =>
-          queryList('/integers', { ...params, type: activeKey }, sort, filter)
-        }
+        request={(params, sort, filter) => queryList('/energy-usages', { ...params }, sort, filter)}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -161,7 +200,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteInteger && (
+          {access.canDeleteEnergyUsage && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

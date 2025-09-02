@@ -132,22 +132,18 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'name' }),
       dataIndex: 'name',
     },
+    // proxy
+    {
+      title: intl.formatMessage({ id: 'superior' }),
+      dataIndex: 'proxy',
+      hideInSearch: true,
+      renderText: (_, record) => record?.proxy?.name,
+    },
     {
       title: intl.formatMessage({ id: 'creator', defaultMessage: '创建者' }),
       dataIndex: 'creator',
       hideInSearch: true,
       renderText: (_, record) => record?.creator?.name,
-    },
-    // botUser
-    {
-      title: intl.formatMessage({ id: 'telegram_id' }),
-      dataIndex: 'botUser',
-      renderText: (_, record) => record?.botUser?.id,
-    },
-    {
-      title: intl.formatMessage({ id: 'telegram_user' }),
-      dataIndex: 'botUser',
-      renderText: (_, record) => record?.botUser?.userName,
     },
     {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),

@@ -40,6 +40,9 @@ declare namespace API {
     recharge_max?: number;
     energy_per_times?: number;
     recycle_min?: number;
+    quick_recycle_time?: number;
+    withdraw_address?: string;
+    withdraw_privateKey?: string;
   };
 
   // Example type definition

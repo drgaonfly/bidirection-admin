@@ -260,4 +260,11 @@ export default {
   balance_after_deducted: 'Balance After Deducted',
   balance_before_deducted: 'Balance Before Deducted',
   days: 'Days',
+  using: 'Using',
+  myself: 'Myself',
+  packageOrder: 'Package Order',
+  packageUsageRecord: 'Package Usage Record',
+  isRecycled: 'Is Recycled',
+  expenditure_hourly: 'Price (trx)',
+  expenditure_daily: 'Price (usdt)',
 };

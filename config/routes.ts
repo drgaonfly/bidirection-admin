@@ -328,13 +328,32 @@ export default [
         icon: 'HistoryOutlined',
         component: './Energy/PackageUsageRecord',
       },
+      // energy usages
+      {
+        path: '/energy/energy-usages',
+        name: 'list.energy-usages',
+        icon: 'ProfileOutlined',
+        component: './Energy/EnergyUsage',
+      },
+      {
+        path: '/energy/min-consumptions',
+        name: 'list.min-consumptions',
+        icon: 'ProfileOutlined',
+        component: './Energy/MinConsumption',
+      },
     ],
   },
-
   {
     path: '/deductions',
     name: 'list.deductions',
     icon: 'MoneyCollectFilled',
     component: './Deduction',
+  },
+  // 代理分润
+  {
+    path: '/revenue-shares',
+    name: 'list.revenue-shares',
+    icon: 'ProfileOutlined',
+    component: './RevenueShare',
   },
 ];

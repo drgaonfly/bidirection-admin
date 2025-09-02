@@ -1,5 +1,5 @@
 import { useIntl } from '@umijs/max';
-import { queryList, removeItem } from '@/services/ant-design-pro/api';
+import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
@@ -9,6 +9,8 @@ import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
 import UsageStatusEnum from '@/enums/usageStatus';
+import PackageUsageTypeEnum from '@/enums/packageUsageType';
+import Update from './components/Update';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -31,6 +33,25 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
+const handleUpdate = async (fields: any) => {
+  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+  try {
+    await updateItem(`/package-usage-records/${fields._id}`, fields);
+    hide();
+
+    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+    return true;
+  } catch (error: any) {
+    hide();
+    message.error(
+      error?.response?.data?.message ?? (
+        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+      ),
+    );
+    return false;
+  }
+};
+
 const TableList: React.FC = () => {
   const intl = useIntl();
   const access = useAccess();
@@ -39,6 +60,7 @@ const TableList: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>('');
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
   const columns: ProColumns<API.ItemData>[] = [
     {
@@ -91,17 +113,47 @@ const TableList: React.FC = () => {
       ellipsis: true,
       width: 150,
     },
+    // record_value
     {
-      title: intl.formatMessage({ id: 'packageUsageRecord.columns.status' }),
-      dataIndex: 'status',
-      valueEnum: UsageStatusEnum,
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.recordValue' }),
+      dataIndex: 'record_value',
+      hideInSearch: true,
+      width: 100,
+    },
+    // {
+    //   title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
+    //   dataIndex: 'usedTimes',
+    //   valueType: 'digit',
+    //   width: 100,
+    // },
+    // today_used_times
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.todayUsedTimes' }),
+      dataIndex: 'today_used_times',
+      valueType: 'digit',
       width: 100,
     },
     {
-      title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedTimes' }),
-      dataIndex: 'usedTimes',
-      valueType: 'digit',
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.status' }),
+      dataIndex: 'status',
+      hideInSearch: true,
+      valueEnum: UsageStatusEnum,
       width: 100,
+    },
+    // recycling_status
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.recycleStatus' }),
+      dataIndex: 'recycling_status',
+      hideInSearch: true,
+      valueEnum: UsageStatusEnum,
+      width: 100,
+    },
+
+    // type
+    {
+      title: intl.formatMessage({ id: 'packageUsageRecord.columns.type' }),
+      dataIndex: 'type',
+      valueEnum: PackageUsageTypeEnum,
     },
     {
       title: intl.formatMessage({ id: 'packageUsageRecord.columns.usedAt' }),
@@ -148,6 +200,19 @@ const TableList: React.FC = () => {
               actionRef.current?.reload();
             }}
           />
+        ),
+        access.canUpdatePackageUsageRecord && (
+          <a
+            key="edit"
+            onClick={() => {
+              console.log();
+
+              handleUpdateModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            {intl.formatMessage({ id: 'edit' })}
+          </a>
         ),
       ],
     },
@@ -236,6 +301,24 @@ const TableList: React.FC = () => {
           setShowDetail(false);
         }}
       />
+
+      {access.canUpdatePackageOrder && (
+        <Update
+          onSubmit={async (value) => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalOpen(false);
+              setCurrentRow(undefined);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={handleUpdateModalOpen}
+          updateModalOpen={updateModalOpen}
+          values={currentRow}
+        />
+      )}
     </PageContainer>
   );
 };

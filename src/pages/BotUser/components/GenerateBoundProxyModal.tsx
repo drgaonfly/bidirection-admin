@@ -74,14 +74,14 @@ const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish
               width="md"
               label={intl.formatMessage({ id: 'name' })}
               rules={[{ required: true }]}
-              initialValue={userInfo.name}
+              initialValue={userInfo?.name}
             />
             <ProFormText
               name="email"
               width="md"
               label={intl.formatMessage({ id: 'email' })}
               rules={[{ required: true }]}
-              initialValue={userInfo.email}
+              initialValue={userInfo?.email}
             />
           </ProFormGroup>
 
@@ -90,7 +90,7 @@ const GenerateBoundProxyModal: React.FC<Props> = ({ open, onOpenChange, onFinish
             width="md"
             label={intl.formatMessage({ id: 'password' })}
             rules={[{ required: true }]}
-            initialValue={userInfo.password}
+            initialValue={userInfo?.password}
           />
         </>
       )}
