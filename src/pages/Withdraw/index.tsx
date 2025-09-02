@@ -8,7 +8,7 @@ import { FormattedMessage, useAccess } from '@umijs/max';
 import { Button, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
-import Update from './components/Update';
+// import Update from './components/Update';
 import Create from './components/Create';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -38,30 +38,30 @@ const handleAdd = async (fields: API.ItemData) => {
   }
 };
 
-/**
- * @en-US Update withdraw
- * @zh-CN 更新提现
- *
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
-  try {
-    await updateItem(`/withdraws/${fields._id}`, fields);
-    hide();
+// /**
+//  * @en-US Update withdraw
+//  * @zh-CN 更新提现
+//  *
+//  * @param fields
+//  */
+// const handleUpdate = async (fields: FormValueType) => {
+//   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
+//   try {
+//     await updateItem(`/withdraws/${fields._id}`, fields);
+//     hide();
 
-    message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
-    return true;
-  } catch (error: any) {
-    hide();
-    message.error(
-      error?.response?.data?.message ?? (
-        <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
-      ),
-    );
-    return false;
-  }
-};
+//     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
+//     return true;
+//   } catch (error: any) {
+//     hide();
+//     message.error(
+//       error?.response?.data?.message ?? (
+//         <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
+//       ),
+//     );
+//     return false;
+//   }
+// };
 
 /**
  *  Delete withdraw
@@ -148,7 +148,7 @@ const TableList: React.FC = () => {
   );
 
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  // const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
@@ -252,17 +252,6 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'refused' })}
           </a>
         ),
-        access.canUpdateWithdraw && (
-          <a
-            key="edit"
-            onClick={() => {
-              handleUpdateModalOpen(true);
-              setCurrentRow(record);
-            }}
-          >
-            {intl.formatMessage({ id: 'edit' })}
-          </a>
-        ),
         access.canSuperAdmin && (
           <DeleteLink
             onOk={async () => {
@@ -356,7 +345,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
-      {access.canUpdateWithdraw && (
+      {/* {access.canUpdateWithdraw && (
         <Update
           onSubmit={async (value) => {
             const success = await handleUpdate(value);
@@ -372,7 +361,7 @@ const TableList: React.FC = () => {
           updateModalOpen={updateModalOpen}
           values={currentRow || {}}
         />
-      )}
+      )} */}
 
       <Show
         open={showDetail}
