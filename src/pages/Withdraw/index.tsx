@@ -302,7 +302,7 @@ const TableList: React.FC = () => {
                 handleModalOpen(true);
               }}
             >
-              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+              <PlusOutlined /> <FormattedMessage id="withdraw" defaultMessage="withdraw" />
             </Button>
           ),
         ]}

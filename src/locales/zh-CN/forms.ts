@@ -125,7 +125,7 @@ export default {
   userName: '用户名',
 
   deposit: '入款',
-  withdraw: '下发',
+  withdraw: '提款',
 
   online: '在线',
   offline: '离线',
