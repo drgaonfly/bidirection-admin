@@ -254,6 +254,15 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     {
       title: intl.formatMessage({ id: 'name', defaultMessage: '命令名' }),
       dataIndex: 'name',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: intl.formatMessage({ id: 'name_required', defaultMessage: '请输入名称' }),
+          },
+        ],
+      },
     },
     {
       title: intl.formatMessage({ id: 'expenditure_hourly', defaultMessage: '价格(trx)' }),
@@ -310,6 +319,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     {
       title: intl.formatMessage({ id: 'name', defaultMessage: '名称' }),
       dataIndex: 'name',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
       formItemProps: {
         rules: [
           {
