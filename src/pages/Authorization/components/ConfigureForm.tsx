@@ -286,12 +286,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      editable: false,
+      editable: () => !!isAdmin,
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
       valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -349,12 +350,13 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
-      editable: false,
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
     },
     {
       title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
       dataIndex: 'times',
       valueType: 'digit',
+      editable: () => !!isAdmin, // 不是管理员就禁止修改
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
