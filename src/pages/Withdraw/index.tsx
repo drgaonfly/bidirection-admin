@@ -164,7 +164,8 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
       dataIndex: 'proxy',
-      hideInSearch: false,
+      hideInSearch: !currentUser?.isAdmin,
+      hideInTable: !currentUser?.isAdmin,
       renderText: (_, record) => {
         return record.proxy.name;
       },
@@ -227,7 +228,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" />
         </a>,
-        access.canSuperAdmin && (
+        access.canSuperAdmin && record.status === 'pending' && (
           <a
             key="approve"
             onClick={async () => {
@@ -238,7 +239,7 @@ const TableList: React.FC = () => {
             {intl.formatMessage({ id: 'approve' })}
           </a>
         ),
-        access.canSuperAdmin && (
+        access.canSuperAdmin && record.status === 'pending' && (
           <a
             key="refused"
             onClick={() => {
