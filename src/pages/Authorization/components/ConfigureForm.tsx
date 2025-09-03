@@ -567,7 +567,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         />
       </ProFormGroup>
       <ProFormGroup>
-        <Form.Item label={intl.formatMessage({ id: 'image' })}>
+        <Form.Item label="闪租图片" tooltip="在机器人闪租里显示">
           <Upload
             onFileUpload={(url: string) => {
               setImageUrl(url);
