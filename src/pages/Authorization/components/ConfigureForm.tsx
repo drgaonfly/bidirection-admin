@@ -591,9 +591,9 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             }}
           />
         </Form.Item>
-      </ProFormGroup>
 
-      <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
+        <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
+      </ProFormGroup>
 
       <EditableProTable<pricePairItem>
         rowKey="_id"
