@@ -15,6 +15,8 @@ import {
 import { Form, Input, message, Button } from 'antd';
 import { FormattedMessage, useAccess, useIntl, useModel } from '@umijs/max';
 import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
+import { UploadFile } from 'antd/lib/upload/interface';
+import Upload from '@/components/Upload';
 
 type menuItem = {
   _id: string;
@@ -96,7 +98,17 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const [generating, setGenerating] = useState(false);
   const [energyPerTimes, setEnergyPerTimes] = useState(0);
 
+  const [image, setImageUrl] = useState<string | undefined>('');
+
   const isAdmin = currentUser?.isAdmin;
+
+  useEffect(() => {
+    if (updateModalOpen && values?.rentImage) {
+      setImageUrl(values.rentImage);
+    } else if (updateModalOpen && !values?.rentImage) {
+      setImageUrl('');
+    }
+  }, [updateModalOpen, values?.rentImage]);
 
   useEffect(() => {
     const fetchEnergyPerTimes = async () => {
@@ -399,6 +411,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
 
         await onSubmit({
           ...values,
+          rentImage: image,
           ...formValues,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           keyboards: keyboards.map(({ _id, ...rest }) => rest),
@@ -552,6 +565,32 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           width="md"
           placeholder="如: 10"
         />
+      </ProFormGroup>
+      <ProFormGroup>
+        <Form.Item label={intl.formatMessage({ id: 'image' })}>
+          <Upload
+            onFileUpload={(url: string) => {
+              setImageUrl(url);
+            }}
+            accept=".jpg,.jpeg,.png,.gif"
+            defaultFileList={
+              image
+                ? [
+                    {
+                      uid: '1',
+                      name: 'image',
+                      status: 'done' as UploadFile['status'],
+                      url: image,
+                    },
+                  ]
+                : []
+            }
+            onRemove={() => {
+              setImageUrl('');
+              return true;
+            }}
+          />
+        </Form.Item>
       </ProFormGroup>
 
       <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
