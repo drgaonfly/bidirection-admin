@@ -129,14 +129,14 @@ const TableList: React.FC = () => {
         </a>,
         record?.status === 'failed' && (
           <a
-            key="resend_energy"
+            key="rerecycle_resend"
             onClick={async () => {
               setCurrentRow(record);
               await rerecycle(currentRow?._id);
               actionRef.current?.reload();
             }}
           >
-            <FormattedMessage id="resend_energy" defaultMessage="重新发送" />
+            <FormattedMessage id="rerecycle_resend" defaultMessage="重新回收并发送" />
           </a>
         ),
         access.canDeleteRental && (
