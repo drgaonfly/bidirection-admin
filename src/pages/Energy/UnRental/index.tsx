@@ -31,10 +31,10 @@ const handleRemove = async (ids: string[]) => {
   }
 };
 
-const rerecycle = async (id: any) => {
+const rerecycle = async (fileds: any) => {
   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
   try {
-    await updateItem(`/unrentals/${id}/rerecycle`);
+    await updateItem(`/unrentals/${fileds._id}/rerecycle`);
     hide();
 
     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
@@ -113,44 +113,6 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" />,
-      dataIndex: 'option',
-      valueType: 'option',
-      fixed: 'right',
-      render: (_, record) => [
-        <a
-          key="detail"
-          onClick={() => {
-            setCurrentRow(record);
-            setShowDetail(true);
-          }}
-        >
-          <FormattedMessage id="detail" defaultMessage="详情" />
-        </a>,
-        record?.status === 'failed' && (
-          <a
-            key="rerecycle_resend"
-            onClick={async () => {
-              setCurrentRow(record);
-              await rerecycle(currentRow?._id);
-              actionRef.current?.reload();
-            }}
-          >
-            <FormattedMessage id="rerecycle_resend" defaultMessage="重新回收并发送" />
-          </a>
-        ),
-        access.canDeleteRental && (
-          <DeleteLink
-            key="delete"
-            onOk={async () => {
-              await handleRemove([record._id!]);
-              actionRef.current?.reload();
-            }}
-          />
-        ),
-      ],
-    },
-    {
       title: intl.formatMessage({ id: 'energy', defaultMessage: '能量' }),
       dataIndex: 'amount',
       hideInSearch: true,
@@ -179,6 +141,44 @@ const TableList: React.FC = () => {
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
+    },
+    {
+      title: <FormattedMessage id="pages.searchTable.titleOption" />,
+      dataIndex: 'option',
+      valueType: 'option',
+      fixed: 'right',
+      render: (_, record) => [
+        <a
+          key="detail"
+          onClick={() => {
+            setCurrentRow(record);
+            setShowDetail(true);
+          }}
+        >
+          <FormattedMessage id="detail" defaultMessage="详情" />
+        </a>,
+        record?.status === 'failed' && (
+          <a
+            key="rerecycle_resend"
+            onClick={async () => {
+              setCurrentRow(record);
+              await rerecycle(record);
+              actionRef.current?.reload();
+            }}
+          >
+            <FormattedMessage id="rerecycle_resend" defaultMessage="重新回收并发送" />
+          </a>
+        ),
+        access.canDeleteRental && (
+          <DeleteLink
+            key="delete"
+            onOk={async () => {
+              await handleRemove([record._id!]);
+              actionRef.current?.reload();
+            }}
+          />
+        ),
+      ],
     },
   ];
 
