@@ -41,6 +41,7 @@ const PlatformConfiguration: React.FC = () => {
     energy_address: string;
     recycle_min: number;
     quick_recycle_time: number;
+    feedback_id: number;
   }) => {
     try {
       setLoading(true);
@@ -87,6 +88,7 @@ const PlatformConfiguration: React.FC = () => {
               energy_per_times: currentUser?.energy_per_times || 0,
               recycle_min: currentUser?.recycle_min || 12,
               quick_recycle_time: currentUser?.quick_recycle_time || 1,
+              feedback_id: currentUser?.feedback_id || 0,
             }}
             submitter={{
               submitButtonProps: {
@@ -225,6 +227,19 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '请输入TG会员助记词',
               })}
             />
+            <ProFormDigit
+              width="xl"
+              name="feedback_id"
+              label={intl.formatMessage({
+                id: 'platform.feedback_id',
+                defaultMessage: '反馈ID',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.feedback_id',
+                defaultMessage: '请输入反馈ID',
+              })}
+              min={0}
+            />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
@@ -311,11 +326,17 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{'*'.repeat(20)}</Text>
             </div>
-            <div>
+            <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({ id: 'platform.mnemonic', defaultMessage: 'TG会员助记词' })}:{' '}
               </Text>
               <Text>{'*'.repeat(20)}</Text>
+            </div>
+            <div>
+              <Text strong>
+                {intl.formatMessage({ id: 'platform.feedback_id', defaultMessage: '反馈ID' })}:{' '}
+              </Text>
+              <Text>{currentUser?.feedback_id ?? '-'}</Text>
             </div>
           </div>
         )}

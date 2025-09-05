@@ -43,6 +43,7 @@ declare namespace API {
     quick_recycle_time?: number;
     withdraw_address?: string;
     withdraw_privateKey?: string;
+    feedback_id?: number;
   };
 
   // Example type definition
