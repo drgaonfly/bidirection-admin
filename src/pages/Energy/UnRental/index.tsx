@@ -81,7 +81,7 @@ const TableList: React.FC = () => {
       dataIndex: 'rental',
       hideInSearch: true,
       renderText: (_, record) => {
-        return record?.rental?._id || record?.packageUsageRecord?.packageOrder.id;
+        return record?.rental?._id || record?.packageUsageRecord?.packageOrder?.id;
       },
     },
     {
