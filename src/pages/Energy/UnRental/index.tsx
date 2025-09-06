@@ -147,6 +147,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'error', defaultMessage: '错误' }),
       dataIndex: 'error',
       hideInSearch: true,
+      hideInTable: true,
       copyable: true,
     },
     {
