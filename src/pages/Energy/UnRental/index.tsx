@@ -142,6 +142,13 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       renderText: (_, record) => record?.price,
     },
+    // error
+    {
+      title: intl.formatMessage({ id: 'error', defaultMessage: '错误' }),
+      dataIndex: 'error',
+      hideInSearch: true,
+      copyable: true,
+    },
     {
       title: intl.formatMessage({ id: 'createdAt' }),
       dataIndex: 'createdAt',
