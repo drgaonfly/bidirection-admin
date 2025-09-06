@@ -187,6 +187,14 @@ const TableList: React.FC = () => {
       valueType: 'dateTime',
       hideInSearch: true,
     },
+    // error
+    {
+      title: intl.formatMessage({ id: 'error', defaultMessage: '错误' }),
+      dataIndex: 'error',
+      hideInSearch: true,
+      hideInTable: true,
+      copyable: true,
+    },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" />,
       dataIndex: 'option',
