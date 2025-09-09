@@ -489,30 +489,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         />
 
         <ProFormText
-          name="customer_service_link"
-          label="客服链接"
-          width="md"
-          placeholder="https://t.me/"
-          disabled={!isAdmin}
-        />
-      </ProFormGroup>
-
-      <ProFormGroup>
-        <ProFormText
-          name="trx20_address"
-          label="trx20 地址"
-          width="md"
-          placeholder="请输入 trx 地址"
-          disabled={!isAdmin}
-        />
-        <ProFormText
-          name="auto_exchange_address"
-          label="自动兑换地址"
-          width="md"
-          placeholder="请输入自动兑换地址"
-          disabled={!isAdmin}
-        />
-        <ProFormText
           name="energy_address"
           initialValue={values.energy_address}
           label="能量地址"
@@ -541,6 +517,35 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             ),
           }}
         />
+      </ProFormGroup>
+
+      <ProFormGroup>
+        {access.canUpdateCustomerServiceLink && (
+          <ProFormText
+            name="customer_service_link"
+            label="客服链接"
+            width="md"
+            placeholder="https://t.me/"
+          />
+        )}
+
+        {access.canUpdateTrx20Address && (
+          <ProFormText
+            name="trx20_address"
+            label="trx20 地址"
+            width="md"
+            placeholder="请输入 trx 地址"
+          />
+        )}
+
+        {access.canUpdateAutoExchangeAddress && (
+          <ProFormText
+            name="auto_exchange_address"
+            label="自动兑换地址"
+            width="md"
+            placeholder="请输入自动兑换地址"
+          />
+        )}
       </ProFormGroup>
 
       <ProFormGroup>

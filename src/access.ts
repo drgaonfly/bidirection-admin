@@ -133,6 +133,16 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canUpdateBot:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots/:id', 'PUT')),
     canGetBot: currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bots', 'GET')),
+    canUpdateCustomerServiceLink:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/bots/:id/customer-service', 'PUT')),
+    canUpdateTrx20Address:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/bots/:id/trx20-address', 'PUT')),
+    canUpdateAutoExchangeAddress:
+      currentUser &&
+      (currentUser.isAdmin ||
+        checkPermission(currentUser, '/bots/:id/auto-exchange-address', 'PUT')),
 
     // 机器人用户权限
     canCreateBotUser:
