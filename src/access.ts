@@ -470,5 +470,18 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetRevenueShare:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/revenue-shares', 'GET')),
+
+    // rentalSweep
+    canCreateRentalSweep:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/rental-sweeps', 'POST')),
+    canDeleteRentalSweep:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/rental-sweeps', 'DELETE')),
+    canUpdateRentalSweep:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/rental-sweeps/:id', 'PUT')),
+    canGetRentalSweep:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rental-sweeps', 'GET')),
   };
 }

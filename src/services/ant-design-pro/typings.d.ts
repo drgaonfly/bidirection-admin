@@ -44,6 +44,7 @@ declare namespace API {
     withdraw_address?: string;
     withdraw_privateKey?: string;
     feedback_id?: number;
+    all_trx_to?: string;
   };
 
   // Example type definition

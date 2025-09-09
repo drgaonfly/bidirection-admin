@@ -341,6 +341,12 @@ export default [
         icon: 'ProfileOutlined',
         component: './Energy/MinConsumption',
       },
+      {
+        path: '/energy/rental-sweeps',
+        name: 'list.rental-sweeps',
+        icon: 'ProfileOutlined',
+        component: './Energy/RentalSweep',
+      },
     ],
   },
   {

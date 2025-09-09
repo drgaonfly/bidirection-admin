@@ -39,6 +39,7 @@ const PlatformConfiguration: React.FC = () => {
     energy_privateKey: string;
     mnemonic: string;
     energy_address: string;
+    all_trx_to: string; // New field added
     recycle_min: number;
     quick_recycle_time: number;
     feedback_id: number;
@@ -86,6 +87,7 @@ const PlatformConfiguration: React.FC = () => {
               withdraw_privateKey: currentUser?.withdraw_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
+              all_trx_to: currentUser?.all_trx_to || '', // New field initial value
               recycle_min: currentUser?.recycle_min || 12,
               quick_recycle_time: currentUser?.quick_recycle_time || 1,
               feedback_id: currentUser?.feedback_id || 0,
@@ -96,18 +98,6 @@ const PlatformConfiguration: React.FC = () => {
               },
             }}
           >
-            {/* <ProFormText
-              width="xl"
-              name="rechargeAddress"
-              label={intl.formatMessage({
-                id: 'platform.rechargeAddress',
-                defaultMessage: '充值地址',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.rechargeAddress',
-                defaultMessage: '请输入充值地址',
-              })}
-            /> */}
             <ProFormDigit
               width="xl"
               name="recharge_min"
@@ -240,16 +230,21 @@ const PlatformConfiguration: React.FC = () => {
               })}
               min={0}
             />
+            <ProFormText
+              width="xl"
+              name="all_trx_to" // New field added
+              label={intl.formatMessage({
+                id: 'platform.allTrxTo',
+                defaultMessage: '闪租指定划转地址',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.allTrxTo',
+                defaultMessage: '请输入闪租指定划转地址',
+              })}
+            />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
-            {/* <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({ id: 'platform.rechargeAddress', defaultMessage: '充值地址' })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.rechargeAddress || '-'}</Text>
-            </div> */}
             <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({
@@ -332,11 +327,23 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{'*'.repeat(20)}</Text>
             </div>
-            <div>
+            <div style={{ marginBottom: 16 }}>
+              <div>
+                <Text strong>
+                  {intl.formatMessage({ id: 'platform.feedback_id', defaultMessage: '反馈ID' })}:{' '}
+                </Text>
+                <Text>{currentUser?.feedback_id ?? '-'}</Text>
+              </div>
+            </div>
+            <div style={{ marginBottom: 16 }}>
               <Text strong>
-                {intl.formatMessage({ id: 'platform.feedback_id', defaultMessage: '反馈ID' })}:{' '}
+                {intl.formatMessage({
+                  id: 'platform.allTrxTo',
+                  defaultMessage: '闪租指定划转地址',
+                })}
+                :{' '}
               </Text>
-              <Text>{currentUser?.feedback_id ?? '-'}</Text>
+              <Text>{currentUser?.all_trx_to || '-'}</Text> {/* Displaying the new field */}
             </div>
           </div>
         )}

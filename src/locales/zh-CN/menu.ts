@@ -52,6 +52,7 @@ export default {
   'menu.list.deductions': '扣款记录',
   'menu.list.revenue-shares': '代理分润',
   'menu.list.withdraws': '代理提款',
+  'menu.list.rental-sweeps': '闪租清算',
 
   'menu.auth.users': '用户',
   'menu.auth.roles': '角色',
@@ -76,6 +77,7 @@ export default {
   'menu.energy.package-usage-records': '笔数套餐使用记录',
   'menu.energy.energy-usages': '能量使用记录',
   'menu.energy.min-consumptions': '低消记录',
+  'menu.energy.rental-sweeps': '闪租清算',
 
   'menu.change-password': '修改密码',
   'list.change-password': '修改密码',
@@ -130,6 +132,7 @@ export default {
   'menu.能量管理.笔数套餐使用记录': '笔数套餐使用记录',
   'menu.能量管理.能量使用记录': '能量使用记录',
   'menu.能量管理.低消记录': '低消记录',
+  'menu.能量管理.闪租清算': '闪租清算',
 
   'menu.机器人管理': '机器人管理',
   'menu.机器人用户管理': '机器人用户管理',
