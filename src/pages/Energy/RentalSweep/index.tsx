@@ -44,7 +44,7 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       copyable: true,
       renderText: (text, record) => {
-        return record.bot?.botName || 'N/A'; // Adjust as per your data structure
+        return record.bot?.botName;
       },
     },
     {
