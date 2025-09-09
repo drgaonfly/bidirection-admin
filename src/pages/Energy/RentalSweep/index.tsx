@@ -4,6 +4,7 @@ import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-desi
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
 import { message } from 'antd';
+import RentalSweepEnum from '../../../enums/rentalSweepStatus';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -51,6 +52,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'status', defaultMessage: 'Status' }),
       dataIndex: 'status',
       hideInSearch: true,
+      valueEnum: RentalSweepEnum,
     },
     {
       title: intl.formatMessage({ id: 'amount', defaultMessage: 'Amount (trx)' }),
