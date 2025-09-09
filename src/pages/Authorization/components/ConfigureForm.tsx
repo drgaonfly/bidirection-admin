@@ -493,6 +493,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           label="客服链接"
           width="md"
           placeholder="https://t.me/"
+          disabled={!isAdmin}
         />
       </ProFormGroup>
 
@@ -502,12 +503,14 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           label="trx20 地址"
           width="md"
           placeholder="请输入 trx 地址"
+          disabled={!isAdmin}
         />
         <ProFormText
           name="auto_exchange_address"
           label="自动兑换地址"
           width="md"
           placeholder="请输入自动兑换地址"
+          disabled={!isAdmin}
         />
         <ProFormText
           name="energy_address"
