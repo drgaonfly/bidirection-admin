@@ -4,8 +4,8 @@ const PackageUsageTypeEnum = () => {
   const intl = useIntl();
 
   return {
-    myself: { text: intl.formatMessage({ id: 'myself' }) },
-    other: { text: intl.formatMessage({ id: 'other' }) },
+    PackageOrder: { text: intl.formatMessage({ id: 'packageOrder' }) }, // 套餐订单
+    Rental: { text: intl.formatMessage({ id: 'rental' }) },
   };
 };
 

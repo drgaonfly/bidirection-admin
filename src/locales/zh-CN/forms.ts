@@ -330,6 +330,7 @@ export default {
   integer_amount: '积分数量',
   approve: '批准',
   refused: '拒绝',
-  PackageOrder: '套餐订单',
+  PackageOrder: '笔数套餐',
   Rental: '闪租',
+  order_id_by_type: '对应类型的订单ID',
 };

@@ -116,8 +116,13 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'separation', defaultMessage: '笔数' }),
+      title: intl.formatMessage({ id: 'separation', defaultMessage: '租用笔数' }),
       dataIndex: 'separation',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'used_times', defaultMessage: '使用笔数' }),
+      dataIndex: 'used_times',
       hideInSearch: true,
     },
     {

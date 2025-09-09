@@ -40,12 +40,17 @@ const TableList: React.FC = () => {
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
-    // packageUsageRecord
+    // type
     {
-      title: intl.formatMessage({ id: 'packageUsageRecord', defaultMessage: '套餐使用记录' }),
-      dataIndex: 'packageUsageRecord',
+      title: intl.formatMessage({ id: 'type' }),
+      dataIndex: 'type',
+      valueEnum: PackageUsageTypeEnum,
+    },
+    {
+      title: intl.formatMessage({ id: 'order_id_by_type', defaultMessage: '类型对应的订单ID' }),
       renderText: (_, record) => {
-        return record.packageUsageRecord?.id;
+        // 根据哪个存在返回对应的 id
+        return record.packageUsageRecord?.id || record.rental?.id || '-';
       },
     },
     {
@@ -76,19 +81,6 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'address', defaultMessage: '被监控的地址' }),
       dataIndex: 'address',
       copyable: true,
-    },
-    // to_address
-    {
-      title: intl.formatMessage({ id: 'to_address', defaultMessage: '接收地址' }),
-      dataIndex: 'to_address',
-      copyable: true,
-      hideInSearch: true,
-    },
-    // type
-    {
-      title: intl.formatMessage({ id: 'packageUsageRecord.columns.type' }),
-      dataIndex: 'type',
-      valueEnum: PackageUsageTypeEnum,
     },
     {
       title: intl.formatMessage({ id: 'energy', defaultMessage: '消耗能量' }),

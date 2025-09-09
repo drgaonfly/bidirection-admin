@@ -268,4 +268,6 @@ export default {
   expenditure_hourly: 'Price (trx)',
   expenditure_daily: 'Price (usdt)',
   reject: 'Reject',
+  rental: 'Rental',
+  order_id_by_type: 'Order ID by Type',
 };
