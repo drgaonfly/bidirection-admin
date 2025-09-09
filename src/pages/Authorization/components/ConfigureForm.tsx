@@ -304,7 +304,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
+      title: intl.formatMessage({ id: 'expiration_hour', defaultMessage: '有效期(小时)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
       editable: () => !!isAdmin,
@@ -369,7 +369,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       },
     },
     {
-      title: intl.formatMessage({ id: 'expiration', defaultMessage: '有效期(小时)' }),
+      title: intl.formatMessage({ id: 'expiration_day', defaultMessage: '有效期(天)' }),
       dataIndex: 'expiration',
       valueType: 'digit',
       editable: () => !!isAdmin, // 不是管理员就禁止修改
