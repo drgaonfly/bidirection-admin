@@ -42,7 +42,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'bot', defaultMessage: 'Bot' }),
       dataIndex: 'bot',
-      hideInSearch: true,
+      hideInSearch: false,
       copyable: true,
       renderText: (text, record) => {
         return record.bot?.botName;
@@ -74,7 +74,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'txHash', defaultMessage: 'txHash' }),
       dataIndex: 'tx_id',
-      hideInSearch: true,
+      hideInSearch: false,
       copyable: true,
     },
     {
