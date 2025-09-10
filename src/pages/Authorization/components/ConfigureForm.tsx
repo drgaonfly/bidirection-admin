@@ -557,6 +557,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           min={0}
           max={100}
           fieldProps={{ precision: 0, addonAfter: '%' }}
+          disabled={!isAdmin}
         />
         <ProFormDigit
           name="downStream_fee"

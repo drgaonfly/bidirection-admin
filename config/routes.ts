@@ -347,6 +347,12 @@ export default [
         icon: 'ProfileOutlined',
         component: './Energy/RentalSweep',
       },
+      {
+        path: '/energy/tron-balances',
+        name: 'list.tron-balances',
+        icon: 'ProfileOutlined',
+        component: './Energy/TronBalance',
+      },
     ],
   },
   {

@@ -483,5 +483,18 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/rental-sweeps/:id', 'PUT')),
     canGetRentalSweep:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/rental-sweeps', 'GET')),
+
+    // tronBalance
+    canCreateTronBalance:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tron-balances', 'POST')),
+    canDeleteTronBalance:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tron-balances', 'DELETE')),
+    canUpdateTronBalance:
+      currentUser &&
+      (currentUser.isAdmin || checkPermission(currentUser, '/tron-balances/:id', 'PUT')),
+    canGetTronBalance:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/tron-balances', 'GET')),
   };
 }

@@ -27,6 +27,7 @@ export default {
   'menu.energy.energy-usages': 'Energy Usages',
   'menu.energy.min-consumptions': 'Min Consumptions',
   'menu.energy.rental-sweeps': 'Rental Sweeps',
+  'menu.energy.tron-balances': 'Tron Balances',
 
   'menu.change-password': 'Change Password',
 
@@ -78,7 +79,8 @@ export default {
   'menu.能量管理.笔数套餐使用记录': 'Package Usage Records',
   'menu.能量管理.能量使用记录': 'Energy Usage Records',
   'menu.能量管理.低消记录': 'Min Consumptions',
-  'menu.能量管理.闪租清算': 'Rental Sweeping',
+  'menu.能量管理.闪租清算记录': 'Rental Sweeping',
+  'menu.能量管理.闪租余额记录': 'Rental Balances',
 
   'menu.机器人管理': 'Bot Management',
   'menu.机器人用户管理': 'Bot User Management',
