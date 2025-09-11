@@ -191,10 +191,10 @@ export default [
         component: './Membership/Premium',
       },
       {
-        path: '/membership/tg-stars',
+        path: '/membership/stars',
         name: 'list.tg-stars',
         icon: 'StarFilled',
-        component: './Membership/TgStar',
+        component: './Membership/Star',
       },
       {
         path: '/membership/anynoumies',

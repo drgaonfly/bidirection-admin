@@ -14,7 +14,7 @@ const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/tg-stars', { ids });
+    await removeItem('/stars', { ids });
     hide();
     message.success(<FormattedMessage id="delete_successful" defaultMessage="Delete successful" />);
     return true;
@@ -83,8 +83,8 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'stars', defaultMessage: 'TG星星数量' }),
-      dataIndex: 'stars',
+      title: intl.formatMessage({ id: 'count', defaultMessage: 'TG星星数量' }),
+      dataIndex: 'count',
       hideInSearch: true,
     },
     {
@@ -120,7 +120,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="detail" defaultMessage="详情" />
         </a>,
-        access.canDeleteTgStarsOrder && (
+        access.canDeleteStars && (
           <DeleteLink
             key="delete"
             onOk={async () => {
@@ -162,7 +162,7 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/tg-stars', { ...params, status: activeKey }, sort, filter)
+          queryList('/stars', { ...params, status: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
@@ -179,7 +179,7 @@ const TableList: React.FC = () => {
             </div>
           }
         >
-          {access.canDeleteTgStarsOrder && (
+          {access.canDeleteStars && (
             <DeleteButton
               onOk={async () => {
                 await handleRemove(selectedRowsState.map((item) => item._id!));

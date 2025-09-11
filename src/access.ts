@@ -294,13 +294,13 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
 
     // premium
     canCreatePremium:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium', 'POST')),
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premiums', 'POST')),
     canDeletePremium:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium', 'DELETE')),
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premiums', 'DELETE')),
     canUpdatePremium:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium/:id', 'PUT')),
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premiums/:id', 'PUT')),
     canGetPremium:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium', 'GET')),
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premiums', 'GET')),
 
     // anynoumy
     canCreateAnynoumy:
@@ -322,16 +322,16 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetInteger:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/integer', 'GET')),
     // tg-stars-orders
-    canCreateTgStarsOrder:
+    canCreateStars:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'POST')),
-    canDeleteTgStarsOrder:
+    canDeleteStars:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'DELETE')),
-    canUpdateTgStarsOrder:
+    canUpdateStars:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders/:id', 'PUT')),
-    canGetTgStarsOrder:
+    canGetStars:
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/tg-stars-orders', 'GET')),
 
