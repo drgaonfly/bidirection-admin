@@ -187,7 +187,7 @@ export default [
       {
         path: '/membership/premiums',
         name: 'list.premiums',
-        icon: 'StarFilled',
+        icon: 'PlusCircleFilled',
         component: './Membership/Premium',
       },
       {
