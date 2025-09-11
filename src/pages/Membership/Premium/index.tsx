@@ -41,6 +41,11 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.ItemData>[] = [
     {
+      title: intl.formatMessage({ id: 'id', defaultMessage: '订单ID' }),
+      dataIndex: 'id',
+      copyable: true,
+    },
+    {
       title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
       dataIndex: 'proxy',
       hideInSearch: true,
@@ -63,11 +68,6 @@ const TableList: React.FC = () => {
       renderText: (text, record) => {
         return record.bot?.botName;
       },
-    },
-    {
-      title: intl.formatMessage({ id: 'id', defaultMessage: '订单ID' }),
-      dataIndex: 'id',
-      copyable: true,
     },
     {
       title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
