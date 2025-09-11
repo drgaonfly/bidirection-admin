@@ -292,18 +292,15 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser &&
       (currentUser.isAdmin || checkPermission(currentUser, '/rentals/:id/recycling', 'PUT')),
 
-    // member-orders
-    canCreateMemberOrder:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'POST')),
-    canDeleteMemberOrder:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'DELETE')),
-    canUpdateMemberOrder:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/member-orders/:id', 'PUT')),
-    canGetMemberOrder:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/member-orders', 'GET')),
+    // premium
+    canCreatePremium:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium', 'POST')),
+    canDeletePremium:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium', 'DELETE')),
+    canUpdatePremium:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium/:id', 'PUT')),
+    canGetPremium:
+      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/premium', 'GET')),
 
     // anynoumy
     canCreateAnynoumy:

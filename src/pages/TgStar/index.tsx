@@ -8,21 +8,20 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import TgStarStatusEnum from '../../enums/tgStarStatus';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
   if (!ids) return true;
   try {
-    await removeItem('/tg-stars-orders', {
-      ids,
-    });
+    await removeItem('/tg-stars', { ids });
     hide();
     message.success(<FormattedMessage id="delete_successful" defaultMessage="Delete successful" />);
     return true;
   } catch (error: any) {
     hide();
     message.error(
-      error.response.data.message ?? (
+      error.response?.data?.message ?? (
         <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
       ),
     );
@@ -35,24 +34,37 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
-  const [currentRow, setCurrentRow] = useState<API.ItemData>();
-  const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
+  const [currentRow, setCurrentRow] = useState<any>();
+  const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const access = useAccess();
 
-  const columns: ProColumns<API.ItemData>[] = [
+  const columns: ProColumns<any>[] = [
     {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
-      hideInSearch: true,
-      hideInForm: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'orderNumber' }),
-      dataIndex: 'orderNumber',
+      title: intl.formatMessage({ id: 'orderId', defaultMessage: '订单ID' }),
+      dataIndex: 'id',
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'amount' }),
+      title: intl.formatMessage({ id: 'user', defaultMessage: '用户' }),
+      dataIndex: 'botUser',
+      hideInSearch: true,
+      renderText: (_, record) =>
+        record.botUser && 'userName' in record.botUser ? record.botUser.userName : '',
+    },
+    {
+      title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
+      dataIndex: 'bot',
+      hideInSearch: true,
+      renderText: (_, record) => record.bot?.botName || '',
+    },
+    {
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
+      dataIndex: 'proxy',
+      hideInSearch: true,
+      renderText: (_, record) => record?.proxy?.name,
+    },
+    {
+      title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
       dataIndex: 'amount',
       hideInSearch: true,
       renderText: (text) => `${text} USDT`,
@@ -61,22 +73,7 @@ const TableList: React.FC = () => {
       title: intl.formatMessage({ id: 'actualAmount', defaultMessage: '实际收款金额' }),
       dataIndex: 'actualAmount',
       hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'starsAmount', defaultMessage: 'TG星星数量' }),
-      dataIndex: 'starsAmount',
-      hideInSearch: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'status' }),
-      dataIndex: 'status',
-      hideInSearch: true,
-      valueEnum: {
-        pending: { text: intl.formatMessage({ id: 'pending' }), status: 'warning' },
-        paid: { text: intl.formatMessage({ id: 'paid' }), status: 'success' },
-        expired: { text: intl.formatMessage({ id: 'expired' }), status: 'error' },
-        cancelled: { text: intl.formatMessage({ id: 'cancelled' }), status: 'default' },
-      },
+      renderText: (text) => `${text ?? 0} USDT`,
     },
     {
       title: intl.formatMessage({ id: 'paymentAddress', defaultMessage: '收款地址' }),
@@ -86,46 +83,25 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'user' }),
-      dataIndex: 'botUser',
+      title: intl.formatMessage({ id: 'stars', defaultMessage: 'TG星星数量' }),
+      dataIndex: 'stars',
       hideInSearch: true,
-      renderText: (text, record) => {
-        return record.botUser?.userName;
-      },
     },
     {
-      title: intl.formatMessage({ id: 'hasPurchased', defaultMessage: '是否已购买' }),
-      dataIndex: 'hasPurchased',
+      title: intl.formatMessage({ id: 'status' }),
+      dataIndex: 'status',
       hideInSearch: true,
-      copyable: true,
-      render: (text) => {
-        if (text === true) {
-          return (
-            <span style={{ color: 'green' }}>
-              {intl.formatMessage({ id: 'paid', defaultMessage: '已购买' })}
-            </span>
-          );
-        }
-        return <span>{intl.formatMessage({ id: 'notPaid', defaultMessage: '未购买' })}</span>;
-      },
+      valueEnum: TgStarStatusEnum,
     },
     {
-      title: intl.formatMessage({ id: 'bot' }),
-      dataIndex: 'bot',
-      hideInSearch: true,
-      renderText: (text, record) => {
-        return record.bot?.botName;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'createdAt' }),
+      title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
     {
-      title: intl.formatMessage({ id: 'endDate', defaultMessage: '结束日期' }),
-      dataIndex: 'endDate',
+      title: intl.formatMessage({ id: 'expiredAt', defaultMessage: '结束日期' }),
+      dataIndex: 'expiredAt',
       valueType: 'dateTime',
       hideInSearch: true,
     },
@@ -159,60 +135,41 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.ItemData, API.PageParams>
+      <ProTable<any, API.PageParams>
         headerTitle={intl.formatMessage({ id: 'list' })}
         actionRef={actionRef}
         rowKey="_id"
         scroll={{ x: 'max-content' }}
-        search={{
-          labelWidth: 120,
-          collapsed: true,
-        }}
+        search={{ labelWidth: 120, collapsed: true }}
         toolbar={{
           menu: {
             type: 'tab',
             activeKey: activeKey,
             items: [
+              { label: <FormattedMessage id="platform.all" defaultMessage="All" />, key: '' },
+              { label: <FormattedMessage id="pending" defaultMessage="Pending" />, key: 'pending' },
+              { label: <FormattedMessage id="paid" defaultMessage="Paid" />, key: 'paid' },
+              { label: <FormattedMessage id="expired" defaultMessage="Expired" />, key: 'expired' },
               {
-                label: <FormattedMessage id="platform.all" defaultMessage="all" />,
-                key: '',
-              },
-              {
-                label: <FormattedMessage id="pending" defaultMessage="pending" />,
-                key: 'pending',
-              },
-              {
-                label: <FormattedMessage id="paid" defaultMessage="paid" />,
-                key: 'paid',
-              },
-              {
-                label: <FormattedMessage id="expired" defaultMessage="expired" />,
-                key: 'expired',
-              },
-              {
-                label: <FormattedMessage id="canceled" defaultMessage="canceled" />,
-                key: 'canceled',
+                label: <FormattedMessage id="cancelled" defaultMessage="Cancelled" />,
+                key: 'cancelled',
               },
             ],
             onChange: (key: any) => {
               setActiveKey(key);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
+              actionRef.current?.reload();
             },
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/tg-stars-orders', { ...params, status: activeKey }, sort, filter)
+          queryList('/tg-stars', { ...params, status: activeKey }, sort, filter)
         }
         columns={columns}
         rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
+          onChange: (_, selectedRows) => setSelectedRows(selectedRows),
         }}
       />
-      {selectedRowsState?.length > 0 && (
+      {selectedRowsState.length > 0 && (
         <FooterToolbar
           extra={
             <div>
@@ -236,8 +193,8 @@ const TableList: React.FC = () => {
 
       <Show
         open={showDetail}
-        currentRow={currentRow || ({} as API.ItemData)}
-        columns={columns as ProDescriptionsItemProps<API.ItemData>[]}
+        currentRow={currentRow || ({} as any)}
+        columns={columns as ProDescriptionsItemProps<any>[]}
         onClose={() => {
           setCurrentRow(undefined);
           setShowDetail(false);

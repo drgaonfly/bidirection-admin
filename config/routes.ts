@@ -187,10 +187,10 @@ export default [
     component: './MemberOrder',
   },
   {
-    path: '/tg-stars-orders',
-    name: 'list.tg-stars-orders',
+    path: '/tg-stars',
+    name: 'list.tg-stars',
     icon: 'StarFilled',
-    component: './tgStarsOrder',
+    component: './TgStar',
   },
   // botMessage
   {
