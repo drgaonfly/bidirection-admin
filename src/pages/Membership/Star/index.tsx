@@ -87,6 +87,22 @@ const TableList: React.FC = () => {
       dataIndex: 'count',
       hideInSearch: true,
     },
+    // hash
+    {
+      title: intl.formatMessage({ id: 'hash', defaultMessage: '接收哈希' }),
+      dataIndex: 'hash',
+      ellipsis: true,
+      hideInSearch: true,
+      copyable: true,
+    },
+    // tx_id
+    {
+      title: intl.formatMessage({ id: 'tx_id', defaultMessage: '交易ID' }),
+      dataIndex: 'tx_id',
+      ellipsis: true,
+      hideInSearch: true,
+      copyable: true,
+    },
     {
       title: intl.formatMessage({ id: 'status' }),
       dataIndex: 'status',
