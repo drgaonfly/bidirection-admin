@@ -179,18 +179,30 @@ export default [
     icon: 'OrderedListOutlined',
     component: './Payment',
   },
-  // MemberOrder
   {
-    path: '/member-orders',
-    name: 'list.member-orders',
-    icon: 'MemberOrderOutlined',
-    component: './MemberOrder',
-  },
-  {
-    path: '/tg-stars',
-    name: 'list.tg-stars',
-    icon: 'StarFilled',
-    component: './TgStar',
+    path: '/membership',
+    name: 'list.membership',
+    icon: 'GoldFilled',
+    routes: [
+      {
+        path: '/membership/premiums',
+        name: 'list.premiums',
+        icon: 'StarFilled',
+        component: './Membership/Premium',
+      },
+      {
+        path: '/membership/tg-stars',
+        name: 'list.tg-stars',
+        icon: 'StarFilled',
+        component: './Membership/TgStar',
+      },
+      {
+        path: '/membership/anynoumies',
+        name: 'list.anynoumies',
+        icon: 'UserOutlined',
+        component: './Membership/Anynoumy',
+      },
+    ],
   },
   // botMessage
   {
@@ -254,13 +266,6 @@ export default [
     name: 'list.bot-user-configs',
     icon: 'SettingOutlined',
     component: './BotUserConfig',
-  },
-  // anynoumy
-  {
-    path: '/anynoumies',
-    name: 'list.anynoumies',
-    icon: 'UserOutlined',
-    component: './Anynoumy',
   },
   // integer
   {
