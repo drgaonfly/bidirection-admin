@@ -498,22 +498,37 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           disabled
           fieldProps={{
             addonAfter: (
-              <Button
-                type="text"
-                size="small"
-                loading={generating}
-                onClick={async () => {
-                  if (values.energy_address) {
-                    await navigator.clipboard.writeText(values.energy_address);
-                  } else {
-                    await handleGenerateEnergyAddress();
-                  }
-                }}
-              >
-                {values.energy_address
-                  ? intl.formatMessage({ id: 'copy', defaultMessage: '复制' })
-                  : intl.formatMessage({ id: 'generate', defaultMessage: '生成' })}
-              </Button>
+              <div style={{ display: 'flex', gap: '4px' }}>
+                <Button
+                  type="text"
+                  size="small"
+                  loading={generating}
+                  onClick={async () => {
+                    if (values.energy_address) {
+                      await navigator.clipboard.writeText(values.energy_address);
+                      message.success('地址已复制到剪贴板');
+                    } else {
+                      await handleGenerateEnergyAddress();
+                    }
+                  }}
+                >
+                  {values.energy_address
+                    ? intl.formatMessage({ id: 'copy', defaultMessage: '复制' })
+                    : intl.formatMessage({ id: 'generate', defaultMessage: '生成' })}
+                </Button>
+                {isAdmin && values.energy_address && (
+                  <Button
+                    type="text"
+                    size="small"
+                    loading={generating}
+                    onClick={async () => {
+                      await handleGenerateEnergyAddress();
+                    }}
+                  >
+                    {intl.formatMessage({ id: 'regenerate', defaultMessage: '重新生成' })}
+                  </Button>
+                )}
+              </div>
             ),
           }}
         />
