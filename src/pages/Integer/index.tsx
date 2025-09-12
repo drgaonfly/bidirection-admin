@@ -8,6 +8,7 @@ import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
 import DeleteLink from '@/components/DeleteLink';
+import PackageUsageTypeEnum from '../../enums/packageUsageType';
 
 const handleRemove = async (ids: string[]) => {
   const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
@@ -63,6 +64,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'type', defaultMessage: 'Type' }),
       dataIndex: 'type',
+      valueEnum: PackageUsageTypeEnum,
     },
     {
       title: intl.formatMessage({ id: 'integer_amount', defaultMessage: 'Amount' }),
