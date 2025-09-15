@@ -45,6 +45,8 @@ declare namespace API {
     withdraw_privateKey?: string;
     feedback_id?: number;
     all_trx_to?: string;
+    fragment_hash?: string;
+    fragment_cookie?: string;
   };
 
   // Example type definition

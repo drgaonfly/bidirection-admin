@@ -39,10 +39,12 @@ const PlatformConfiguration: React.FC = () => {
     energy_privateKey: string;
     mnemonic: string;
     energy_address: string;
-    all_trx_to: string; // New field added
+    all_trx_to: string;
     recycle_min: number;
     quick_recycle_time: number;
     feedback_id: number;
+    fragment_hash: string;
+    fragment_cookie: string;
   }) => {
     try {
       setLoading(true);
@@ -87,10 +89,12 @@ const PlatformConfiguration: React.FC = () => {
               withdraw_privateKey: currentUser?.withdraw_privateKey || '',
               mnemonic: currentUser?.mnemonic || '',
               energy_per_times: currentUser?.energy_per_times || 0,
-              all_trx_to: currentUser?.all_trx_to || '', // New field initial value
+              all_trx_to: currentUser?.all_trx_to || '',
               recycle_min: currentUser?.recycle_min || 12,
               quick_recycle_time: currentUser?.quick_recycle_time || 1,
               feedback_id: currentUser?.feedback_id || 0,
+              fragment_hash: currentUser?.fragment_hash || '',
+              fragment_cookie: currentUser?.fragment_cookie || '',
             }}
             submitter={{
               submitButtonProps: {
@@ -232,7 +236,7 @@ const PlatformConfiguration: React.FC = () => {
             />
             <ProFormText
               width="xl"
-              name="all_trx_to" // New field added
+              name="all_trx_to"
               label={intl.formatMessage({
                 id: 'platform.allTrxTo',
                 defaultMessage: '闪租指定划转地址',
@@ -241,6 +245,31 @@ const PlatformConfiguration: React.FC = () => {
                 id: 'please.enter.allTrxTo',
                 defaultMessage: '请输入闪租指定划转地址',
               })}
+            />
+            <ProFormText
+              width="xl"
+              name="fragment_hash"
+              label={intl.formatMessage({
+                id: 'platform.fragmentHash',
+                defaultMessage: 'Fragment Hash',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.fragmentHash',
+                defaultMessage: '请输入Fragment Hash',
+              })}
+            />
+            <ProFormTextArea
+              width="xl"
+              name="fragment_cookie"
+              label={intl.formatMessage({
+                id: 'platform.fragmentCookie',
+                defaultMessage: 'Fragment Cookie',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.fragmentCookie',
+                defaultMessage: '请输入Fragment Cookie',
+              })}
+              rows={4}
             />
           </ProForm>
         ) : (
@@ -343,7 +372,27 @@ const PlatformConfiguration: React.FC = () => {
                 })}
                 :{' '}
               </Text>
-              <Text>{currentUser?.all_trx_to || '-'}</Text> {/* Displaying the new field */}
+              <Text>{currentUser?.all_trx_to || '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.fragmentHash',
+                  defaultMessage: 'Fragment Hash',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.fragment_hash || '-'}</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.fragmentCookie',
+                  defaultMessage: 'Fragment Cookie',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.fragment_cookie ? '***已设置***' : '-'}</Text>
             </div>
           </div>
         )}
