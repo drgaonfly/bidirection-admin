@@ -87,6 +87,7 @@ const TableList: React.FC = () => {
       hideInSearch: true,
       valueEnum: {
         pending: { text: intl.formatMessage({ id: 'pending' }), status: 'warning' },
+        processing: { text: intl.formatMessage({ id: 'processing' }), status: 'processing' },
         approved: { text: intl.formatMessage({ id: 'approved' }), status: 'success' },
         rejected: { text: intl.formatMessage({ id: 'rejected' }), status: 'error' },
       },
@@ -148,6 +149,11 @@ const TableList: React.FC = () => {
           >
             <FormattedMessage id="reject" defaultMessage="拒绝" />
           </a>
+        ),
+        record.status === 'processing' && (
+          <span key="processing" style={{ color: '#1890ff' }}>
+            处理中...
+          </span>
         ),
       ],
     },
