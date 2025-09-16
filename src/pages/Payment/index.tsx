@@ -102,7 +102,7 @@ const TableList: React.FC = () => {
       dataIndex: 'botUser',
       hideInSearch: true,
       renderText: (text, record) => {
-        return record.botUser?.displayName;
+        return record.botUser?.userName;
       },
     },
     {
