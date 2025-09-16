@@ -3,7 +3,7 @@ import { queryList, removeItem, updateItem } from '@/services/ant-design-pro/api
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Image } from 'antd';
+import { message, Image, Switch } from 'antd';
 import React, { useRef, useState } from 'react';
 import Show from './components/Show';
 import DeleteButton from '@/components/DeleteButton';
@@ -78,21 +78,15 @@ const handleUpdate = async (fields: any) => {
 
 const TableList: React.FC = () => {
   const intl = useIntl();
-  const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
+  const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.ItemData>();
   const [selectedRowsState, setSelectedRows] = useState<API.ItemData[]>([]);
-  const [updateModalOpen, handleUpdateModalOpen] = useState(false);
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
-    {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: ['proxy', 'name'],
-      hideInSearch: true,
-      hideInForm: true,
-    },
     {
       title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
       dataIndex: 'bot',
@@ -105,24 +99,64 @@ const TableList: React.FC = () => {
       copyable: true,
       renderText: (groups) => groups?.map((group: any) => group?.title).join(','),
     },
+    // weight
     {
-      title: intl.formatMessage({ id: 'content' }),
-      dataIndex: 'content',
-      ellipsis: true,
+      title: intl.formatMessage({ id: 'weight', defaultMessage: '权重' }),
+      dataIndex: 'weight',
+      hideInSearch: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'isOnline' }),
+      dataIndex: 'isOnline',
+      hideInSearch: false,
+      render: (_, record: any) => (
+        <Switch
+          checked={record.isOnline}
+          onChange={async () => {
+            await handleUpdate({ _id: record._id, isOnline: !record.isOnline });
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }}
+        />
+      ),
+    },
+    // 每行菜单数
+    {
+      title: intl.formatMessage({ id: 'menus_per_row', defaultMessage: '每行菜单数' }),
+      dataIndex: 'menus_per_row',
       hideInSearch: true,
     },
     // image
     {
-      title: intl.formatMessage({ id: 'image' }),
-      dataIndex: 'image',
+      title: intl.formatMessage({ id: 'image', defaultMessage: '图片' }),
+      dataIndex: 'images',
       hideInSearch: true,
       render: (_, record) => {
-        if (!record.image) {
+        if (!record.images || !Array.isArray(record.images) || record.images.length === 0) {
           return null;
         }
-
-        return <Image src={record.image} alt="message" style={{ maxWidth: '100px' }} preview />;
+        return (
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {record.images.map((img: string, idx: number) => (
+              <Image
+                key={img || idx}
+                src={img}
+                alt={`message-${idx}`}
+                style={{ maxWidth: '100px', maxHeight: '100px' }}
+                preview
+              />
+            ))}
+          </div>
+        );
       },
+    },
+    {
+      title: intl.formatMessage({ id: 'content' }),
+      dataIndex: 'content',
+      ellipsis: true,
+      width: 200,
+      hideInSearch: true,
     },
     // isRealtime
     {
@@ -173,8 +207,7 @@ const TableList: React.FC = () => {
           <a
             key="edit"
             onClick={() => {
-              console.log();
-
+              console.log('Edit clicked, record:', record);
               handleUpdateModalOpen(true);
               setCurrentRow(record);
             }}
@@ -192,7 +225,7 @@ const TableList: React.FC = () => {
         headerTitle={intl.formatMessage({ id: 'groupMessage_list' })}
         actionRef={actionRef}
         rowKey="_id"
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: 2000 }}
         search={{
           labelWidth: 120,
           collapsed: false,
@@ -201,6 +234,20 @@ const TableList: React.FC = () => {
           menu: {
             type: 'tab',
             activeKey: activeKey,
+            items: [
+              {
+                label: <FormattedMessage id="platform.all" defaultMessage="所有" />,
+                key: '',
+              },
+              {
+                label: <FormattedMessage id="platform.online" defaultMessage="Online" />,
+                key: 'true',
+              },
+              {
+                label: <FormattedMessage id="platform.offline" defaultMessage="Offline" />,
+                key: 'false',
+              },
+            ],
             onChange: (key: any) => {
               setActiveKey(key);
               if (actionRef.current) {
@@ -210,7 +257,15 @@ const TableList: React.FC = () => {
           },
         }}
         request={(params, sort, filter) =>
-          queryList('/group-messages', { ...params, messageType: activeKey }, sort, filter)
+          queryList(
+            '/group-messages',
+            {
+              ...params,
+              isOnline: activeKey, // 添加这个行
+            },
+            sort,
+            filter,
+          )
         }
         columns={columns}
         rowSelection={{
