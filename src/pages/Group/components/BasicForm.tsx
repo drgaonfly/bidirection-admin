@@ -1,6 +1,13 @@
 import { useIntl } from '@umijs/max';
 import React from 'react';
-import { ProForm, ProFormText, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
+import {
+  ProForm,
+  // ProFormText,
+  ProFormDigit,
+  // ProFormSelect,
+  ProFormTextArea,
+  ProFormGroup,
+} from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
 
 interface Props {
@@ -16,6 +23,9 @@ const GroupBasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
     <ProForm
       initialValues={{
         ...values,
+        bot: values?.bot?.id,
+        creator: values?.creator?.id,
+        operators: values?.operators.map((operator: any) => operator?.id),
       }}
       onFinish={async (formData) => {
         await onFinish({
@@ -34,52 +44,77 @@ const GroupBasicForm: React.FC<Props> = ({ newRecord, onFinish, values }) => {
         ),
       }}
     >
-      <ProForm.Group>
-        <ProFormText
+      <ProFormGroup>
+        {/* <ProFormText
           name="title"
           width="md"
           label={intl.formatMessage({ id: 'groupTitle', defaultMessage: '群组名称' })}
           rules={[{ required: true, message: '请输入群组名称' }]}
-        />
+          disabled
+        /> */}
 
-        <ProFormSelect
+        {/* <ProFormSelect
           name="type"
           width="md"
           label={intl.formatMessage({ id: 'type', defaultMessage: '群组类型' })}
           valueEnum={{
             group: intl.formatMessage({ id: 'group' }),
           }}
-        />
+          disabled
+        /> */}
 
-        <ProFormSelect
+        {/* <ProFormSelect
           name="bot"
           width="md"
           label={intl.formatMessage({ id: 'groupBot', defaultMessage: '机器人ID' })}
           placeholder="请输入 bot 对象 ID"
-        />
+          disabled
+        /> */}
 
-        <ProFormSelect
+        {/* <ProFormSelect
           name="creator"
           width="md"
           label={intl.formatMessage({ id: 'groupCreator', defaultMessage: '创建者ID' })}
+          disabled
+        /> */}
+
+        <ProFormTextArea
+          name="message"
+          width="md"
+          label={intl.formatMessage({ id: 'content', defaultMessage: '内容' })}
+          fieldProps={{
+            autoSize: { minRows: 6 },
+          }}
         />
 
-        <ProFormSelect
+        {/* <ProFormSelect
           name="operators"
+          width="md"
           label={intl.formatMessage({ id: 'groupOperators', defaultMessage: '操作人ID数组' })}
           mode="multiple"
-        />
+          disabled
+        /> */}
 
         <ProFormDigit
           name="exchange_rate"
+          width="md"
           label={intl.formatMessage({ id: 'exchangeRate', defaultMessage: '汇率' })}
         />
 
         <ProFormDigit
           name="fee_rate"
+          width="md"
           label={intl.formatMessage({ id: 'feeRate', defaultMessage: '费率（如0.02表示2%）' })}
         />
-      </ProForm.Group>
+
+        <ProFormDigit
+          label={intl.formatMessage({ id: 'intervalTime', defaultMessage: '间隔时间' })}
+          name="intervalTime"
+          width="xs"
+          min={0}
+          fieldProps={{ style: { width: '100%' } }}
+        />
+      </ProFormGroup>
 
       {!newRecord && (
         <Form.Item name="_id" label={false}>
