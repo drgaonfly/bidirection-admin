@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { updateItem } from '@/services/ant-design-pro/api';
 import {
   EditableProTable,
   ModalForm,
@@ -8,15 +7,10 @@ import {
   ProFormGroup,
   ProFormText,
   ProFormDigit,
-  ProFormSwitch,
-  // ProFormSelect,
   type ProColumns,
 } from '@ant-design/pro-components';
-import { Form, Input, message, Button } from 'antd';
+import { Form, Input } from 'antd';
 import { FormattedMessage, useAccess, useIntl, useModel } from '@umijs/max';
-import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
-import { UploadFile } from 'antd/lib/upload/interface';
-import Upload from '@/components/Upload';
 
 type menuItem = {
   _id: string;
@@ -38,35 +32,6 @@ type commandItem = {
   weight: number;
 };
 
-type pricePairItem = {
-  _id: string;
-  name?: string;
-  expenditure: number;
-  // aqusition: number;
-  expiration: number;
-  times: number;
-  type: string; // hourly, daily
-};
-
-// const handleTronAddress = async (fields: FormValueType) => {
-//   const hide = message.loading(<FormattedMessage id="updating" defaultMessage="Updating..." />);
-//   try {
-//     await updateItem(`/bots/${fields._id}/tron-address`, fields);
-//     hide();
-
-//     message.success(<FormattedMessage id="update_successful" defaultMessage="Update successful" />);
-//     return true;
-//   } catch (error: any) {
-//     hide();
-//     message.error(
-//       error?.response?.data?.message ?? (
-//         <FormattedMessage id="update_failed" defaultMessage="Update failed, please try again!" />
-//       ),
-//     );
-//     return false;
-//   }
-// };
-
 export type FormValueType = Partial<API.ItemData>;
 
 export type UpdateFormProps = {
@@ -83,77 +48,14 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
   const access = useAccess();
   const [form] = Form.useForm();
-  const { updateModalOpen, onCancel, onSubmit, values } = props;
   const { initialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
+  const { updateModalOpen, onCancel, onSubmit, values } = props;
   const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
   const [keyboards, setKeyboards] = useState<keyboardItem[]>(values?.keyboards || []);
   const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
-  const [hourlyPricePairs, setHourlyPricePairs] = useState<pricePairItem[]>(
-    values?.price_pairs?.filter((item: pricePairItem) => item.type === 'hourly') || [],
-  );
-  const [dailyPricePairs, setDailyPricePairs] = useState<pricePairItem[]>(
-    values?.price_pairs?.filter((item: pricePairItem) => item.type === 'daily') || [],
-  );
-  const [generating, setGenerating] = useState(false);
-  const [energyPerTimes, setEnergyPerTimes] = useState(0);
-
-  const [image, setImageUrl] = useState<string | undefined>('');
 
   const isAdmin = currentUser?.isAdmin;
-
-  useEffect(() => {
-    if (updateModalOpen && values?.rentImage) {
-      setImageUrl(values.rentImage);
-    } else if (updateModalOpen && !values?.rentImage) {
-      setImageUrl('');
-    }
-  }, [updateModalOpen, values?.rentImage]);
-
-  useEffect(() => {
-    const fetchEnergyPerTimes = async () => {
-      try {
-        const { data, success } = await getSuperAdminEnergyPerTimes();
-
-        if (success) {
-          console.log('energy_per_times', data.energy_per_times);
-          setEnergyPerTimes(data.energy_per_times);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchEnergyPerTimes();
-  }, [currentUser]);
-
-  // 按钮点击函数
-  const handleGenerateEnergyAddress = async () => {
-    const fields = form.getFieldsValue();
-    setGenerating(true);
-
-    try {
-      const { data } = await updateItem(`/bots/${fields._id}/tron-address`, fields);
-
-      // 仅更新部分字段
-      const newAddress = data?.energy_address;
-
-      console.log('data', data);
-
-      if (newAddress) {
-        form.setFieldsValue({
-          ...fields,
-          energy_address: newAddress, // 👈 更新 energy_address 字段
-        });
-      }
-
-      message.success('能量地址生成成功');
-    } catch (error: any) {
-      message.error(error?.response?.data?.message ?? '生成失败，请重试！');
-    } finally {
-      setGenerating(false);
-    }
-  };
 
   useEffect(() => {
     if (updateModalOpen && values) {
@@ -163,12 +65,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       setKeyboards(values?.keyboards || []);
       setCommands(values?.commands || []);
       setMenus(values?.menus || []);
-      setHourlyPricePairs(
-        values?.price_pairs?.filter((item: pricePairItem) => item.type === 'hourly') || [],
-      );
-      setDailyPricePairs(
-        values?.price_pairs?.filter((item: pricePairItem) => item.type === 'daily') || [],
-      );
     }
   }, [updateModalOpen, values]);
 
@@ -262,136 +158,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     },
   ];
 
-  const pricePair_hourly_columns: ProColumns<pricePairItem>[] = [
-    {
-      title: intl.formatMessage({ id: 'name', defaultMessage: '命令名' }),
-      dataIndex: 'name',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: intl.formatMessage({ id: 'name_required', defaultMessage: '请输入名称' }),
-          },
-        ],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'expenditure_hourly', defaultMessage: '价格(trx)' }),
-      dataIndex: 'expenditure',
-      valueType: 'digit',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'sale', defaultMessage: '出价(trx)' }),
-      dataIndex: 'sale',
-      valueType: 'digit',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
-      dataIndex: 'aqusition',
-      valueType: 'digit',
-      editable: false,
-      render: (_, record) => {
-        const times = Number(record.times) || 0;
-        return energyPerTimes * times;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'expiration_hour', defaultMessage: '有效期(小时)' }),
-      dataIndex: 'expiration',
-      valueType: 'digit',
-      editable: () => !!isAdmin,
-    },
-    {
-      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
-      dataIndex: 'times',
-      valueType: 'digit',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
-      valueType: 'option',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-      ],
-    },
-  ];
-
-  const pricePair_daily_columns: ProColumns<pricePairItem>[] = [
-    {
-      title: intl.formatMessage({ id: 'name', defaultMessage: '名称' }),
-      dataIndex: 'name',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: intl.formatMessage({ id: 'name_required', defaultMessage: '请输入名称' }),
-          },
-        ],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'expenditure_daily', defaultMessage: '来价(usdt)' }),
-      dataIndex: 'expenditure',
-      valueType: 'digit',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'sale', defaultMessage: '出价(usdt)' }),
-      dataIndex: 'sale',
-      valueType: 'digit',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'aqusition', defaultMessage: '能量(sun)' }),
-      dataIndex: 'aqusition',
-      valueType: 'digit',
-      editable: false,
-      render: (_, record) => {
-        const times = Number(record.times) || 0;
-        return energyPerTimes * times;
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'expiration_day', defaultMessage: '有效期(天)' }),
-      dataIndex: 'expiration',
-      valueType: 'digit',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-    },
-    {
-      title: intl.formatMessage({ id: 'times', defaultMessage: '笔数' }),
-      dataIndex: 'times',
-      valueType: 'digit',
-      editable: () => !!isAdmin, // 不是管理员就禁止修改
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
-      valueType: 'option',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-      ],
-    },
-  ];
-
   return (
     <ModalForm
       form={form}
@@ -402,16 +168,8 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       onOpenChange={onCancel}
       onFinish={async (values) => {
         const formValues = form.getFieldsValue();
-        const combinedPricePairs = [
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          ...hourlyPricePairs.map(({ _id, ...rest }) => rest),
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          ...dailyPricePairs.map(({ _id, ...rest }) => rest),
-        ];
-
         await onSubmit({
           ...values,
-          rentImage: image,
           ...formValues,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           keyboards: keyboards.map(({ _id, ...rest }) => rest),
@@ -419,8 +177,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           menus: menus.map(({ _id, ...rest }) => rest),
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           commands: commands.map(({ _id, ...rest }) => rest),
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          price_pairs: combinedPricePairs,
         });
       }}
       initialValues={{
@@ -428,7 +184,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
         commands: values?.commands?.map((item: any) => item._id),
         keyboards: values?.keyboards?.map((item: any) => item._id),
         menus: values?.menus?.map((item: any) => item._id),
-        pricePairs: values?.pricePairs?.map((item: any) => item._id),
       }}
     >
       {values && (
@@ -487,51 +242,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             autoSize: { minRows: 8 },
           }}
         />
-
-        <ProFormText
-          name="energy_address"
-          initialValue={values.energy_address}
-          label="能量地址"
-          width="md"
-          placeholder="请输入能量地址"
-          rules={[{ required: false, message: '请输入能量地址' }]}
-          disabled
-          fieldProps={{
-            addonAfter: (
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <Button
-                  type="text"
-                  size="small"
-                  loading={generating}
-                  onClick={async () => {
-                    if (values.energy_address) {
-                      await navigator.clipboard.writeText(values.energy_address);
-                      message.success('地址已复制到剪贴板');
-                    } else {
-                      await handleGenerateEnergyAddress();
-                    }
-                  }}
-                >
-                  {values.energy_address
-                    ? intl.formatMessage({ id: 'copy', defaultMessage: '复制' })
-                    : intl.formatMessage({ id: 'generate', defaultMessage: '生成' })}
-                </Button>
-                {isAdmin && values.energy_address && (
-                  <Button
-                    type="text"
-                    size="small"
-                    loading={generating}
-                    onClick={async () => {
-                      await handleGenerateEnergyAddress();
-                    }}
-                  >
-                    {intl.formatMessage({ id: 'regenerate', defaultMessage: '重新生成' })}
-                  </Button>
-                )}
-              </div>
-            ),
-          }}
-        />
       </ProFormGroup>
 
       <ProFormGroup>
@@ -574,111 +284,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           fieldProps={{ precision: 0, addonAfter: '%' }}
           disabled={!isAdmin}
         />
-        <ProFormDigit
-          name="downStream_fee"
-          label="下游闪兑费率"
-          width="md"
-          placeholder="请输入手续费百分比"
-          min={0}
-          max={100}
-          fieldProps={{ precision: 0, addonAfter: '%' }}
-        />
-        <ProFormDigit
-          name="min_interger_limit"
-          label="预支能量的最少几分数"
-          width="md"
-          placeholder="如: 10"
-        />
       </ProFormGroup>
-      <ProFormGroup>
-        <Form.Item label="闪租图片" tooltip="在机器人闪租里显示">
-          <Upload
-            onFileUpload={(url: string) => {
-              setImageUrl(url);
-            }}
-            accept=".jpg,.jpeg,.png,.gif"
-            defaultFileList={
-              image
-                ? [
-                    {
-                      uid: '1',
-                      name: 'image',
-                      status: 'done' as UploadFile['status'],
-                      url: image,
-                    },
-                  ]
-                : []
-            }
-            onRemove={() => {
-              setImageUrl('');
-              return true;
-            }}
-          />
-        </Form.Item>
-
-        <ProFormSwitch name="canBeCloned" label="是否可克隆" width="md" />
-      </ProFormGroup>
-
-      <EditableProTable<pricePairItem>
-        rowKey="_id"
-        headerTitle="日租配置"
-        columns={pricePair_daily_columns}
-        value={dailyPricePairs}
-        onChange={(value) => setDailyPricePairs([...value])}
-        editable={{
-          type: 'multiple',
-          actionRender: (row, config, defaultDoms) => {
-            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
-          },
-        }}
-        recordCreatorProps={
-          access.canSuperAdmin
-            ? {
-                newRecordType: 'dataSource',
-                position: 'bottom',
-                record: () => ({
-                  _id: Date.now().toString(),
-                  name: '',
-                  expenditure: 0,
-                  expiration: 0,
-                  times: 0,
-                  type: 'daily',
-                  sale: 0,
-                }),
-              }
-            : false
-        }
-      />
-
-      <EditableProTable<pricePairItem>
-        rowKey="_id"
-        headerTitle="闪租配置"
-        columns={pricePair_hourly_columns}
-        value={hourlyPricePairs}
-        onChange={(value) => setHourlyPricePairs([...value])}
-        editable={{
-          type: 'multiple',
-          actionRender: (row, config, defaultDoms) => {
-            return [defaultDoms.save, defaultDoms.cancel]; // 只保留编辑按钮
-          },
-        }}
-        recordCreatorProps={
-          access.canSuperAdmin
-            ? {
-                newRecordType: 'dataSource',
-                position: 'bottom',
-                record: () => ({
-                  _id: Date.now().toString(),
-                  expenditure: 0,
-                  expiration: 0,
-                  times: 0,
-                  type: 'hourly',
-                  sale: 0,
-                }),
-              }
-            : false
-        }
-      />
 
       <EditableProTable<commandItem>
         rowKey="_id"

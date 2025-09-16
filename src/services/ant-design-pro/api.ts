@@ -151,14 +151,3 @@ export async function removeItem(url: string, options?: { [key: string]: any }) 
     },
   });
 }
-
-/**
- * Get super admin energy per times
- * @returns Promise with energy_per_times data
- */
-export async function getSuperAdminEnergyPerTimes(options?: { [key: string]: any }) {
-  return request<API.SuperAdminEnergyPerTimes>('/auth/super-admin/energy-per-times', {
-    method: 'GET',
-    ...(options || {}),
-  });
-}

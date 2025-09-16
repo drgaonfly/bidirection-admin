@@ -1,11 +1,10 @@
 import { Card, message, Typography, Button, Space } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import { ProForm, ProFormDigit, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
+import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
-import { getSuperAdminEnergyPerTimes } from '@/services/ant-design-pro/api';
 
 const { Text } = Typography;
 
@@ -15,37 +14,8 @@ const PlatformConfiguration: React.FC = () => {
   const { currentUser } = initialState || {};
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [energyPerTimes, setEnergyPerTimes] = useState(0);
 
-  useEffect(() => {
-    const fetchEnergyPerTimes = async () => {
-      try {
-        const { data, success } = await getSuperAdminEnergyPerTimes();
-
-        if (success) {
-          console.log('energy_per_times', data.energy_per_times);
-          setEnergyPerTimes(data.energy_per_times);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchEnergyPerTimes();
-  }, [currentUser]);
-
-  const handleSubmit = async (values: {
-    rechargeAddress: string;
-    energy_privateKey: string;
-    mnemonic: string;
-    energy_address: string;
-    all_trx_to: string;
-    recycle_min: number;
-    quick_recycle_time: number;
-    feedback_id: number;
-    fragment_hash: string;
-    fragment_cookie: string;
-  }) => {
+  const handleSubmit = async (values: { name: string }) => {
     try {
       setLoading(true);
       await updateItem('/auth/profile', values);
@@ -81,20 +51,7 @@ const PlatformConfiguration: React.FC = () => {
           <ProForm
             onFinish={handleSubmit}
             initialValues={{
-              recharge_min: currentUser?.recharge_min || 0,
-              recharge_max: currentUser?.recharge_max || 0,
-              rechargeAddress: currentUser?.rechargeAddress || '',
-              energy_address: currentUser?.energy_address || '',
-              energy_privateKey: currentUser?.energy_privateKey || '',
-              withdraw_privateKey: currentUser?.withdraw_privateKey || '',
-              mnemonic: currentUser?.mnemonic || '',
-              energy_per_times: currentUser?.energy_per_times || 0,
-              all_trx_to: currentUser?.all_trx_to || '',
-              recycle_min: currentUser?.recycle_min || 12,
-              quick_recycle_time: currentUser?.quick_recycle_time || 1,
-              feedback_id: currentUser?.feedback_id || 0,
-              fragment_hash: currentUser?.fragment_hash || '',
-              fragment_cookie: currentUser?.fragment_cookie || '',
+              name: currentUser?.name || '',
             }}
             submitter={{
               submitButtonProps: {
@@ -102,297 +59,23 @@ const PlatformConfiguration: React.FC = () => {
               },
             }}
           >
-            <ProFormDigit
-              width="xl"
-              name="recharge_min"
-              label={intl.formatMessage({
-                id: 'platform.rechargeMin',
-                defaultMessage: '充值最小值 (%)',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.rechargeMin',
-                defaultMessage: '请输入充值最小百分比',
-              })}
-              min={0}
-              max={100}
-              fieldProps={{
-                addonAfter: '%',
-              }}
-            />
-            <ProFormDigit
-              width="xl"
-              name="recharge_max"
-              label={intl.formatMessage({
-                id: 'platform.rechargeMax',
-                defaultMessage: '充值最大值 (%)',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.rechargeMax',
-                defaultMessage: '请输入充值最大百分比',
-              })}
-              min={0}
-              max={100}
-              fieldProps={{
-                addonAfter: '%',
-              }}
-            />
-            <ProFormDigit
-              width="xl"
-              name="energy_per_times"
-              label={intl.formatMessage({
-                id: 'platform.energyPerTimes',
-                defaultMessage: '每笔能量消耗 (sun)',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.energyPerTimes',
-                defaultMessage: '请输入每笔能量消耗 (sun)',
-              })}
-              min={0}
-              defaultValue={energyPerTimes}
-            />
-            <ProFormDigit
-              width="xl"
-              name="recycle_min"
-              label={intl.formatMessage({
-                id: 'platform.recycle_min',
-                defaultMessage: '累计消费笔数',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.recycle_min',
-                defaultMessage: '累计消费笔数',
-              })}
-              min={0}
-            />
-            <ProFormDigit
-              width="xl"
-              name="quick_recycle_time"
-              label={intl.formatMessage({
-                id: 'platform.quick_recycle_time',
-                defaultMessage: '快速回收时间 (分钟)',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.quick_recycle_time',
-                defaultMessage: '请输入快速回收时间 (分钟)',
-              })}
-              min={0}
-            />
             <ProFormText
               width="xl"
-              name="energy_privateKey"
-              label={intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '能量私钥' })}
+              name="name"
+              label={intl.formatMessage({ id: 'platform.name', defaultMessage: '名称' })}
               placeholder={intl.formatMessage({
-                id: 'please.enter.privateKey',
-                defaultMessage: '请输入私钥',
+                id: 'please.enter.name',
+                defaultMessage: '请输入名称',
               })}
-            />
-            <ProFormText
-              width="xl"
-              name="energy_address"
-              label={intl.formatMessage({
-                id: 'platform.energy_address',
-                defaultMessage: '能量地址',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.energy_address',
-                defaultMessage: '请输入能量的地址',
-              })}
-            />
-            <ProFormText
-              width="xl"
-              name="withdraw_privateKey"
-              label={intl.formatMessage({
-                id: 'platform.withdraw_privateKey',
-                defaultMessage: '提现私钥',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.withdraw_privateKey',
-                defaultMessage: '请输入提现私钥',
-              })}
-            />
-            <ProFormTextArea
-              width="xl"
-              name="mnemonic"
-              label={intl.formatMessage({
-                id: 'platform.mnemonic',
-                defaultMessage: 'TG会员助记词',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.mnemonic',
-                defaultMessage: '请输入TG会员助记词',
-              })}
-            />
-            <ProFormDigit
-              width="xl"
-              name="feedback_id"
-              label={intl.formatMessage({
-                id: 'platform.feedback_id',
-                defaultMessage: '反馈ID',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.feedback_id',
-                defaultMessage: '请输入反馈ID',
-              })}
-              min={0}
-            />
-            <ProFormText
-              width="xl"
-              name="all_trx_to"
-              label={intl.formatMessage({
-                id: 'platform.allTrxTo',
-                defaultMessage: '闪租指定划转地址',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.allTrxTo',
-                defaultMessage: '请输入闪租指定划转地址',
-              })}
-            />
-            <ProFormText
-              width="xl"
-              name="fragment_hash"
-              label={intl.formatMessage({
-                id: 'platform.fragmentHash',
-                defaultMessage: 'Fragment Hash',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.fragmentHash',
-                defaultMessage: '请输入Fragment Hash',
-              })}
-            />
-            <ProFormTextArea
-              width="xl"
-              name="fragment_cookie"
-              label={intl.formatMessage({
-                id: 'platform.fragmentCookie',
-                defaultMessage: 'Fragment Cookie',
-              })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.fragmentCookie',
-                defaultMessage: '请输入Fragment Cookie',
-              })}
-              rows={4}
             />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
             <div style={{ marginBottom: 16 }}>
               <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.rechargeMin',
-                  defaultMessage: '充值最小值 (%)',
-                })}
-                :{' '}
+                {intl.formatMessage({ id: 'platform.name', defaultMessage: '名称' })}:{' '}
               </Text>
-              <Text>{currentUser?.recharge_min ?? '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.rechargeMax',
-                  defaultMessage: '充值最大值 (%)',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.recharge_max ?? '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.energyPerTimes',
-                  defaultMessage: '每次发送能量 (sun)',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.energy_per_times ?? '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.recycle_min',
-                  defaultMessage: '累计消费笔数',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.recycle_min ?? '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.quick_recycle_time',
-                  defaultMessage: '快速回收时间 (分钟)',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.quick_recycle_time ?? '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({ id: 'platform.privateKey', defaultMessage: '发送能量私钥' })}:{' '}
-              </Text>
-              <Text>{'*'.repeat(20)}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.energy_address',
-                  defaultMessage: '能量地址',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.energy_address || '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.withdraw_privateKey',
-                  defaultMessage: '提现私钥',
-                })}
-                :{' '}
-              </Text>
-              <Text>{'*'.repeat(20)}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({ id: 'platform.mnemonic', defaultMessage: 'TG会员助记词' })}:{' '}
-              </Text>
-              <Text>{'*'.repeat(20)}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <div>
-                <Text strong>
-                  {intl.formatMessage({ id: 'platform.feedback_id', defaultMessage: '反馈ID' })}:{' '}
-                </Text>
-                <Text>{currentUser?.feedback_id ?? '-'}</Text>
-              </div>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.allTrxTo',
-                  defaultMessage: '闪租指定划转地址',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.all_trx_to || '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.fragmentHash',
-                  defaultMessage: 'Fragment Hash',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.fragment_hash || '-'}</Text>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.fragmentCookie',
-                  defaultMessage: 'Fragment Cookie',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.fragment_cookie ? '***已设置***' : '-'}</Text>
+              <Text>{currentUser?.name || '-'}</Text>
             </div>
           </div>
         )}

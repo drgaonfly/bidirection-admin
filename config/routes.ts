@@ -131,19 +131,7 @@ export default [
         icon: 'UserOutlined',
         component: './UserType/Customer',
       },
-      {
-        path: '/user-type/applications',
-        name: 'list.applications',
-        icon: 'AppstoreAddOutlined',
-        component: './UserType/Application',
-      },
     ],
-  },
-  {
-    path: '/bots',
-    name: 'list.bots',
-    icon: 'TableOutlined',
-    component: './Bot',
   },
   {
     path: '/bot-users',
@@ -165,44 +153,12 @@ export default [
     icon: 'TeamOutlined',
     component: './Group',
   },
-  // suscription
-  {
-    path: '/subscriptions',
-    name: 'list.subscriptions',
-    icon: 'PayCircleOutlined',
-    component: './Subscription',
-  },
   // payment
   {
     path: '/payments',
     name: 'list.payments',
     icon: 'OrderedListOutlined',
     component: './Payment',
-  },
-  {
-    path: '/membership',
-    name: 'list.membership',
-    icon: 'GoldFilled',
-    routes: [
-      {
-        path: '/membership/premiums',
-        name: 'list.premiums',
-        icon: 'PlusCircleFilled',
-        component: './Membership/Premium',
-      },
-      {
-        path: '/membership/stars',
-        name: 'list.tg-stars',
-        icon: 'StarFilled',
-        component: './Membership/Star',
-      },
-      {
-        path: '/membership/anynoumies',
-        name: 'list.anynoumies',
-        icon: 'UserOutlined',
-        component: './Membership/Anynoumy',
-      },
-    ],
   },
   // botMessage
   {
@@ -239,13 +195,6 @@ export default [
     icon: 'MoneyCollectOutlined',
     component: './Receipt',
   },
-  // deduction
-  {
-    path: '/deductions',
-    name: 'list.deductions',
-    icon: 'MinusCircleOutlined',
-    component: './Deduction',
-  },
   // exchange
   {
     path: '/exchanges',
@@ -267,117 +216,11 @@ export default [
     icon: 'SettingOutlined',
     component: './BotUserConfig',
   },
-  // integer
-  {
-    path: '/integers',
-    name: 'list.integers',
-    icon: 'NumberOutlined',
-    component: './Integer',
-  },
   // transfers
   {
     path: '/transfers',
     name: 'list.transfers',
     icon: 'SwapOutlined',
     component: './Transfer',
-  },
-  // 用户管理
-  {
-    path: '/energy',
-    name: 'list.energy',
-    icon: 'ProductOutlined',
-    routes: [
-      // rental
-      {
-        path: '/energy/rentals',
-        name: 'list.rentals',
-        component: './Energy/Rental',
-      },
-      // packages
-      {
-        path: '/energy/packages',
-        name: 'list.packages',
-        icon: 'ProductOutlined',
-        component: './Energy/Package',
-      },
-      // package orders
-      {
-        path: '/energy/package-orders',
-        name: 'list.package-orders',
-        icon: 'ShoppingCartOutlined',
-        component: './Energy/PackageOrder',
-      },
-      {
-        path: '/energy/unrentals',
-        name: 'list.unrentals',
-        icon: 'CarOutlined',
-        component: './Energy/UnRental',
-      },
-      //
-      {
-        path: '/energy/energy-sends',
-        name: 'list.energy-sends',
-        icon: 'SendOutlined',
-        component: './Energy/EnergySend',
-      },
-      {
-        path: '/energy/advances',
-        name: 'list.advances',
-        icon: 'ThunderboltOutlined',
-        component: './Energy/Advance',
-      },
-      // package usage records
-      {
-        path: '/energy/package-usage-records',
-        name: 'list.package-usage-records',
-        icon: 'HistoryOutlined',
-        component: './Energy/PackageUsageRecord',
-      },
-      // energy usages
-      {
-        path: '/energy/energy-usages',
-        name: 'list.energy-usages',
-        icon: 'ProfileOutlined',
-        component: './Energy/EnergyUsage',
-      },
-      {
-        path: '/energy/min-consumptions',
-        name: 'list.min-consumptions',
-        icon: 'ProfileOutlined',
-        component: './Energy/MinConsumption',
-      },
-      {
-        path: '/energy/rental-sweeps',
-        name: 'list.rental-sweeps',
-        icon: 'ProfileOutlined',
-        component: './Energy/RentalSweep',
-      },
-      {
-        path: '/energy/tron-balances',
-        name: 'list.tron-balances',
-        icon: 'ProfileOutlined',
-        component: './Energy/TronBalance',
-      },
-    ],
-  },
-  {
-    path: '/deductions',
-    name: 'list.deductions',
-    icon: 'MoneyCollectFilled',
-    component: './Deduction',
-  },
-  // 代理分润
-  {
-    path: '/revenue-shares',
-    name: 'list.revenue-shares',
-    icon: 'ProfileOutlined',
-    component: './RevenueShare',
-  },
-  // 代理提款
-  {
-    path: '/withdraws',
-    name: 'list.withdraws',
-    icon: 'MoneyCollectOutlined',
-    component: './Withdraw',
   },
 ];
