@@ -3,7 +3,7 @@ import { addItem, queryList, removeItem, updateItem } from '@/services/ant-desig
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useAccess } from '@umijs/max';
-import { message, Modal, Switch } from 'antd';
+import { message, Switch } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/Update';
 import Update from './components/Update';
@@ -14,7 +14,7 @@ import DeleteLink from '@/components/DeleteLink';
 import CopyToClipboard from '@/components/CopyToClipboard';
 // import { Input } from 'antd';
 import SendMessageModal from './components/SendMessageModal';
-import GenerateBoundProxyModal from './components/GenerateBoundProxyModal';
+
 /**
  * @en-US Add node
  * @zh-CN 添加节点
@@ -144,7 +144,6 @@ const TableList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<any[]>([]);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const [activeKey, setActiveKey] = useState<string | undefined>('');
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [messageText, setMessageText] = useState('');
   const access = useAccess();
@@ -154,72 +153,20 @@ const TableList: React.FC = () => {
    * */
   // Define roles object with index signature
 
-  const [generateProxyModalOpen, setGenerateProxyModalOpen] = useState(false);
-  const [generateProxyLoading, setGenerateProxyLoading] = useState(false);
-
-  // 生成绑定代理处理函数
-  const handleGenerateProxy = async (values: any) => {
-    setGenerateProxyLoading(true);
-    try {
-      await updateItem(`/bot-users/${currentRow._id}/generate-bound-proxy`, {
-        ...values,
-      });
-      message.success('生成绑定代理成功');
-      setGenerateProxyModalOpen(false);
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-    } catch (error: any) {
-      message.error(error?.response?.data?.message || '生成绑定代理失败');
-    } finally {
-      setGenerateProxyLoading(false);
-    }
-  };
-
-  const handleRemoveBoundProxy = async (fields: any) => {
-    const hide = message.loading(<FormattedMessage id="deleting" defaultMessage="Deleting..." />);
-    if (!fields) return true;
-    try {
-      await updateItem(`/bot-users/${fields._id}/remove-bound-proxy`);
-      hide();
-      message.success(
-        <FormattedMessage
-          id="delete_successful"
-          defaultMessage="Deleted successfully and will refresh soon"
-        />,
-      );
-
-      // ✅ 手动刷新 ProTable
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error(
-        error.response?.data?.message ?? (
-          <FormattedMessage id="delete_failed" defaultMessage="Delete failed, please try again" />
-        ),
-      );
-      return false;
-    }
-  };
-
   const columns: ProColumns<any>[] = [
-    {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: 'proxy',
-      hideInSearch: true,
-      renderText: (_, record) => {
-        return record?.bind_proxy;
-      },
-    },
     {
       title: intl.formatMessage({ id: 'id' }),
       dataIndex: 'id',
       hideInSearch: true,
       copyable: true,
+    },
+    {
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
+      dataIndex: 'proxy',
+      hideInSearch: true,
+      renderText: (_, record) => {
+        return record?.proxy.name;
+      },
     },
     //userName
     {
@@ -270,14 +217,6 @@ const TableList: React.FC = () => {
       ),
     },
     {
-      title: intl.formatMessage({ id: 'bound_proxy', defaultMessage: '绑定的代理' }),
-      dataIndex: 'bound_proxy',
-      hideInSearch: true,
-      renderText: (_, record) => {
-        return record?.bound_proxy?.name;
-      },
-    },
-    {
       title: intl.formatMessage({ id: 'createdAt', defaultMessage: '创建时间' }),
       dataIndex: 'createdAt',
       hideInSearch: true,
@@ -315,28 +254,6 @@ const TableList: React.FC = () => {
             }}
           >
             <FormattedMessage id="send_message" defaultMessage="发送消息" />
-          </a>
-        ),
-        access.canUpdateBotUser && !record?.bound_proxy && (
-          <a
-            key="generate_bound_proxy"
-            onClick={() => {
-              setCurrentRow(record);
-              setGenerateProxyModalOpen(true);
-            }}
-          >
-            <FormattedMessage id="generate_bound_proxy" defaultMessage="生成绑定代理" />
-          </a>
-        ),
-        access.canUpdateBotUser && record?.bound_proxy && (
-          <a
-            key="remove_bound_proxy"
-            onClick={() => {
-              setCurrentRow(record);
-              handleRemoveBoundProxy(record);
-            }}
-          >
-            <FormattedMessage id="remove_bound_proxy" defaultMessage="删除绑定代理" />
           </a>
         ),
       ],
@@ -422,6 +339,7 @@ const TableList: React.FC = () => {
           )}
         </FooterToolbar>
       )}
+
       {(access.canSuperAdmin || access.canCreateBotUser) && (
         <Create
           open={createModalOpen}
@@ -439,6 +357,7 @@ const TableList: React.FC = () => {
           }}
         />
       )}
+
       {(access.canSuperAdmin || access.canUpdateBotUser) && (
         <Update
           onSubmit={async (value) => {
@@ -456,6 +375,7 @@ const TableList: React.FC = () => {
           values={currentRow || {}}
         />
       )}
+
       <Show
         open={showDetail}
         currentRow={currentRow}
@@ -465,13 +385,6 @@ const TableList: React.FC = () => {
           setShowDetail(false);
         }}
       />
-      <Modal
-        title={intl.formatMessage({ id: 'video_player', defaultMessage: '视频播放' })}
-        open={videoModalOpen}
-        onCancel={() => setVideoModalOpen(false)}
-        footer={null}
-        width={800}
-      ></Modal>
 
       <SendMessageModal
         open={messageModalOpen}
@@ -483,13 +396,6 @@ const TableList: React.FC = () => {
         onSendMessage={handleSendMessage}
         messageText={messageText}
         setMessageText={setMessageText}
-      />
-
-      <GenerateBoundProxyModal
-        open={generateProxyModalOpen}
-        onOpenChange={setGenerateProxyModalOpen}
-        onFinish={handleGenerateProxy}
-        loading={generateProxyLoading}
       />
     </PageContainer>
   );
