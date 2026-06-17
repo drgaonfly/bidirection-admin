@@ -154,18 +154,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canGetBotUser:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/bot-users', 'GET')),
 
-    // Transaction权限
-    canCreateTransaction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'POST')),
-    canDeleteTransaction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'DELETE')),
-    canUpdateTransaction:
-      currentUser &&
-      (currentUser.isAdmin || checkPermission(currentUser, '/transactions/:id', 'PUT')),
-    canGetTransaction:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transactions', 'GET')),
-
     // Group权限
     canCreateGroup:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/groups', 'POST')),
@@ -188,16 +176,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/subscriptions/:id', 'PUT')),
     canGetSubscription:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/subscriptions', 'GET')),
-
-    // Payment权限
-    canCreatePayment:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/payments', 'POST')),
-    canDeletePayment:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/payments', 'DELETE')),
-    canUpdatePayment:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/payments/:id', 'PUT')),
-    canGetPayment:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/payments', 'GET')),
 
     // BotMessage
     canCreateBotMessage:
@@ -230,26 +208,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets/:id', 'PUT')),
     canGetWallet:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/wallets', 'GET')),
-
-    // Receipt
-    canCreateReceipt:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts', 'POST')),
-    canDeleteReceipt:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts', 'DELETE')),
-    canUpdateReceipt:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts/:id', 'PUT')),
-    canGetReceipt:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/receipts', 'GET')),
-
-    // Exchange
-    canCreateExchange:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges', 'POST')),
-    canDeleteExchange:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges', 'DELETE')),
-    canUpdateExchange:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges/:id', 'PUT')),
-    canGetExchange:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/exchanges', 'GET')),
 
     // GroupMessage
     canCreateGroupMessage:
@@ -356,16 +314,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
       (currentUser.isAdmin || checkPermission(currentUser, '/applications/:id', 'PUT')),
     canGetApplication:
       currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/applications', 'GET')),
-
-    // Transfer
-    canCreateTransfer:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'POST')),
-    canDeleteTransfer:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'DELETE')),
-    canUpdateTransfer:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers/:id', 'PUT')),
-    canGetTransfer:
-      currentUser && (currentUser.isAdmin || checkPermission(currentUser, '/transfers', 'GET')),
 
     // Package
     canCreatePackage:

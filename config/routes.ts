@@ -139,26 +139,12 @@ export default [
     icon: 'RobotOutlined',
     component: './BotUser',
   },
-  // transaction
-  {
-    path: '/transactions',
-    name: 'list.transactions',
-    icon: 'MoneyCollectOutlined',
-    component: './Transaction',
-  },
   // group
   {
     path: '/groups',
     name: 'list.groups',
     icon: 'TeamOutlined',
     component: './Group',
-  },
-  // payment
-  {
-    path: '/payments',
-    name: 'list.payments',
-    icon: 'OrderedListOutlined',
-    component: './Payment',
   },
   // botMessage
   {
@@ -188,20 +174,6 @@ export default [
     icon: 'WalletOutlined',
     component: './Wallet',
   },
-  // receipt
-  {
-    path: '/receipts',
-    name: 'list.receipts',
-    icon: 'MoneyCollectOutlined',
-    component: './Receipt',
-  },
-  // exchange
-  {
-    path: '/exchanges',
-    name: 'list.exchanges',
-    icon: 'SwapOutlined',
-    component: './Exchange',
-  },
   // groupMessage
   {
     path: '/group-messages',
@@ -215,12 +187,5 @@ export default [
     name: 'list.bot-user-configs',
     icon: 'SettingOutlined',
     component: './BotUserConfig',
-  },
-  // transfers
-  {
-    path: '/transfers',
-    name: 'list.transfers',
-    icon: 'SwapOutlined',
-    component: './Transfer',
   },
 ];
