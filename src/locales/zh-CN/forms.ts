@@ -111,7 +111,7 @@ export default {
   remark: '备注',
   calling_name: '启动命令',
   user_name: '用户名',
-  owner: '电报机器人id',
+  owner: '所有者',
   owner_bot: '电报机器人id',
 
   first_name_user_telegram: '名字',
