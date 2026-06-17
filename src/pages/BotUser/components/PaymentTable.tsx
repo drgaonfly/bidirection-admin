@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditableProTable, ProColumns } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import StatusEnum from '@/enums/paymentStatus';
+// import StatusEnum from '@/enums/paymentStatus';
 
 interface PaymentTableProps {
   payments: any[];
@@ -39,7 +39,7 @@ const PaymentTable: React.FC<PaymentTableProps> = ({
     {
       title: intl.formatMessage({ id: 'status', defaultMessage: '状态' }),
       dataIndex: 'status',
-      valueEnum: StatusEnum,
+      // valueEnum: StatusEnum,
     },
     {
       title: intl.formatMessage({ id: 'amount', defaultMessage: '金额' }),
