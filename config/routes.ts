@@ -69,7 +69,7 @@ export default [
   {
     path: '/auth',
     name: 'list.auth',
-    icon: 'table',
+    icon: 'SettingOutlined',
     access: 'canGetUser',
     routes: [
       {
@@ -185,7 +185,7 @@ export default [
   {
     path: '/bot-user-configs',
     name: 'list.bot-user-configs',
-    icon: 'SettingOutlined',
+    icon: 'UserOutlined',
     component: './BotUserConfig',
   },
 ];

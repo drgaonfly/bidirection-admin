@@ -3,6 +3,9 @@ import {
   SettingOutlined,
   UserOutlined,
   CustomerServiceOutlined,
+  LockOutlined,
+  SafetyCertificateOutlined,
+  ToolOutlined,
 } from '@ant-design/icons';
 import { FormattedMessage, history, useModel, useAccess } from '@umijs/max';
 import { Spin } from 'antd';
@@ -123,7 +126,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
       : []),
     {
       key: 'change-password',
-      icon: <SettingOutlined />,
+      icon: <LockOutlined />,
       label: <FormattedMessage id="menu.account.change-password" defaultMessage="修改密码" />,
     },
     {
@@ -133,14 +136,14 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
     },
     {
       key: 'two-factor-auth',
-      icon: <SettingOutlined />,
+      icon: <SafetyCertificateOutlined />,
       label: <FormattedMessage id="menu.account.two-factor-auth" defaultMessage="二步认证" />,
     },
     ...(access.canSuperAdmin
       ? [
           {
             key: 'platform-configuration',
-            icon: <SettingOutlined />,
+            icon: <ToolOutlined />,
             label: (
               <FormattedMessage
                 id="menu.account.platform-configuration"
