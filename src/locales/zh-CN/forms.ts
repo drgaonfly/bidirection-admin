@@ -330,4 +330,5 @@ export default {
   PackageOrder: '笔数套餐',
   Rental: '闪租',
   order_id_by_type: '对应类型的订单ID',
+  botUserName: '机器人用户名',
 };

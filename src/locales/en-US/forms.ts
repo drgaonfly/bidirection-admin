@@ -267,4 +267,5 @@ export default {
   reject: 'Reject',
   rental: 'Rental',
   order_id_by_type: 'Order ID by Type',
+  botUserName: 'Bot Username',
 };

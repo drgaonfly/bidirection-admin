@@ -203,6 +203,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'isCreatedByAdmin' }),
       dataIndex: 'isCreatedByAdmin',
+      width: 50,
       hideInSearch: true,
       render: (_, record) => {
         const isAdmin = record?.isCreatedByAdmin;
@@ -295,7 +296,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       fixed: 'right',
-      width: 300,
+      width: 100,
       render: (_, record) => [
         access.canUpdateBot && (
           <a
