@@ -175,7 +175,7 @@ const TableList: React.FC = () => {
       copyable: true,
     },
     {
-      title: intl.formatMessage({ id: 'bot_userName' }),
+      title: intl.formatMessage({ id: 'botUserName' }),
       dataIndex: 'userName',
       width: 150,
       render: (_, record) => {
@@ -190,15 +190,15 @@ const TableList: React.FC = () => {
         }
       },
     },
-    {
-      title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '复制机器人' }),
-      dataIndex: 'clonedFrom',
-      width: 120,
-      hideInSearch: true,
-      renderText: (text: any) => {
-        return text?.botName || text?.userName;
-      },
-    },
+    // {
+    //   title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '复制机器人' }),
+    //   dataIndex: 'clonedFrom',
+    //   width: 120,
+    //   hideInSearch: true,
+    //   renderText: (text: any) => {
+    //     return text?.botName || text?.userName;
+    //   },
+    // },
     // isCreatedByAdmin - 红绿灯
     {
       title: intl.formatMessage({ id: 'isCreatedByAdmin' }),
