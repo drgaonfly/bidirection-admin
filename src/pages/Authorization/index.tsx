@@ -166,6 +166,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'owner' }),
       dataIndex: 'owner',
+      width: 150,
       renderText: (_, record) => record?.owner?.userName,
     },
     {
@@ -203,7 +204,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'isCreatedByAdmin' }),
       dataIndex: 'isCreatedByAdmin',
-      width: 50,
+      width: 100,
       hideInSearch: true,
       render: (_, record) => {
         const isAdmin = record?.isCreatedByAdmin;
@@ -221,14 +222,6 @@ const TableList: React.FC = () => {
       width: 400,
       hideInSearch: true,
       copyable: true,
-    },
-    {
-      title: intl.formatMessage({ id: 'BotStartMessage', defaultMessage: 'BotStartMessage' }),
-      dataIndex: 'message',
-      hideInSearch: true,
-      hideInTable: true,
-      valueType: 'text',
-      ellipsis: true,
     },
     {
       title: intl.formatMessage({ id: 'isOnline', defaultMessage: '是否在线' }),
@@ -256,6 +249,7 @@ const TableList: React.FC = () => {
     {
       title: intl.formatMessage({ id: 'remark', defaultMessage: 'Remark' }),
       dataIndex: 'remark',
+      width: 150,
       hideInSearch: true,
       valueType: 'text',
       ellipsis: true,
