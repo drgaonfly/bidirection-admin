@@ -45,6 +45,13 @@ const SubscriptionList: React.FC = () => {
 
   const columns: ProColumns<any>[] = [
     {
+      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
+      dataIndex: 'proxy',
+      hideInSearch: true,
+      hideInForm: !access.canSuperAdmin,
+      renderText: (proxy) => proxy.name,
+    },
+    {
       title: intl.formatMessage({ id: 'bot', defaultMessage: '机器人' }),
       dataIndex: 'bot',
       renderText: (bot) => bot?.botName || bot?.userName || '-',
