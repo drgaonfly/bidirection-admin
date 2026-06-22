@@ -62,6 +62,7 @@ import {
   ShareAltOutlined,
   GoldFilled,
   PlusCircleFilled,
+  CreditCardOutlined,
 } from '@ant-design/icons';
 import type { Settings as LayoutSettings, MenuDataItem } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -135,6 +136,7 @@ const iconEnum: { [key: string]: ReactElement<any, any> } = {
   ShareAltOutlined: <ShareAltOutlined />,
   GoldFilled: <GoldFilled />,
   PlusCircleFilled: <PlusCircleFilled />,
+  CreditCardOutlined:<CreditCardOutlined/>
 };
 
 const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
