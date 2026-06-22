@@ -284,6 +284,16 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           fieldProps={{ precision: 0, addonAfter: '%' }}
           disabled={!isAdmin}
         />
+        {isAdmin && (
+          <ProFormDigit
+            name="topicSubscriptionMonthlyFee"
+            label="话题双向通信月费（USDT）"
+            width="md"
+            placeholder="默认 25"
+            min={1}
+            fieldProps={{ precision: 0, addonAfter: 'USDT' }}
+          />
+        )}
       </ProFormGroup>
 
       <EditableProTable<commandItem>

@@ -188,4 +188,11 @@ export default [
     icon: 'UserOutlined',
     component: './BotUserConfig',
   },
+  // 话题订阅管理
+  {
+    path: '/subscriptions',
+    name: 'list.subscriptions',
+    icon: 'CreditCardOutlined',
+    component: './Subscription',
+  },
 ];

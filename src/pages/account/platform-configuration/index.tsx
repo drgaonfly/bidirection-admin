@@ -1,8 +1,8 @@
-import { Card, message, Typography, Button, Space } from 'antd';
+import { Card, message, Typography, Button, Space, Divider } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormDigit } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 
@@ -15,15 +15,21 @@ const PlatformConfiguration: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleSubmit = async (values: { name: string }) => {
+  const handleSubmit = async (values: {
+    name: string;
+    trx20_address?: string;
+    topicSubscriptionMonthlyFee?: number;
+  }) => {
     try {
       setLoading(true);
       await updateItem('/auth/profile', values);
-      message.success(intl.formatMessage({ id: 'update.success' }));
+      message.success(intl.formatMessage({ id: 'update.success', defaultMessage: '更新成功' }));
       await refresh();
       setIsEditing(false);
     } catch (error: any) {
-      message.error(error.message || intl.formatMessage({ id: 'update.failed' }));
+      message.error(
+        error.message || intl.formatMessage({ id: 'update.failed', defaultMessage: '更新失败' }),
+      );
     } finally {
       setLoading(false);
     }
@@ -34,7 +40,10 @@ const PlatformConfiguration: React.FC = () => {
       <Card
         title={
           <Space>
-            {intl.formatMessage({ id: 'menu.account.platformConfig', defaultMessage: '平台配置' })}
+            {intl.formatMessage({
+              id: 'menu.account.platformConfig',
+              defaultMessage: '平台配置',
+            })}
             {isEditing ? (
               <Button type="link" icon={<CloseOutlined />} onClick={() => setIsEditing(false)}>
                 {intl.formatMessage({ id: 'cancel', defaultMessage: '取消' })}
@@ -52,21 +61,63 @@ const PlatformConfiguration: React.FC = () => {
             onFinish={handleSubmit}
             initialValues={{
               name: currentUser?.name || '',
+              trx20_address: currentUser?.trx20_address || '',
+              topicSubscriptionMonthlyFee: currentUser?.topicSubscriptionMonthlyFee ?? 25,
             }}
             submitter={{
-              submitButtonProps: {
-                loading,
-              },
+              submitButtonProps: { loading },
             }}
           >
             <ProFormText
               width="xl"
               name="name"
-              label={intl.formatMessage({ id: 'platform.name', defaultMessage: '名称' })}
+              label={intl.formatMessage({
+                id: 'platform.name',
+                defaultMessage: '名称',
+              })}
               placeholder={intl.formatMessage({
                 id: 'please.enter.name',
                 defaultMessage: '请输入名称',
               })}
+            />
+            <Divider>
+              {intl.formatMessage({
+                id: 'platform.subscription',
+                defaultMessage: '话题订阅收款配置',
+              })}
+            </Divider>
+            <ProFormText
+              width="xl"
+              name="trx20_address"
+              label={intl.formatMessage({
+                id: 'platform.trx20Address',
+                defaultMessage: 'TRC20 收款地址',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.trx20Address',
+                defaultMessage: '请输入 TRC20-USDT 收款地址',
+              })}
+              rules={[
+                {
+                  pattern: /^T[a-zA-Z0-9]{33}$/,
+                  message: intl.formatMessage({
+                    id: 'invalid.trx20Address',
+                    defaultMessage: '请输入有效的 TRC20 地址（T 开头，34位）',
+                  }),
+                },
+              ]}
+            />
+            <ProFormDigit
+              width="md"
+              name="topicSubscriptionMonthlyFee"
+              label={intl.formatMessage({
+                id: 'platform.monthlyFee',
+                defaultMessage: '话题订阅月费（USDT）',
+              })}
+              min={1}
+              max={9999}
+              fieldProps={{ precision: 2 }}
+              placeholder="25"
             />
           </ProForm>
         ) : (
@@ -76,6 +127,34 @@ const PlatformConfiguration: React.FC = () => {
                 {intl.formatMessage({ id: 'platform.name', defaultMessage: '名称' })}:{' '}
               </Text>
               <Text>{currentUser?.name || '-'}</Text>
+            </div>
+            <Divider>
+              {intl.formatMessage({
+                id: 'platform.subscription',
+                defaultMessage: '话题订阅收款配置',
+              })}
+            </Divider>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.trx20Address',
+                  defaultMessage: 'TRC20 收款地址',
+                })}
+                :{' '}
+              </Text>
+              <Text copyable={!!currentUser?.trx20_address}>
+                {currentUser?.trx20_address || '-'}
+              </Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.monthlyFee',
+                  defaultMessage: '话题订阅月费（USDT）',
+                })}
+                :{' '}
+              </Text>
+              <Text>{currentUser?.topicSubscriptionMonthlyFee ?? 25} USDT</Text>
             </div>
           </div>
         )}

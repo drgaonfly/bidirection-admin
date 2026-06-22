@@ -144,6 +144,13 @@ export default {
   isTrial: '是否试用',
 
   subscription_list: '订阅列表',
+  subscription_start: '服务开始时间',
+  subscription_end: '服务到期时间',
+  fromAddress: '付款地址',
+  toAddress: '收款地址',
+  paidAmount: '实付金额',
+  paidAt: '付款时间',
+  orderExpiredAt: '订单过期时间',
   orderNumber: '订单号',
   wallet: '钱包',
   currency: '货币',

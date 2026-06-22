@@ -29,6 +29,8 @@ declare namespace API {
     twoFAEnabled?: boolean;
     address?: string;
     phone?: string;
+    trx20_address?: string;
+    topicSubscriptionMonthlyFee?: number;
     balance?: number;
     serviceLink?: string;
     serviceLinks?: string;
