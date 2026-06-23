@@ -146,12 +146,14 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{currentUser?.name || '-'}</Text>
             </div>
+
             <Divider>
               {intl.formatMessage({
                 id: 'platform.subscription',
                 defaultMessage: '话题订阅收款配置',
               })}
             </Divider>
+
             <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({
@@ -164,6 +166,7 @@ const PlatformConfiguration: React.FC = () => {
                 {currentUser?.trx20_address || '-'}
               </Text>
             </div>
+
             <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({
@@ -174,6 +177,7 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{currentUser?.topicSubscriptionMonthlyFee ?? 25} USDT</Text>
             </div>
+
             <div style={{ marginBottom: 16 }}>
               <Text strong>
                 {intl.formatMessage({

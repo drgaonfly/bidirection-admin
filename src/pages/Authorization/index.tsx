@@ -191,15 +191,15 @@ const TableList: React.FC = () => {
         }
       },
     },
-    // {
-    //   title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '复制机器人' }),
-    //   dataIndex: 'clonedFrom',
-    //   width: 120,
-    //   hideInSearch: true,
-    //   renderText: (text: any) => {
-    //     return text?.botName || text?.userName;
-    //   },
-    // },
+    {
+      title: intl.formatMessage({ id: 'clonedFrom', defaultMessage: '克隆自' }),
+      dataIndex: 'clonedFrom',
+      width: 120,
+      hideInSearch: true,
+      renderText: (clonedFrom) => {
+        return clonedFrom?.botName || clonedFrom?.userName;
+      },
+    },
     // isCreatedByAdmin - 红绿灯
     {
       title: intl.formatMessage({ id: 'isCreatedByAdmin' }),
