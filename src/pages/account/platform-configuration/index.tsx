@@ -19,6 +19,7 @@ const PlatformConfiguration: React.FC = () => {
     name: string;
     trx20_address?: string;
     topicSubscriptionMonthlyFee?: number;
+    topic_mode_trial_period?: number;
   }) => {
     try {
       setLoading(true);
@@ -63,6 +64,7 @@ const PlatformConfiguration: React.FC = () => {
               name: currentUser?.name || '',
               trx20_address: currentUser?.trx20_address || '',
               topicSubscriptionMonthlyFee: currentUser?.topicSubscriptionMonthlyFee ?? 25,
+              topic_mode_trial_period: (currentUser as any)?.topic_mode_trial_period ?? 1,
             }}
             submitter={{
               submitButtonProps: { loading },
@@ -119,6 +121,22 @@ const PlatformConfiguration: React.FC = () => {
               fieldProps={{ precision: 2 }}
               placeholder="25"
             />
+            <ProFormDigit
+              width="md"
+              name="topic_mode_trial_period"
+              label={intl.formatMessage({
+                id: 'platform.trialPeriod',
+                defaultMessage: '话题模式免费试用期（天）',
+              })}
+              min={0}
+              max={365}
+              fieldProps={{ precision: 0 }}
+              placeholder="1"
+              tooltip={intl.formatMessage({
+                id: 'platform.trialPeriod.tooltip',
+                defaultMessage: '新机器人创建时自动获得的免费试用天数，0 表示不开启试用',
+              })}
+            />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
@@ -155,6 +173,16 @@ const PlatformConfiguration: React.FC = () => {
                 :{' '}
               </Text>
               <Text>{currentUser?.topicSubscriptionMonthlyFee ?? 25} USDT</Text>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Text strong>
+                {intl.formatMessage({
+                  id: 'platform.trialPeriod',
+                  defaultMessage: '话题模式免费试用期（天）',
+                })}
+                :{' '}
+              </Text>
+              <Text>{(currentUser as any)?.topic_mode_trial_period ?? 1} 天</Text>
             </div>
           </div>
         )}
