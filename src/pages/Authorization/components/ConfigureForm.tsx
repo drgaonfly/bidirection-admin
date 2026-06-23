@@ -18,20 +18,6 @@ type menuItem = {
   url: string;
 };
 
-type keyboardItem = {
-  _id: string;
-  command: string;
-  content: string;
-};
-
-type commandItem = {
-  _id: string;
-  name: string;
-  content: string;
-  isStart: boolean;
-  weight: number;
-};
-
 export type FormValueType = Partial<API.ItemData>;
 
 export type UpdateFormProps = {
@@ -52,8 +38,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const currentUser = initialState?.currentUser;
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
-  const [keyboards, setKeyboards] = useState<keyboardItem[]>(values?.keyboards || []);
-  const [commands, setCommands] = useState<commandItem[]>(values?.commands || []);
 
   const isAdmin = currentUser?.isAdmin;
 
@@ -62,8 +46,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
       form.setFieldsValue({
         ...values,
       });
-      setKeyboards(values?.keyboards || []);
-      setCommands(values?.commands || []);
       setMenus(values?.menus || []);
     }
   }, [updateModalOpen, values]);
@@ -92,72 +74,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
     },
   ];
 
-  const keyboard_columns: ProColumns<keyboardItem>[] = [
-    {
-      title: intl.formatMessage({ id: 'command', defaultMessage: '命令' }),
-      dataIndex: 'command',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'command_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'content', defaultMessage: '内容' }),
-      dataIndex: 'content',
-      valueType: 'textarea',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'content_required' }) }],
-      },
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
-      valueType: 'option',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-      ],
-    },
-  ];
-
-  const command_columns: ProColumns<commandItem>[] = [
-    {
-      title: intl.formatMessage({ id: 'name', defaultMessage: '命令名' }),
-      dataIndex: 'name',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'name_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'content', defaultMessage: '回复内容' }),
-      dataIndex: 'content',
-      valueType: 'textarea',
-      formItemProps: {
-        rules: [{ required: true, message: intl.formatMessage({ id: 'content_required' }) }],
-      },
-    },
-    {
-      title: intl.formatMessage({ id: 'isStart', defaultMessage: '是否启动' }),
-      dataIndex: 'isStart',
-      valueType: 'switch',
-    },
-    {
-      title: intl.formatMessage({ id: 'weight', defaultMessage: '权重' }),
-      dataIndex: 'weight',
-      valueType: 'digit',
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
-      valueType: 'option',
-      width: 200,
-      render: (text, record, _, action) => [
-        <a key="editable" onClick={() => action?.startEditable?.(`${record._id}`)}>
-          {intl.formatMessage({ id: 'edit' })}
-        </a>,
-      ],
-    },
-  ];
-
   return (
     <ModalForm
       form={form}
@@ -172,11 +88,7 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           ...values,
           ...formValues,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          keyboards: keyboards.map(({ _id, ...rest }) => rest),
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           menus: menus.map(({ _id, ...rest }) => rest),
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          commands: commands.map(({ _id, ...rest }) => rest),
         });
       }}
       initialValues={{
@@ -285,44 +197,6 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
           disabled={!isAdmin}
         />
       </ProFormGroup>
-
-      <EditableProTable<commandItem>
-        rowKey="_id"
-        headerTitle="命令配置"
-        columns={command_columns}
-        value={commands}
-        onChange={(value) => setCommands([...value])}
-        editable={{ type: 'multiple' }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            name: '',
-            content: '',
-            isStart: false,
-            weight: 0,
-          }),
-        }}
-      />
-
-      <EditableProTable<keyboardItem>
-        rowKey="_id"
-        headerTitle="键盘配置"
-        columns={keyboard_columns}
-        value={keyboards}
-        onChange={(value) => setKeyboards([...value])}
-        editable={{ type: 'multiple' }}
-        recordCreatorProps={{
-          newRecordType: 'dataSource',
-          position: 'bottom',
-          record: () => ({
-            _id: Date.now().toString(),
-            command: '',
-            content: '',
-          }),
-        }}
-      />
 
       <EditableProTable<menuItem>
         rowKey="_id"
