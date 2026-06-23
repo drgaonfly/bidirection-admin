@@ -5,12 +5,10 @@ import {
   ProFormTextArea,
   ProDescriptions,
   ProFormGroup,
-  ProFormText,
-  ProFormDigit,
   type ProColumns,
 } from '@ant-design/pro-components';
 import { Form, Input } from 'antd';
-import { FormattedMessage, useAccess, useIntl, useModel } from '@umijs/max';
+import { FormattedMessage, useIntl, useModel } from '@umijs/max';
 
 type menuItem = {
   _id: string;
@@ -32,14 +30,14 @@ export type UpdateFormProps = {
 
 const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
   const intl = useIntl();
-  const access = useAccess();
+  // const access = useAccess();
   const [form] = Form.useForm();
   const { initialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
   const { updateModalOpen, onCancel, onSubmit, values } = props;
   const [menus, setMenus] = useState<menuItem[]>(values?.menus || []);
 
-  const isAdmin = currentUser?.isAdmin;
+  // const isAdmin = currentUser?.isAdmin;
 
   useEffect(() => {
     if (updateModalOpen && values) {
@@ -154,47 +152,14 @@ const ConfigureForm: React.FC<UpdateFormProps> = (props) => {
             autoSize: { minRows: 8 },
           }}
         />
-      </ProFormGroup>
 
-      <ProFormGroup>
-        {access.canUpdateCustomerServiceLink && (
-          <ProFormText
-            name="customer_service_link"
-            label="客服链接"
-            width="md"
-            placeholder="https://t.me/"
-          />
-        )}
-
-        {access.canUpdateTrx20Address && (
-          <ProFormText
-            name="trx20_address"
-            label="trx20 地址"
-            width="md"
-            placeholder="请输入 trx 地址"
-          />
-        )}
-
-        {access.canUpdateAutoExchangeAddress && (
-          <ProFormText
-            name="auto_exchange_address"
-            label="自动兑换地址"
-            width="md"
-            placeholder="请输入自动兑换地址"
-          />
-        )}
-      </ProFormGroup>
-
-      <ProFormGroup>
-        <ProFormDigit
-          name="fee"
-          label="闪兑费率"
+        <ProFormTextArea
+          name="advertisement"
+          label="广告"
           width="md"
-          placeholder="请输入手续费百分比"
-          min={0}
-          max={100}
-          fieldProps={{ precision: 0, addonAfter: '%' }}
-          disabled={!isAdmin}
+          fieldProps={{
+            autoSize: { minRows: 8 },
+          }}
         />
       </ProFormGroup>
 
