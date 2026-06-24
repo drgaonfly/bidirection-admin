@@ -2,7 +2,7 @@ import { Card, message, Typography, Button, Space, Divider } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import { ProForm, ProFormText, ProFormDigit } from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormDigit, ProFormTextArea } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 
@@ -20,6 +20,7 @@ const PlatformConfiguration: React.FC = () => {
     trx20_address?: string;
     topicSubscriptionMonthlyFee?: number;
     topic_mode_trial_period?: number;
+    advertisement?: string;
   }) => {
     try {
       setLoading(true);
@@ -65,6 +66,7 @@ const PlatformConfiguration: React.FC = () => {
               trx20_address: currentUser?.trx20_address || '',
               topicSubscriptionMonthlyFee: currentUser?.topicSubscriptionMonthlyFee ?? 25,
               topic_mode_trial_period: (currentUser as any)?.topic_mode_trial_period ?? 1,
+              advertisement: (currentUser as any)?.advertisement || '',
             }}
             submitter={{
               submitButtonProps: { loading },
@@ -137,6 +139,27 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '新机器人创建时自动获得的免费试用天数，0 表示不开启试用',
               })}
             />
+            <Divider>
+              {intl.formatMessage({
+                id: 'platform.advertisement',
+                defaultMessage: '广告配置',
+              })}
+            </Divider>
+            <ProFormTextArea
+              name="advertisement"
+              label={intl.formatMessage({
+                id: 'platform.advertisementText',
+                defaultMessage: '广告文本',
+              })}
+              placeholder={intl.formatMessage({
+                id: 'please.enter.advertisement',
+                defaultMessage: '请输入广告文本',
+              })}
+              fieldProps={{
+                rows: 6,
+                style: { resize: 'vertical' },
+              }}
+            />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
@@ -188,6 +211,50 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{(currentUser as any)?.topic_mode_trial_period ?? 1} 天</Text>
             </div>
+
+            <Divider>
+              {intl.formatMessage({
+                id: 'platform.advertisement',
+                defaultMessage: '广告配置',
+              })}
+            </Divider>
+
+            <Card
+              size="small"
+              style={{
+                backgroundColor: '#fafafa',
+                border: '1px solid #d9d9d9',
+                borderRadius: 8,
+              }}
+            >
+              <div style={{ marginBottom: 8 }}>
+                <Text strong style={{ fontSize: 14 }}>
+                  {intl.formatMessage({
+                    id: 'platform.advertisementText',
+                    defaultMessage: '广告文本',
+                  })}
+                </Text>
+              </div>
+              <div
+                style={{
+                  padding: 12,
+                  backgroundColor: '#fff',
+                  borderRadius: 4,
+                  border: '1px solid #e8e8e8',
+                  minHeight: 80,
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                }}
+              >
+                <Text style={{ color: (currentUser as any)?.advertisement ? '#000' : '#999' }}>
+                  {(currentUser as any)?.advertisement ||
+                    intl.formatMessage({
+                      id: 'no.advertisement',
+                      defaultMessage: '暂无广告文本',
+                    })}
+                </Text>
+              </div>
+            </Card>
           </div>
         )}
       </Card>
