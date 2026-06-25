@@ -2,7 +2,13 @@ import { Card, message, Typography, Button, Space, Divider } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import { ProForm, ProFormText, ProFormDigit, ProFormTextArea } from '@ant-design/pro-components';
+import {
+  ProForm,
+  ProFormText,
+  ProFormDigit,
+  ProFormTextArea,
+  ProFormList,
+} from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
 
@@ -21,6 +27,7 @@ const PlatformConfiguration: React.FC = () => {
     topicSubscriptionMonthlyFee?: number;
     topic_mode_trial_period?: number;
     advertisement?: string;
+    subscriptionPlans?: Array<{ months: number; price: number; label: string }>;
   }) => {
     try {
       setLoading(true);
@@ -67,6 +74,11 @@ const PlatformConfiguration: React.FC = () => {
               topicSubscriptionMonthlyFee: currentUser?.topicSubscriptionMonthlyFee ?? 25,
               topic_mode_trial_period: (currentUser as any)?.topic_mode_trial_period ?? 1,
               advertisement: (currentUser as any)?.advertisement || '',
+              subscriptionPlans: (currentUser as any)?.subscriptionPlans || [
+                { months: 1, price: 15, label: '包月' },
+                { months: 6, price: 70, label: '半年' },
+                { months: 12, price: 120, label: '一年' },
+              ],
             }}
             submitter={{
               submitButtonProps: { loading },
@@ -141,6 +153,56 @@ const PlatformConfiguration: React.FC = () => {
             />
             <Divider>
               {intl.formatMessage({
+                id: 'platform.subscriptionPlans',
+                defaultMessage: '订阅套餐配置',
+              })}
+            </Divider>
+            <ProFormList
+              name="subscriptionPlans"
+              label={intl.formatMessage({
+                id: 'platform.subscriptionPlans.label',
+                defaultMessage: '订阅套餐',
+              })}
+              tooltip={intl.formatMessage({
+                id: 'platform.subscriptionPlans.tooltip',
+                defaultMessage: '配置不同的订阅套餐及其价格',
+              })}
+              creatorButtonProps={{
+                position: 'bottom',
+              }}
+            >
+              <ProForm.Group>
+                <ProFormText
+                  width="md"
+                  name="label"
+                  label="套餐名称"
+                  placeholder="包月"
+                  rules={[{ required: true, message: '请输入套餐名称' }]}
+                />
+                <ProFormDigit
+                  width="md"
+                  name="months"
+                  label="月数"
+                  min={1}
+                  max={120}
+                  fieldProps={{ precision: 0 }}
+                  placeholder="1"
+                  rules={[{ required: true, message: '请输入月数' }]}
+                />
+                <ProFormDigit
+                  width="md"
+                  name="price"
+                  label="价格（USDT）"
+                  min={1}
+                  max={99999}
+                  fieldProps={{ precision: 0 }}
+                  placeholder="15"
+                  rules={[{ required: true, message: '请输入价格' }]}
+                />
+              </ProForm.Group>
+            </ProFormList>
+            <Divider>
+              {intl.formatMessage({
                 id: 'platform.advertisement',
                 defaultMessage: '广告配置',
               })}
@@ -211,6 +273,59 @@ const PlatformConfiguration: React.FC = () => {
               </Text>
               <Text>{(currentUser as any)?.topic_mode_trial_period ?? 1} 天</Text>
             </div>
+
+            <Divider>
+              {intl.formatMessage({
+                id: 'platform.subscriptionPlans',
+                defaultMessage: '订阅套餐配置',
+              })}
+            </Divider>
+
+            <Card
+              size="small"
+              style={{
+                backgroundColor: '#fafafa',
+                border: '1px solid #d9d9d9',
+                borderRadius: 8,
+              }}
+            >
+              <div style={{ marginBottom: 8 }}>
+                <Text strong style={{ fontSize: 14 }}>
+                  {intl.formatMessage({
+                    id: 'platform.subscriptionPlans.label',
+                    defaultMessage: '订阅套餐',
+                  })}
+                </Text>
+              </div>
+              <div
+                style={{
+                  padding: 12,
+                  backgroundColor: '#fff',
+                  borderRadius: 4,
+                  border: '1px solid #e8e8e8',
+                  minHeight: 80,
+                }}
+              >
+                {((currentUser as any)?.subscriptionPlans || []).length > 0 ? (
+                  ((currentUser as any)?.subscriptionPlans || []).map(
+                    (plan: any, index: number) => (
+                      <div key={index} style={{ marginBottom: 8 }}>
+                        <Text>
+                          {plan.label} - {plan.months}个月 - {plan.price} USDT
+                        </Text>
+                      </div>
+                    ),
+                  )
+                ) : (
+                  <Text style={{ color: '#999' }}>
+                    {intl.formatMessage({
+                      id: 'no.subscriptionPlans',
+                      defaultMessage: '暂无订阅套餐',
+                    })}
+                  </Text>
+                )}
+              </div>
+            </Card>
 
             <Divider>
               {intl.formatMessage({
