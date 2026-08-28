@@ -64,7 +64,7 @@ const TableList: React.FC = () => {
       dataIndex: 'proxy',
       hideInSearch: true,
       hideInForm: !access.canSuperAdmin,
-      renderText: (proxy) => proxy.name,
+      renderText: (proxy) => proxy?.name,
     },
     {
       title: intl.formatMessage({ id: 'user' }),
