@@ -51,11 +51,6 @@ const GroupTableList: React.FC = () => {
   const access = useAccess();
 
   const columns: ProColumns<API.ItemData>[] = [
-    {
-      title: intl.formatMessage({ id: 'proxy', defaultMessage: '代理' }),
-      dataIndex: 'proxy',
-      hideInSearch: true,
-    },
     // id
     {
       title: intl.formatMessage({ id: 'id', defaultMessage: 'ID' }),
