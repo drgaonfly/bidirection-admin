@@ -27,7 +27,7 @@ const PlatformConfiguration: React.FC = () => {
     topicSubscriptionMonthlyFee?: number;
     topic_mode_trial_period?: number;
     advertisement?: string;
-    subscriptionPlans?: Array<{ months: number; price: number; label: string }>;
+    subscriptionPlans?: Array<{ days: number; price: number; label: string }>;
   }) => {
     try {
       setLoading(true);
@@ -75,9 +75,9 @@ const PlatformConfiguration: React.FC = () => {
               topic_mode_trial_period: (currentUser as any)?.topic_mode_trial_period ?? 1,
               advertisement: (currentUser as any)?.advertisement || '',
               subscriptionPlans: (currentUser as any)?.subscriptionPlans || [
-                { months: 1, price: 15, label: '包月' },
-                { months: 6, price: 70, label: '半年' },
-                { months: 12, price: 120, label: '一年' },
+                { days: 30, price: 15, label: '包月' },
+                { days: 180, price: 70, label: '半年' },
+                { days: 365, price: 120, label: '一年' },
               ],
             }}
             submitter={{
@@ -181,13 +181,13 @@ const PlatformConfiguration: React.FC = () => {
                 />
                 <ProFormDigit
                   width="md"
-                  name="months"
-                  label="月数"
+                  name="days"
+                  label="天数"
                   min={1}
-                  max={120}
+                  max={3650}
                   fieldProps={{ precision: 0 }}
-                  placeholder="1"
-                  rules={[{ required: true, message: '请输入月数' }]}
+                  placeholder="30"
+                  rules={[{ required: true, message: '请输入天数' }]}
                 />
                 <ProFormDigit
                   width="md"
@@ -311,7 +311,7 @@ const PlatformConfiguration: React.FC = () => {
                     (plan: any, index: number) => (
                       <div key={index} style={{ marginBottom: 8 }}>
                         <Text>
-                          {plan.label} - {plan.months}个月 - {plan.price} USDT
+                          {plan.label} - {plan.days}天 - {plan.price} USDT
                         </Text>
                       </div>
                     ),
