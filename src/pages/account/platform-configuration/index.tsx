@@ -1,16 +1,20 @@
-import { Card, message, Typography, Button, Space, Divider } from 'antd';
+import { Card, message, Typography, Button, Space, Divider, Form } from 'antd';
 import React, { useState } from 'react';
 import { useIntl } from '@umijs/max';
 import { useModel } from '@umijs/max';
-import {
-  ProForm,
-  ProFormText,
-  ProFormDigit,
-  ProFormTextArea,
-  ProFormList,
-} from '@ant-design/pro-components';
+import { ProForm, ProFormText, ProFormDigit, ProFormList } from '@ant-design/pro-components';
 import { updateItem } from '@/services/ant-design-pro/api';
 import { EditOutlined, CloseOutlined } from '@ant-design/icons';
+import Editor from '@/components/Editor';
+
+// Form.Item injects value/onChange; wrap Editor so it works as a form field
+const AdvertisementEditor: React.FC<{
+  value?: string;
+  onChange?: (v: string) => void;
+  placeholder?: string;
+}> = ({ value = '', onChange, placeholder = '' }) => (
+  <Editor value={value} onChange={onChange ?? (() => {})} placeholder={placeholder} />
+);
 
 const { Text } = Typography;
 
@@ -207,21 +211,22 @@ const PlatformConfiguration: React.FC = () => {
                 defaultMessage: '广告配置',
               })}
             </Divider>
-            <ProFormTextArea
+            <Form.Item
               name="advertisement"
               label={intl.formatMessage({
                 id: 'platform.advertisementText',
                 defaultMessage: '广告文本',
               })}
-              placeholder={intl.formatMessage({
-                id: 'please.enter.advertisement',
-                defaultMessage: '请输入广告文本',
-              })}
-              fieldProps={{
-                rows: 6,
-                style: { resize: 'vertical' },
-              }}
-            />
+            >
+              <AdvertisementEditor
+                placeholder={intl.formatMessage({
+                  id: 'please.enter.advertisement',
+                  defaultMessage: '请输入广告文本',
+                })}
+              />
+            </Form.Item>
+            {/* spacer so the quill toolbar isn't cut off */}
+            <div style={{ height: 42 }} />
           </ProForm>
         ) : (
           <div style={{ padding: '8px 0' }}>
@@ -357,17 +362,23 @@ const PlatformConfiguration: React.FC = () => {
                   borderRadius: 4,
                   border: '1px solid #e8e8e8',
                   minHeight: 80,
-                  whiteSpace: 'pre-wrap',
                   wordBreak: 'break-word',
                 }}
               >
-                <Text style={{ color: (currentUser as any)?.advertisement ? '#000' : '#999' }}>
-                  {(currentUser as any)?.advertisement ||
-                    intl.formatMessage({
+                {(currentUser as any)?.advertisement ? (
+                  <div
+                    className="ql-editor"
+                    style={{ padding: 0 }}
+                    dangerouslySetInnerHTML={{ __html: (currentUser as any).advertisement }}
+                  />
+                ) : (
+                  <Text style={{ color: '#999' }}>
+                    {intl.formatMessage({
                       id: 'no.advertisement',
                       defaultMessage: '暂无广告文本',
                     })}
-                </Text>
+                  </Text>
+                )}
               </div>
             </Card>
           </div>
