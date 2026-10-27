@@ -30,7 +30,6 @@ declare namespace API {
     address?: string;
     phone?: string;
     trx20_address?: string;
-    topicSubscriptionMonthlyFee?: number;
     topic_mode_trial_period?: number;
     balance?: number;
     serviceLink?: string;

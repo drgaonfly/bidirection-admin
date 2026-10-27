@@ -28,7 +28,6 @@ const PlatformConfiguration: React.FC = () => {
   const handleSubmit = async (values: {
     name: string;
     trx20_address?: string;
-    topicSubscriptionMonthlyFee?: number;
     topic_mode_trial_period?: number;
     advertisement?: string;
     subscriptionPlans?: Array<{ days: number; price: number; label: string }>;
@@ -75,7 +74,6 @@ const PlatformConfiguration: React.FC = () => {
             initialValues={{
               name: currentUser?.name || '',
               trx20_address: currentUser?.trx20_address || '',
-              topicSubscriptionMonthlyFee: currentUser?.topicSubscriptionMonthlyFee ?? 25,
               topic_mode_trial_period: (currentUser as any)?.topic_mode_trial_period ?? 1,
               advertisement: (currentUser as any)?.advertisement || '',
               subscriptionPlans: (currentUser as any)?.subscriptionPlans || [
@@ -126,18 +124,6 @@ const PlatformConfiguration: React.FC = () => {
                   }),
                 },
               ]}
-            />
-            <ProFormDigit
-              width="md"
-              name="topicSubscriptionMonthlyFee"
-              label={intl.formatMessage({
-                id: 'platform.monthlyFee',
-                defaultMessage: '话题订阅月费（USDT）',
-              })}
-              min={1}
-              max={9999}
-              fieldProps={{ precision: 2 }}
-              placeholder="25"
             />
             <ProFormDigit
               width="md"
@@ -255,17 +241,6 @@ const PlatformConfiguration: React.FC = () => {
               <Text copyable={!!currentUser?.trx20_address}>
                 {currentUser?.trx20_address || '-'}
               </Text>
-            </div>
-
-            <div style={{ marginBottom: 16 }}>
-              <Text strong>
-                {intl.formatMessage({
-                  id: 'platform.monthlyFee',
-                  defaultMessage: '话题订阅月费（USDT）',
-                })}
-                :{' '}
-              </Text>
-              <Text>{currentUser?.topicSubscriptionMonthlyFee ?? 25} USDT</Text>
             </div>
 
             <div style={{ marginBottom: 16 }}>
